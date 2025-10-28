@@ -1,0 +1,93 @@
+:root{
+  --green-900:#0b3b2e;
+  --green-800:#115d47;
+  --white:#ffffff;
+  --gold:#FFD24D;
+  --gold-dark:#B8860B;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#0d3f31,#0a2a21);color:#e7f8f1;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+
+#app{max-width:1080px;margin:0 auto;padding:16px}
+header{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{font-size:20px;margin:0}
+.page-header h1{font-size:24px;margin:0 0 6px 0;letter-spacing:.6px;text-transform:uppercase}
+
+/* Barra de escudos */
+.teams-bar{margin:10px 0 18px;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.18);box-shadow:0 6px 22px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);overflow-x:auto}
+.teams-bar .team-badge{width:44px;height:44px;border-radius:50%;background:#fff;padding:4px;object-fit:contain;box-shadow:0 1px 3px rgba(0,0,0,.35)}
+
+/* Rótulo CEDIDAS X CONQUISTADAS */
+.cx-label{display:flex;justify-content:center;gap:10px;align-items:center;font-weight:900;letter-spacing:.6px;margin:14px 0 8px;text-transform:uppercase}
+.cx-label .x{opacity:.8}
+
+/* Segundo campo com o mesmo estilo do primeiro */
+#canvas2{position:relative;margin-top:14px;border-radius:16px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);width:100%;aspect-ratio:1000/660;background:#155c44}
+#pitch2{position:absolute;inset:0;width:100%;height:100%;display:block}
+#overlay2{position:absolute;inset:0;width:100%;height:100%}
+
+.legend{display:flex;align-items:center;flex-wrap:wrap;gap:8px;color:#dbece4;opacity:.95}
+.legend .legend-text{margin-right:12px}
+
+.badge{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;font-weight:800;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25));}
+.badge.white{background:#fff;color:#0f172a;border:2px solid rgba(0,0,0,.12)}
+.badge.gold{background:radial-gradient(35% 35% at 35% 30%,#FFE58A 0%,#FFD24D 60%,#B8860B 100%);color:#0f172a;border:2px solid #8B6508}
+
+.dash{display:inline-block;width:36px;height:0;border-top:2px dashed #fff;opacity:.85;border-radius:2px}
+.dash.gold{border-color:var(--gold);opacity:.95}
+
+#canvas{position:relative;margin-top:14px;border-radius:16px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);width:100%;aspect-ratio:1000/660;background:#155c44}
+/* Novo campo SVG */
+#pitch{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* Overlay de eventos */
+#overlay{position:absolute;inset:0;width:100%;height:100%}
+
+/* Remoção dos estilos antigos de ícones */
+/* Agora usamos apenas círculos e linhas tracejadas */
+
+/* Header e branding atualizados */
+.app-header .brand-title{font-size:24px;margin:0;color:#e7f8f1;letter-spacing:.6px;text-transform:uppercase}
+.app-header .brand-logo{filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
+.toolbar .toolbar-item{display:inline-flex;gap:6px;align-items:center;color:#dbece4}
+.toolbar .toolbar-btn{background:#115d47;color:#e7f8f1;border:none;border-radius:8px;padding:6px 10px;cursor:pointer}
+.extra-toggle-btn{background:#115d47;color:#e7f8f1;border:none;border-radius:8px;padding:6px 10px;cursor:pointer;font-family:inherit}
+.field-caption,.team-label,button,select{font-family:inherit}
+.toolbar .toolbar-select{background:#0b3b2e;color:#e7f8f1;border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:4px}
+
+/* Botão de download discreto */
+.download-btn{background:#0b3b2e;color:#e7f8f1;border:none;border-radius:16px;width:32px;height:32px;line-height:32px;text-align:center;cursor:pointer;transition:opacity .2s ease}
+.download-btn:hover{opacity:1}
+
+/* Responsividade: empilha campos verticalmente em telas pequenas */
+.fields-row{display:flex;gap:16px;align-items:flex-start;justify-content:space-between}
+.field-col{flex:1 1 640px}
+@media (max-width: 900px){
+  .fields-row{flex-direction:column;gap:18px}
+  .field-col{flex:1 1 100%}
+}
+
+/* Tooltips de participação em gols */
+#playerTooltip{
+  position:absolute!important;
+  background:rgba(11,31,22,0.98)!important;
+  color:#e7f8f1!important;
+  padding:10px 12px!important;
+  border-radius:8px!important;
+  border:2px solid #f7d36a!important;
+  font-size:13px!important;
+  z-index:9999!important;
+  max-width:280px!important;
+  box-shadow:0 8px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)!important;
+  pointer-events:none!important;
+  backdrop-filter:blur(4px)!important;
+  font-family:inherit!important;
+}
+
+/* Caption com nomes dos times */
+.team-label{opacity:.95}
+
+/* Container de campinho extra (oculto por padrão) */
+.extra-canvas{position:relative;margin-top:10px;border-radius:16px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);width:100%;aspect-ratio:1000/660;background:#155c44;display:none}
+.extra-toggle-btn{margin-top:6px;background:#115d47;color:#e7f8f1;border:none;border-radius:8px;padding:6px 10px;cursor:pointer}
+.extra-canvas svg{max-width:100%;height:auto}
