@@ -2486,14 +2486,16 @@ function showPlayerTooltip(event, eventData) {
 // Nova função drawPositionSummaryLegend com layout em blocos grandes e fundo claro
 // Baseado no modelo fornecido pelo usuário (Athletico-PR)
 
+// Nova versão DEFINITIVA do rodapé - Layout horizontal simples
 function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, groupId = 'positionSummary') {
   if (!overlayEl) return;
   const existing = overlayEl.querySelector(`#${groupId}`);
   if (existing) existing.remove();
 
   const positions = ['Zagueiro', 'Lateral E', 'Lateral D', 'Meia', 'Atacante'];
+  const abbr = { Meia: 'MEI', Atacante: 'ATA', 'Lateral D': 'LD', 'Lateral E': 'LE', Zagueiro: 'ZAG' };
   
-  // Contadores separados para CEDIDOS e CONQUISTADOS
+  // Contadores separados
   const cedidosAssist = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
   const cedidosGols = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
   const conquistadosAssist = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
@@ -2554,92 +2556,84 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
 
   const g = el('g', { id: groupId, filter: 'url(#ds)' });
   
-  // NOVO LAYOUT: Blocos grandes com fundo claro
-  const panelH = 200;
-  const panelY = 680; // posicionado abaixo do campo (campo termina em ~660)
-  const centerX = WIDTH / 2;
+  // LAYOUT HORIZONTAL SIMPLES
+  const startY = 680;
+  const sectionW = 220; // largura de cada seção (ASSISTÊNCIAS ou GOLS)
+  const sectionH = 120; // altura da seção
+  const chipW = 38;
+  const chipH = 55;
+  const chipGap = 4;
+  const sectionGap = 16; // espaço entre seções
   
-  const abbr = { Meia: 'MEI', Atacante: 'ATA', 'Lateral D': 'LD', 'Lateral E': 'LE', Zagueiro: 'ZAG' };
-  
-  // Dimensões dos blocos
-  const blockW = 240;  // aumentado de 220 para 240
-  const blockH = 110;  // aumentado de 100 para 110
-  const blockGap = 24; // aumentado de 20 para 24
-  const chipW = 42;    // aumentado de 38 para 42
-  const chipH = 65;    // aumentado de 60 para 65
-  const chipGap = 5;   // aumentado de 4 para 5
-  
-  // Função para desenhar um bloco (ASSISTÊNCIAS ou GOLS)
-  function drawBlock(title, counts, startX, startY) {
-    // Fundo branco do bloco
+  // Função para desenhar uma seção (ASSISTÊNCIAS ou GOLS)
+  function drawSection(title, counts, x, y) {
+    // Fundo branco
     const bg = el('rect', {
-      x: startX,
-      y: startY,
-      width: blockW,
-      height: blockH,
-      rx: 12,
-      ry: 12,
+      x, y,
+      width: sectionW,
+      height: sectionH,
+      rx: 10,
+      ry: 10,
       fill: 'rgba(255,255,255,0.95)',
       stroke: '#0b1f16',
       'stroke-width': 2
     });
     g.appendChild(bg);
     
-    // Título do bloco
+    // Título
     const titleEl = el('text', {
-      x: startX + blockW/2,
-      y: startY + 22,
+      x: x + sectionW/2,
+      y: y + 20,
       'text-anchor': 'middle',
       'font-family': 'Inter, Arial, sans-serif',
-      'font-size': 14,
+      'font-size': 13,
       'font-weight': 900,
       fill: '#0b1f16'
     });
     titleEl.textContent = title;
     g.appendChild(titleEl);
     
-    // Chips de posições (ZAG, LE, LD, MEI, ATA)
-    const chipsTotal = positions.length * chipW + (positions.length - 1) * chipGap;
-    const chipsStartX = startX + (blockW - chipsTotal) / 2;
-    const chipsY = startY + 36;
+    // Chips horizontais
+    const totalChipsW = positions.length * chipW + (positions.length - 1) * chipGap;
+    const chipsStartX = x + (sectionW - totalChipsW) / 2;
+    const chipsY = y + 32;
     
     positions.forEach((p, i) => {
       const cx = chipsStartX + i * (chipW + chipGap);
       
-      // Chip individual
+      // Chip
       const chip = el('rect', {
-        x: cx,
-        y: chipsY,
+        x: cx, y: chipsY,
         width: chipW,
         height: chipH,
-        rx: 8,
-        ry: 8,
+        rx: 6,
+        ry: 6,
         fill: '#0b2f25',
         stroke: '#f7d36a',
         'stroke-width': 2
       });
       g.appendChild(chip);
       
-      // Abreviação da posição (parte superior)
+      // Abreviação
       const labelPos = el('text', {
         x: cx + chipW/2,
-        y: chipsY + 18,
+        y: chipsY + 16,
         'text-anchor': 'middle',
         'font-family': 'Inter, Arial, sans-serif',
-        'font-size': 11,
+        'font-size': 10,
         'font-weight': 700,
         fill: '#e7f8f1'
       });
       labelPos.textContent = abbr[p];
       g.appendChild(labelPos);
       
-      // Número (parte inferior - GRANDE)
+      // Número
       const labelCount = el('text', {
         x: cx + chipW/2,
-        y: chipsY + 44,
+        y: chipsY + 38,
         'text-anchor': 'middle',
         'font-family': 'Inter, Arial, sans-serif',
-        'font-size': 20,
+        'font-size': 18,
         'font-weight': 900,
         fill: '#f7d36a'
       });
@@ -2648,59 +2642,56 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
     });
   }
   
-  // Título principal CEDIDOS
+  // Título CEDIDOS
   const titleCedidos = el('text', {
-    x: centerX / 4,
-    y: panelY + 18,
+    x: sectionW + sectionGap/2,
+    y: startY - 10,
     'text-anchor': 'middle',
     'font-family': 'Inter, Arial, sans-serif',
-    'font-size': 20,
+    'font-size': 18,
     'font-weight': 900,
     fill: '#e7f8f1'
   });
   titleCedidos.textContent = 'CEDIDOS';
   g.appendChild(titleCedidos);
   
-  // CEDIDOS - Bloco ASSISTÊNCIAS (lado esquerdo)
-  const cedidosAssistX = 30; // margem esquerda
-  drawBlock('ASSISTÊNCIAS', cedidosAssist, cedidosAssistX, panelY + 28);
+  // CEDIDOS - ASSISTÊNCIAS
+  drawSection('ASSISTÊNCIAS', cedidosAssist, 20, startY);
   
-  // CEDIDOS - Bloco GOLS (ao lado de ASSISTÊNCIAS)
-  const cedidosGolsX = cedidosAssistX + blockW + blockGap;
-  drawBlock('GOLS', cedidosGols, cedidosGolsX, panelY + 28);
+  // CEDIDOS - GOLS
+  drawSection('GOLS', cedidosGols, 20 + sectionW + sectionGap, startY);
   
-  // Linha divisória vertical central
+  // Linha divisória vertical
+  const dividerX = 500;
   const divider = el('line', {
-    x1: centerX,
-    y1: panelY,
-    x2: centerX,
-    y2: panelY + panelH,
+    x1: dividerX,
+    y1: startY - 20,
+    x2: dividerX,
+    y2: startY + sectionH,
     stroke: '#e7f8f1',
-    'stroke-opacity': 0.6,
+    'stroke-opacity': 0.5,
     'stroke-width': 3
   });
   g.appendChild(divider);
   
-  // Título principal CONQUISTADOS
+  // Título CONQUISTADOS
   const titleConquistados = el('text', {
-    x: centerX + centerX / 4,
-    y: panelY + 18,
+    x: dividerX + sectionW + sectionGap/2,
+    y: startY - 10,
     'text-anchor': 'middle',
     'font-family': 'Inter, Arial, sans-serif',
-    'font-size': 20,
+    'font-size': 18,
     'font-weight': 900,
     fill: '#e7f8f1'
   });
   titleConquistados.textContent = 'CONQUISTADOS';
   g.appendChild(titleConquistados);
   
-  // CONQUISTADOS - Bloco ASSISTÊNCIAS (depois da linha divisória)
-  const conquistadosAssistX = centerX + 30; // margem após divisória
-  drawBlock('ASSISTÊNCIAS', conquistadosAssist, conquistadosAssistX, panelY + 28);
+  // CONQUISTADOS - ASSISTÊNCIAS
+  drawSection('ASSISTÊNCIAS', conquistadosAssist, dividerX + 20, startY);
   
-  // CONQUISTADOS - Bloco GOLS (ao lado de ASSISTÊNCIAS)
-  const conquistadosGolsX = conquistadosAssistX + blockW + blockGap;
-  drawBlock('GOLS', conquistadosGols, conquistadosGolsX, panelY + 28);
+  // CONQUISTADOS - GOLS
+  drawSection('GOLS', conquistadosGols, dividerX + 20 + sectionW + sectionGap, startY);
 
   overlayEl.appendChild(g);
 }
