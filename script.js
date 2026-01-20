@@ -2555,19 +2555,19 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   const g = el('g', { id: groupId, filter: 'url(#ds)' });
   
   // NOVO LAYOUT: Blocos grandes com fundo claro
-  const panelH = 180;
-  const panelY = HEIGHT - (panelH + 30);
+  const panelH = 200; // aumentado para 200
+  const panelY = HEIGHT + 40; // movido para ABAIXO do campo
   const centerX = WIDTH / 2;
   
   const abbr = { Meia: 'MEI', Atacante: 'ATA', 'Lateral D': 'LD', 'Lateral E': 'LE', Zagueiro: 'ZAG' };
   
   // Dimensões dos blocos
-  const blockW = 220;  // largura de cada bloco (ASSISTÊNCIAS ou GOLS)
-  const blockH = 100;  // altura do bloco
-  const blockGap = 20; // espaço entre blocos
-  const chipW = 38;    // largura de cada chip de posição
-  const chipH = 60;    // altura de cada chip
-  const chipGap = 4;   // espaço entre chips
+  const blockW = 240;  // aumentado de 220 para 240
+  const blockH = 110;  // aumentado de 100 para 110
+  const blockGap = 24; // aumentado de 20 para 24
+  const chipW = 42;    // aumentado de 38 para 42
+  const chipH = 65;    // aumentado de 60 para 65
+  const chipGap = 5;   // aumentado de 4 para 5
   
   // Função para desenhar um bloco (ASSISTÊNCIAS ou GOLS)
   function drawBlock(title, counts, startX, startY) {
@@ -2614,7 +2614,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
         height: chipH,
         rx: 8,
         ry: 8,
-        fill: '#0b1f16',
+        fill: '#0b2f25',
         stroke: '#f7d36a',
         'stroke-width': 2
       });
@@ -2639,7 +2639,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
         y: chipsY + 44,
         'text-anchor': 'middle',
         'font-family': 'Inter, Arial, sans-serif',
-        'font-size': 24,
+        'font-size': 20,
         'font-weight': 900,
         fill: '#f7d36a'
       });
