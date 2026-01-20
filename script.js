@@ -2557,13 +2557,13 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   const g = el('g', { id: groupId, filter: 'url(#ds)' });
   
   // LAYOUT HORIZONTAL SIMPLES
-  const startY = 700;
-  const sectionW = 240; // largura de cada seção (ASSISTÊNCIAS ou GOLS)
-  const sectionH = 140; // altura da seção
-  const chipW = 38;
-  const chipH = 55;
+  const startY = 720;
+  const sectionW = 220; // largura de cada seção (ASSISTÊNCIAS ou GOLS)
+  const sectionH = 150; // altura da seção
+  const chipW = 42;
+  const chipH = 65;
   const chipGap = 4;
-  const sectionGap = 16; // espaço entre seções
+  const sectionGap = 20; // espaço entre seções
   
   // Função para desenhar uma seção (ASSISTÊNCIAS ou GOLS)
   function drawSection(title, counts, x, y) {
@@ -2586,7 +2586,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
       y: y + 20,
       'text-anchor': 'middle',
       'font-family': 'Inter, Arial, sans-serif',
-      'font-size': 13,
+      'font-size': 14,
       'font-weight': 900,
       fill: '#0b1f16'
     });
@@ -2596,7 +2596,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
     // Chips horizontais
     const totalChipsW = positions.length * chipW + (positions.length - 1) * chipGap;
     const chipsStartX = x + (sectionW - totalChipsW) / 2;
-    const chipsY = y + 32;
+    const chipsY = y + 40;
     
     positions.forEach((p, i) => {
       const cx = chipsStartX + i * (chipW + chipGap);
@@ -2619,7 +2619,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
         y: chipsY + 16,
         'text-anchor': 'middle',
         'font-family': 'Inter, Arial, sans-serif',
-        'font-size': 10,
+        'font-size': 11,
         'font-weight': 700,
         fill: '#e7f8f1'
       });
@@ -2629,10 +2629,10 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
       // Número
       const labelCount = el('text', {
         x: cx + chipW/2,
-        y: chipsY + 38,
+        y: chipsY + 42,
         'text-anchor': 'middle',
         'font-family': 'Inter, Arial, sans-serif',
-        'font-size': 18,
+        'font-size': 20,
         'font-weight': 900,
         fill: '#f7d36a'
       });
@@ -2642,9 +2642,10 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   }
   
   // Título CEDIDOS
+  const cedidosX = (WIDTH/2 - sectionGap/2) / 2;
   const titleCedidos = el('text', {
-    x: sectionW + sectionGap/2,
-    y: startY - 10,
+    x: cedidosX,
+    y: startY - 15,
     'text-anchor': 'middle',
     'font-family': 'Inter, Arial, sans-serif',
     'font-size': 18,
@@ -2655,13 +2656,15 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   g.appendChild(titleCedidos);
   
   // CEDIDOS - ASSISTÊNCIAS
-  drawSection('ASSISTÊNCIAS', cedidosAssist, 20, startY);
+  const cedidosAssistX = cedidosX - sectionW - sectionGap/2;
+  drawSection('ASSISTÊNCIAS', cedidosAssist, cedidosAssistX, startY);
   
   // CEDIDOS - GOLS
-  drawSection('GOLS', cedidosGols, 20 + sectionW + sectionGap, startY);
+  const cedidosGolsX = cedidosX + sectionGap/2;
+  drawSection('GOLS', cedidosGols, cedidosGolsX, startY);
   
   // Linha divisória vertical
-  const dividerX = 500;
+  const dividerX = WIDTH/2;
   const divider = el('line', {
     x1: dividerX,
     y1: startY - 20,
@@ -2674,9 +2677,10 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   g.appendChild(divider);
   
   // Título CONQUISTADOS
+  const conquistadosX = dividerX + (WIDTH/2 - sectionGap/2) / 2;
   const titleConquistados = el('text', {
-    x: dividerX + sectionW + sectionGap/2,
-    y: startY - 10,
+    x: conquistadosX,
+    y: startY - 15,
     'text-anchor': 'middle',
     'font-family': 'Inter, Arial, sans-serif',
     'font-size': 18,
@@ -2687,10 +2691,12 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   g.appendChild(titleConquistados);
   
   // CONQUISTADOS - ASSISTÊNCIAS
-  drawSection('ASSISTÊNCIAS', conquistadosAssist, dividerX + 20, startY);
+  const conquistadosAssistX = conquistadosX - sectionW - sectionGap/2;
+  drawSection('ASSISTÊNCIAS', conquistadosAssist, conquistadosAssistX, startY);
   
   // CONQUISTADOS - GOLS
-  drawSection('GOLS', conquistadosGols, dividerX + 20 + sectionW + sectionGap, startY);
+  const conquistadosGolsX = conquistadosX + sectionGap/2;
+  drawSection('GOLS', conquistadosGols, conquistadosGolsX, startY);
 
   overlayEl.appendChild(g);
 }
