@@ -26,7 +26,7 @@ const offensiveLayerRx = document.getElementById('offensiveLayerRx');
 
 // Dimensões do canvas (viewBox) e do campo desenhado
 const WIDTH = 1000;
-const HEIGHT = 900; // aumentado de 660 para 900 para criar espaço para o rodapé
+const HEIGHT = 950; // aumentado de 660 para 900 para criar espaço para o rodapé
 // Área útil do campo (retângulo interno das linhas):
 const PITCH = {
   unitsX: 100,   // largura lógica
@@ -2557,7 +2557,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   const g = el('g', { id: groupId, filter: 'url(#ds)' });
   
   // LAYOUT HORIZONTAL SIMPLES
-  const startY = 680;
+  const startY = 670;
   const sectionW = 220; // largura de cada seção (ASSISTÊNCIAS ou GOLS)
   const sectionH = 120; // altura da seção
   const chipW = 38;
@@ -2609,8 +2609,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
         rx: 6,
         ry: 6,
         fill: '#0b2f25',
-        stroke: '#f7d36a',
-        'stroke-width': 2
+      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
       });
       g.appendChild(chip);
       
