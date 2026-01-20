@@ -70,10 +70,13 @@
           <svg id="pitch" viewBox="0 0 1000 950" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;display:block">
         <!-- gramado com listras -->
         <rect x="0" y="0" width="1000" height="950" fill="#155c44" />
-        <rect x="0"   y="0" width="125" height="950" fill="#13553f"/>
-        <rect x="250" y="0" width="125" height="950" fill="#13553f"/>
-        <rect x="500" y="0" width="125" height="950" fill="#13553f"/>
-        <rect x="750" y="0" width="125" height="950" fill="#13553f"/>
+        <clipPath id="fieldClip"><rect x="60" y="30" width="880" height="540" /></clipPath>
+        <g clip-path="url(#fieldClip)">
+          <rect x="60"  y="30" width="110" height="540" fill="#13553f"/>
+          <rect x="280" y="30" width="110" height="540" fill="#13553f"/>
+          <rect x="500" y="30" width="110" height="540" fill="#13553f"/>
+          <rect x="720" y="30" width="110" height="540" fill="#13553f"/>
+        </g>
 
         <!-- linhas do campo (sem meio-campo e sem círculo central) -->
         <g stroke="#f7fff9" stroke-opacity="0.70" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -136,10 +139,13 @@
           <button id="downloadField1x" class="download-btn" title="Baixar imagem" style="position:absolute;right:8px;top:8px;opacity:0.35;z-index:10">⤓</button>
           <svg id="pitchLx" viewBox="0 0 1000 950" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;display:block">
             <rect x="0" y="0" width="1000" height="950" fill="#155c44" />
-            <rect x="0"   y="0" width="125" height="950" fill="#13553f"/>
-            <rect x="250" y="0" width="125" height="950" fill="#13553f"/>
-            <rect x="500" y="0" width="125" height="950" fill="#13553f"/>
-            <rect x="750" y="0" width="125" height="950" fill="#13553f"/>
+            <clipPath id="fieldClipX"><rect x="60" y="30" width="880" height="540" /></clipPath>
+            <g clip-path="url(#fieldClipX)">
+              <rect x="60"  y="30" width="110" height="540" fill="#13553f"/>
+              <rect x="280" y="30" width="110" height="540" fill="#13553f"/>
+              <rect x="500" y="30" width="110" height="540" fill="#13553f"/>
+              <rect x="720" y="30" width="110" height="540" fill="#13553f"/>
+            </g>
             <g stroke="#f7fff9" stroke-opacity="0.70" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <rect x="60" y="30" width="880" height="540" rx="12" ry="12" />
               <rect x="60" y="120" width="150" height="360" />
@@ -180,10 +186,13 @@
           <svg id="pitch2" viewBox="0 0 1000 950" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;display:block">
         <!-- gramado com listras -->
         <rect x="0" y="0" width="1000" height="950" fill="#155c44" />
-        <rect x="0"   y="0" width="125" height="950" fill="#13553f"/>
-        <rect x="250" y="0" width="125" height="950" fill="#13553f"/>
-        <rect x="500" y="0" width="125" height="950" fill="#13553f"/>
-        <rect x="750" y="0" width="125" height="950" fill="#13553f"/>
+        <clipPath id="fieldClip"><rect x="60" y="30" width="880" height="540" /></clipPath>
+        <g clip-path="url(#fieldClip)">
+          <rect x="60"  y="30" width="110" height="540" fill="#13553f"/>
+          <rect x="280" y="30" width="110" height="540" fill="#13553f"/>
+          <rect x="500" y="30" width="110" height="540" fill="#13553f"/>
+          <rect x="720" y="30" width="110" height="540" fill="#13553f"/>
+        </g>
 
         <!-- linhas do campo (sem meio-campo e sem círculo central) -->
         <g stroke="#f7fff9" stroke-opacity="0.70" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -231,10 +240,13 @@
           <button id="downloadField2x" class="download-btn" title="Baixar imagem" style="position:absolute;right:8px;top:8px;opacity:0.35;z-index:10">⤓</button>
           <svg id="pitchRx" viewBox="0 0 1000 950" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;display:block">
             <rect x="0" y="0" width="1000" height="950" fill="#155c44" />
-            <rect x="0"   y="0" width="125" height="950" fill="#13553f"/>
-            <rect x="250" y="0" width="125" height="950" fill="#13553f"/>
-            <rect x="500" y="0" width="125" height="950" fill="#13553f"/>
-            <rect x="750" y="0" width="125" height="950" fill="#13553f"/>
+            <clipPath id="fieldClipX"><rect x="60" y="30" width="880" height="540" /></clipPath>
+            <g clip-path="url(#fieldClipX)">
+              <rect x="60"  y="30" width="110" height="540" fill="#13553f"/>
+              <rect x="280" y="30" width="110" height="540" fill="#13553f"/>
+              <rect x="500" y="30" width="110" height="540" fill="#13553f"/>
+              <rect x="720" y="30" width="110" height="540" fill="#13553f"/>
+            </g>
             <g stroke="#f7fff9" stroke-opacity="0.70" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <rect x="60" y="30" width="880" height="540" rx="12" ry="12" />
               <rect x="60" y="120" width="150" height="360" />

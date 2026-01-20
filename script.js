@@ -2559,7 +2559,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   // LAYOUT HORIZONTAL SIMPLES
   const startY = 720;
   const sectionW = 220; // largura de cada seção (ASSISTÊNCIAS ou GOLS)
-  const sectionH = 150; // altura da seção
+  const sectionH = 120; // altura da seção
   const chipW = 42;
   const chipH = 65;
   const chipGap = 4;
@@ -2583,7 +2583,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
     // Título
     const titleEl = el('text', {
       x: x + sectionW/2,
-      y: y + 20,
+      y: y + 28,
       'text-anchor': 'middle',
       'font-family': 'Inter, Arial, sans-serif',
       'font-size': 14,
@@ -2596,7 +2596,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
     // Chips horizontais
     const totalChipsW = positions.length * chipW + (positions.length - 1) * chipGap;
     const chipsStartX = x + (sectionW - totalChipsW) / 2;
-    const chipsY = y + 40;
+    const chipsY = y + 42;
     
     positions.forEach((p, i) => {
       const cx = chipsStartX + i * (chipW + chipGap);
