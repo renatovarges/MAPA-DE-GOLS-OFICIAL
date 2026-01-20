@@ -2623,6 +2623,7 @@ function drawPositionSummaryLegend(data, overlayEl, groupId) {
   }
   
   // Calcular posições centralizadas
+  const WIDTH = 1000; // Largura do viewBox
   const centerX = WIDTH / 2;
   const totalWidth = (blockWidth * 4) + (blockGap * 3); // 4 blocos + 3 gaps
   const leftStart = centerX - totalWidth / 2;
