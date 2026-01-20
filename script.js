@@ -2650,7 +2650,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   
   // Título principal CEDIDOS
   const titleCedidos = el('text', {
-    x: centerX / 2,
+    x: centerX / 4,
     y: panelY + 18,
     'text-anchor': 'middle',
     'font-family': 'Inter, Arial, sans-serif',
@@ -2661,12 +2661,12 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   titleCedidos.textContent = 'CEDIDOS';
   g.appendChild(titleCedidos);
   
-  // CEDIDOS - Bloco ASSISTÊNCIAS
-  const cedidosAssistX = (centerX / 2) - blockW - blockGap/2;
+  // CEDIDOS - Bloco ASSISTÊNCIAS (lado esquerdo)
+  const cedidosAssistX = 30; // margem esquerda
   drawBlock('ASSISTÊNCIAS', cedidosAssist, cedidosAssistX, panelY + 28);
   
-  // CEDIDOS - Bloco GOLS
-  const cedidosGolsX = (centerX / 2) + blockGap/2;
+  // CEDIDOS - Bloco GOLS (ao lado de ASSISTÊNCIAS)
+  const cedidosGolsX = cedidosAssistX + blockW + blockGap;
   drawBlock('GOLS', cedidosGols, cedidosGolsX, panelY + 28);
   
   // Linha divisória vertical central
@@ -2683,7 +2683,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   
   // Título principal CONQUISTADOS
   const titleConquistados = el('text', {
-    x: centerX + centerX / 2,
+    x: centerX + centerX / 4,
     y: panelY + 18,
     'text-anchor': 'middle',
     'font-family': 'Inter, Arial, sans-serif',
@@ -2694,12 +2694,12 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   titleConquistados.textContent = 'CONQUISTADOS';
   g.appendChild(titleConquistados);
   
-  // CONQUISTADOS - Bloco ASSISTÊNCIAS
-  const conquistadosAssistX = centerX + (centerX / 2) - blockW - blockGap/2;
+  // CONQUISTADOS - Bloco ASSISTÊNCIAS (depois da linha divisória)
+  const conquistadosAssistX = centerX + 30; // margem após divisória
   drawBlock('ASSISTÊNCIAS', conquistadosAssist, conquistadosAssistX, panelY + 28);
   
-  // CONQUISTADOS - Bloco GOLS
-  const conquistadosGolsX = centerX + (centerX / 2) + blockGap/2;
+  // CONQUISTADOS - Bloco GOLS (ao lado de ASSISTÊNCIAS)
+  const conquistadosGolsX = conquistadosAssistX + blockW + blockGap;
   drawBlock('GOLS', conquistadosGols, conquistadosGolsX, panelY + 28);
 
   overlayEl.appendChild(g);
