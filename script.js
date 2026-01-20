@@ -982,8 +982,8 @@ function drawLegend(layer) {
     y: legendY + 20,
     'text-anchor': 'middle',
     'font-family': 'Inter, Arial, sans-serif',
-    'font-size': 16,
-    'font-weight': 700,
+      'font-size': 20,
+      'font-weight': 700,
     fill: '#ffffff',
   });
   legendTitle.textContent = 'LEGENDA';
@@ -1028,7 +1028,7 @@ function drawLegend(layer) {
       'text-anchor': 'start',
       'dominant-baseline': 'middle',
       'font-family': 'Inter, Arial, sans-serif',
-      'font-size': 12,
+      'font-size': 15,
       'font-weight': 600,
       fill: '#ffffff',
     });
@@ -2557,9 +2557,9 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   const g = el('g', { id: groupId, filter: 'url(#ds)' });
   
   // LAYOUT HORIZONTAL SIMPLES
-  const startY = 670;
-  const sectionW = 220; // largura de cada seção (ASSISTÊNCIAS ou GOLS)
-  const sectionH = 120; // altura da seção
+  const startY = 700;
+  const sectionW = 240; // largura de cada seção (ASSISTÊNCIAS ou GOLS)
+  const sectionH = 140; // altura da seção
   const chipW = 38;
   const chipH = 55;
   const chipGap = 4;
