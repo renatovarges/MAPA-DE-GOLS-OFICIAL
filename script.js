@@ -2556,24 +2556,24 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   // Cada lado tem: ASSISTÊNCIAS | GOLS
   // Cada seção tem 5 chips: ZAG, LE, LD, MEI, ATA
   
-  const panelH = 110;
-  const panelY = HEIGHT - (panelH + 8);
+  const panelH = 140; // aumentado de 110 para 140
+  const panelY = HEIGHT - (panelH + 20); // mais espaço abaixo do campo
   const centerX = WIDTH / 2;
-  const sectionW = 260; // largura de cada seção (Assistências ou Gols)
-  const sectionGap = 20; // espaço entre Assistências e Gols
+  const sectionW = 340; // aumentado de 260 para 340 (mais largura)
+  const sectionGap = 30; // aumentado de 20 para 30 (mais espaço entre seções)
   
   const abbr = { Meia: 'MEI', Atacante: 'ATA', 'Lateral D': 'LD', 'Lateral E': 'LE', Zagueiro: 'ZAG' };
-  const chipW = 46, chipH = 32, chipGap = 6;
+  const chipW = 60, chipH = 42, chipGap = 10; // aumentado: 46→60, 32→42, 6→10
   
   // Função auxiliar para desenhar uma seção (Assistências ou Gols)
   function drawSection(title, counts, startX, startY) {
     // Título da seção
     const titleEl = el('text', { 
       x: startX + sectionW/2, 
-      y: startY + 20, 
+      y: startY + 24, 
       'text-anchor': 'middle', 
       'font-family': 'Inter, Arial, sans-serif', 
-      'font-size': 16, 
+      'font-size': 18, 
       'font-weight': 900, 
       fill: '#e7f8f1' 
     });
@@ -2585,7 +2585,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
     const chipsStartX = startX + (sectionW - chipsTotal) / 2;
     positions.forEach((p, i) => {
       const cx = chipsStartX + i * (chipW + chipGap);
-      const cy = startY + 34;
+      const cy = startY + 42;
       const chip = el('rect', { 
         x: cx, 
         y: cy, 
@@ -2603,11 +2603,11 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
       // Abreviação da posição (linha 1)
       const labelPos = el('text', { 
         x: cx + chipW/2, 
-        y: cy + chipH/2 - 4, 
+        y: cy + chipH/2 - 6, 
         'text-anchor': 'middle', 
         'dominant-baseline': 'middle', 
         'font-family': 'Inter, Arial, sans-serif', 
-        'font-size': 11, 
+        'font-size': 13, 
         'font-weight': 700, 
         fill: '#e7f8f1'
       });
@@ -2617,11 +2617,11 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
       // Número (linha 2)
       const labelCount = el('text', { 
         x: cx + chipW/2, 
-        y: cy + chipH/2 + 8, 
+        y: cy + chipH/2 + 10, 
         'text-anchor': 'middle', 
         'dominant-baseline': 'middle', 
         'font-family': 'Inter, Arial, sans-serif', 
-        'font-size': 14, 
+        'font-size': 16, 
         'font-weight': 900, 
         fill: '#f7d36a' 
       });
@@ -2633,10 +2633,10 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   // Título principal CEDIDOS (centralizado no lado esquerdo)
   const titleCedidos = el('text', { 
     x: centerX / 2, 
-    y: panelY + 20, 
+    y: panelY + 24, 
     'text-anchor': 'middle', 
     'font-family': 'Inter, Arial, sans-serif', 
-    'font-size': 20, 
+    'font-size': 22, 
     'font-weight': 900, 
     fill: '#e7f8f1' 
   });
@@ -2644,12 +2644,12 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   g.appendChild(titleCedidos);
   
   // CEDIDOS - Assistências (esquerda)
-  const cedidosAssistX = 20;
-  drawSection('ASSISTÊNCIAS', cedidosAssist, cedidosAssistX, panelY + 28);
+  const cedidosAssistX = 30;
+  drawSection('ASSISTÊNCIAS', cedidosAssist, cedidosAssistX, panelY + 32);
   
   // CEDIDOS - Gols (direita do CEDIDOS)
   const cedidosGolsX = cedidosAssistX + sectionW + sectionGap;
-  drawSection('GOLS', cedidosGols, cedidosGolsX, panelY + 28);
+  drawSection('GOLS', cedidosGols, cedidosGolsX, panelY + 32);
   
   // Linha divisória vertical central
   const divider = el('line', {
@@ -2666,10 +2666,10 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   // Título principal CONQUISTADOS (centralizado no lado direito)
   const titleConquistados = el('text', { 
     x: centerX + centerX / 2, 
-    y: panelY + 20, 
+    y: panelY + 24, 
     'text-anchor': 'middle', 
     'font-family': 'Inter, Arial, sans-serif', 
-    'font-size': 20, 
+    'font-size': 22, 
     'font-weight': 900, 
     fill: '#e7f8f1' 
   });
@@ -2677,12 +2677,12 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   g.appendChild(titleConquistados);
   
   // CONQUISTADOS - Assistências (esquerda do CONQUISTADOS)
-  const conquistadosAssistX = centerX + 20;
-  drawSection('ASSISTÊNCIAS', conquistadosAssist, conquistadosAssistX, panelY + 28);
+  const conquistadosAssistX = centerX + 30;
+  drawSection('ASSISTÊNCIAS', conquistadosAssist, conquistadosAssistX, panelY + 32);
   
   // CONQUISTADOS - Gols (direita do CONQUISTADOS)
   const conquistadosGolsX = conquistadosAssistX + sectionW + sectionGap;
-  drawSection('GOLS', conquistadosGols, conquistadosGolsX, panelY + 28);
+  drawSection('GOLS', conquistadosGols, conquistadosGolsX, panelY + 32);
 
   overlayEl.appendChild(g);
 }
