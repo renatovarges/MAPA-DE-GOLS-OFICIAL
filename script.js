@@ -26,7 +26,7 @@ const offensiveLayerRx = document.getElementById('offensiveLayerRx');
 
 // Dimensões do canvas (viewBox) e do campo desenhado
 const WIDTH = 1000;
-const HEIGHT = 950; // aumentado de 660 para 900 para criar espaço para o rodapé
+const HEIGHT = 800; // aumentado de 660 para 900 para criar espaço para o rodapé
 // Área útil do campo (retângulo interno das linhas):
 const PITCH = {
   unitsX: 100,   // largura lógica
@@ -2557,11 +2557,11 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   const g = el('g', { id: groupId, filter: 'url(#ds)' });
   
   // LAYOUT HORIZONTAL SIMPLES
-  const startY = 720;
-  const sectionW = 220; // largura de cada seção (ASSISTÊNCIAS ou GOLS)
-  const sectionH = 120; // altura da seção
-  const chipW = 42;
-  const chipH = 65;
+  const startY = 600;
+  const sectionW = 240; // largura de cada seção (ASSISTÊNCIAS ou GOLS)
+  const sectionH = 140; // altura da seção
+  const chipW = 48;
+  const chipH = 75;
   const chipGap = 4;
   const sectionGap = 20; // espaço entre seções
   
@@ -2586,7 +2586,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
       y: y + 28,
       'text-anchor': 'middle',
       'font-family': 'Inter, Arial, sans-serif',
-      'font-size': 14,
+      'font-size': 16,
       'font-weight': 900,
       fill: '#0b1f16'
     });
@@ -2619,7 +2619,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
         y: chipsY + 16,
         'text-anchor': 'middle',
         'font-family': 'Inter, Arial, sans-serif',
-        'font-size': 11,
+        'font-size': 12,
         'font-weight': 700,
         fill: '#e7f8f1'
       });
@@ -2632,7 +2632,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
         y: chipsY + 42,
         'text-anchor': 'middle',
         'font-family': 'Inter, Arial, sans-serif',
-        'font-size': 20,
+        'font-size': 24,
         'font-weight': 900,
         fill: '#f7d36a'
       });
@@ -2648,7 +2648,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
     y: startY - 15,
     'text-anchor': 'middle',
     'font-family': 'Inter, Arial, sans-serif',
-    'font-size': 18,
+    'font-size': 22,
     'font-weight': 900,
     fill: '#e7f8f1'
   });
@@ -2683,7 +2683,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
     y: startY - 15,
     'text-anchor': 'middle',
     'font-family': 'Inter, Arial, sans-serif',
-    'font-size': 18,
+    'font-size': 22,
     'font-weight': 900,
     fill: '#e7f8f1'
   });
