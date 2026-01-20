@@ -26,7 +26,7 @@ const offensiveLayerRx = document.getElementById('offensiveLayerRx');
 
 // Dimensões do canvas (viewBox) e do campo desenhado
 const WIDTH = 1000;
-const HEIGHT = 660;
+const HEIGHT = 900; // aumentado de 660 para 900 para criar espaço para o rodapé
 // Área útil do campo (retângulo interno das linhas):
 const PITCH = {
   unitsX: 100,   // largura lógica
@@ -2555,8 +2555,8 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   const g = el('g', { id: groupId, filter: 'url(#ds)' });
   
   // NOVO LAYOUT: Blocos grandes com fundo claro
-  const panelH = 200; // aumentado para 200
-  const panelY = HEIGHT + 40; // movido para ABAIXO do campo
+  const panelH = 200;
+  const panelY = 680; // posicionado abaixo do campo (campo termina em ~660)
   const centerX = WIDTH / 2;
   
   const abbr = { Meia: 'MEI', Atacante: 'ATA', 'Lateral D': 'LD', 'Lateral E': 'LE', Zagueiro: 'ZAG' };
