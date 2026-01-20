@@ -43,21 +43,21 @@ const CREST_MAP = {
   atletico_mg: 'atlético mg.png',
   bahia: 'bahia.png',
   botafogo: 'botafogo.png',
-  athletico_pr: 'athletico-pr.png',
+  ceara: 'ceará.png',
   corinthians: 'corinthians.png',
   cruzeiro: 'cruzeiro.png',
   flamengo: 'flamengo.png',
   fluminense: 'fluminense.png',
-  chapecoense: 'chapecoense.png',
+  fortaleza: 'fortaleza.png',
   gremio: 'gremio.png',
   internacional: 'internacional.png',
-  coritiba: 'coritiba.png',
+  juventude: 'juventude.png',
   mirassol: 'mirassol.png',
   palmeiras: 'palmeiras.png',
   bragantino: 'red bull bragantino.png',
   red_bull_bragantino: 'red bull bragantino.png',
   santos: 'santos.png',
-  remo: 'remo.png',
+  sport: 'sport.png',
   sao_paulo: 'são paulo.png',
   vasco: 'vasco.png',
   vitoria: 'vitória.png',
@@ -68,21 +68,21 @@ const DISPLAY_NAME_MAP = {
   atletico_mg: 'Atlético-MG',
   bahia: 'Bahia',
   botafogo: 'Botafogo',
-  athletico_pr: 'Athletico-PR',
+  ceara: 'Ceará',
   corinthians: 'Corinthians',
   cruzeiro: 'Cruzeiro',
   flamengo: 'Flamengo',
   fluminense: 'Fluminense',
-  chapecoense: 'Chapecoense',
+  fortaleza: 'Fortaleza',
   gremio: 'Grêmio',
   internacional: 'Internacional',
-  coritiba: 'Coritiba',
+  juventude: 'Juventude',
   mirassol: 'Mirassol',
   palmeiras: 'Palmeiras',
   bragantino: 'Red Bull Bragantino',
   red_bull_bragantino: 'Red Bull Bragantino',
   santos: 'Santos',
-  remo: 'Remo',
+  sport: 'Sport',
   sao_paulo: 'São Paulo',
   vasco: 'Vasco',
   vitoria: 'Vitória',
@@ -477,10 +477,10 @@ async function loadTeamData(teamKey = 'cruzeiro', { showCrest = true } = {}) {
   const overlayEl = document.getElementById('overlay');
   // Título superior escondido no DOM, visível apenas na exportação
   drawCxTitle(overlayEl, 'cxTitleLeft');
-  drawPositionSummaryLegend(overlayEl, allEvents, 'positionSummaryLeft');
+  drawPositionSummaryLegend(overlayEl, data.conceded || [], data.created || [], 'positionSummaryLeft');
 }
 
-async function loadTeamData2(teamKey = 'palmeiras', { showCrest = true } = {}) {
+async function loadTeamData2(teamKey = 'fortaleza', { showCrest = true } = {}) {
   currentTeamRight = teamKey;
   try { window.currentTeamRight = teamKey; } catch (e) {}
   const mode = (window.__aggregationSettings && window.__aggregationSettings.mode) ? String(window.__aggregationSettings.mode) : 'seguidas';
@@ -499,7 +499,7 @@ async function loadTeamData2(teamKey = 'palmeiras', { showCrest = true } = {}) {
   const overlayEl2 = document.getElementById('overlay2');
   // Título superior escondido no DOM, visível apenas na exportação
   drawCxTitle(overlayEl2, 'cxTitleRight');
-  drawPositionSummaryLegend(overlayEl2, allEvents, 'positionSummaryRight');
+  drawPositionSummaryLegend(overlayEl2, data.conceded || [], data.created || [], 'positionSummaryRight');
 }
 async function loadTeamDataLeftExtra(teamKey = 'cruzeiro') {
   currentTeamLeftExtra = teamKey;
@@ -515,7 +515,7 @@ async function loadTeamDataLeftExtra(teamKey = 'cruzeiro') {
   const lbl = document.getElementById('homeTeamNameLx');
   if (lbl) lbl.textContent = ` — ${(data.name || formatTeamName(teamKey)).toUpperCase()}`;
 }
-async function loadTeamDataRightExtra(teamKey = 'palmeiras') {
+async function loadTeamDataRightExtra(teamKey = 'fortaleza') {
   currentTeamRightExtra = teamKey;
   try { window.currentTeamRightExtra = teamKey; } catch (e) {}
   const mode = (window.__aggregationSettings && window.__aggregationSettings.mode) ? String(window.__aggregationSettings.mode) : 'seguidas';
@@ -1350,19 +1350,19 @@ function initEditor() {
     { key: 'atletico-mg', name: 'Atlético MG' },
     { key: 'bahia', name: 'Bahia' },
     { key: 'botafogo', name: 'Botafogo' },
-    { key: 'athletico-pr', name: 'Athletico-PR' },
+    { key: 'ceara', name: 'Ceará' },
     { key: 'corinthians', name: 'Corinthians' },
     { key: 'cruzeiro', name: 'Cruzeiro' },
     { key: 'flamengo', name: 'Flamengo' },
     { key: 'fluminense', name: 'Fluminense' },
-    { key: 'chapecoense', name: 'Chapecoense' },
+    { key: 'fortaleza', name: 'Fortaleza' },
     { key: 'gremio', name: 'Grêmio' },
     { key: 'internacional', name: 'Internacional' },
-    { key: 'coritiba', name: 'Coritiba' },
+    { key: 'juventude', name: 'Juventude' },
     { key: 'mirassol', name: 'Mirassol' },
     { key: 'red-bull-bragantino', name: 'Red Bull Bragantino' },
     { key: 'santos', name: 'Santos' },
-    { key: 'remo', name: 'Remo' },
+    { key: 'sport', name: 'Sport' },
     { key: 'sao-paulo', name: 'São Paulo' },
     { key: 'vasco', name: 'Vasco' },
     { key: 'vitoria', name: 'Vitória' },
@@ -1658,15 +1658,82 @@ function initEditor() {
   // Botão para adicionar eventos de teste rapidamente
   if (addTestGoalsBtn) {
     addTestGoalsBtn.addEventListener('click', () => {
-      // Evento de gol normal próximo à marca do pênalti direita
-      const ev1 = { assistPt: null, shotPt: { x: 839.17, y: 300 }, assistEl: null, shotEl: null, traceEl: null, assistPlayer: null, shotPlayer: null, isOwnGoal: false, ownGoalSide: null };
+      // Criar jogadores fictícios com diferentes posições
+      const fictitiousPlayers = [
+        { name: 'Zagueiro Teste', position: 'Zagueiro', side: null },
+        { name: 'Lateral E Teste', position: 'Lateral', side: 'LE' },
+        { name: 'Lateral D Teste', position: 'Lateral', side: 'LD' },
+        { name: 'Meia Teste', position: 'Meia', side: null },
+        { name: 'Atacante Teste', position: 'Atacante', side: null }
+      ];
+      
+      // Evento 1: Gol de Atacante com assistência de Meia (lado direito - ofensivo)
+      const ev1 = { 
+        assistPt: { x: 700, y: 250 }, 
+        shotPt: { x: 839.17, y: 300 }, 
+        assistEl: null, 
+        shotEl: null, 
+        traceEl: null, 
+        assistPlayer: fictitiousPlayers[3], // Meia
+        shotPlayer: fictitiousPlayers[4], // Atacante
+        isOwnGoal: false, 
+        ownGoalSide: null 
+      };
+      ev1.assistEl = drawAssistMarker(ev1.assistPt);
       ev1.shotEl = drawShotEmoji(ev1.shotPt);
+      if (traceCheck && traceCheck.checked) {
+        ev1.traceEl = drawTrace(ev1.assistPt, ev1.shotPt);
+      }
       state.roundEvents.push(ev1);
 
-      // Evento de gol contra do mandante (lado esquerdo)
-      const ev2 = { assistPt: null, shotPt: { x: 160.83, y: 300 }, assistEl: null, shotEl: null, traceEl: null, assistPlayer: null, shotPlayer: null, isOwnGoal: true, ownGoalSide: 'mandante' };
+      // Evento 2: Gol contra do mandante (lado esquerdo)
+      const ev2 = { 
+        assistPt: null, 
+        shotPt: { x: 160.83, y: 300 }, 
+        assistEl: null, 
+        shotEl: null, 
+        traceEl: null, 
+        assistPlayer: null, 
+        shotPlayer: null, 
+        isOwnGoal: true, 
+        ownGoalSide: 'mandante' 
+      };
       ev2.shotEl = drawShotEmoji(ev2.shotPt);
       state.roundEvents.push(ev2);
+      
+      // Evento 3: Gol de Lateral D com assistência de Zagueiro (lado direito - ofensivo)
+      const ev3 = { 
+        assistPt: { x: 650, y: 450 }, 
+        shotPt: { x: 800, y: 400 }, 
+        assistEl: null, 
+        shotEl: null, 
+        traceEl: null, 
+        assistPlayer: fictitiousPlayers[0], // Zagueiro
+        shotPlayer: fictitiousPlayers[2], // Lateral D
+        isOwnGoal: false, 
+        ownGoalSide: null 
+      };
+      ev3.assistEl = drawAssistMarker(ev3.assistPt);
+      ev3.shotEl = drawShotEmoji(ev3.shotPt);
+      if (traceCheck && traceCheck.checked) {
+        ev3.traceEl = drawTrace(ev3.assistPt, ev3.shotPt);
+      }
+      state.roundEvents.push(ev3);
+      
+      // Evento 4: Gol de Meia sem assistência (lado direito - ofensivo)
+      const ev4 = { 
+        assistPt: null, 
+        shotPt: { x: 750, y: 200 }, 
+        assistEl: null, 
+        shotEl: null, 
+        traceEl: null, 
+        assistPlayer: null, 
+        shotPlayer: fictitiousPlayers[3], // Meia
+        isOwnGoal: false, 
+        ownGoalSide: null 
+      };
+      ev4.shotEl = drawShotEmoji(ev4.shotPt);
+      state.roundEvents.push(ev4);
 
       updateList();
     });
@@ -2177,19 +2244,19 @@ function mapClubToTeamKey(clubCode) {
     'CAM': 'atletico-mg',
     'BAH': 'bahia', 
     'BOT': 'botafogo',
-    'CAP': 'athletico_pr',
+    'CEA': 'ceara',
     'COR': 'corinthians',
     'CRU': 'cruzeiro',
     'FLA': 'flamengo',
     'FLU': 'fluminense', 
-    'CHA': 'chapecoense',
+    'FOR': 'fortaleza',
     'GRE': 'gremio',
     'INT': 'internacional',
-    'CFC': 'coritiba',
+    'JUV': 'juventude',
     'MIR': 'mirassol',
     'RBB': 'red-bull-bragantino',
     'SAN': 'santos',
-    'REM': 'remo',
+    'SPT': 'sport',
     'SAO': 'sao-paulo',
     'VAS': 'vasco',
     'VIT': 'vitoria',
@@ -2415,26 +2482,30 @@ function showPlayerTooltip(event, eventData) {
   setTimeout(() => { document.addEventListener('click', onDocClick); }, 100);
 }
 
-// Legenda compacta de participações em gols por posição (incluída no PNG)
-function drawPositionSummaryLegend(overlayEl, events, groupId = 'positionSummary') {
+// Legenda compacta de participações em gols por posição separando CEDIDOS e CONQUISTADOS (incluída no PNG)
+function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, groupId = 'positionSummary') {
   if (!overlayEl) return;
   const existing = overlayEl.querySelector(`#${groupId}`);
   if (existing) existing.remove();
 
-  // Não inferimos mais LD/LE: usamos somente o lado selecionado no Editor
-
-  const positions = ['Meia', 'Atacante', 'Lateral D', 'Lateral E', 'Zagueiro']; // sem goleiro
-  const countsAssist = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
-  const countsShot = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
-  for (const ev of (events || [])) {
+  const positions = ['Zagueiro', 'Lateral E', 'Lateral D', 'Meia', 'Atacante']; // ordem: ZAG, LE, LD, MEI, ATA
+  
+  // Contadores separados para CEDIDOS e CONQUISTADOS
+  const cedidosAssist = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
+  const cedidosGols = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
+  const conquistadosAssist = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
+  const conquistadosGols = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
+  
+  // Processar eventos CEDIDOS (defesa/esquerda)
+  for (const ev of (concededEvents || [])) {
     if (ev && ev.assistPlayer) {
       const p = ev.assistPlayer.position;
       if (p === 'Lateral') {
         const side = ev.assistPlayer.side;
         const key = side === 'LD' ? 'Lateral D' : (side === 'LE' ? 'Lateral E' : null);
-        if (key) countsAssist[key] += 1;
+        if (key) cedidosAssist[key] += 1;
       } else if (positions.includes(p)) {
-        countsAssist[p] += 1;
+        cedidosAssist[p] += 1;
       }
     }
     if (ev && ev.shotPlayer) {
@@ -2442,53 +2513,176 @@ function drawPositionSummaryLegend(overlayEl, events, groupId = 'positionSummary
       if (p === 'Lateral') {
         const side = ev.shotPlayer.side;
         const key = side === 'LD' ? 'Lateral D' : (side === 'LE' ? 'Lateral E' : null);
-        if (key) countsShot[key] += 1;
+        if (key) cedidosGols[key] += 1;
       } else if (positions.includes(p)) {
-        countsShot[p] += 1;
+        cedidosGols[p] += 1;
       }
     }
   }
-  const total = Object.values(countsAssist).reduce((a,b)=>a+b,0) + Object.values(countsShot).reduce((a,b)=>a+b,0);
-  if (total === 0) return;
+  
+  // Processar eventos CONQUISTADOS (ataque/direita)
+  for (const ev of (createdEvents || [])) {
+    if (ev && ev.assistPlayer) {
+      const p = ev.assistPlayer.position;
+      if (p === 'Lateral') {
+        const side = ev.assistPlayer.side;
+        const key = side === 'LD' ? 'Lateral D' : (side === 'LE' ? 'Lateral E' : null);
+        if (key) conquistadosAssist[key] += 1;
+      } else if (positions.includes(p)) {
+        conquistadosAssist[p] += 1;
+      }
+    }
+    if (ev && ev.shotPlayer) {
+      const p = ev.shotPlayer.position;
+      if (p === 'Lateral') {
+        const side = ev.shotPlayer.side;
+        const key = side === 'LD' ? 'Lateral D' : (side === 'LE' ? 'Lateral E' : null);
+        if (key) conquistadosGols[key] += 1;
+      } else if (positions.includes(p)) {
+        conquistadosGols[p] += 1;
+      }
+    }
+  }
+  
+  // Verificar se há dados para exibir
+  const totalCedidos = Object.values(cedidosAssist).reduce((a,b)=>a+b,0) + Object.values(cedidosGols).reduce((a,b)=>a+b,0);
+  const totalConquistados = Object.values(conquistadosAssist).reduce((a,b)=>a+b,0) + Object.values(conquistadosGols).reduce((a,b)=>a+b,0);
+  if (totalCedidos === 0 && totalConquistados === 0) return;
 
   const g = el('g', { id: groupId, filter: 'url(#ds)' });
-  // Baixar os painéis e garantir que a borda não seja cortada
-  const panelH = 72;         // altura ampliada
-  const panelY = HEIGHT - (panelH + 8); // margem inferior de 8px (y=580, fim=652)
-  const leftX = 36, rightX = 520, panelW = 444;
-
-  // Assistências — sem caixa externa, apenas título e chips
-  const titleA = el('text', { x: leftX + panelW/2, y: panelY + 26, 'text-anchor': 'middle', 'font-family': 'Inter, Arial, sans-serif', 'font-size': 18, 'font-weight': 900, fill: '#e7f8f1' });
-  titleA.textContent = 'ASSISTÊNCIAS';
-  g.appendChild(titleA);
-  const abbr = { Meia: 'MEI', Atacante: 'ATA', 'Lateral D': 'LAT D', 'Lateral E': 'LAT E', Zagueiro: 'ZAG' };
-  const chipW = 80, chipH = 28, chipGap = 8; // reduzir largura para caber 5 chips
-  const chipsTotal = positions.length * chipW + (positions.length - 1) * chipGap;
-  const chipsStartLeft = leftX + Math.max(0, (panelW - chipsTotal) / 2);
-  positions.forEach((p, i) => {
-    const cx = chipsStartLeft + i * (chipW + chipGap);
-    const cy = panelY + 44; // mais espaço entre título e chips
-    const chip = el('rect', { x: cx, y: cy, width: chipW, height: chipH, rx: 8, ry: 8, fill: 'rgba(11,31,22,0.30)', stroke: '#e7f8f1', 'stroke-opacity': 0.35, 'stroke-width': 1 });
-    g.appendChild(chip);
-    const label = el('text', { x: cx + chipW/2, y: cy + chipH/2, 'text-anchor': 'middle', 'dominant-baseline': 'middle', 'font-family': 'Inter, Arial, sans-serif', 'font-size': 14, 'font-weight': 900, fill: '#e7f8f1', 'xml:space': 'preserve' });
-    label.textContent = `${abbr[p]} ${countsAssist[p] || 0}`;
-    g.appendChild(label);
+  
+  // Layout baseado no modelo fornecido:
+  // CEDIDOS (esquerda) | CONQUISTADOS (direita)
+  // Cada lado tem: ASSISTÊNCIAS | GOLS
+  // Cada seção tem 5 chips: ZAG, LE, LD, MEI, ATA
+  
+  const panelH = 110;
+  const panelY = HEIGHT - (panelH + 8);
+  const centerX = WIDTH / 2;
+  const sectionW = 260; // largura de cada seção (Assistências ou Gols)
+  const sectionGap = 20; // espaço entre Assistências e Gols
+  
+  const abbr = { Meia: 'MEI', Atacante: 'ATA', 'Lateral D': 'LD', 'Lateral E': 'LE', Zagueiro: 'ZAG' };
+  const chipW = 46, chipH = 32, chipGap = 6;
+  
+  // Função auxiliar para desenhar uma seção (Assistências ou Gols)
+  function drawSection(title, counts, startX, startY) {
+    // Título da seção
+    const titleEl = el('text', { 
+      x: startX + sectionW/2, 
+      y: startY + 20, 
+      'text-anchor': 'middle', 
+      'font-family': 'Inter, Arial, sans-serif', 
+      'font-size': 16, 
+      'font-weight': 900, 
+      fill: '#e7f8f1' 
+    });
+    titleEl.textContent = title;
+    g.appendChild(titleEl);
+    
+    // Chips de posições (ZAG, LE, LD, MEI, ATA)
+    const chipsTotal = positions.length * chipW + (positions.length - 1) * chipGap;
+    const chipsStartX = startX + (sectionW - chipsTotal) / 2;
+    positions.forEach((p, i) => {
+      const cx = chipsStartX + i * (chipW + chipGap);
+      const cy = startY + 34;
+      const chip = el('rect', { 
+        x: cx, 
+        y: cy, 
+        width: chipW, 
+        height: chipH, 
+        rx: 8, 
+        ry: 8, 
+        fill: 'rgba(11,31,22,0.50)', 
+        stroke: '#e7f8f1', 
+        'stroke-opacity': 0.5, 
+        'stroke-width': 1.5 
+      });
+      g.appendChild(chip);
+      
+      // Abreviação da posição (linha 1)
+      const labelPos = el('text', { 
+        x: cx + chipW/2, 
+        y: cy + chipH/2 - 4, 
+        'text-anchor': 'middle', 
+        'dominant-baseline': 'middle', 
+        'font-family': 'Inter, Arial, sans-serif', 
+        'font-size': 11, 
+        'font-weight': 700, 
+        fill: '#e7f8f1'
+      });
+      labelPos.textContent = abbr[p];
+      g.appendChild(labelPos);
+      
+      // Número (linha 2)
+      const labelCount = el('text', { 
+        x: cx + chipW/2, 
+        y: cy + chipH/2 + 8, 
+        'text-anchor': 'middle', 
+        'dominant-baseline': 'middle', 
+        'font-family': 'Inter, Arial, sans-serif', 
+        'font-size': 14, 
+        'font-weight': 900, 
+        fill: '#f7d36a' 
+      });
+      labelCount.textContent = counts[p] || 0;
+      g.appendChild(labelCount);
+    });
+  }
+  
+  // Título principal CEDIDOS (centralizado no lado esquerdo)
+  const titleCedidos = el('text', { 
+    x: centerX / 2, 
+    y: panelY + 20, 
+    'text-anchor': 'middle', 
+    'font-family': 'Inter, Arial, sans-serif', 
+    'font-size': 20, 
+    'font-weight': 900, 
+    fill: '#e7f8f1' 
   });
-
-  // Gols — sem caixa externa, apenas título e chips
-  const titleG = el('text', { x: rightX + panelW/2, y: panelY + 26, 'text-anchor': 'middle', 'font-family': 'Inter, Arial, sans-serif', 'font-size': 18, 'font-weight': 900, fill: '#e7f8f1' });
-  titleG.textContent = 'GOLS';
-  g.appendChild(titleG);
-  const chipsStartRight = rightX + Math.max(0, (panelW - chipsTotal) / 2);
-  positions.forEach((p, i) => {
-    const cx = chipsStartRight + i * (chipW + chipGap);
-    const cy = panelY + 44; // mais espaço entre título e chips
-    const chip = el('rect', { x: cx, y: cy, width: chipW, height: chipH, rx: 8, ry: 8, fill: 'rgba(11,31,22,0.30)', stroke: '#e7f8f1', 'stroke-opacity': 0.35, 'stroke-width': 1 });
-    g.appendChild(chip);
-    const label = el('text', { x: cx + chipW/2, y: cy + chipH/2, 'text-anchor': 'middle', 'dominant-baseline': 'middle', 'font-family': 'Inter, Arial, sans-serif', 'font-size': 14, 'font-weight': 900, fill: '#e7f8f1', 'xml:space': 'preserve' });
-    label.textContent = `${abbr[p]} ${countsShot[p] || 0}`;
-    g.appendChild(label);
+  titleCedidos.textContent = 'CEDIDOS';
+  g.appendChild(titleCedidos);
+  
+  // CEDIDOS - Assistências (esquerda)
+  const cedidosAssistX = 20;
+  drawSection('ASSISTÊNCIAS', cedidosAssist, cedidosAssistX, panelY + 28);
+  
+  // CEDIDOS - Gols (direita do CEDIDOS)
+  const cedidosGolsX = cedidosAssistX + sectionW + sectionGap;
+  drawSection('GOLS', cedidosGols, cedidosGolsX, panelY + 28);
+  
+  // Linha divisória vertical central
+  const divider = el('line', {
+    x1: centerX,
+    y1: panelY + 4,
+    x2: centerX,
+    y2: panelY + panelH - 4,
+    stroke: '#e7f8f1',
+    'stroke-opacity': 0.4,
+    'stroke-width': 2
   });
+  g.appendChild(divider);
+  
+  // Título principal CONQUISTADOS (centralizado no lado direito)
+  const titleConquistados = el('text', { 
+    x: centerX + centerX / 2, 
+    y: panelY + 20, 
+    'text-anchor': 'middle', 
+    'font-family': 'Inter, Arial, sans-serif', 
+    'font-size': 20, 
+    'font-weight': 900, 
+    fill: '#e7f8f1' 
+  });
+  titleConquistados.textContent = 'CONQUISTADOS';
+  g.appendChild(titleConquistados);
+  
+  // CONQUISTADOS - Assistências (esquerda do CONQUISTADOS)
+  const conquistadosAssistX = centerX + 20;
+  drawSection('ASSISTÊNCIAS', conquistadosAssist, conquistadosAssistX, panelY + 28);
+  
+  // CONQUISTADOS - Gols (direita do CONQUISTADOS)
+  const conquistadosGolsX = conquistadosAssistX + sectionW + sectionGap;
+  drawSection('GOLS', conquistadosGols, conquistadosGolsX, panelY + 28);
 
   overlayEl.appendChild(g);
 }
