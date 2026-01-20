@@ -1348,25 +1348,25 @@ function initEditor() {
 
   const TEAMS = [
     { key: 'atletico-mg', name: 'Atlético MG' },
+    { key: 'athletico-pr', name: 'Athletico-PR' },
     { key: 'bahia', name: 'Bahia' },
     { key: 'botafogo', name: 'Botafogo' },
-    { key: 'ceara', name: 'Ceará' },
+    { key: 'chapecoense', name: 'Chapecoense' },
     { key: 'corinthians', name: 'Corinthians' },
+    { key: 'coritiba', name: 'Coritiba' },
     { key: 'cruzeiro', name: 'Cruzeiro' },
     { key: 'flamengo', name: 'Flamengo' },
     { key: 'fluminense', name: 'Fluminense' },
-    { key: 'fortaleza', name: 'Fortaleza' },
     { key: 'gremio', name: 'Grêmio' },
     { key: 'internacional', name: 'Internacional' },
-    { key: 'juventude', name: 'Juventude' },
     { key: 'mirassol', name: 'Mirassol' },
+    { key: 'palmeiras', name: 'Palmeiras' },
     { key: 'red-bull-bragantino', name: 'Red Bull Bragantino' },
+    { key: 'remo', name: 'Remo' },
     { key: 'santos', name: 'Santos' },
-    { key: 'sport', name: 'Sport' },
     { key: 'sao-paulo', name: 'São Paulo' },
     { key: 'vasco', name: 'Vasco' },
-    { key: 'vitoria', name: 'Vitória' },
-    { key: 'palmeiras', name: 'Palmeiras' }
+    { key: 'vitoria', name: 'Vitória' }
   ];
 
   function populateTeamSelect(select) {
