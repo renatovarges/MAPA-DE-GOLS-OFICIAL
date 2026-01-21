@@ -1401,7 +1401,15 @@ function initEditor() {
 
   function showModal(show) {
     modal.style.display = show ? 'block' : 'none';
-    if (show) drawEditorGrid();
+    if (show) {
+      drawEditorGrid();
+      // Carregar dados automaticamente ao abrir o Editor se houver time e rodada selecionados
+      const teamKey = homeSelect && homeSelect.value ? homeSelect.value : (awaySelect && awaySelect.value ? awaySelect.value : null);
+      const roundNo = Number(roundInput.value) || 1;
+      if (teamKey && roundNo) {
+        setTimeout(() => loadRoundDataIntoEditor(teamKey, roundNo), 100);
+      }
+    }
   }
   window.__showEditorModal = showModal;
   if (openBtn) openBtn.addEventListener('click', () => showModal(true));
