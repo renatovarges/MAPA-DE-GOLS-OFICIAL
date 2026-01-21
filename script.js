@@ -2243,6 +2243,13 @@ function initEditor() {
   }
   
   // Função para carregar dados de uma rodada específica
+  // Função auxiliar para converter coordenadas lógicas (%) de volta para coordenadas SVG do editor
+  function logicalToEditorSVG(logicalX, logicalY) {
+    const X = PITCH.left + (logicalX / 100) * PITCH.widthPx;
+    const Y = PITCH.top + (logicalY / 100) * PITCH.heightPx;
+    return { x: X, y: Y };
+  }
+  
   async function loadRoundDataIntoEditor(teamKey, roundNumber) {
     if (!teamKey || !roundNumber) return;
     const nodes = Array.from(overlay.querySelectorAll('text,circle,line'));
@@ -2263,16 +2270,17 @@ function initEditor() {
       if (!roundData) { updateList(); return; }
       const events = roundData.created_goals || [];
       events.forEach(ev => {
-        const assistCell = ev.pass_cell || (ev.pass && ev.pass.cell);
-        const shotCell = ev.shot_cell || (ev.shot && ev.shot.cell);
-        if (!assistCell && !shotCell) return;
+        // Os dados salvos têm pass.x/y e shot.x/y em coordenadas lógicas (%)
+        const hasPass = ev.pass && typeof ev.pass.x === 'number' && typeof ev.pass.y === 'number';
+        const hasShot = ev.shot && typeof ev.shot.x === 'number' && typeof ev.shot.y === 'number';
+        if (!hasPass && !hasShot) return;
         const newEvent = {
           assistPt: null, shotPt: null, assistEl: null, shotEl: null, traceEl: null,
           assistPlayer: ev.assistPlayer || null, shotPlayer: ev.shotPlayer || null,
-          isOwnGoal: ev.isOwnGoal || false, ownGoalSide: ev.ownGoalSide || null
+          isOwnGoal: ev.own_goal || false, ownGoalSide: ev.ownGoalSide || null
         };
-        if (assistCell) {
-          const pt = cellIndexToPoint(assistCell);
+        if (hasPass) {
+          const pt = logicalToEditorSVG(ev.pass.x, ev.pass.y);
           newEvent.assistPt = pt;
           const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
           circle.setAttribute('cx', pt.x); circle.setAttribute('cy', pt.y); circle.setAttribute('r', '10');
@@ -2284,8 +2292,8 @@ function initEditor() {
           text.setAttribute('font-size', '12'); text.setAttribute('font-weight', 'bold'); text.textContent = 'A';
           overlay.appendChild(text);
         }
-        if (shotCell) {
-          const pt = cellIndexToPoint(shotCell);
+        if (hasShot) {
+          const pt = logicalToEditorSVG(ev.shot.x, ev.shot.y);
           newEvent.shotPt = pt;
           const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
           circle.setAttribute('cx', pt.x); circle.setAttribute('cy', pt.y); circle.setAttribute('r', '10');
@@ -2307,7 +2315,7 @@ function initEditor() {
         state.roundEvents.push(newEvent);
       });
       updateList();
-    } catch (err) { updateList(); }
+    } catch (err) { console.error('Erro ao carregar rodada:', err); updateList(); }
   }
   
   // Listeners para carregar automaticamente quando mudar time ou rodada
