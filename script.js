@@ -41,10 +41,13 @@ const PITCH = {
 
 const CREST_MAP = {
   atletico_mg: 'atlético mg.png',
+  athletico_pr: 'athletico-pr.png',
   bahia: 'bahia.png',
   botafogo: 'botafogo.png',
   ceara: 'ceará.png',
+  chapecoense: 'chapecoense.png',
   corinthians: 'corinthians.png',
+  coritiba: 'coritiba.png',
   cruzeiro: 'cruzeiro.png',
   flamengo: 'flamengo.png',
   fluminense: 'fluminense.png',
@@ -56,6 +59,7 @@ const CREST_MAP = {
   palmeiras: 'palmeiras.png',
   bragantino: 'red bull bragantino.png',
   red_bull_bragantino: 'red bull bragantino.png',
+  remo: 'remo.png',
   santos: 'santos.png',
   sport: 'sport.png',
   sao_paulo: 'são paulo.png',
