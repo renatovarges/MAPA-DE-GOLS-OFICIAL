@@ -1541,7 +1541,10 @@ function initEditor() {
   }
 
   function updateList() {
-    const items = state.roundEvents.map((ev, i) => {
+    // Limpar lista
+    listEl.innerHTML = '';
+    
+    state.roundEvents.forEach((ev, i) => {
       const pc = ev.assistPt ? cellIndexFromPoint(ev.assistPt.x, ev.assistPt.y) : '-';
       const sc = ev.shotPt ? cellIndexFromPoint(ev.shotPt.x, ev.shotPt.y) : '-';
       const pcMirror = pc !== '-' ? mirrorCellIndex(pc) : '-';
@@ -1560,12 +1563,53 @@ function initEditor() {
       const shotPlayer = ev.shotPlayer ? ` [${ev.shotPlayer.name} - ${fmtPos(ev.shotPlayer.position, ev.shotPlayer.side)}]` : '';
       const ownTag = ev.isOwnGoal ? ` (GC: ${ev.ownGoalSide === 'visitante' ? 'Visitante' : 'Mandante'})` : '';
       
-      return `#${i + 1} Assist: ${assistText}${assistPlayer} | Final: ${shotText}${shotPlayer}${ownTag}`;
+      const eventText = `#${i + 1} Assist: ${assistText}${assistPlayer} | Final: ${shotText}${shotPlayer}${ownTag}`;
+      
+      // Criar elemento do evento com botão de deletar
+      const eventDiv = document.createElement('div');
+      eventDiv.style.cssText = 'display:inline-flex;align-items:center;gap:8px;margin:4px 8px 4px 0;padding:4px 8px;background:#1a6b4f;border-radius:4px';
+      
+      const eventSpan = document.createElement('span');
+      eventSpan.textContent = eventText;
+      eventSpan.style.cssText = 'color:#e7f8f1;font-size:13px';
+      
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = '✖';
+      deleteBtn.title = 'Deletar este evento';
+      deleteBtn.style.cssText = 'background:#dc2626;color:#fff;border:none;border-radius:3px;padding:2px 6px;cursor:pointer;font-size:12px;font-weight:bold';
+      deleteBtn.addEventListener('click', () => deleteEvent(i));
+      
+      eventDiv.appendChild(eventSpan);
+      eventDiv.appendChild(deleteBtn);
+      listEl.appendChild(eventDiv);
     });
-    listEl.textContent = items.join(' \u2022 ');
 
     // Atualizar painel de estatísticas por posição no overlay do editor
     drawEditorPositionStatsPanel();
+  }
+  
+  // Função para deletar um evento específico
+  function deleteEvent(index) {
+    if (index < 0 || index >= state.roundEvents.length) return;
+    
+    const ev = state.roundEvents[index];
+    
+    // Remover elementos visuais do overlay
+    if (ev.assistEl) {
+      try { overlay.removeChild(ev.assistEl); } catch {}
+    }
+    if (ev.shotEl) {
+      try { overlay.removeChild(ev.shotEl); } catch {}
+    }
+    if (ev.traceEl) {
+      try { overlay.removeChild(ev.traceEl); } catch {}
+    }
+    
+    // Remover evento do array
+    state.roundEvents.splice(index, 1);
+    
+    // Atualizar lista
+    updateList();
   }
 
   // Estado para seleção de jogadores
