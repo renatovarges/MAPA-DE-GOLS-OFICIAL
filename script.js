@@ -2246,10 +2246,13 @@ async function loadPlayersData() {
 function mapClubToTeamKey(clubCode) {
   const clubMap = {
     'CAM': 'atletico-mg',
+    'CAP': 'athletico-pr',
     'BAH': 'bahia', 
     'BOT': 'botafogo',
     'CEA': 'ceara',
+    'CHA': 'chapecoense',
     'COR': 'corinthians',
+    'CFC': 'coritiba',
     'CRU': 'cruzeiro',
     'FLA': 'flamengo',
     'FLU': 'fluminense', 
@@ -2259,6 +2262,7 @@ function mapClubToTeamKey(clubCode) {
     'JUV': 'juventude',
     'MIR': 'mirassol',
     'RBB': 'red-bull-bragantino',
+    'REM': 'remo',
     'SAN': 'santos',
     'SPT': 'sport',
     'SAO': 'sao-paulo',
