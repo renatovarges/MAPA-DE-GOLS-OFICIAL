@@ -2250,16 +2250,18 @@ function initEditor() {
     return { x: X, y: Y };
   }
   
-  async function loadRoundDataIntoEditor(teamKey, roundNumber) {
+  async function loadRoundDataIntoEditor(teamKey, roundNumber, clearField = true) {
     if (!teamKey || !roundNumber) return;
-    const nodes = Array.from(overlay.querySelectorAll('text,circle,line'));
-    nodes.forEach(n => n.parentNode && n.parentNode.removeChild(n));
-    state.roundEvents = [];
+    if (clearField) {
+      const nodes = Array.from(overlay.querySelectorAll('text,circle,line'));
+      nodes.forEach(n => n.parentNode && n.parentNode.removeChild(n));
+      state.roundEvents = [];
+    }
     const fileKey = resolveDataFileKey(teamKey);
     const url = `data/${fileKey}.json?t=${Date.now()}`;
     try {
       const res = await fetch(url, { cache: 'no-store' });
-      if (!res.ok) { updateList(); return; }
+      if (!res.ok) { return; }
       const teamData = await res.json();
       let roundData = null;
       if (teamData.rounds && typeof teamData.rounds === 'object') {
@@ -2267,7 +2269,7 @@ function initEditor() {
       } else if (Array.isArray(teamData.rounds)) {
         roundData = teamData.rounds.find(r => r.roundNumber === roundNumber);
       }
-      if (!roundData) { updateList(); return; }
+      if (!roundData) { return; }
       const events = roundData.created_goals || [];
       events.forEach(ev => {
         // Os dados salvos têm pass.x/y e shot.x/y em coordenadas lógicas (%)
@@ -2314,30 +2316,47 @@ function initEditor() {
         }
         state.roundEvents.push(newEvent);
       });
-      updateList();
-    } catch (err) { console.error('Erro ao carregar rodada:', err); updateList(); }
+    } catch (err) { console.error('Erro ao carregar rodada:', err); }
+  }
+  
+  // Função auxiliar para carregar dados de ambos os times
+  async function loadBothTeamsData() {
+    const homeKey = homeSelect && homeSelect.value ? homeSelect.value : null;
+    const awayKey = awaySelect && awaySelect.value ? awaySelect.value : null;
+    const roundNo = Number(roundInput.value) || 1;
+    
+    // Limpar campo antes de carregar
+    const nodes = Array.from(overlay.querySelectorAll('text,circle,line'));
+    nodes.forEach(n => n.parentNode && n.parentNode.removeChild(n));
+    state.roundEvents = [];
+    
+    // Carregar dados do mandante
+    if (homeKey) {
+      await loadRoundDataIntoEditor(homeKey, roundNo, false); // false = não limpar campo
+    }
+    
+    // Carregar dados do visitante
+    if (awayKey) {
+      await loadRoundDataIntoEditor(awayKey, roundNo, false); // false = não limpar campo
+    }
+    
+    updateList();
   }
   
   // Listeners para carregar automaticamente quando mudar time ou rodada
   if (homeSelect) {
     homeSelect.addEventListener('change', () => {
-      const teamKey = homeSelect.value;
-      const roundNo = Number(roundInput.value) || 1;
-      if (teamKey) loadRoundDataIntoEditor(teamKey, roundNo);
+      loadBothTeamsData();
     });
   }
   if (awaySelect) {
     awaySelect.addEventListener('change', () => {
-      const teamKey = awaySelect.value;
-      const roundNo = Number(roundInput.value) || 1;
-      if (teamKey) loadRoundDataIntoEditor(teamKey, roundNo);
+      loadBothTeamsData();
     });
   }
   if (roundInput) {
     roundInput.addEventListener('change', () => {
-      const teamKey = homeSelect && homeSelect.value ? homeSelect.value : (awaySelect && awaySelect.value ? awaySelect.value : null);
-      const roundNo = Number(roundInput.value) || 1;
-      if (teamKey) loadRoundDataIntoEditor(teamKey, roundNo);
+      loadBothTeamsData();
     });
   }
 }
