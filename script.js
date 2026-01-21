@@ -1071,7 +1071,7 @@ function autoPopulateForTesting() {
   loadTeamData2(away, { showCrest: false });
 }
 
-autoPopulateForTesting();
+// autoPopulateForTesting(); // Desabilitado: página inicial deve ficar limpa
 
 // Exportação dos campinhos em PNG (alta definição) e botões de download
 function svgToDataUrl(svgEl, { showTitles = true, exportPaddingTop = 0, hideLayers = false, titleYOffset = 0, hidePositionSummary = false } = {}) {
@@ -2029,6 +2029,33 @@ function initEditor() {
     nodes.forEach(n => n.parentNode && n.parentNode.removeChild(n));
     state.roundEvents = [];
     updateList();
+  });
+  
+  // Botão para limpar TODOS os gols de TODOS os times
+  const clearAllBtn = document.getElementById('editorClearAllBtn');
+  clearAllBtn && clearAllBtn.addEventListener('click', async () => {
+    const confirmed = confirm('ATENÇÃO: Isso vai APAGAR TODOS OS GOLS de TODOS OS TIMES!\n\nTem certeza que deseja continuar?');
+    if (!confirmed) return;
+    
+    try {
+      const res = await fetch('/api/clear-all', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert(`Sucesso! ${data.cleared} arquivos foram limpos.`);
+        // Limpar o campo do editor também
+        const nodes = Array.from(overlay.querySelectorAll('text,circle,line'));
+        nodes.forEach(n => n.parentNode && n.parentNode.removeChild(n));
+        state.roundEvents = [];
+        updateList();
+      } else {
+        alert('Erro ao limpar os gols: ' + (data.error || 'desconhecido'));
+      }
+    } catch (err) {
+      alert('Falha na requisição: ' + (err && err.message ? err.message : 'desconhecida'));
+    }
   });
 
   function cellIndexFromPoint(x, y) {

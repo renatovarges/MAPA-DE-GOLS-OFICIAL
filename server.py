@@ -7,7 +7,28 @@ DATA_DIR = os.path.join(ROOT, 'data')
 
 class Handler(SimpleHTTPRequestHandler):
     def do_POST(self):
-        if self.path == '/api/save-round':
+        if self.path == '/api/clear-all':
+            # Endpoint para limpar todos os gols de todos os times
+            try:
+                os.makedirs(DATA_DIR, exist_ok=True)
+                cleared_files = []
+                for filename in os.listdir(DATA_DIR):
+                    if filename.endswith('.json'):
+                        path = os.path.join(DATA_DIR, filename)
+                        # Resetar o arquivo para estrutura vazia
+                        with open(path, 'w', encoding='utf-8') as f:
+                            json.dump({'rounds': {}}, f, ensure_ascii=False, indent=2)
+                        cleared_files.append(filename)
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True, 'cleared': len(cleared_files), 'files': cleared_files}).encode('utf-8'))
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'clear_failed', 'detail': str(e)}).encode('utf-8'))
+        elif self.path == '/api/save-round':
             length = int(self.headers.get('Content-Length', '0'))
             body = self.rfile.read(length)
             try:
