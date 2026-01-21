@@ -2221,6 +2221,109 @@ function initEditor() {
       downloadJSON(awayObj, `${state.awayTeamKey}_R${roundNo}.json`);
     }
   });
+  
+  // Função para converter cell index para coordenadas SVG do editor
+  function cellIndexToPoint(cellIndex) {
+    const adjustedIndex = cellIndex - 1;
+    const row = Math.floor(adjustedIndex / GRID.cols);
+    const col = adjustedIndex % GRID.cols;
+    const logicalX = (col + 0.5) * CELL.w;
+    const logicalY = (row + 0.5) * CELL.h;
+    const X = PITCH.left + (logicalX / PITCH.maxX) * PITCH.widthPx;
+    const Y = PITCH.top + (logicalY / PITCH.maxY) * PITCH.heightPx;
+    return { x: X, y: Y };
+  }
+  
+  // Função para carregar dados de uma rodada específica
+  async function loadRoundDataIntoEditor(teamKey, roundNumber) {
+    if (!teamKey || !roundNumber) return;
+    const nodes = Array.from(overlay.querySelectorAll('text,circle,line'));
+    nodes.forEach(n => n.parentNode && n.parentNode.removeChild(n));
+    state.roundEvents = [];
+    const fileKey = resolveDataFileKey(teamKey);
+    const url = `data/${fileKey}.json?t=${Date.now()}`;
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) { updateList(); return; }
+      const teamData = await res.json();
+      let roundData = null;
+      if (teamData.rounds && typeof teamData.rounds === 'object') {
+        roundData = teamData.rounds[String(roundNumber)];
+      } else if (Array.isArray(teamData.rounds)) {
+        roundData = teamData.rounds.find(r => r.roundNumber === roundNumber);
+      }
+      if (!roundData) { updateList(); return; }
+      const events = roundData.created_goals || [];
+      events.forEach(ev => {
+        const assistCell = ev.pass_cell || (ev.pass && ev.pass.cell);
+        const shotCell = ev.shot_cell || (ev.shot && ev.shot.cell);
+        if (!assistCell && !shotCell) return;
+        const newEvent = {
+          assistPt: null, shotPt: null, assistEl: null, shotEl: null, traceEl: null,
+          assistPlayer: ev.assistPlayer || null, shotPlayer: ev.shotPlayer || null,
+          isOwnGoal: ev.isOwnGoal || false, ownGoalSide: ev.ownGoalSide || null
+        };
+        if (assistCell) {
+          const pt = cellIndexToPoint(assistCell);
+          newEvent.assistPt = pt;
+          const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          circle.setAttribute('cx', pt.x); circle.setAttribute('cy', pt.y); circle.setAttribute('r', '10');
+          circle.setAttribute('fill', '#3b82f6'); circle.setAttribute('stroke', '#fff'); circle.setAttribute('stroke-width', '2');
+          overlay.appendChild(circle); newEvent.assistEl = circle;
+          const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          text.setAttribute('x', pt.x); text.setAttribute('y', pt.y); text.setAttribute('text-anchor', 'middle');
+          text.setAttribute('dominant-baseline', 'middle'); text.setAttribute('fill', '#fff');
+          text.setAttribute('font-size', '12'); text.setAttribute('font-weight', 'bold'); text.textContent = 'A';
+          overlay.appendChild(text);
+        }
+        if (shotCell) {
+          const pt = cellIndexToPoint(shotCell);
+          newEvent.shotPt = pt;
+          const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          circle.setAttribute('cx', pt.x); circle.setAttribute('cy', pt.y); circle.setAttribute('r', '10');
+          circle.setAttribute('fill', '#10b981'); circle.setAttribute('stroke', '#fff'); circle.setAttribute('stroke-width', '2');
+          overlay.appendChild(circle); newEvent.shotEl = circle;
+          const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          text.setAttribute('x', pt.x); text.setAttribute('y', pt.y); text.setAttribute('text-anchor', 'middle');
+          text.setAttribute('dominant-baseline', 'middle'); text.setAttribute('fill', '#fff');
+          text.setAttribute('font-size', '12'); text.setAttribute('font-weight', 'bold'); text.textContent = 'G';
+          overlay.appendChild(text);
+          if (newEvent.assistPt && state.trace) {
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', newEvent.assistPt.x); line.setAttribute('y1', newEvent.assistPt.y);
+            line.setAttribute('x2', pt.x); line.setAttribute('y2', pt.y);
+            line.setAttribute('stroke', '#f7d36a'); line.setAttribute('stroke-width', '2');
+            line.setAttribute('stroke-dasharray', '4 3'); overlay.appendChild(line); newEvent.traceEl = line;
+          }
+        }
+        state.roundEvents.push(newEvent);
+      });
+      updateList();
+    } catch (err) { updateList(); }
+  }
+  
+  // Listeners para carregar automaticamente quando mudar time ou rodada
+  if (homeSelect) {
+    homeSelect.addEventListener('change', () => {
+      const teamKey = homeSelect.value;
+      const roundNo = Number(roundInput.value) || 1;
+      if (teamKey) loadRoundDataIntoEditor(teamKey, roundNo);
+    });
+  }
+  if (awaySelect) {
+    awaySelect.addEventListener('change', () => {
+      const teamKey = awaySelect.value;
+      const roundNo = Number(roundInput.value) || 1;
+      if (teamKey) loadRoundDataIntoEditor(teamKey, roundNo);
+    });
+  }
+  if (roundInput) {
+    roundInput.addEventListener('change', () => {
+      const teamKey = homeSelect && homeSelect.value ? homeSelect.value : (awaySelect && awaySelect.value ? awaySelect.value : null);
+      const roundNo = Number(roundInput.value) || 1;
+      if (teamKey) loadRoundDataIntoEditor(teamKey, roundNo);
+    });
+  }
 }
 
 // (Removido) Função de simulação de rodadas
