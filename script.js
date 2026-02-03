@@ -2758,17 +2758,55 @@ function showPlayerTooltip(event, eventData) {
   const containerEl = overlayEl?.parentElement || document.body;
 
   function positionTooltip() {
+    // 1. Posicionamento Inicial (estimado)
     if (!tooltip.parentElement) return;
     const markerRect = markerEl.getBoundingClientRect();
     const containerRect = containerEl.getBoundingClientRect();
+
+    // Centralizar em relação ao marcador
     const centerX = markerRect.left - containerRect.left + (markerRect.width / 2);
     const centerY = markerRect.top - containerRect.top + (markerRect.height / 2);
 
-    let tooltipX = centerX + 12;
+    let tooltipX = centerX + 12; // Padrão: à direita e um pouco abaixo
     let tooltipY = centerY - 10;
 
     tooltip.style.left = tooltipX + 'px';
     tooltip.style.top = tooltipY + 'px';
+    tooltip.style.visibility = 'hidden'; // Esconder até calcular limites
+
+    // 2. Ajuste de Limites (Boundary Check)
+    requestAnimationFrame(() => {
+      if (!tooltip.parentElement) return;
+      const tooltipRect = tooltip.getBoundingClientRect();
+      const containerBounds = containerEl.getBoundingClientRect();
+
+      // Se estourar a DIREITA do container
+      if (tooltipRect.right > containerBounds.right) {
+        // Mover para a ESQUERDA do marcador
+        tooltipX = centerX - tooltipRect.width - 12;
+      }
+
+      // Se estourar a ESQUERDA do container (casos raros, mas possíveis)
+      if (tooltipX < 0) {
+        tooltipX = 10; // Margem mínima
+      }
+
+      // Se estourar EMBAIXO do container
+      if (tooltipRect.bottom > containerBounds.bottom) {
+        // Mover para CIMA
+        tooltipY = centerY - tooltipRect.height - 10;
+      }
+
+      // Se estourar EM CIMA
+      if (tooltipY < 0) {
+        tooltipY = 10;
+      }
+
+      // Aplicar coordenadas finais
+      tooltip.style.left = tooltipX + 'px';
+      tooltip.style.top = tooltipY + 'px';
+      tooltip.style.visibility = 'visible';
+    });
   }
 
   containerEl.appendChild(tooltip);
