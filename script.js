@@ -1849,35 +1849,38 @@ function initEditor() {
     const playerSelectRow = playerSelect?.parentElement;
     const playerSideRowEl = document.getElementById('playerSideRow');
 
-    if (isOwnGoal) {
-      // Gol contra: mostrar apenas campo de texto
-      if (ownGoalNameRow) ownGoalNameRow.style.display = 'block';
-      if (playerTeamRow) playerTeamRow.style.display = 'none';
-      if (playerPosRow) playerPosRow.style.display = 'none';
-      if (playerSelectRow) playerSelectRow.style.display = 'none';
-      if (playerSideRowEl) playerSideRowEl.style.display = 'none';
-      if (selectedPlayerInfo) selectedPlayerInfo.style.display = 'none';
-    } else {
-      // Gol normal: mostrar seleção de jogador
-      if (ownGoalNameRow) ownGoalNameRow.style.display = 'none';
-      if (playerTeamRow) playerTeamRow.style.display = 'block';
-      if (playerPosRow) playerPosRow.style.display = 'block';
-      if (playerSelectRow) playerSelectRow.style.display = 'block';
+    // Sempre mostrar seleção de jogador (mesmo para gol contra)
+    // Gol contra agora permite selecionar jogador completo, mas lógica de sugestão de time é invertida
+    if (ownGoalNameRow) ownGoalNameRow.style.display = 'none'; // Ocultar campo de texto simples
+    if (playerTeamRow) playerTeamRow.style.display = 'block';
+    if (playerPosRow) playerPosRow.style.display = 'block';
+    if (playerSelectRow) playerSelectRow.style.display = 'block';
 
-      // Sugerir time baseado no lado do campo clicado
-      const point = (eventType === 'assist') ? eventObj.assistPt : eventObj.shotPt;
-      let suggestedTeam = null;
-      if (point && state.homeTeamKey && state.awayTeamKey) {
-        const kind = classifyByShot(point); // 'created' (ataque do mandante) ou 'conceded' (ataque do visitante)
-        suggestedTeam = (kind === 'created') ? state.homeTeamKey : state.awayTeamKey;
+    // Sugerir time baseado no lado do campo clicado
+    const point = (eventType === 'assist') ? eventObj.assistPt : eventObj.shotPt;
+    let suggestedTeam = null;
+
+    if (point && state.homeTeamKey && state.awayTeamKey) {
+      const kind = classifyByShot(point); // 'created' (ataque do mandante) ou 'conceded' (ataque do visitante)
+
+      if (isOwnGoal) {
+        // Lógica Invertida para Gol Contra:
+        // Se o gol é do Mandante ('created'), quem fez contra foi o Visitante.
+        // Se o gol é do Visitante ('conceded'), quem fez contra foi o Mandante.
+        suggestedTeam = (kind === 'created') ? state.awayTeamKey : state.homeTeamKey;
       } else {
-        // Fallback: manter mandante se não houver ponto ou chaves de time
-        suggestedTeam = state.homeTeamKey || '';
+        // Lógica Normal:
+        // Se o gol é do Mandante, quem fez foi o Mandante.
+        suggestedTeam = (kind === 'created') ? state.homeTeamKey : state.awayTeamKey;
       }
-      if (playerTeamSelect) {
-        playerTeamSelect.value = suggestedTeam || '';
-        updatePlayersByTeam();
-      }
+    } else {
+      // Fallback
+      suggestedTeam = state.homeTeamKey || '';
+    }
+
+    if (playerTeamSelect) {
+      playerTeamSelect.value = suggestedTeam || '';
+      updatePlayersByTeam();
     }
 
     // Mostrar painel
@@ -1965,24 +1968,10 @@ function initEditor() {
 
     const { eventObj, eventType } = pendingPlayerSelection;
 
-    // Verificar se é gol contra
-    if (eventObj.isOwnGoal) {
-      const ownGoalNameInput = document.getElementById('ownGoalPlayerName');
-      const playerName = ownGoalNameInput ? ownGoalNameInput.value.trim() : '';
+    // Verificar se é gol contra (agora usa seleção completa de jogador também)
+    // if (eventObj.isOwnGoal) ... (Lógica removida, agora unificada)
 
-      if (!playerName) {
-        alert('Por favor, digite o nome do jogador que fez o gol contra.');
-        return;
-      }
-
-      // Salvar nome do jogador em gol contra
-      eventObj.ownGoalPlayerName = playerName;
-      closePlayerSelectionPanel();
-      updateList();
-      return;
-    }
-
-    // Lógica normal para gol/assistência
+    // Lógica unificada para gol normal e gol contra
     if (!playerSelect) return;
     const selectedOption = playerSelect.options[playerSelect.selectedIndex];
     if (!selectedOption || !selectedOption.dataset.playerData) return;
@@ -1990,25 +1979,26 @@ function initEditor() {
     const player = JSON.parse(selectedOption.dataset.playerData);
     const sideVal = playerSideSelect ? (playerSideSelect.value || '') : '';
 
-    // Salvar dados do jogador no evento
-    if (eventType === 'assist') {
-      eventObj.assistPlayer = {
-        id: player.id,
-        name: player.apelido,
-        fullName: player.nome_completo,
-        position: player.position,
-        side: player.position === 'Lateral' ? (sideVal || null) : null,
-        team: player.teamKey
-      };
+    const newPlayerData = {
+      id: player.id,
+      name: player.apelido,
+      fullName: player.nome_completo,
+      position: player.position,
+      side: player.position === 'Lateral' ? (sideVal || null) : null,
+      team: player.teamKey
+    };
+
+    if (eventObj.isOwnGoal) {
+      // Para gol contra, salvamos em shotPlayer também, mas mantemos a flag isOwnGoal true
+      // O nome 'ownGoalPlayerName' legacy pode ser removido ou mantido para retrocompatibilidade
+      eventObj.ownGoalPlayerName = player.nome_completo; // Opcional
+      eventObj.shotPlayer = newPlayerData;
     } else {
-      eventObj.shotPlayer = {
-        id: player.id,
-        name: player.apelido,
-        fullName: player.nome_completo,
-        position: player.position,
-        side: player.position === 'Lateral' ? (sideVal || null) : null,
-        team: player.teamKey
-      };
+      if (eventType === 'assist') {
+        eventObj.assistPlayer = newPlayerData;
+      } else {
+        eventObj.shotPlayer = newPlayerData;
+      }
     }
 
     closePlayerSelectionPanel();
@@ -2181,7 +2171,7 @@ function initEditor() {
         shot: { x: shotPitch.x, y: shotPitch.y },
         // Incluir dados dos jogadores se disponíveis (não aplicável a gol contra)
         assistPlayer: isOwn ? null : (ev.assistPlayer || null),
-        shotPlayer: isOwn ? null : (ev.shotPlayer || null),
+        shotPlayer: (ev.shotPlayer || null),
         own_goal: isOwn || undefined
       };
       const rotated = {
@@ -2189,7 +2179,7 @@ function initEditor() {
         shot: rotate180(homeEvent.shot),
         // Manter os mesmos dados (nulo em gol contra / originais caso não seja)
         assistPlayer: isOwn ? null : (ev.assistPlayer || null),
-        shotPlayer: isOwn ? null : (ev.shotPlayer || null),
+        shotPlayer: (ev.shotPlayer || null),
         own_goal: isOwn || undefined
       };
 
