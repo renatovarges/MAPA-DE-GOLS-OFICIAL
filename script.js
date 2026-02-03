@@ -1595,7 +1595,8 @@ function initEditor() {
     });
 
     // Atualizar painel de estatísticas por posição no overlay do editor
-    drawEditorPositionStatsPanel();
+    // (Removido a pedido do usuário)
+    // drawEditorPositionStatsPanel();
   }
 
   // Função para deletar um evento específico
@@ -2348,18 +2349,41 @@ function initEditor() {
       }
       if (!roundData) { return; }
       const events = roundData.created_goals || [];
+
+      // Verificar se é o time visitante para rotacionar os gols de volta (jogar na esquerda)
+      // O banco salva sempre como 'created' (ataque na direita). Se for visitante, tem que inverter.
+      // Comparar teamKey com o valor do select de visitante
+      const awaySelectVal = document.getElementById('editorAwaySelect')?.value;
+      const isAway = (teamKey === awaySelectVal);
+
+      // Função de rotação (inverso do rotate180 na hora de salvar)
+      // Se salvou: x = PITCH.maxY - x ... Aqui usamos a lógica do Editor SVG (0..1000, 0..600)
+      // Mas os dados vêm em % (0..100).
+      const rotateLogical = (lPt) => ({ x: 100 - lPt.x, y: 100 - lPt.y });
+
       events.forEach(ev => {
         // Os dados salvos têm pass.x/y e shot.x/y em coordenadas lógicas (%)
         const hasPass = ev.pass && typeof ev.pass.x === 'number' && typeof ev.pass.y === 'number';
         const hasShot = ev.shot && typeof ev.shot.x === 'number' && typeof ev.shot.y === 'number';
         if (!hasPass && !hasShot) return;
+
+        // Clone para não alterar o original
+        let passPtLogic = hasPass ? { ...ev.pass } : null;
+        let shotPtLogic = hasShot ? { ...ev.shot } : null;
+
+        if (isAway) {
+          if (passPtLogic) passPtLogic = rotateLogical(passPtLogic);
+          if (shotPtLogic) shotPtLogic = rotateLogical(shotPtLogic);
+        }
+
         const newEvent = {
           assistPt: null, shotPt: null, assistEl: null, shotEl: null, traceEl: null,
           assistPlayer: ev.assistPlayer || null, shotPlayer: ev.shotPlayer || null,
           isOwnGoal: ev.own_goal || false, ownGoalSide: ev.ownGoalSide || null
         };
-        if (hasPass) {
-          const pt = logicalToEditorSVG(ev.pass.x, ev.pass.y);
+
+        if (passPtLogic) {
+          const pt = logicalToEditorSVG(passPtLogic.x, passPtLogic.y);
           newEvent.assistPt = pt;
           const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
           circle.setAttribute('cx', pt.x); circle.setAttribute('cy', pt.y); circle.setAttribute('r', '10');
@@ -2371,17 +2395,19 @@ function initEditor() {
           text.setAttribute('font-size', '12'); text.setAttribute('font-weight', 'bold'); text.textContent = 'A';
           overlay.appendChild(text);
         }
-        if (hasShot) {
-          const pt = logicalToEditorSVG(ev.shot.x, ev.shot.y);
+        if (shotPtLogic) {
+          const pt = logicalToEditorSVG(shotPtLogic.x, shotPtLogic.y);
           newEvent.shotPt = pt;
           const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
           circle.setAttribute('cx', pt.x); circle.setAttribute('cy', pt.y); circle.setAttribute('r', '10');
-          circle.setAttribute('fill', '#10b981'); circle.setAttribute('stroke', '#fff'); circle.setAttribute('stroke-width', '2');
+          // Verde para gol normal, Vermelho/Laranja para gol contra
+          const fillCol = newEvent.isOwnGoal ? '#ef4444' : '#10b981';
+          circle.setAttribute('fill', fillCol); circle.setAttribute('stroke', '#fff'); circle.setAttribute('stroke-width', '2');
           overlay.appendChild(circle); newEvent.shotEl = circle;
           const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
           text.setAttribute('x', pt.x); text.setAttribute('y', pt.y); text.setAttribute('text-anchor', 'middle');
           text.setAttribute('dominant-baseline', 'middle'); text.setAttribute('fill', '#fff');
-          text.setAttribute('font-size', '12'); text.setAttribute('font-weight', 'bold'); text.textContent = 'G';
+          text.setAttribute('font-size', '12'); text.setAttribute('font-weight', 'bold'); text.textContent = newEvent.isOwnGoal ? 'GC' : 'G';
           overlay.appendChild(text);
           if (newEvent.assistPt && state.trace) {
             const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
