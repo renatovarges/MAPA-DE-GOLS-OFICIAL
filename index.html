@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mapa de Finalizações – Últimos 3 Jogos</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <div id="app">
     <header class="app-header" style="display:flex;flex-direction:column;gap:8px;align-items:flex-start">
-      <div class="brand" style="display:flex;gap:12px;align-items:center;justify-content:flex-start;width:100%;position:relative">
+      <div class="brand"
+        style="display:flex;gap:12px;align-items:center;justify-content:flex-start;width:100%;position:relative">
         <img src="TCCBRANCOTRANSPARENTE.png" alt="Logo TCC" class="brand-logo" style="height:96px" />
-        <h1 class="brand-title" style="margin:0;position:absolute;left:50%;transform:translateX(-50%);text-align:center;">MAPA DE GOLS E ASSISTÊNCIAS</h1>
+        <h1 class="brand-title"
+          style="margin:0;position:absolute;left:50%;transform:translateX(-50%);text-align:center;">MAPA DE GOLS E
+          ASSISTÊNCIAS</h1>
       </div>
       <div class="toolbar" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
         <button id="openEditorBtn" type="button" class="toolbar-btn">Editor</button>
@@ -65,70 +70,79 @@
         </div>
         <!-- Campo da esquerda (mandante) -->
         <div id="canvas" style="position:relative">
-          <button id="downloadField1" class="download-btn" title="Baixar imagem" style="position:absolute;right:8px;top:8px;opacity:0.35;z-index:10">⤓</button>
+          <button id="downloadField1" class="download-btn" title="Baixar imagem"
+            style="position:absolute;right:8px;top:8px;opacity:0.35;z-index:10">⤓</button>
           <!-- Campo em SVG (sem linha do meio-campo e sem círculo central) -->
-          <svg id="pitch" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;display:block">
-        <!-- gramado com listras -->
-        <rect x="0" y="0" width="1000" height="800" fill="#155c44" />
-        <clipPath id="fieldClip"><rect x="60" y="30" width="880" height="540" /></clipPath>
-        <g clip-path="url(#fieldClip)">
-          <rect x="60"  y="30" width="110" height="540" fill="#13553f"/>
-          <rect x="280" y="30" width="110" height="540" fill="#13553f"/>
-          <rect x="500" y="30" width="110" height="540" fill="#13553f"/>
-          <rect x="720" y="30" width="110" height="540" fill="#13553f"/>
-        </g>
+          <svg id="pitch" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet"
+            style="position:absolute;inset:0;width:100%;height:100%;display:block">
+            <!-- gramado com listras -->
+            <rect x="0" y="0" width="1000" height="800" fill="#155c44" />
+            <clipPath id="fieldClip">
+              <rect x="60" y="30" width="880" height="540" />
+            </clipPath>
+            <g clip-path="url(#fieldClip)">
+              <rect x="60" y="30" width="110" height="540" fill="#13553f" />
+              <rect x="280" y="30" width="110" height="540" fill="#13553f" />
+              <rect x="500" y="30" width="110" height="540" fill="#13553f" />
+              <rect x="720" y="30" width="110" height="540" fill="#13553f" />
+            </g>
 
-        <!-- linhas do campo (sem meio-campo e sem círculo central) -->
-        <g stroke="#f7fff9" stroke-opacity="0.70" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <!-- retângulo externo -->
-          <rect x="60" y="30" width="880" height="540" rx="12" ry="12" />
-          <!-- área penal esquerda -->
-          <rect x="60" y="120" width="150" height="360" />
-          <rect x="60" y="210" width="60" height="180" />
-          <!-- área penal direita -->
-          <rect x="790" y="120" width="150" height="360" />
-          <rect x="880" y="210" width="60" height="180" />
-        </g>
-        <!-- marca penal -->
-        <g fill="#f7fff9" fill-opacity="0.80">
-          <circle cx="160.83" cy="300" r="3" />
-          <circle cx="839.17" cy="300" r="3" />
-        </g>
+            <!-- linhas do campo (sem meio-campo e sem círculo central) -->
+            <g stroke="#f7fff9" stroke-opacity="0.70" stroke-width="2" fill="none" stroke-linecap="round"
+              stroke-linejoin="round">
+              <!-- retângulo externo -->
+              <rect x="60" y="30" width="880" height="540" rx="12" ry="12" />
+              <!-- área penal esquerda -->
+              <rect x="60" y="120" width="150" height="360" />
+              <rect x="60" y="210" width="60" height="180" />
+              <!-- área penal direita -->
+              <rect x="790" y="120" width="150" height="360" />
+              <rect x="880" y="210" width="60" height="180" />
+            </g>
+            <!-- marca penal -->
+            <g fill="#f7fff9" fill-opacity="0.80">
+              <circle cx="160.83" cy="300" r="3" />
+              <circle cx="839.17" cy="300" r="3" />
+            </g>
           </svg>
 
           <!-- Overlay dos eventos e do escudo -->
-          <svg id="overlay" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%">
-        <defs>
-          <filter id="ds" x="-10%" y="-10%" width="120%" height="120%">
-            <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.2" />
-          </filter>
-          <!-- gradiente dourado usado nos marcadores -->
-          <radialGradient id="goldGrad" cx="35%" cy="30%" r="70%">
-            <stop offset="0%" stop-color="#FFE58A" />
-            <stop offset="60%" stop-color="#FFD24D" />
-            <stop offset="100%" stop-color="#B8860B" />
-          </radialGradient>
-        </defs>
+          <svg id="overlay" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet"
+            style="position:absolute;inset:0;width:100%;height:100%">
+            <defs>
+              <filter id="ds" x="-10%" y="-10%" width="120%" height="120%">
+                <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.2" />
+              </filter>
+              <!-- gradiente dourado usado nos marcadores -->
+              <radialGradient id="goldGrad" cx="35%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#FFE58A" />
+                <stop offset="60%" stop-color="#FFD24D" />
+                <stop offset="100%" stop-color="#B8860B" />
+              </radialGradient>
+            </defs>
 
-        <!-- overlays removidos: grade numerada e zonas táticas -->
+            <!-- overlays removidos: grade numerada e zonas táticas -->
 
-        <!-- Marca d'água do escudo (central, sem aro) -->
-        <g id="crestWatermark" opacity="0.14" style="pointer-events:none; display:none">
-          <image id="crestImg" x="400" y="200" width="200" height="200" preserveAspectRatio="xMidYMid meet" />
-          <text id="crestText" x="500" y="300" text-anchor="middle" font-size="42" font-weight="800" fill="#0b1f16" style="display:none;">TIME</text>
-        </g>
+            <!-- Marca d'água do escudo (central, sem aro) -->
+            <g id="crestWatermark" opacity="0.14" style="pointer-events:none; display:none">
+              <image id="crestImg" x="400" y="200" width="200" height="200" preserveAspectRatio="xMidYMid meet" />
+              <text id="crestText" x="500" y="300" text-anchor="middle" font-size="42" font-weight="800" fill="#0b1f16"
+                style="display:none;">TIME</text>
+            </g>
 
-        <!-- Camadas de eventos -->
-        <g id="defensiveLayer"></g>
-        <g id="offensiveLayer"></g>
+            <!-- Camadas de eventos -->
+            <g id="defensiveLayer"></g>
+            <g id="offensiveLayer"></g>
           </svg>
         </div>
         <!-- Legenda inferior: Mandante + nome do time -->
-        <div class="field-caption" aria-hidden="true" style="margin-top:6px;text-align:center;color:#e7f8f1;opacity:0.9;font-weight:700">
+        <div class="field-caption" aria-hidden="true"
+          style="margin-top:6px;text-align:center;color:#e7f8f1;opacity:0.9;font-weight:700">
           <span>MANDANTE</span> <span id="homeTeamName" class="team-label"></span>
         </div>
         <!-- Legenda de jogadores participantes -->
-        <div id="playersLegend" class="players-legend" style="margin-top:12px;padding:12px;background:rgba(11,31,22,0.8);border-radius:8px;color:#e7f8f1;font-size:13px;display:none">
+        <div id="playersLegend" class="players-legend"
+          style="margin-top:12px;padding:12px;background:rgba(11,31,22,0.8);border-radius:8px;color:#e7f8f1;font-size:13px;display:none">
           <h4 style="margin:0 0 8px 0;font-size:14px;color:#f7d36a;text-align:center">Participações em Gols</h4>
           <div id="playersLegendContent" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
         </div>
@@ -136,17 +150,22 @@
         <button id="addExtraLeftBtn" type="button" class="extra-toggle-btn">Adicionar campinho extra (mandante)</button>
         <!-- Campinho extra (mandante) -->
         <div id="canvasLx" class="extra-canvas">
-          <button id="downloadField1x" class="download-btn" title="Baixar imagem" style="position:absolute;right:8px;top:8px;opacity:0.35;z-index:10">⤓</button>
-          <svg id="pitchLx" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+          <button id="downloadField1x" class="download-btn" title="Baixar imagem"
+            style="position:absolute;right:8px;top:8px;opacity:0.35;z-index:10">⤓</button>
+          <svg id="pitchLx" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet"
+            style="position:absolute;inset:0;width:100%;height:100%;display:block">
             <rect x="0" y="0" width="1000" height="800" fill="#155c44" />
-            <clipPath id="fieldClipX"><rect x="60" y="30" width="880" height="540" /></clipPath>
+            <clipPath id="fieldClipX">
+              <rect x="60" y="30" width="880" height="540" />
+            </clipPath>
             <g clip-path="url(#fieldClipX)">
-              <rect x="60"  y="30" width="110" height="540" fill="#13553f"/>
-              <rect x="280" y="30" width="110" height="540" fill="#13553f"/>
-              <rect x="500" y="30" width="110" height="540" fill="#13553f"/>
-              <rect x="720" y="30" width="110" height="540" fill="#13553f"/>
+              <rect x="60" y="30" width="110" height="540" fill="#13553f" />
+              <rect x="280" y="30" width="110" height="540" fill="#13553f" />
+              <rect x="500" y="30" width="110" height="540" fill="#13553f" />
+              <rect x="720" y="30" width="110" height="540" fill="#13553f" />
             </g>
-            <g stroke="#f7fff9" stroke-opacity="0.70" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <g stroke="#f7fff9" stroke-opacity="0.70" stroke-width="2" fill="none" stroke-linecap="round"
+              stroke-linejoin="round">
               <rect x="60" y="30" width="880" height="540" rx="12" ry="12" />
               <rect x="60" y="120" width="150" height="360" />
               <rect x="60" y="210" width="60" height="180" />
@@ -158,7 +177,8 @@
               <circle cx="839.17" cy="300" r="3" />
             </g>
           </svg>
-          <svg id="overlayLx" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%">
+          <svg id="overlayLx" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet"
+            style="position:absolute;inset:0;width:100%;height:100%">
             <g id="crestWatermarkLx" opacity="0.14" style="pointer-events:none; display:none">
               <image id="crestImgLx" x="400" y="200" width="200" height="200" preserveAspectRatio="xMidYMid meet" />
             </g>
@@ -167,7 +187,8 @@
           </svg>
         </div>
         <!-- Legenda inferior do campinho extra: Mandante + nome do time -->
-        <div id="captionLx" class="field-caption" aria-hidden="true" style="display:none;margin-top:6px;text-align:center;color:#e7f8f1;opacity:0.9;font-weight:700">
+        <div id="captionLx" class="field-caption" aria-hidden="true"
+          style="display:none;margin-top:6px;text-align:center;color:#e7f8f1;opacity:0.9;font-weight:700">
           <span>MANDANTE</span> <span id="homeTeamNameLx" class="team-label"></span>
           <button id="hideExtraLeftBtn" class="extra-toggle-btn" style="margin-left:12px">Ocultar</button>
         </div>
@@ -181,73 +202,87 @@
         </div>
         <!-- Campo da direita (visitante) -->
         <div id="canvas2" style="position:relative">
-          <button id="downloadField2" class="download-btn" title="Baixar imagem" style="position:absolute;right:8px;top:8px;opacity:0.35;z-index:10">⤓</button>
+          <button id="downloadField2" class="download-btn" title="Baixar imagem"
+            style="position:absolute;right:8px;top:8px;opacity:0.35;z-index:10">⤓</button>
           <!-- Campo em SVG (sem linha do meio-campo e sem círculo central) -->
-          <svg id="pitch2" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;display:block">
-        <!-- gramado com listras -->
-        <rect x="0" y="0" width="1000" height="800" fill="#155c44" />
-        <clipPath id="fieldClip"><rect x="60" y="30" width="880" height="540" /></clipPath>
-        <g clip-path="url(#fieldClip)">
-          <rect x="60"  y="30" width="110" height="540" fill="#13553f"/>
-          <rect x="280" y="30" width="110" height="540" fill="#13553f"/>
-          <rect x="500" y="30" width="110" height="540" fill="#13553f"/>
-          <rect x="720" y="30" width="110" height="540" fill="#13553f"/>
-        </g>
+          <svg id="pitch2" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet"
+            style="position:absolute;inset:0;width:100%;height:100%;display:block">
+            <!-- gramado com listras -->
+            <rect x="0" y="0" width="1000" height="800" fill="#155c44" />
+            <clipPath id="fieldClip">
+              <rect x="60" y="30" width="880" height="540" />
+            </clipPath>
+            <g clip-path="url(#fieldClip)">
+              <rect x="60" y="30" width="110" height="540" fill="#13553f" />
+              <rect x="280" y="30" width="110" height="540" fill="#13553f" />
+              <rect x="500" y="30" width="110" height="540" fill="#13553f" />
+              <rect x="720" y="30" width="110" height="540" fill="#13553f" />
+            </g>
 
-        <!-- linhas do campo (sem meio-campo e sem círculo central) -->
-        <g stroke="#f7fff9" stroke-opacity="0.70" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <!-- retângulo externo -->
-          <rect x="60" y="30" width="880" height="540" rx="12" ry="12" />
-          <!-- área penal esquerda -->
-          <rect x="60" y="120" width="150" height="360" />
-          <rect x="60" y="210" width="60" height="180" />
-          <!-- área penal direita -->
-          <rect x="790" y="120" width="150" height="360" />
-          <rect x="880" y="210" width="60" height="180" />
-        </g>
-        <!-- marca penal -->
-        <g fill="#f7fff9" fill-opacity="0.80">
-          <circle cx="160.83" cy="300" r="3" />
-          <circle cx="839.17" cy="300" r="3" />
-        </g>
+            <!-- linhas do campo (sem meio-campo e sem círculo central) -->
+            <g stroke="#f7fff9" stroke-opacity="0.70" stroke-width="2" fill="none" stroke-linecap="round"
+              stroke-linejoin="round">
+              <!-- retângulo externo -->
+              <rect x="60" y="30" width="880" height="540" rx="12" ry="12" />
+              <!-- área penal esquerda -->
+              <rect x="60" y="120" width="150" height="360" />
+              <rect x="60" y="210" width="60" height="180" />
+              <!-- área penal direita -->
+              <rect x="790" y="120" width="150" height="360" />
+              <rect x="880" y="210" width="60" height="180" />
+            </g>
+            <!-- marca penal -->
+            <g fill="#f7fff9" fill-opacity="0.80">
+              <circle cx="160.83" cy="300" r="3" />
+              <circle cx="839.17" cy="300" r="3" />
+            </g>
           </svg>
 
           <!-- Overlay somente com marca d'água do escudo -->
-          <svg id="overlay2" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%">
-        <!-- overlays removidos: grade numerada e zonas táticas -->
+          <svg id="overlay2" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet"
+            style="position:absolute;inset:0;width:100%;height:100%">
+            <!-- overlays removidos: grade numerada e zonas táticas -->
 
-        <g id="crestWatermark2" opacity="0.14" style="pointer-events:none; display:none">
-          <image id="crestImg2" x="400" y="200" width="200" height="200" preserveAspectRatio="xMidYMid meet" />
-        </g>
-        <!-- Camadas vazias para manter a estrutura -->
-        <g id="defensiveLayer2"></g>
-        <g id="offensiveLayer2"></g>
+            <g id="crestWatermark2" opacity="0.14" style="pointer-events:none; display:none">
+              <image id="crestImg2" x="400" y="200" width="200" height="200" preserveAspectRatio="xMidYMid meet" />
+            </g>
+            <!-- Camadas vazias para manter a estrutura -->
+            <g id="defensiveLayer2"></g>
+            <g id="offensiveLayer2"></g>
           </svg>
         </div>
         <!-- Legenda inferior: Visitante + nome do time -->
-        <div class="field-caption" aria-hidden="true" style="margin-top:6px;text-align:center;color:#e7f8f1;opacity:0.9;font-weight:700">
+        <div class="field-caption" aria-hidden="true"
+          style="margin-top:6px;text-align:center;color:#e7f8f1;opacity:0.9;font-weight:700">
           <span>VISITANTE</span> <span id="awayTeamName" class="team-label"></span>
         </div>
         <!-- Legenda de jogadores participantes -->
-        <div id="playersLegend2" class="players-legend" style="margin-top:12px;padding:12px;background:rgba(11,31,22,0.8);border-radius:8px;color:#e7f8f1;font-size:13px;display:none">
+        <div id="playersLegend2" class="players-legend"
+          style="margin-top:12px;padding:12px;background:rgba(11,31,22,0.8);border-radius:8px;color:#e7f8f1;font-size:13px;display:none">
           <h4 style="margin:0 0 8px 0;font-size:14px;color:#f7d36a;text-align:center">Participações em Gols</h4>
           <div id="playersLegendContent2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
         </div>
         <!-- Botão para exibir campinho extra (visitante) -->
-        <button id="addExtraRightBtn" type="button" class="extra-toggle-btn">Adicionar campinho extra (visitante)</button>
+        <button id="addExtraRightBtn" type="button" class="extra-toggle-btn">Adicionar campinho extra
+          (visitante)</button>
         <!-- Campinho extra (visitante) -->
         <div id="canvasRx" class="extra-canvas">
-          <button id="downloadField2x" class="download-btn" title="Baixar imagem" style="position:absolute;right:8px;top:8px;opacity:0.35;z-index:10">⤓</button>
-          <svg id="pitchRx" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+          <button id="downloadField2x" class="download-btn" title="Baixar imagem"
+            style="position:absolute;right:8px;top:8px;opacity:0.35;z-index:10">⤓</button>
+          <svg id="pitchRx" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet"
+            style="position:absolute;inset:0;width:100%;height:100%;display:block">
             <rect x="0" y="0" width="1000" height="800" fill="#155c44" />
-            <clipPath id="fieldClipX"><rect x="60" y="30" width="880" height="540" /></clipPath>
+            <clipPath id="fieldClipX">
+              <rect x="60" y="30" width="880" height="540" />
+            </clipPath>
             <g clip-path="url(#fieldClipX)">
-              <rect x="60"  y="30" width="110" height="540" fill="#13553f"/>
-              <rect x="280" y="30" width="110" height="540" fill="#13553f"/>
-              <rect x="500" y="30" width="110" height="540" fill="#13553f"/>
-              <rect x="720" y="30" width="110" height="540" fill="#13553f"/>
+              <rect x="60" y="30" width="110" height="540" fill="#13553f" />
+              <rect x="280" y="30" width="110" height="540" fill="#13553f" />
+              <rect x="500" y="30" width="110" height="540" fill="#13553f" />
+              <rect x="720" y="30" width="110" height="540" fill="#13553f" />
             </g>
-            <g stroke="#f7fff9" stroke-opacity="0.70" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <g stroke="#f7fff9" stroke-opacity="0.70" stroke-width="2" fill="none" stroke-linecap="round"
+              stroke-linejoin="round">
               <rect x="60" y="30" width="880" height="540" rx="12" ry="12" />
               <rect x="60" y="120" width="150" height="360" />
               <rect x="60" y="210" width="60" height="180" />
@@ -259,7 +294,8 @@
               <circle cx="839.17" cy="300" r="3" />
             </g>
           </svg>
-          <svg id="overlayRx" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%">
+          <svg id="overlayRx" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet"
+            style="position:absolute;inset:0;width:100%;height:100%">
             <g id="crestWatermarkRx" opacity="0.14" style="pointer-events:none; display:none">
               <image id="crestImgRx" x="400" y="200" width="200" height="200" preserveAspectRatio="xMidYMid meet" />
             </g>
@@ -268,7 +304,8 @@
           </svg>
         </div>
         <!-- Legenda inferior do campinho extra: Visitante + nome do time -->
-        <div id="captionRx" class="field-caption" aria-hidden="true" style="display:none;margin-top:6px;text-align:center;color:#e7f8f1;opacity:0.9;font-weight:700">
+        <div id="captionRx" class="field-caption" aria-hidden="true"
+          style="display:none;margin-top:6px;text-align:center;color:#e7f8f1;opacity:0.9;font-weight:700">
           <span>VISITANTE</span> <span id="awayTeamNameRx" class="team-label"></span>
           <button id="hideExtraRightBtn" class="extra-toggle-btn" style="margin-left:12px">Ocultar</button>
         </div>
@@ -277,10 +314,14 @@
   </div>
 
   <!-- Modal do Editor de Rodadas -->
-  <div id="editorModal" style="position:fixed;inset:0;background:rgba(0,0,0,0.4);display:none;align-items:center;justify-content:center;z-index:1000">
-    <div style="background:#13553f;padding:12px;width:90%;max-width:1100px;border-radius:8px;position:relative;color:#e7f8f1">
+  <div id="editorModal"
+    style="position:fixed;inset:0;background:rgba(0,0,0,0.4);display:none;align-items:center;justify-content:center;z-index:1000">
+    <div
+      style="background:#13553f;padding:12px;width:90%;max-width:1100px;border-radius:8px;position:relative;color:#e7f8f1">
       <button id="closeEditorBtn" type="button" style="position:absolute;right:8px;top:8px">Fechar</button>
-      <button id="editorClearAllBtn" type="button" style="position:absolute;right:80px;top:8px;background:#6b7280;color:#fff;font-size:11px;padding:4px 8px">⚠️ APAGAR GOLS DA TEMPORADA</button>
+      <button id="editorClearAllBtn" type="button"
+        style="position:absolute;right:80px;top:8px;background:#6b7280;color:#fff;font-size:11px;padding:4px 8px">⚠️
+        APAGAR GOLS DA TEMPORADA</button>
       <h2 style="margin:0 0 8px 0">Editor de Rodadas</h2>
       <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
         <label>Mandante:
@@ -312,9 +353,11 @@
         <button id="editorAddTestGoalsBtn" type="button">Adicionar gols de teste</button>
       </div>
       <div id="editorCanvas" style="position:relative;height:400px;border:1px solid #e7f8f1">
-        <svg id="editorPitch" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
+        <svg id="editorPitch" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet"
+          style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
           <rect x="0" y="0" width="1000" height="600" fill="#155c44" />
-          <g stroke="#f7fff9" stroke-opacity="0.70" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <g stroke="#f7fff9" stroke-opacity="0.70" stroke-width="2" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
             <rect x="60" y="30" width="880" height="540" rx="12" ry="12" />
             <rect x="60" y="120" width="150" height="360" />
             <rect x="60" y="210" width="60" height="180" />
@@ -326,31 +369,38 @@
             <circle cx="839.17" cy="300" r="3" />
           </g>
           <!-- Linha divisória vertical no meio -->
-          <line x1="500" y1="30" x2="500" y2="570" stroke="#f7d36a" stroke-width="3" stroke-dasharray="10,5" stroke-opacity="0.6" />
+          <line x1="500" y1="30" x2="500" y2="570" stroke="#f7d36a" stroke-width="3" stroke-dasharray="10,5"
+            stroke-opacity="0.6" />
           <!-- Textos indicativos (fora do campo) -->
-          <text x="280" y="20" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#f7d36a">REGISTRO DE GOL VISITANTE</text>
-          <text x="720" y="20" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#f7d36a">REGISTRO DE GOL MANDANTE</text>
+          <text x="280" y="20" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14"
+            font-weight="700" fill="#f7d36a">REGISTRO DE GOL VISITANTE</text>
+          <text x="720" y="20" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14"
+            font-weight="700" fill="#f7d36a">REGISTRO DE GOL MANDANTE</text>
         </svg>
-        <svg id="editorOverlay" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:auto"></svg>
+        <svg id="editorOverlay" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet"
+          style="position:absolute;inset:0;width:100%;height:100%;pointer-events:auto"></svg>
       </div>
       <div id="editorEventsList" style="margin-top:8px"></div>
     </div>
-    
+
     <!-- Painel lateral para seleção de jogadores -->
-    <div id="playerSelectionPanel" style="position:absolute;right:-320px;top:0;width:300px;height:100%;background:#0f172a;border-left:2px solid #e7f8f1;padding:16px;color:#e7f8f1;transition:right 0.3s ease;overflow-y:auto">
+    <div id="playerSelectionPanel"
+      style="position:relative;width:100%;max-width:600px;margin:12px auto 0;background:#0f172a;border:2px solid #e7f8f1;padding:16px;color:#e7f8f1;border-radius:8px;display:none;overflow-y:auto">
       <h3 style="margin:0 0 12px 0;font-size:16px">Selecionar Jogador</h3>
       <div id="playerEventType" style="margin-bottom:12px;font-weight:bold;color:#f7d36a"></div>
-      
+
       <div style="margin-bottom:12px">
         <label style="display:block;margin-bottom:4px;font-size:14px">Time:</label>
-        <select id="playerTeamSelect" style="width:100%;padding:6px;border:1px solid #e7f8f1;background:#13553f;color:#e7f8f1">
+        <select id="playerTeamSelect"
+          style="width:100%;padding:6px;border:1px solid #e7f8f1;background:#13553f;color:#e7f8f1">
           <option value="">Selecione o time...</option>
         </select>
       </div>
-      
+
       <div style="margin-bottom:12px">
         <label style="display:block;margin-bottom:4px;font-size:14px">Posição:</label>
-        <select id="playerPositionFilter" style="width:100%;padding:6px;border:1px solid #e7f8f1;background:#13553f;color:#e7f8f1">
+        <select id="playerPositionFilter"
+          style="width:100%;padding:6px;border:1px solid #e7f8f1;background:#13553f;color:#e7f8f1">
           <option value="">Todas as posições</option>
           <option value="Goleiro">Goleiro</option>
           <option value="Lateral">Lateral</option>
@@ -363,33 +413,47 @@
       <!-- Seleção de lado específica para Laterais -->
       <div id="playerSideRow" style="margin-bottom:12px;display:none">
         <label style="display:block;margin-bottom:4px;font-size:14px">Lado do Lateral:</label>
-        <select id="playerSideSelect" style="width:100%;padding:6px;border:1px solid #e7f8f1;background:#13553f;color:#e7f8f1">
+        <select id="playerSideSelect"
+          style="width:100%;padding:6px;border:1px solid #e7f8f1;background:#13553f;color:#e7f8f1">
           <option value="">Selecione o lado...</option>
           <option value="LD">Lateral Direita (LD)</option>
           <option value="LE">Lateral Esquerda (LE)</option>
         </select>
       </div>
-      
+
       <div style="margin-bottom:12px">
         <label style="display:block;margin-bottom:4px;font-size:14px">Jogador:</label>
-        <select id="playerSelect" style="width:100%;padding:6px;border:1px solid #e7f8f1;background:#13553f;color:#e7f8f1">
+        <select id="playerSelect"
+          style="width:100%;padding:6px;border:1px solid #e7f8f1;background:#13553f;color:#e7f8f1">
           <option value="">Selecione o jogador...</option>
         </select>
       </div>
-      
-      <div id="selectedPlayerInfo" style="margin-bottom:16px;padding:8px;background:#13553f;border-radius:4px;font-size:12px;display:none">
+
+      <!-- Campo para nome do jogador em gol contra -->
+      <div id="ownGoalPlayerNameRow" style="margin-bottom:12px;display:none">
+        <label style="display:block;margin-bottom:4px;font-size:14px">Nome do jogador (gol contra):</label>
+        <input id="ownGoalPlayerName" type="text" placeholder="Digite o nome do jogador..."
+          style="width:100%;padding:6px;border:1px solid #e7f8f1;background:#13553f;color:#e7f8f1;border-radius:4px" />
+      </div>
+
+      <div id="selectedPlayerInfo"
+        style="margin-bottom:16px;padding:8px;background:#13553f;border-radius:4px;font-size:12px;display:none">
         <div><strong>Nome:</strong> <span id="playerFullName"></span></div>
         <div><strong>Posição:</strong> <span id="playerPosition"></span></div>
         <div><strong>Time:</strong> <span id="playerTeam"></span></div>
       </div>
-      
+
       <div style="display:flex;gap:8px">
-        <button id="confirmPlayerBtn" type="button" style="flex:1;padding:8px;background:#22c55e;color:white;border:none;border-radius:4px;cursor:pointer" disabled>Confirmar</button>
-        <button id="cancelPlayerBtn" type="button" style="flex:1;padding:8px;background:#ef4444;color:white;border:none;border-radius:4px;cursor:pointer">Cancelar</button>
+        <button id="confirmPlayerBtn" type="button"
+          style="flex:1;padding:8px;background:#22c55e;color:white;border:none;border-radius:4px;cursor:pointer"
+          disabled>Confirmar</button>
+        <button id="cancelPlayerBtn" type="button"
+          style="flex:1;padding:8px;background:#ef4444;color:white;border:none;border-radius:4px;cursor:pointer">Cancelar</button>
       </div>
     </div>
   </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>
