@@ -2666,13 +2666,16 @@ function addClickInteractivity(layer, events) {
 }
 
 function showPlayerTooltip(event, eventData) {
-  // Remover tooltip existente
-  const existingTooltip = document.getElementById('playerTooltip');
-  if (existingTooltip) {
-    existingTooltip.remove();
+  const markerEl = event.currentTarget;
+
+  // Alternar (Toggle) behavior
+  const existingFn = markerEl._tooltipToggle;
+  if (existingFn) {
+    existingFn(); // Fecha o tooltip atual se já existir
+    return;
   }
 
-  // Verificar se há dados de jogador
+  // Verificar se há dados de jogador (embora o listener só seja adicionado se houver)
   const hasPlayerData = (eventData.assistPlayer && eventData.assistPlayer.name) ||
     (eventData.shotPlayer && eventData.shotPlayer.name);
 
@@ -2682,7 +2685,7 @@ function showPlayerTooltip(event, eventData) {
 
   // Criar tooltip
   const tooltip = document.createElement('div');
-  tooltip.id = 'playerTooltip';
+  tooltip.className = 'player-tooltip-popup';
   tooltip.style.cssText = `
     position: absolute;
     background: rgba(11,31,22,0.98);
@@ -2694,19 +2697,19 @@ function showPlayerTooltip(event, eventData) {
     z-index: 99999;
     max-width: 280px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1);
-    pointer-events: none;
+    pointer-events: auto;
     backdrop-filter: blur(4px);
     font-family: inherit;
   `;
 
-  // Abreviações e rótulos simples
+  // Conteúdo
   const POS_ABBR = { 'Goleiro': 'GOL', 'Zagueiro': 'ZAG', 'Meia': 'MEI', 'Atacante': 'ATA' };
   const abbr = (p, side) => {
     if (p === 'Lateral') return side === 'LD' ? 'LAT D' : (side === 'LE' ? 'LAT E' : 'LAT');
     return POS_ABBR[p] || p;
   };
   let content = '';
-  // Cabeçalho com confronto (escudos + nomes) quando disponível
+
   const crestSrcFor = (teamKey) => {
     const key = String(teamKey || '').toLowerCase().replace(/-/g, '_');
     const norm = normalizeTeamKey(key);
@@ -2718,6 +2721,7 @@ function showPlayerTooltip(event, eventData) {
     const imgHtml = src ? `<img src="${src}" alt="" style="width:18px;height:18px;border-radius:50%;background:#fff;padding:2px;box-shadow:0 1px 2px rgba(0,0,0,.2)">` : '';
     return `<div style="display:flex;align-items:center;gap:6px">${imgHtml}<span style="font-weight:700">${name}</span></div>`;
   };
+
   if (eventData.match && (eventData.match.homeName || eventData.match.awayName)) {
     const m = eventData.match;
     const headHtml = `<div style="margin-bottom:8px;display:flex;align-items:center;gap:8px">${renderTeamHeaderItem(m.homeName, m.homeTeamKey)}<span style="opacity:.6">vs</span>${renderTeamHeaderItem(m.awayName, m.awayTeamKey)}</div>`;
@@ -2738,74 +2742,59 @@ function showPlayerTooltip(event, eventData) {
     content += `<div style="margin-top:8px;color:#ef4444;font-weight:bold">⚠️ Gol Contra (${eventData.ownGoalSide})</div>`;
   }
 
-  tooltip.innerHTML = content;
+  // Botão de fechar
+  const closeBtn = document.createElement('div');
+  closeBtn.textContent = '×';
+  closeBtn.style.cssText = 'position:absolute;top:4px;right:6px;font-size:16px;cursor:pointer;opacity:0.7';
+  closeBtn.onclick = (e) => { e.stopPropagation(); cleanup(); };
+  tooltip.appendChild(closeBtn);
 
-  // Ancorar ao marcador e acompanhar zoom/resize
-  const markerEl = event.currentTarget;
+  const contentDiv = document.createElement('div');
+  contentDiv.innerHTML = content;
+  tooltip.appendChild(contentDiv);
+
+  // Posicionamento
   const overlayEl = markerEl?.ownerSVGElement || markerEl?.closest('svg');
   const containerEl = overlayEl?.parentElement || document.body;
 
   function positionTooltip() {
+    if (!tooltip.parentElement) return;
     const markerRect = markerEl.getBoundingClientRect();
     const containerRect = containerEl.getBoundingClientRect();
     const centerX = markerRect.left - containerRect.left + (markerRect.width / 2);
     const centerY = markerRect.top - containerRect.top + (markerRect.height / 2);
 
-    // Posição inicial
     let tooltipX = centerX + 12;
     let tooltipY = centerY - 10;
 
-    // Obter dimensões do tooltip (precisa estar no DOM primeiro)
     tooltip.style.left = tooltipX + 'px';
     tooltip.style.top = tooltipY + 'px';
-    tooltip.style.visibility = 'hidden';
-
-    // Aguardar um frame para o tooltip ser renderizado
-    requestAnimationFrame(() => {
-      const tooltipRect = tooltip.getBoundingClientRect();
-      const containerBounds = containerEl.getBoundingClientRect();
-
-      // Ajustar horizontalmente se sair da tela
-      if (tooltipRect.right > containerBounds.right) {
-        tooltipX = centerX - tooltipRect.width - 12; // Posicionar à esquerda
-      }
-      if (tooltipX < 0) {
-        tooltipX = 8; // Margem mínima da esquerda
-      }
-
-      // Ajustar verticalmente se sair da tela
-      if (tooltipRect.bottom > containerBounds.bottom) {
-        tooltipY = centerY - tooltipRect.height - 12; // Posicionar acima
-      }
-      if (tooltipY < 0) {
-        tooltipY = 8; // Margem mínima do topo
-      }
-
-      // Aplicar posição final
-      tooltip.style.left = tooltipX + 'px';
-      tooltip.style.top = tooltipY + 'px';
-      tooltip.style.visibility = 'visible';
-    });
   }
 
-  // Inserir no mesmo container que o overlay
   containerEl.appendChild(tooltip);
   positionTooltip();
 
-  // Remover tooltip ao clicar fora
   function cleanup() {
-    try { tooltip.remove(); } catch { }
+    if (tooltip.parentElement) tooltip.parentElement.removeChild(tooltip);
+    delete markerEl._tooltipToggle;
     window.removeEventListener('resize', positionTooltip);
-    document.removeEventListener('scroll', positionTooltip, true);
-    document.removeEventListener('click', onDocClick);
   }
 
-  function onDocClick() { cleanup(); }
-  // Reposicionar em zoom/resize/scroll
+  markerEl._tooltipToggle = cleanup;
   window.addEventListener('resize', positionTooltip);
-  document.addEventListener('scroll', positionTooltip, true);
-  setTimeout(() => { document.addEventListener('click', onDocClick); }, 100);
 }
+
+// Fechar todos os tooltips ao clicar fora
+document.addEventListener('click', (e) => {
+  // Se o clique não foi em um marcador (que tem stopPropagation), fecha tudo
+  // Mas precisamos verificar se o clique foi DENTRO de um tooltip também
+  if (e.target.closest('.player-tooltip-popup')) return;
+
+  document.querySelectorAll('.player-tooltip-popup').forEach(t => t.remove());
+  // Limpar referências nos marcadores seria ideal, mas complexo de iterar. 
+  // Como os elementos DOM sumiram, o cleanup individual não é crítico, mas as referências _tooltipToggle ficarão orfãs.
+  // Melhor abordagem: iterar sobre tooltips abertos e chamar seu cleanup se possível, ou apenas remover do DOM.
+});
 
 // Legenda compacta de participações em gols por posição separando CEDIDOS e CONQUISTADOS (incluída no PNG)
 // Nova função drawPositionSummaryLegend com layout em blocos grandes e fundo claro

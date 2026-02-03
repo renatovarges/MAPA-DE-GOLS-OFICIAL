@@ -9,6 +9,54 @@
 </head>
 
 <body>
+  <!-- Proteção por Senha (PIN) -->
+  <div id="pinOverlay"
+    style="position:fixed;inset:0;background:#06140f;z-index:999999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#e7f8f1">
+    <div
+      style="text-align:center;max-width:320px;padding:24px;background:#0b2f25;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.5);border:1px solid #155c44">
+      <img src="TCCBRANCOTRANSPARENTE.png" alt="Logo" style="height:80px;margin-bottom:16px;opacity:0.9">
+      <h2 style="margin:0 0 16px 0;font-size:20px;font-weight:700;color:#f7d36a">Área Restrita</h2>
+      <p style="margin:0 0 20px 0;font-size:14px;opacity:0.8">Digite o PIN de acesso para continuar:</p>
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:20px">
+        <input type="password" id="pinInput" placeholder="PIN" maxlength="4"
+          style="width:120px;padding:12px;text-align:center;font-size:24px;letter-spacing:4px;border-radius:8px;border:2px solid #155c44;background:#06140f;color:#e7f8f1;outline:none">
+      </div>
+      <button id="pinSubmit"
+        style="background:#22c55e;color:#fff;border:none;padding:12px 32px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:16px;width:100%">ACESSAR</button>
+      <p id="pinError" style="color:#ef4444;margin:12px 0 0 0;font-size:13px;display:none">PIN incorreto. Tente
+        novamente.</p>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const overlay = document.getElementById('pinOverlay');
+      const input = document.getElementById('pinInput');
+      const btn = document.getElementById('pinSubmit');
+      const error = document.getElementById('pinError');
+      const PIN = "1979"; // Senha definida
+
+      const check = () => {
+        if (input.value === PIN) {
+          overlay.style.opacity = '0';
+          setTimeout(() => overlay.remove(), 500);
+        } else {
+          error.style.display = 'block';
+          input.value = '';
+          input.focus();
+        }
+      };
+
+      btn.addEventListener('click', check);
+      input.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') check();
+        error.style.display = 'none';
+      });
+
+      // Focar no input ao carregar
+      setTimeout(() => input.focus(), 100);
+    })();
+  </script>
+
   <div id="app">
     <header class="app-header" style="display:flex;flex-direction:column;gap:8px;align-items:flex-start">
       <div class="brand"
