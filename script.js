@@ -1494,7 +1494,7 @@ function initEditor() {
     g.setAttribute('id', panelId);
     g.setAttribute('filter', 'url(#ds)');
 
-    const x = 740, y = 24, w = 240, h = 160;
+    const x = 1020, y = 24, w = 240, h = 160;
     const rect = document.createElementNS(ns, 'rect');
     rect.setAttribute('x', String(x));
     rect.setAttribute('y', String(y));
