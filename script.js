@@ -1218,7 +1218,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitch');
         const overlayEl = document.getElementById('overlay');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 10);
         const a = document.createElement('a');
         const base = slugify(currentTeamLeft || 'campo1');
         a.href = dataUrl;
@@ -1236,7 +1236,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitch2');
         const overlayEl = document.getElementById('overlay2');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 10);
         const a = document.createElement('a');
         const base = slugify(currentTeamRight || 'campo2');
         a.href = dataUrl;
@@ -1254,7 +1254,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitchLx');
         const overlayEl = document.getElementById('overlayLx');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 10);
         const a = document.createElement('a');
         const base = slugify(currentTeamLeftExtra || 'campo1-extra');
         a.href = dataUrl;
@@ -1272,7 +1272,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitchRx');
         const overlayEl = document.getElementById('overlayRx');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 10);
         const a = document.createElement('a');
         const base = slugify(currentTeamRightExtra || 'campo2-extra');
         a.href = dataUrl;
@@ -2836,7 +2836,6 @@ function drawCxTitle(overlayEl, id) {
 // Nova versão DEFINITIVA do rodapé - Layout baseado na imagem de referência do usuário
 function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, groupId = 'positionSummary') {
   if (!overlayEl) return;
-  console.log('DEBUG: Iniciando drawPositionSummaryLegend no overlay:', overlayEl.id);
   const existing = overlayEl.querySelector(`#${groupId}`);
   if (existing) existing.remove();
 
@@ -2907,10 +2906,6 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
 
   // REMOVIDO FILTRO para evitar problemas de renderização local
   const g = el('g', { id: groupId });
-
-  // DEBUG: Retângulo vermelho gigante para verificar se o grupo existe
-  const debugRect = el('rect', { x: 100, y: 100, width: 800, height: 50, fill: 'red', opacity: 0.5 });
-  g.appendChild(debugRect);
 
   // LAYOUT BASEADO NA IMAGEM DE REFERÊNCIA
   const startY = 590; // Início do rodapé (logo abaixo do campo que termina em 570)
