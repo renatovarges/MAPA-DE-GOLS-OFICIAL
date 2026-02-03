@@ -2811,6 +2811,28 @@ function showPlayerTooltip(event, eventData) {
 // Nova função drawPositionSummaryLegend com layout em blocos grandes e fundo claro
 // Baseado no modelo fornecido pelo usuário (Athletico-PR)
 
+// Função para desenhar o título "CEDIDAS X CONQUISTADAS" no SVG (para exportação)
+function drawCxTitle(overlayEl, id) {
+  if (!overlayEl) return;
+  const existing = overlayEl.querySelector(`#${id}`);
+  if (existing) existing.remove();
+
+  const g = el('g', { id: id, style: 'display:none' });
+
+  const text = el('text', {
+    x: 500,
+    y: 40,
+    'text-anchor': 'middle',
+    'font-family': 'Inter, Arial, sans-serif',
+    'font-size': 20,
+    'font-weight': 900,
+    fill: '#e7f8f1'
+  });
+  text.textContent = 'CEDIDAS  X  CONQUISTADAS';
+  g.appendChild(text);
+  overlayEl.appendChild(g);
+}
+
 // Nova versão DEFINITIVA do rodapé - Layout baseado na imagem de referência do usuário
 function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, groupId = 'positionSummary') {
   if (!overlayEl) return;
@@ -3050,7 +3072,7 @@ function initGridToggle() {
 window.addEventListener('DOMContentLoaded', () => {
   initTeamInteractions();
   initGridToggle();
-  // Carregar times iniciais padrão
-  loadTeamData('cruzeiro');
-  loadTeamData2('fortaleza');
+  // Iniciar com campos limpos (sem times carregados)
+  // loadTeamData('');
+  // loadTeamData2('');
 });
