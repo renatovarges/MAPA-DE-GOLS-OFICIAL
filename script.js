@@ -2898,9 +2898,11 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   }
 
   // Verificar se há dados
+  // Verificar se há dados
   const totalCedidos = Object.values(cedidosAssist).reduce((a, b) => a + b, 0) + Object.values(cedidosGols).reduce((a, b) => a + b, 0);
   const totalConquistados = Object.values(conquistadosAssist).reduce((a, b) => a + b, 0) + Object.values(conquistadosGols).reduce((a, b) => a + b, 0);
-  if (totalCedidos === 0 && totalConquistados === 0) return;
+  // REMOVIDO: if (totalCedidos === 0 && totalConquistados === 0) return;
+  // Agora desenha sempre para garantir que o layout fique fixo.
 
   const g = el('g', { id: groupId, filter: 'url(#ds)' });
 
