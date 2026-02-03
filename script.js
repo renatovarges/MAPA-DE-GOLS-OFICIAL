@@ -2836,6 +2836,7 @@ function drawCxTitle(overlayEl, id) {
 // Nova versão DEFINITIVA do rodapé - Layout baseado na imagem de referência do usuário
 function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, groupId = 'positionSummary') {
   if (!overlayEl) return;
+  console.log('DEBUG: Iniciando drawPositionSummaryLegend no overlay:', overlayEl.id);
   const existing = overlayEl.querySelector(`#${groupId}`);
   if (existing) existing.remove();
 
@@ -2904,7 +2905,12 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   // REMOVIDO: if (totalCedidos === 0 && totalConquistados === 0) return;
   // Agora desenha sempre para garantir que o layout fique fixo.
 
-  const g = el('g', { id: groupId, filter: 'url(#ds)' });
+  // REMOVIDO FILTRO para evitar problemas de renderização local
+  const g = el('g', { id: groupId });
+
+  // DEBUG: Retângulo vermelho gigante para verificar se o grupo existe
+  const debugRect = el('rect', { x: 100, y: 100, width: 800, height: 50, fill: 'red', opacity: 0.5 });
+  g.appendChild(debugRect);
 
   // LAYOUT BASEADO NA IMAGEM DE REFERÊNCIA
   const startY = 590; // Início do rodapé (logo abaixo do campo que termina em 570)
