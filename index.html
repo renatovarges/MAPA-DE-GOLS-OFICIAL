@@ -20,7 +20,7 @@
       </div>
       <div class="toolbar" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
         <button id="openEditorBtn" type="button" class="toolbar-btn">Editor</button>
-        <label class="toolbar-item">Rodadas
+        <label class="toolbar-item">Nº Jogos
           <select id="roundCountSelect" class="toolbar-select">
             <option value="1">1</option>
             <option value="3" selected>3</option>
@@ -333,8 +333,6 @@
         <label>Rodada: <input id="editorRound" type="number" min="1" value="1" style="width:64px" /></label>
         <label>Data: <input id="editorDate" type="date" required
             style="padding:2px;background:#e7f8f1;border:none;border-radius:2px" /></label>
-        <label>Data: <input id="editorDate" type="date" required
-            style="padding:2px;background:#e7f8f1;border:none;border-radius:2px" /></label>
         <label>Adversário: <input id="editorOpponent" type="text" placeholder="Adversário" /></label>
         <label>Ferramenta:
           <select id="editorTool">
@@ -451,4 +449,12 @@
         <button id="confirmPlayerBtn" type="button"
           style="flex:1;padding:8px;background:#22c55e;color:white;border:none;border-radius:4px;cursor:pointer"
           disabled>Confirmar</button>
-        <button id="cancelPlayerBtn" type="button" style="flex:1;padding:8px;background:#ef4444;color
+        <button id="cancelPlayerBtn" type="button"
+          style="flex:1;padding:8px;background:#ef4444;color:white;border:none;border-radius:4px;cursor:pointer">Cancelar</button>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>

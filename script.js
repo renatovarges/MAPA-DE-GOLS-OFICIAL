@@ -3032,6 +3032,20 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   drawSection('GOLS', conquistadosGols, conquistadosGolsX, boxStartY);
 }
 
+function initGridToggle() {
+  // Função stub ou implementação real caso exista o checkbox
+  const chk = document.getElementById('gridToggle');
+  if (!chk) return;
+  const update = () => {
+    const g1 = document.getElementById('gridImg');
+    const g2 = document.getElementById('gridImg2');
+    if (g1) g1.style.display = chk.checked ? 'block' : 'none';
+    if (g2) g2.style.display = chk.checked ? 'block' : 'none';
+  };
+  chk.addEventListener('change', update);
+  update();
+}
+
 // Inicialização
 window.addEventListener('DOMContentLoaded', () => {
   initTeamInteractions();
