@@ -355,6 +355,7 @@ function resolveDataFileKey(teamKey) {
     'bragantino': 'red-bull-bragantino',
     'red_bull_bragantino': 'red-bull-bragantino',
     'atletico_mg': 'atletico-mg',
+    'athletico_pr': 'athletico-pr',
     'sao_paulo': 'sao-paulo'
   };
   if (map[teamKey]) return map[teamKey];
