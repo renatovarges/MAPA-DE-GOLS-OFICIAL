@@ -5,6 +5,17 @@ from http.server import SimpleHTTPRequestHandler, HTTPServer
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(ROOT, 'data')
 
+def normalize_team_key(team_key):
+    """Converte underscore para hífen nos nomes de arquivo"""
+    # Mapeamento específico para times com nomes compostos
+    key_map = {
+        'athletico_pr': 'athletico-pr',
+        'atletico_mg': 'atletico-mg',
+        'sao_paulo': 'sao-paulo',
+        'red_bull_bragantino': 'red-bull-bragantino'
+    }
+    return key_map.get(team_key, team_key)
+
 class Handler(SimpleHTTPRequestHandler):
     def do_POST(self):
         if self.path == '/api/clear-all':
@@ -50,7 +61,9 @@ class Handler(SimpleHTTPRequestHandler):
             saved_paths = []
 
             def upsert_team_round(team_key, round_obj):
-                path = os.path.join(DATA_DIR, f'{team_key}.json')
+                # Normalizar o nome do arquivo
+                normalized_key = normalize_team_key(team_key)
+                path = os.path.join(DATA_DIR, f'{normalized_key}.json')
                 if os.path.exists(path):
                     try:
                         with open(path, 'r', encoding='utf-8') as f:
