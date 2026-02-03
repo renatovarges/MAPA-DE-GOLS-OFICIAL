@@ -70,6 +70,7 @@ const CREST_MAP = {
 // Nomes amigáveis para exibição nos rótulos
 const DISPLAY_NAME_MAP = {
   atletico_mg: 'Atlético-MG',
+  athletico_pr: 'Athletico-PR',
   bahia: 'Bahia',
   botafogo: 'Botafogo',
   ceara: 'Ceará',
@@ -412,12 +413,12 @@ async function getTeamAggregatedData(teamKey, { homeFilter = null } = {}) {
     let conceded = [];
     if (roundsArr.length > 0) {
       // Ordenar por roundNumber quando disponível, senão manter ordem original
-      let sorted = roundsArr.slice().sort((a,b) => (a.roundNumber||0) - (b.roundNumber||0));
+      let sorted = roundsArr.slice().sort((a, b) => (a.roundNumber || 0) - (b.roundNumber || 0));
       if (homeFilter != null) {
         const wantHome = Boolean(homeFilter);
         sorted = sorted.filter(r => Boolean(r.home) === wantHome);
       }
-      const selected = sorted.slice(Math.max(0, sorted.length - (settings.count||3)));
+      const selected = sorted.slice(Math.max(0, sorted.length - (settings.count || 3)));
 
       const fmtName = (k) => formatTeamName(String(k || '').replace(/-/g, '_'));
       const toStdWithMatch = (ev, round) => {
@@ -464,7 +465,7 @@ async function getTeamAggregatedData(teamKey, { homeFilter = null } = {}) {
 
 async function loadTeamData(teamKey = 'cruzeiro', { showCrest = true } = {}) {
   currentTeamLeft = teamKey;
-  try { window.currentTeamLeft = teamKey; } catch (e) {}
+  try { window.currentTeamLeft = teamKey; } catch (e) { }
   const mode = (window.__aggregationSettings && window.__aggregationSettings.mode) ? String(window.__aggregationSettings.mode) : 'seguidas';
   const homeFilter = (mode === 'mando') ? true : null; // 'mando' -> apenas mandante; caso contrário -> todas
   const data = await getTeamAggregatedData(teamKey, { homeFilter });
@@ -473,7 +474,7 @@ async function loadTeamData(teamKey = 'cruzeiro', { showCrest = true } = {}) {
   renderEvents(offensiveLayer, data.created || [], { flipX: false });
   const homeLbl = document.getElementById('homeTeamName');
   if (homeLbl) homeLbl.textContent = ` — ${(data.name || formatTeamName(teamKey)).toUpperCase()}`;
-  
+
   // Adicionar interatividade e desenhar legenda compacta por posição no overlay (incluída no PNG)
   const allEvents = [...(data.conceded || []), ...(data.created || [])];
   addClickInteractivity(defensiveLayer, data.conceded || []);
@@ -486,7 +487,7 @@ async function loadTeamData(teamKey = 'cruzeiro', { showCrest = true } = {}) {
 
 async function loadTeamData2(teamKey = 'fortaleza', { showCrest = true } = {}) {
   currentTeamRight = teamKey;
-  try { window.currentTeamRight = teamKey; } catch (e) {}
+  try { window.currentTeamRight = teamKey; } catch (e) { }
   const mode = (window.__aggregationSettings && window.__aggregationSettings.mode) ? String(window.__aggregationSettings.mode) : 'seguidas';
   const homeFilter = (mode === 'mando') ? false : null; // 'mando' -> apenas visitante; caso contrário -> todas
   const data = await getTeamAggregatedData(teamKey, { homeFilter });
@@ -495,7 +496,7 @@ async function loadTeamData2(teamKey = 'fortaleza', { showCrest = true } = {}) {
   renderEvents(offensiveLayer2, data.created || [], { flipX: false });
   const awayLbl = document.getElementById('awayTeamName');
   if (awayLbl) awayLbl.textContent = ` — ${(data.name || formatTeamName(teamKey)).toUpperCase()}`;
-  
+
   // Adicionar interatividade e desenhar legenda compacta por posição no overlay (incluída no PNG)
   const allEvents = [...(data.conceded || []), ...(data.created || [])];
   addClickInteractivity(defensiveLayer2, data.conceded || []);
@@ -507,7 +508,7 @@ async function loadTeamData2(teamKey = 'fortaleza', { showCrest = true } = {}) {
 }
 async function loadTeamDataLeftExtra(teamKey = 'cruzeiro') {
   currentTeamLeftExtra = teamKey;
-  try { window.currentTeamLeftExtra = teamKey; } catch (e) {}
+  try { window.currentTeamLeftExtra = teamKey; } catch (e) { }
   const mode = (window.__aggregationSettings && window.__aggregationSettings.mode) ? String(window.__aggregationSettings.mode) : 'seguidas';
   const homeFilter = (mode === 'mando') ? true : null;
   const data = await getTeamAggregatedData(teamKey, { homeFilter });
@@ -521,7 +522,7 @@ async function loadTeamDataLeftExtra(teamKey = 'cruzeiro') {
 }
 async function loadTeamDataRightExtra(teamKey = 'fortaleza') {
   currentTeamRightExtra = teamKey;
-  try { window.currentTeamRightExtra = teamKey; } catch (e) {}
+  try { window.currentTeamRightExtra = teamKey; } catch (e) { }
   const mode = (window.__aggregationSettings && window.__aggregationSettings.mode) ? String(window.__aggregationSettings.mode) : 'seguidas';
   const homeFilter = (mode === 'mando') ? false : null;
   const data = await getTeamAggregatedData(teamKey, { homeFilter });
@@ -562,6 +563,7 @@ function initTeamInteractions() {
       // alguns ajustes manuais
       const mapAlt = {
         'atletico_mg': 'atletico_mg',
+        'athletico_pr': 'athletico_pr',
         'sao_paulo': 'sao_paulo',
         'red_bull_bragantino': 'red_bull_bragantino'
       };
@@ -570,8 +572,8 @@ function initTeamInteractions() {
     img.setAttribute('data-team-key', key);
     img.setAttribute('draggable', 'true');
     img.addEventListener('dragstart', (ev) => {
-      try { ev.dataTransfer.setData('text/team', key); } catch (e) {}
-      try { ev.dataTransfer.setData('text/plain', key); } catch (e) {}
+      try { ev.dataTransfer.setData('text/team', key); } catch (e) { }
+      try { ev.dataTransfer.setData('text/plain', key); } catch (e) { }
     });
     // Clique como fallback: carrega no campo da esquerda
     img.addEventListener('click', () => {
@@ -648,7 +650,7 @@ function drawEditorGrid() {
 function drawZones(layer) {
   if (!layer) return;
   while (layer.firstChild) layer.removeChild(layer.firstChild);
-  
+
   // Desenhar fundo verde escuro para todas as células
   for (let r = 0; r < GRID.rows; r++) {
     for (let c = 0; c < GRID.cols; c++) {
@@ -657,7 +659,7 @@ function drawZones(layer) {
       const y = toXY({ x: c * CELL.w, y: r * CELL.h }).Y;
       const width = toXY({ x: CELL.w, y: 0 }).X - toXY({ x: 0, y: 0 }).X;
       const height = toXY({ x: 0, y: CELL.h }).Y - toXY({ x: 0, y: 0 }).Y;
-      
+
       // Cores especiais para células destacadas
       let fillColor = '#2d5016'; // Verde escuro padrão
       if (cellIndex === 1) fillColor = '#ff8c00'; // Laranja - Escanteio defensivo direita
@@ -666,7 +668,7 @@ function drawZones(layer) {
       else if (cellIndex === 12) fillColor = '#00bfff'; // Ciano - Escanteio ofensivo esquerda
       else if (cellIndex === 84) fillColor = '#90ee90'; // Verde claro - Escanteio ofensivo direita
       else if (cellIndex === 47) fillColor = '#da70d6'; // Roxo/magenta - Pênalti ofensivo
-      
+
       const cellRect = el('rect', {
         x: x,
         y: y,
@@ -677,7 +679,7 @@ function drawZones(layer) {
         'stroke-width': 1,
       });
       layer.appendChild(cellRect);
-      
+
       // Número da célula
       const cellNumber = el('text', {
         x: x + width / 2,
@@ -693,9 +695,9 @@ function drawZones(layer) {
       layer.appendChild(cellNumber);
     }
   }
-  
+
   // Contornos das áreas (linhas brancas mais grossas)
-  
+
   // Grande área defensiva (linha entre colunas 2-3)
   const gaDefX = toXY({ x: 2 * CELL.w, y: 0 }).X;
   const gaDefLine = el('line', {
@@ -707,7 +709,7 @@ function drawZones(layer) {
     'stroke-width': 3,
   });
   layer.appendChild(gaDefLine);
-  
+
   // Contorno horizontal superior da grande área defensiva
   const gaDefTop = el('line', {
     x1: toXY({ x: 0, y: 1 * CELL.h }).X,
@@ -718,7 +720,7 @@ function drawZones(layer) {
     'stroke-width': 3,
   });
   layer.appendChild(gaDefTop);
-  
+
   // Contorno horizontal inferior da grande área defensiva
   const gaDefBottom = el('line', {
     x1: toXY({ x: 0, y: 6 * CELL.h }).X,
@@ -729,7 +731,7 @@ function drawZones(layer) {
     'stroke-width': 3,
   });
   layer.appendChild(gaDefBottom);
-  
+
   // Pequena área defensiva (células 25, 37, 49)
   const paDefX = toXY({ x: 1 * CELL.w, y: 0 }).X;
   const paDefLine = el('line', {
@@ -741,7 +743,7 @@ function drawZones(layer) {
     'stroke-width': 3,
   });
   layer.appendChild(paDefLine);
-  
+
   // Contornos horizontais da pequena área defensiva
   const paDefTop = el('line', {
     x1: toXY({ x: 0, y: 2 * CELL.h }).X,
@@ -752,7 +754,7 @@ function drawZones(layer) {
     'stroke-width': 3,
   });
   layer.appendChild(paDefTop);
-  
+
   const paDefBottom = el('line', {
     x1: toXY({ x: 0, y: 5 * CELL.h }).X,
     y1: toXY({ x: 0, y: 5 * CELL.h }).Y,
@@ -762,7 +764,7 @@ function drawZones(layer) {
     'stroke-width': 3,
   });
   layer.appendChild(paDefBottom);
-  
+
   // Grande área ofensiva (linha entre colunas 10-11)
   const gaOfX = toXY({ x: 10 * CELL.w, y: 0 }).X;
   const gaOfLine = el('line', {
@@ -774,7 +776,7 @@ function drawZones(layer) {
     'stroke-width': 3,
   });
   layer.appendChild(gaOfLine);
-  
+
   // Contornos horizontais da grande área ofensiva
   const gaOfTop = el('line', {
     x1: gaOfX,
@@ -785,7 +787,7 @@ function drawZones(layer) {
     'stroke-width': 3,
   });
   layer.appendChild(gaOfTop);
-  
+
   const gaOfBottom = el('line', {
     x1: gaOfX,
     y1: toXY({ x: 0, y: 6 * CELL.h }).Y,
@@ -795,7 +797,7 @@ function drawZones(layer) {
     'stroke-width': 3,
   });
   layer.appendChild(gaOfBottom);
-  
+
   // Pequena área ofensiva (células 36, 48, 60)
   const paOfX = toXY({ x: 11 * CELL.w, y: 0 }).X;
   const paOfLine = el('line', {
@@ -807,7 +809,7 @@ function drawZones(layer) {
     'stroke-width': 3,
   });
   layer.appendChild(paOfLine);
-  
+
   // Contornos horizontais da pequena área ofensiva
   const paOfTop = el('line', {
     x1: paOfX,
@@ -818,7 +820,7 @@ function drawZones(layer) {
     'stroke-width': 3,
   });
   layer.appendChild(paOfTop);
-  
+
   const paOfBottom = el('line', {
     x1: paOfX,
     y1: toXY({ x: 0, y: 5 * CELL.h }).Y,
@@ -828,7 +830,7 @@ function drawZones(layer) {
     'stroke-width': 3,
   });
   layer.appendChild(paOfBottom);
-  
+
   // Círculo branco no centro (entre células 42-43)
   const centerX = toXY({ x: 6 * CELL.w, y: 3.5 * CELL.h }).X; // Entre colunas 6-7
   const centerY = toXY({ x: 0, y: 3.5 * CELL.h }).Y; // Meio da linha 4
@@ -839,7 +841,7 @@ function drawZones(layer) {
     fill: '#ffffff',
   });
   layer.appendChild(centerCircle);
-  
+
   // Textos laterais verticais
   const leftText = el('text', {
     x: toXY({ x: -0.5, y: 3.5 * CELL.h }).X,
@@ -854,7 +856,7 @@ function drawZones(layer) {
   });
   leftText.textContent = 'LINHA DE FUNDO DEFENSIVA';
   layer.appendChild(leftText);
-  
+
   const rightText = el('text', {
     x: toXY({ x: 12.5 * CELL.w, y: 3.5 * CELL.h }).X,
     y: toXY({ x: 0, y: 3.5 * CELL.h }).Y,
@@ -868,7 +870,7 @@ function drawZones(layer) {
   });
   rightText.textContent = 'LINHA DE FUNDO OFENSIVA';
   layer.appendChild(rightText);
-  
+
   // Setas DEFESA e ATAQUE no topo
   const defenseArrow = el('g');
   const defenseArrowLine = el('line', {
@@ -893,7 +895,7 @@ function drawZones(layer) {
   defenseArrow.appendChild(defenseArrowLine);
   defenseArrow.appendChild(defenseText);
   layer.appendChild(defenseArrow);
-  
+
   const attackArrow = el('g');
   const attackArrowLine = el('line', {
     x1: toXY({ x: 7 * CELL.w, y: -0.5 * CELL.h }).X,
@@ -922,14 +924,14 @@ function drawZones(layer) {
 function drawPitch() {
   const svg = document.getElementById('pitch-svg');
   if (!svg) return;
-  
+
   // Adicionar definições de marcadores de seta
   let defs = svg.querySelector('defs');
   if (!defs) {
     defs = el('defs');
     svg.appendChild(defs);
   }
-  
+
   // Marcador de seta para a esquerda
   const arrowLeft = el('marker', {
     id: 'arrowLeft',
@@ -946,7 +948,7 @@ function drawPitch() {
   });
   arrowLeft.appendChild(arrowLeftPath);
   defs.appendChild(arrowLeft);
-  
+
   // Marcador de seta para a direita
   const arrowRight = el('marker', {
     id: 'arrowRight',
@@ -967,32 +969,32 @@ function drawPitch() {
   drawGrid(layers.grid);
   drawZones(layers.zones);
   drawGoals(layers.goals);
-  
+
   // Adicionar legenda na parte inferior
   drawLegend(layers.zones);
 }
 
 function drawLegend(layer) {
   if (!layer) return;
-  
+
   // Posição da legenda (abaixo do campo)
   const legendY = toXY({ x: 0, y: 8 * CELL.h }).Y;
   const legendStartX = toXY({ x: 0, y: 0 }).X;
   const legendWidth = toXY({ x: 12 * CELL.w, y: 0 }).X - toXY({ x: 0, y: 0 }).X;
-  
+
   // Título da legenda
   const legendTitle = el('text', {
     x: legendStartX + legendWidth / 2,
     y: legendY + 20,
     'text-anchor': 'middle',
     'font-family': 'Inter, Arial, sans-serif',
-      'font-size': 20,
-      'font-weight': 700,
+    'font-size': 20,
+    'font-weight': 700,
     fill: '#ffffff',
   });
   legendTitle.textContent = 'LEGENDA';
   layer.appendChild(legendTitle);
-  
+
   // Itens da legenda
   const legendItems = [
     { color: '#ff8c00', text: '1 - ESCANTEIO DEFENSIVO PELA DIREITA' },
@@ -1002,17 +1004,17 @@ function drawLegend(layer) {
     { color: '#90ee90', text: '84 - ESCANTEIO OFENSIVO PELA DIREITA' },
     { color: '#da70d6', text: '47 - MARCA DO PÊNALTI OFENSIVO' },
   ];
-  
+
   const itemsPerRow = 2;
   const itemWidth = legendWidth / itemsPerRow;
   const itemHeight = 25;
-  
+
   legendItems.forEach((item, index) => {
     const row = Math.floor(index / itemsPerRow);
     const col = index % itemsPerRow;
     const x = legendStartX + col * itemWidth + 20;
     const y = legendY + 50 + row * itemHeight;
-    
+
     // Quadrado colorido
     const colorSquare = el('rect', {
       x: x,
@@ -1024,7 +1026,7 @@ function drawLegend(layer) {
       'stroke-width': 1,
     });
     layer.appendChild(colorSquare);
-    
+
     // Texto da legenda
     const legendText = el('text', {
       x: x + 25,
@@ -1551,16 +1553,16 @@ function initEditor() {
   function updateList() {
     // Limpar lista
     listEl.innerHTML = '';
-    
+
     state.roundEvents.forEach((ev, i) => {
       const pc = ev.assistPt ? cellIndexFromPoint(ev.assistPt.x, ev.assistPt.y) : '-';
       const sc = ev.shotPt ? cellIndexFromPoint(ev.shotPt.x, ev.shotPt.y) : '-';
       const pcMirror = pc !== '-' ? mirrorCellIndex(pc) : '-';
       const scMirror = sc !== '-' ? mirrorCellIndex(sc) : '-';
-      
+
       const assistText = pc === '-' ? '-' : `${pc} ↔ ${pcMirror}`;
       const shotText = sc === '-' ? '-' : `${sc} ↔ ${scMirror}`;
-      
+
       // Adicionar informações dos jogadores (inclui LD/LE para laterais)
       const fmtPos = (p, s) => {
         if (!p) return '';
@@ -1570,23 +1572,23 @@ function initEditor() {
       const assistPlayer = ev.assistPlayer ? ` [${ev.assistPlayer.name} - ${fmtPos(ev.assistPlayer.position, ev.assistPlayer.side)}]` : '';
       const shotPlayer = ev.shotPlayer ? ` [${ev.shotPlayer.name} - ${fmtPos(ev.shotPlayer.position, ev.shotPlayer.side)}]` : '';
       const ownTag = ev.isOwnGoal ? ` (GC: ${ev.ownGoalSide === 'visitante' ? 'Visitante' : 'Mandante'})` : '';
-      
+
       const eventText = `#${i + 1} Assist: ${assistText}${assistPlayer} | Final: ${shotText}${shotPlayer}${ownTag}`;
-      
+
       // Criar elemento do evento com botão de deletar
       const eventDiv = document.createElement('div');
       eventDiv.style.cssText = 'display:inline-flex;align-items:center;gap:8px;margin:4px 8px 4px 0;padding:4px 8px;background:#1a6b4f;border-radius:4px';
-      
+
       const eventSpan = document.createElement('span');
       eventSpan.textContent = eventText;
       eventSpan.style.cssText = 'color:#e7f8f1;font-size:13px';
-      
+
       const deleteBtn = document.createElement('button');
       deleteBtn.textContent = '✖';
       deleteBtn.title = 'Deletar este evento';
       deleteBtn.style.cssText = 'background:#dc2626;color:#fff;border:none;border-radius:3px;padding:2px 6px;cursor:pointer;font-size:12px;font-weight:bold';
       deleteBtn.addEventListener('click', () => deleteEvent(i));
-      
+
       eventDiv.appendChild(eventSpan);
       eventDiv.appendChild(deleteBtn);
       listEl.appendChild(eventDiv);
@@ -1595,27 +1597,27 @@ function initEditor() {
     // Atualizar painel de estatísticas por posição no overlay do editor
     drawEditorPositionStatsPanel();
   }
-  
+
   // Função para deletar um evento específico
   function deleteEvent(index) {
     if (index < 0 || index >= state.roundEvents.length) return;
-    
+
     const ev = state.roundEvents[index];
-    
+
     // Remover elementos visuais do overlay
     if (ev.assistEl) {
-      try { overlay.removeChild(ev.assistEl); } catch {}
+      try { overlay.removeChild(ev.assistEl); } catch { }
     }
     if (ev.shotEl) {
-      try { overlay.removeChild(ev.shotEl); } catch {}
+      try { overlay.removeChild(ev.shotEl); } catch { }
     }
     if (ev.traceEl) {
-      try { overlay.removeChild(ev.traceEl); } catch {}
+      try { overlay.removeChild(ev.traceEl); } catch { }
     }
-    
+
     // Remover evento do array
     state.roundEvents.splice(index, 1);
-    
+
     // Atualizar lista
     updateList();
   }
@@ -1668,7 +1670,7 @@ function initEditor() {
     // Permitir apagar clicando no próprio marcador
     el.addEventListener('click', (e) => {
       e.stopPropagation();
-      try { overlay.removeChild(el); } catch {}
+      try { overlay.removeChild(el); } catch { }
       if (tool === 'assist') {
         current.assistPt = null;
         current.assistEl = null;
@@ -1683,7 +1685,7 @@ function initEditor() {
         }
       }
       if (current.traceEl) {
-        try { overlay.removeChild(current.traceEl); } catch {}
+        try { overlay.removeChild(current.traceEl); } catch { }
         current.traceEl = null;
       }
       // Se o evento ficou vazio, remove do array
@@ -1693,10 +1695,8 @@ function initEditor() {
       updateList();
     });
 
-    // Abrir painel de seleção de jogadores (exceto gol contra)
-    if (tool !== 'own') {
-      openPlayerSelectionPanel(current, tool);
-    }
+    // Abrir painel de seleção de jogadores (incluindo gol contra)
+    openPlayerSelectionPanel(current, tool);
 
     updateList();
   });
@@ -1722,18 +1722,18 @@ function initEditor() {
         { name: 'Meia Teste', position: 'Meia', side: null },
         { name: 'Atacante Teste', position: 'Atacante', side: null }
       ];
-      
+
       // Evento 1: Gol de Atacante com assistência de Meia (lado direito - ofensivo)
-      const ev1 = { 
-        assistPt: { x: 700, y: 250 }, 
-        shotPt: { x: 839.17, y: 300 }, 
-        assistEl: null, 
-        shotEl: null, 
-        traceEl: null, 
+      const ev1 = {
+        assistPt: { x: 700, y: 250 },
+        shotPt: { x: 839.17, y: 300 },
+        assistEl: null,
+        shotEl: null,
+        traceEl: null,
         assistPlayer: fictitiousPlayers[3], // Meia
         shotPlayer: fictitiousPlayers[4], // Atacante
-        isOwnGoal: false, 
-        ownGoalSide: null 
+        isOwnGoal: false,
+        ownGoalSide: null
       };
       ev1.assistEl = drawAssistMarker(ev1.assistPt);
       ev1.shotEl = drawShotEmoji(ev1.shotPt);
@@ -1743,31 +1743,31 @@ function initEditor() {
       state.roundEvents.push(ev1);
 
       // Evento 2: Gol contra do mandante (lado esquerdo)
-      const ev2 = { 
-        assistPt: null, 
-        shotPt: { x: 160.83, y: 300 }, 
-        assistEl: null, 
-        shotEl: null, 
-        traceEl: null, 
-        assistPlayer: null, 
-        shotPlayer: null, 
-        isOwnGoal: true, 
-        ownGoalSide: 'mandante' 
+      const ev2 = {
+        assistPt: null,
+        shotPt: { x: 160.83, y: 300 },
+        assistEl: null,
+        shotEl: null,
+        traceEl: null,
+        assistPlayer: null,
+        shotPlayer: null,
+        isOwnGoal: true,
+        ownGoalSide: 'mandante'
       };
       ev2.shotEl = drawShotEmoji(ev2.shotPt);
       state.roundEvents.push(ev2);
-      
+
       // Evento 3: Gol de Lateral D com assistência de Zagueiro (lado direito - ofensivo)
-      const ev3 = { 
-        assistPt: { x: 650, y: 450 }, 
-        shotPt: { x: 800, y: 400 }, 
-        assistEl: null, 
-        shotEl: null, 
-        traceEl: null, 
+      const ev3 = {
+        assistPt: { x: 650, y: 450 },
+        shotPt: { x: 800, y: 400 },
+        assistEl: null,
+        shotEl: null,
+        traceEl: null,
         assistPlayer: fictitiousPlayers[0], // Zagueiro
         shotPlayer: fictitiousPlayers[2], // Lateral D
-        isOwnGoal: false, 
-        ownGoalSide: null 
+        isOwnGoal: false,
+        ownGoalSide: null
       };
       ev3.assistEl = drawAssistMarker(ev3.assistPt);
       ev3.shotEl = drawShotEmoji(ev3.shotPt);
@@ -1775,18 +1775,18 @@ function initEditor() {
         ev3.traceEl = drawTrace(ev3.assistPt, ev3.shotPt);
       }
       state.roundEvents.push(ev3);
-      
+
       // Evento 4: Gol de Meia sem assistência (lado direito - ofensivo)
-      const ev4 = { 
-        assistPt: null, 
-        shotPt: { x: 750, y: 200 }, 
-        assistEl: null, 
-        shotEl: null, 
-        traceEl: null, 
-        assistPlayer: null, 
+      const ev4 = {
+        assistPt: null,
+        shotPt: { x: 750, y: 200 },
+        assistEl: null,
+        shotEl: null,
+        traceEl: null,
+        assistPlayer: null,
         shotPlayer: fictitiousPlayers[3], // Meia
-        isOwnGoal: false, 
-        ownGoalSide: null 
+        isOwnGoal: false,
+        ownGoalSide: null
       };
       ev4.shotEl = drawShotEmoji(ev4.shotPt);
       state.roundEvents.push(ev4);
@@ -1796,7 +1796,7 @@ function initEditor() {
   }
 
   // ===== PAINEL DE SELEÇÃO DE JOGADORES =====
-  
+
   const playerPanel = document.getElementById('playerSelectionPanel');
   const playerEventType = document.getElementById('playerEventType');
   const playerTeamSelect = document.getElementById('playerTeamSelect');
@@ -1825,36 +1825,66 @@ function initEditor() {
 
   function openPlayerSelectionPanel(eventObj, eventType) {
     if (!playerPanel) return;
-    
+
     pendingPlayerSelection = { eventObj, eventType };
-    
+
+    // Verificar se é gol contra
+    const isOwnGoal = eventObj.isOwnGoal || false;
+
     // Configurar tipo do evento
     if (playerEventType) {
-      playerEventType.textContent = eventType === 'assist' ? 'ASSISTÊNCIA' : 'GOL';
+      if (isOwnGoal) {
+        playerEventType.textContent = 'GOL CONTRA';
+      } else {
+        playerEventType.textContent = eventType === 'assist' ? 'ASSISTÊNCIA' : 'GOL';
+      }
     }
-    
-    // Sugerir time baseado no lado do campo clicado
-    const point = (eventType === 'assist') ? eventObj.assistPt : eventObj.shotPt;
-    let suggestedTeam = null;
-    if (point && state.homeTeamKey && state.awayTeamKey) {
-      const kind = classifyByShot(point); // 'created' (ataque do mandante) ou 'conceded' (ataque do visitante)
-      suggestedTeam = (kind === 'created') ? state.homeTeamKey : state.awayTeamKey;
+
+    // Mostrar/esconder campos apropriados
+    const ownGoalNameRow = document.getElementById('ownGoalPlayerNameRow');
+    const playerTeamRow = playerTeamSelect?.parentElement;
+    const playerPosRow = playerPositionFilter?.parentElement;
+    const playerSelectRow = playerSelect?.parentElement;
+    const playerSideRowEl = document.getElementById('playerSideRow');
+
+    if (isOwnGoal) {
+      // Gol contra: mostrar apenas campo de texto
+      if (ownGoalNameRow) ownGoalNameRow.style.display = 'block';
+      if (playerTeamRow) playerTeamRow.style.display = 'none';
+      if (playerPosRow) playerPosRow.style.display = 'none';
+      if (playerSelectRow) playerSelectRow.style.display = 'none';
+      if (playerSideRowEl) playerSideRowEl.style.display = 'none';
+      if (selectedPlayerInfo) selectedPlayerInfo.style.display = 'none';
     } else {
-      // Fallback: manter mandante se não houver ponto ou chaves de time
-      suggestedTeam = state.homeTeamKey || '';
+      // Gol normal: mostrar seleção de jogador
+      if (ownGoalNameRow) ownGoalNameRow.style.display = 'none';
+      if (playerTeamRow) playerTeamRow.style.display = 'block';
+      if (playerPosRow) playerPosRow.style.display = 'block';
+      if (playerSelectRow) playerSelectRow.style.display = 'block';
+
+      // Sugerir time baseado no lado do campo clicado
+      const point = (eventType === 'assist') ? eventObj.assistPt : eventObj.shotPt;
+      let suggestedTeam = null;
+      if (point && state.homeTeamKey && state.awayTeamKey) {
+        const kind = classifyByShot(point); // 'created' (ataque do mandante) ou 'conceded' (ataque do visitante)
+        suggestedTeam = (kind === 'created') ? state.homeTeamKey : state.awayTeamKey;
+      } else {
+        // Fallback: manter mandante se não houver ponto ou chaves de time
+        suggestedTeam = state.homeTeamKey || '';
+      }
+      if (playerTeamSelect) {
+        playerTeamSelect.value = suggestedTeam || '';
+        updatePlayersByTeam();
+      }
     }
-    if (playerTeamSelect) {
-      playerTeamSelect.value = suggestedTeam || '';
-      updatePlayersByTeam();
-    }
-    
+
     // Mostrar painel
-    playerPanel.style.right = '0px';
+    playerPanel.style.display = 'block';
   }
 
   function closePlayerSelectionPanel() {
     if (!playerPanel) return;
-    playerPanel.style.right = '-320px';
+    playerPanel.style.display = 'none';
     pendingPlayerSelection = null;
     resetPlayerSelection();
   }
@@ -1869,19 +1899,19 @@ function initEditor() {
 
   function updatePlayersByTeam() {
     if (!playerSelect || !playerTeamSelect) return;
-    
+
     const teamKey = playerTeamSelect.value;
     const positionFilter = playerPositionFilter ? playerPositionFilter.value : '';
-    
+
     playerSelect.innerHTML = '<option value="">Selecione o jogador...</option>';
-    
+
     if (!teamKey) return;
-    
+
     const teamPlayers = getPlayersByTeam(teamKey);
-    const filteredPlayers = positionFilter 
+    const filteredPlayers = positionFilter
       ? teamPlayers.filter(p => p.position === positionFilter)
       : teamPlayers;
-    
+
     filteredPlayers.forEach(player => {
       const opt = document.createElement('option');
       opt.value = player.id;
@@ -1899,16 +1929,16 @@ function initEditor() {
 
   function updateSelectedPlayerInfo() {
     if (!playerSelect || !selectedPlayerInfo) return;
-    
+
     const selectedOption = playerSelect.options[playerSelect.selectedIndex];
     if (!selectedOption || !selectedOption.dataset.playerData) {
       selectedPlayerInfo.style.display = 'none';
       if (confirmPlayerBtn) confirmPlayerBtn.disabled = true;
       return;
     }
-    
+
     const player = JSON.parse(selectedOption.dataset.playerData);
-    
+
     if (playerFullName) playerFullName.textContent = player.nome_completo;
     if (playerPosition) playerPosition.textContent = player.position;
     if (playerTeam) playerTeam.textContent = DISPLAY_NAME_MAP[player.teamKey] || player.teamKey;
@@ -1919,7 +1949,7 @@ function initEditor() {
       playerSideRow.style.display = isLateral ? 'block' : 'none';
       if (!isLateral && playerSideSelect) playerSideSelect.value = '';
     }
-    
+
     selectedPlayerInfo.style.display = 'block';
     if (confirmPlayerBtn) {
       const requiresSide = (player.position === 'Lateral');
@@ -1929,15 +1959,35 @@ function initEditor() {
   }
 
   function confirmPlayerSelection() {
-    if (!pendingPlayerSelection || !playerSelect) return;
-    
+    if (!pendingPlayerSelection) return;
+
+    const { eventObj, eventType } = pendingPlayerSelection;
+
+    // Verificar se é gol contra
+    if (eventObj.isOwnGoal) {
+      const ownGoalNameInput = document.getElementById('ownGoalPlayerName');
+      const playerName = ownGoalNameInput ? ownGoalNameInput.value.trim() : '';
+
+      if (!playerName) {
+        alert('Por favor, digite o nome do jogador que fez o gol contra.');
+        return;
+      }
+
+      // Salvar nome do jogador em gol contra
+      eventObj.ownGoalPlayerName = playerName;
+      closePlayerSelectionPanel();
+      updateList();
+      return;
+    }
+
+    // Lógica normal para gol/assistência
+    if (!playerSelect) return;
     const selectedOption = playerSelect.options[playerSelect.selectedIndex];
     if (!selectedOption || !selectedOption.dataset.playerData) return;
-    
+
     const player = JSON.parse(selectedOption.dataset.playerData);
     const sideVal = playerSideSelect ? (playerSideSelect.value || '') : '';
-    const { eventObj, eventType } = pendingPlayerSelection;
-    
+
     // Salvar dados do jogador no evento
     if (eventType === 'assist') {
       eventObj.assistPlayer = {
@@ -1958,7 +2008,7 @@ function initEditor() {
         team: player.teamKey
       };
     }
-    
+
     closePlayerSelectionPanel();
     updateList();
   }
@@ -1977,15 +2027,15 @@ function initEditor() {
 
   // Event listeners para o painel de jogadores
   populatePlayerTeamSelect();
-  
+
   if (playerTeamSelect) {
     playerTeamSelect.addEventListener('change', updatePlayersByTeam);
   }
-  
+
   if (playerPositionFilter) {
     playerPositionFilter.addEventListener('change', updatePlayersByTeam);
   }
-  
+
   if (playerSelect) {
     playerSelect.addEventListener('change', updateSelectedPlayerInfo);
   }
@@ -1995,11 +2045,11 @@ function initEditor() {
       updateSelectedPlayerInfo();
     });
   }
-  
+
   if (confirmPlayerBtn) {
     confirmPlayerBtn.addEventListener('click', confirmPlayerSelection);
   }
-  
+
   if (cancelPlayerBtn) {
     cancelPlayerBtn.addEventListener('click', closePlayerSelectionPanel);
   }
@@ -2011,12 +2061,12 @@ function initEditor() {
     const current = state.roundEvents[state.roundEvents.length - 1];
     if (!current) return;
     if (current.shotEl) {
-      try { overlay.removeChild(current.shotEl); } catch {}
+      try { overlay.removeChild(current.shotEl); } catch { }
       current.shotEl = null;
       current.shotPt = null;
-      if (current.traceEl) { try { overlay.removeChild(current.traceEl); } catch {}; current.traceEl = null; }
+      if (current.traceEl) { try { overlay.removeChild(current.traceEl); } catch { }; current.traceEl = null; }
     } else if (current.assistEl) {
-      try { overlay.removeChild(current.assistEl); } catch {}
+      try { overlay.removeChild(current.assistEl); } catch { }
       current.assistEl = null;
       current.assistPt = null;
     } else {
@@ -2030,13 +2080,13 @@ function initEditor() {
     state.roundEvents = [];
     updateList();
   });
-  
+
   // Botão para limpar TODOS os gols de TODOS os times
   const clearAllBtn = document.getElementById('editorClearAllBtn');
   clearAllBtn && clearAllBtn.addEventListener('click', async () => {
     const confirmed = confirm('ATENÇÃO: Isso vai APAGAR TODOS OS GOLS de TODOS OS TIMES!\n\nTem certeza que deseja continuar?');
     if (!confirmed) return;
-    
+
     try {
       const res = await fetch('/api/clear-all', {
         method: 'POST',
@@ -2256,7 +2306,7 @@ function initEditor() {
       downloadJSON(awayObj, `${state.awayTeamKey}_R${roundNo}.json`);
     }
   });
-  
+
   // Função para converter cell index para coordenadas SVG do editor
   function cellIndexToPoint(cellIndex) {
     const adjustedIndex = cellIndex - 1;
@@ -2268,7 +2318,7 @@ function initEditor() {
     const Y = PITCH.top + (logicalY / PITCH.maxY) * PITCH.heightPx;
     return { x: X, y: Y };
   }
-  
+
   // Função para carregar dados de uma rodada específica
   // Função auxiliar para converter coordenadas lógicas (%) de volta para coordenadas SVG do editor
   function logicalToEditorSVG(logicalX, logicalY) {
@@ -2276,7 +2326,7 @@ function initEditor() {
     const Y = PITCH.top + (logicalY / 100) * PITCH.heightPx;
     return { x: X, y: Y };
   }
-  
+
   async function loadRoundDataIntoEditor(teamKey, roundNumber, clearField = true) {
     if (!teamKey || !roundNumber) return;
     if (clearField) {
@@ -2345,31 +2395,31 @@ function initEditor() {
       });
     } catch (err) { console.error('Erro ao carregar rodada:', err); }
   }
-  
+
   // Função auxiliar para carregar dados de ambos os times
   async function loadBothTeamsData() {
     const homeKey = homeSelect && homeSelect.value ? homeSelect.value : null;
     const awayKey = awaySelect && awaySelect.value ? awaySelect.value : null;
     const roundNo = Number(roundInput.value) || 1;
-    
+
     // Limpar campo antes de carregar
     const nodes = Array.from(overlay.querySelectorAll('text,circle,line'));
     nodes.forEach(n => n.parentNode && n.parentNode.removeChild(n));
     state.roundEvents = [];
-    
+
     // Carregar dados do mandante
     if (homeKey) {
       await loadRoundDataIntoEditor(homeKey, roundNo, false); // false = não limpar campo
     }
-    
+
     // Carregar dados do visitante
     if (awayKey) {
       await loadRoundDataIntoEditor(awayKey, roundNo, false); // false = não limpar campo
     }
-    
+
     updateList();
   }
-  
+
   // Listeners para carregar automaticamente quando mudar time ou rodada
   if (homeSelect) {
     homeSelect.addEventListener('change', () => {
@@ -2395,7 +2445,7 @@ function initEditor() {
 // Mapeamento de posições do CSV para categorias simplificadas
 const POSITION_MAP = {
   'Goleiro': 'Goleiro',
-  'Lateral': 'Lateral', 
+  'Lateral': 'Lateral',
   'Zagueiro': 'Zagueiro',
   'Meia': 'Meia',
   'Atacante': 'Atacante'
@@ -2407,21 +2457,21 @@ let playersData = null;
 // Função para carregar dados do CSV de jogadores
 async function loadPlayersData() {
   if (playersData) return playersData; // Cache
-  
+
   try {
     const response = await fetch('cartola_jogadores_time_posicao_preco (1).csv');
     const csvText = await response.text();
     const lines = csvText.split('\n');
     const headers = lines[0].split(',');
-    
+
     const players = [];
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim();
       if (!line) continue;
-      
+
       const values = line.split(',');
       if (values.length < headers.length) continue;
-      
+
       const player = {
         id: values[0],
         apelido: values[1],
@@ -2432,7 +2482,7 @@ async function loadPlayersData() {
         posicao: values[6],
         posicao_id: values[7]
       };
-      
+
       // Mapear clube para chave do time
       const teamKey = mapClubToTeamKey(player.clube);
       if (teamKey) {
@@ -2441,7 +2491,7 @@ async function loadPlayersData() {
         players.push(player);
       }
     }
-    
+
     playersData = players;
     console.log(`Carregados ${players.length} jogadores`);
     return players;
@@ -2456,7 +2506,7 @@ function mapClubToTeamKey(clubCode) {
   const clubMap = {
     'CAM': 'atletico-mg',
     'CAP': 'athletico-pr',
-    'BAH': 'bahia', 
+    'BAH': 'bahia',
     'BOT': 'botafogo',
     'CEA': 'ceara',
     'CHA': 'chapecoense',
@@ -2464,7 +2514,7 @@ function mapClubToTeamKey(clubCode) {
     'CFC': 'coritiba',
     'CRU': 'cruzeiro',
     'FLA': 'flamengo',
-    'FLU': 'fluminense', 
+    'FLU': 'fluminense',
     'FOR': 'fortaleza',
     'GRE': 'gremio',
     'INT': 'internacional',
@@ -2495,9 +2545,9 @@ loadPlayersData();
 function populatePlayersLegend(legendId, events) {
   const legendEl = document.getElementById(legendId);
   const contentEl = document.getElementById(legendId + 'Content');
-  
+
   if (!legendEl || !contentEl) return;
-  
+
   // Coletar todos os jogadores únicos dos eventos
   const players = new Set();
   const sideLabel = (pos, side) => {
@@ -2518,12 +2568,12 @@ function populatePlayersLegend(legendId, events) {
       players.add(`${ev.shotPlayer.name} — ${ptxt} (Finalização)`);
     }
   });
-  
+
   if (players.size === 0) {
     legendEl.style.display = 'none';
     return;
   }
-  
+
   // Popular conteúdo da legenda
   contentEl.innerHTML = '';
   Array.from(players).sort().forEach(playerInfo => {
@@ -2532,7 +2582,7 @@ function populatePlayersLegend(legendId, events) {
     div.textContent = playerInfo;
     contentEl.appendChild(div);
   });
-  
+
   legendEl.style.display = 'block';
 }
 
@@ -2563,15 +2613,15 @@ function showPlayerTooltip(event, eventData) {
   if (existingTooltip) {
     existingTooltip.remove();
   }
-  
+
   // Verificar se há dados de jogador
-  const hasPlayerData = (eventData.assistPlayer && eventData.assistPlayer.name) || 
-                       (eventData.shotPlayer && eventData.shotPlayer.name);
-  
+  const hasPlayerData = (eventData.assistPlayer && eventData.assistPlayer.name) ||
+    (eventData.shotPlayer && eventData.shotPlayer.name);
+
   if (!hasPlayerData) {
     return;
   }
-  
+
   // Criar tooltip
   const tooltip = document.createElement('div');
   tooltip.id = 'playerTooltip';
@@ -2590,7 +2640,7 @@ function showPlayerTooltip(event, eventData) {
     backdrop-filter: blur(4px);
     font-family: inherit;
   `;
-  
+
   // Abreviações e rótulos simples
   const POS_ABBR = { 'Goleiro': 'GOL', 'Zagueiro': 'ZAG', 'Meia': 'MEI', 'Atacante': 'ATA' };
   const abbr = (p, side) => {
@@ -2615,23 +2665,23 @@ function showPlayerTooltip(event, eventData) {
     const headHtml = `<div style="margin-bottom:8px;display:flex;align-items:center;gap:8px">${renderTeamHeaderItem(m.homeName, m.homeTeamKey)}<span style="opacity:.6">vs</span>${renderTeamHeaderItem(m.awayName, m.awayTeamKey)}</div>`;
     content += headHtml;
   }
-  
+
   if (eventData.assistPlayer && eventData.assistPlayer.name) {
     const side = eventData.assistPlayer.side;
     content += `<div style="margin-bottom:6px;display:flex;align-items:center"><span style="font-weight:700;color:#9bd0ff;margin-right:8px">ASS:</span><span>${eventData.assistPlayer.name} (${abbr(eventData.assistPlayer.position, side)})</span></div>`;
   }
-  
+
   if (eventData.shotPlayer && eventData.shotPlayer.name) {
     const side = eventData.shotPlayer.side;
     content += `<div style="margin-bottom:2px;display:flex;align-items:center"><span style="font-weight:700;color:#ffd24d;margin-right:8px">GOL:</span><span>${eventData.shotPlayer.name} (${abbr(eventData.shotPlayer.position, side)})</span></div>`;
   }
-  
+
   if (eventData.isOwnGoal) {
     content += `<div style="margin-top:8px;color:#ef4444;font-weight:bold">⚠️ Gol Contra (${eventData.ownGoalSide})</div>`;
   }
-  
+
   tooltip.innerHTML = content;
-  
+
   // Ancorar ao marcador e acompanhar zoom/resize
   const markerEl = event.currentTarget;
   const overlayEl = markerEl?.ownerSVGElement || markerEl?.closest('svg');
@@ -2642,21 +2692,21 @@ function showPlayerTooltip(event, eventData) {
     const containerRect = containerEl.getBoundingClientRect();
     const centerX = markerRect.left - containerRect.left + (markerRect.width / 2);
     const centerY = markerRect.top - containerRect.top + (markerRect.height / 2);
-    
+
     // Posição inicial
     let tooltipX = centerX + 12;
     let tooltipY = centerY - 10;
-    
+
     // Obter dimensões do tooltip (precisa estar no DOM primeiro)
     tooltip.style.left = tooltipX + 'px';
     tooltip.style.top = tooltipY + 'px';
     tooltip.style.visibility = 'hidden';
-    
+
     // Aguardar um frame para o tooltip ser renderizado
     requestAnimationFrame(() => {
       const tooltipRect = tooltip.getBoundingClientRect();
       const containerBounds = containerEl.getBoundingClientRect();
-      
+
       // Ajustar horizontalmente se sair da tela
       if (tooltipRect.right > containerBounds.right) {
         tooltipX = centerX - tooltipRect.width - 12; // Posicionar à esquerda
@@ -2664,7 +2714,7 @@ function showPlayerTooltip(event, eventData) {
       if (tooltipX < 0) {
         tooltipX = 8; // Margem mínima da esquerda
       }
-      
+
       // Ajustar verticalmente se sair da tela
       if (tooltipRect.bottom > containerBounds.bottom) {
         tooltipY = centerY - tooltipRect.height - 12; // Posicionar acima
@@ -2672,7 +2722,7 @@ function showPlayerTooltip(event, eventData) {
       if (tooltipY < 0) {
         tooltipY = 8; // Margem mínima do topo
       }
-      
+
       // Aplicar posição final
       tooltip.style.left = tooltipX + 'px';
       tooltip.style.top = tooltipY + 'px';
@@ -2683,10 +2733,10 @@ function showPlayerTooltip(event, eventData) {
   // Inserir no mesmo container que o overlay
   containerEl.appendChild(tooltip);
   positionTooltip();
-  
+
   // Remover tooltip ao clicar fora
   function cleanup() {
-    try { tooltip.remove(); } catch {}
+    try { tooltip.remove(); } catch { }
     window.removeEventListener('resize', positionTooltip);
     document.removeEventListener('scroll', positionTooltip, true);
     document.removeEventListener('click', onDocClick);
@@ -2712,13 +2762,13 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   const WIDTH = 1000;
   const positions = ['Zagueiro', 'Lateral E', 'Lateral D', 'Meia', 'Atacante'];
   const abbr = { Meia: 'MEI', Atacante: 'ATA', 'Lateral D': 'LD', 'Lateral E': 'LE', Zagueiro: 'ZAG' };
-  
+
   // Contadores separados
   const cedidosAssist = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
   const cedidosGols = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
   const conquistadosAssist = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
   const conquistadosGols = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
-  
+
   // Processar eventos CEDIDOS
   for (const ev of (concededEvents || [])) {
     if (ev && ev.assistPlayer) {
@@ -2742,7 +2792,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
       }
     }
   }
-  
+
   // Processar eventos CONQUISTADOS
   for (const ev of (createdEvents || [])) {
     if (ev && ev.assistPlayer) {
@@ -2766,14 +2816,14 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
       }
     }
   }
-  
+
   // Verificar se há dados
-  const totalCedidos = Object.values(cedidosAssist).reduce((a,b)=>a+b,0) + Object.values(cedidosGols).reduce((a,b)=>a+b,0);
-  const totalConquistados = Object.values(conquistadosAssist).reduce((a,b)=>a+b,0) + Object.values(conquistadosGols).reduce((a,b)=>a+b,0);
+  const totalCedidos = Object.values(cedidosAssist).reduce((a, b) => a + b, 0) + Object.values(cedidosGols).reduce((a, b) => a + b, 0);
+  const totalConquistados = Object.values(conquistadosAssist).reduce((a, b) => a + b, 0) + Object.values(conquistadosGols).reduce((a, b) => a + b, 0);
   if (totalCedidos === 0 && totalConquistados === 0) return;
 
   const g = el('g', { id: groupId, filter: 'url(#ds)' });
-  
+
   // LAYOUT BASEADO NA IMAGEM DE REFERÊNCIA
   const startY = 590; // Início do rodapé (logo abaixo do campo que termina em 570)
   const titleY = startY + 20; // Títulos CEDIDOS e CONQUISTADOS
@@ -2784,7 +2834,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   const chipW = 38; // Largura de cada caixinha de posição
   const chipH = 60; // Altura de cada caixinha de posição
   const chipGap = 3; // Espaço entre caixinhas
-  
+
   // Função para desenhar uma seção (ASSISTÊNCIAS ou GOLS)
   function drawSection(title, counts, x, y) {
     // Fundo branco com borda arredondada
@@ -2798,10 +2848,10 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
       stroke: 'none'
     });
     g.appendChild(bg);
-    
+
     // Título da seção (ASSISTÊNCIAS ou GOLS)
     const titleEl = el('text', {
-      x: x + boxW/2,
+      x: x + boxW / 2,
       y: y + 22,
       'text-anchor': 'middle',
       'font-family': 'Inter, Arial, sans-serif',
@@ -2811,15 +2861,15 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
     });
     titleEl.textContent = title;
     g.appendChild(titleEl);
-    
+
     // Caixinhas de posição (chips horizontais)
     const totalChipsW = positions.length * chipW + (positions.length - 1) * chipGap;
     const chipsStartX = x + (boxW - totalChipsW) / 2;
     const chipsY = y + 32;
-    
+
     positions.forEach((p, i) => {
       const cx = chipsStartX + i * (chipW + chipGap);
-      
+
       // Caixinha verde escura
       const chip = el('rect', {
         x: cx, y: chipsY,
@@ -2830,10 +2880,10 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
         fill: '#0b2f25'
       });
       g.appendChild(chip);
-      
+
       // Abreviação da posição (ZAG, LE, LD, MEI, ATA)
       const labelPos = el('text', {
-        x: cx + chipW/2,
+        x: cx + chipW / 2,
         y: chipsY + 18,
         'text-anchor': 'middle',
         'font-family': 'Inter, Arial, sans-serif',
@@ -2843,10 +2893,10 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
       });
       labelPos.textContent = abbr[p];
       g.appendChild(labelPos);
-      
+
       // Número (contador)
       const labelCount = el('text', {
-        x: cx + chipW/2,
+        x: cx + chipW / 2,
         y: chipsY + 45,
         'text-anchor': 'middle',
         'font-family': 'Inter, Arial, sans-serif',
@@ -2858,14 +2908,14 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
       g.appendChild(labelCount);
     });
   }
-  
+
   // Calcular posições horizontais
   const centerX = WIDTH / 2;
-  const halfSectionWidth = boxW + boxGap/2; // Metade da largura de uma seção (2 caixas + gap)
-  
+  const halfSectionWidth = boxW + boxGap / 2; // Metade da largura de uma seção (2 caixas + gap)
+
   // LADO ESQUERDO - CEDIDOS
   const cedidosX = centerX / 2; // Centro do lado esquerdo
-  
+
   // Título CEDIDOS
   const titleCedidos = el('text', {
     x: cedidosX,
@@ -2878,15 +2928,15 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   });
   titleCedidos.textContent = 'CEDIDOS';
   g.appendChild(titleCedidos);
-  
+
   // CEDIDOS - ASSISTÊNCIAS (esquerda)
   const cedidosAssistX = cedidosX - halfSectionWidth;
   drawSection('ASSISTÊNCIAS', cedidosAssist, cedidosAssistX, boxStartY);
-  
+
   // CEDIDOS - GOLS (direita)
-  const cedidosGolsX = cedidosX + boxGap/2;
+  const cedidosGolsX = cedidosX + boxGap / 2;
   drawSection('GOLS', cedidosGols, cedidosGolsX, boxStartY);
-  
+
   // Linha divisória vertical no centro
   const divider = el('line', {
     x1: centerX,
@@ -2898,10 +2948,10 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
     'stroke-width': 2
   });
   g.appendChild(divider);
-  
+
   // LADO DIREITO - CONQUISTADOS
   const conquistadosX = centerX + centerX / 2; // Centro do lado direito
-  
+
   // Título CONQUISTADOS
   const titleConquistados = el('text', {
     x: conquistadosX,
@@ -2914,13 +2964,13 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   });
   titleConquistados.textContent = 'CONQUISTADOS';
   g.appendChild(titleConquistados);
-  
+
   // CONQUISTADOS - ASSISTÊNCIAS (esquerda)
   const conquistadosAssistX = conquistadosX - halfSectionWidth;
   drawSection('ASSISTÊNCIAS', conquistadosAssist, conquistadosAssistX, boxStartY);
-  
+
   // CONQUISTADOS - GOLS (direita)
-  const conquistadosGolsX = conquistadosX + boxGap/2;
+  const conquistadosGolsX = conquistadosX + boxGap / 2;
   drawSection('GOLS', conquistadosGols, conquistadosGolsX, boxStartY);
 
   overlayEl.appendChild(g);
