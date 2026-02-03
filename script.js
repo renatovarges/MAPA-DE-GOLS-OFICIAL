@@ -3024,4 +3024,19 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   g.appendChild(titleConquistados);
 
   // CONQUISTADOS - ASSISTÊNCIAS (esquerda)
-  const conquist
+  const conquistadosAssistX = conquistadosX - halfSectionWidth;
+  drawSection('ASSISTÊNCIAS', conquistadosAssist, conquistadosAssistX, boxStartY);
+
+  // CONQUISTADOS - GOLS (direita)
+  const conquistadosGolsX = conquistadosX + boxGap / 2;
+  drawSection('GOLS', conquistadosGols, conquistadosGolsX, boxStartY);
+}
+
+// Inicialização
+window.addEventListener('DOMContentLoaded', () => {
+  initTeamInteractions();
+  initGridToggle();
+  // Carregar times iniciais padrão
+  loadTeamData('cruzeiro');
+  loadTeamData2('fortaleza');
+});
