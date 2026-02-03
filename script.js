@@ -415,13 +415,29 @@ async function getTeamAggregatedData(teamKey, { homeFilter = null } = {}) {
     if (roundsArr.length > 0) {
       // Ordenar por Data (Crescente: mais antigo -> mais recente) e depois por Rodada
       // Para pegar os "últimos X jogos", usamos slice do final, então queremos os mais recentes no fim do array.
+      // Ordenar por Data (Crescente) defensivo
+      console.log('Ordenando rodadas...');
       let sorted = roundsArr.slice().sort((a, b) => {
-        // Datas vazias consideram-se antigas (0)
-        const dateA = a.date ? new Date(a.date).getTime() : 0;
-        const dateB = b.date ? new Date(b.date).getTime() : 0;
-        if (dateA !== dateB) return dateA - dateB;
+        try {
+          const dA = a.date ? String(a.date) : '';
+          const dB = b.date ? String(b.date) : '';
+
+          if (dA && dB) {
+            if (dA < dB) return -1;
+            if (dA > dB) return 1;
+          } else if (dA && !dB) {
+            return 1; // Com data vem depois (mais recente)
+          } else if (!dA && dB) {
+            return -1; // Sem data vem antes (mais antigo)
+          }
+        } catch (e) {
+          console.error('Erro no sort de datas:', e);
+        }
+        // Desempate por número da rodada
         return (a.roundNumber || 0) - (b.roundNumber || 0);
       });
+      console.log('Ordenacao concluida', sorted.length);
+
       if (homeFilter != null) {
         const wantHome = Boolean(homeFilter);
         sorted = sorted.filter(r => Boolean(r.home) === wantHome);

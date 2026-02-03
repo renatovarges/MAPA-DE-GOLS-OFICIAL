@@ -333,6 +333,8 @@
         <label>Rodada: <input id="editorRound" type="number" min="1" value="1" style="width:64px" /></label>
         <label>Data: <input id="editorDate" type="date" required
             style="padding:2px;background:#e7f8f1;border:none;border-radius:2px" /></label>
+        <label>Data: <input id="editorDate" type="date" required
+            style="padding:2px;background:#e7f8f1;border:none;border-radius:2px" /></label>
         <label>Adversário: <input id="editorOpponent" type="text" placeholder="Adversário" /></label>
         <label>Ferramenta:
           <select id="editorTool">
@@ -387,7 +389,7 @@
 
     <!-- Painel lateral para seleção de jogadores -->
     <div id="playerSelectionPanel"
-      style="position:absolute;right:20px;top:80px;width:260px;background:#0f172a;border:2px solid #e7f8f1;padding:16px;color:#e7f8f1;border-radius:8px;display:none;overflow-y:auto;max-height:480px;z-index:50;box-shadow: -4px 4px 12px rgba(0,0,0,0.5)">
+      style="position:absolute;right:20px;top:80px;height:450px;width:260px;background:#0f172a;border:2px solid #e7f8f1;padding:16px;color:#e7f8f1;border-radius:8px;display:none;overflow-y:auto;max-height:480px;z-index:9999;box-shadow: -4px 4px 12px rgba(0,0,0,0.5)">
       <h3 style="margin:0 0 12px 0;font-size:16px">Selecionar Jogador</h3>
       <div id="playerEventType" style="margin-bottom:12px;font-weight:bold;color:#f7d36a"></div>
 
@@ -449,5 +451,4 @@
         <button id="confirmPlayerBtn" type="button"
           style="flex:1;padding:8px;background:#22c55e;color:white;border:none;border-radius:4px;cursor:pointer"
           disabled>Confirmar</button>
-        <button id="cancelPlayerBtn" type="button"
-          style="flex:1;padding:8px;background:#ef4444;color
+        <button id="cancelPlayerBtn" type="button" style="flex:1;padding:8px;background:#ef4444;color
