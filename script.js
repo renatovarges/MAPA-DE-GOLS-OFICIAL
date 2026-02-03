@@ -3054,6 +3054,9 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   // CONQUISTADOS - GOLS (direita)
   const conquistadosGolsX = conquistadosX + boxGap / 2;
   drawSection('GOLS', conquistadosGols, conquistadosGolsX, boxStartY);
+
+  // IMPORTANTE: Adicionar o grupo ao overlay!
+  overlayEl.appendChild(g);
 }
 
 function initGridToggle() {
