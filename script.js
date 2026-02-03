@@ -413,8 +413,15 @@ async function getTeamAggregatedData(teamKey, { homeFilter = null } = {}) {
     let created = [];
     let conceded = [];
     if (roundsArr.length > 0) {
-      // Ordenar por roundNumber quando disponível, senão manter ordem original
-      let sorted = roundsArr.slice().sort((a, b) => (a.roundNumber || 0) - (b.roundNumber || 0));
+      // Ordenar por Data (Crescente: mais antigo -> mais recente) e depois por Rodada
+      // Para pegar os "últimos X jogos", usamos slice do final, então queremos os mais recentes no fim do array.
+      let sorted = roundsArr.slice().sort((a, b) => {
+        // Datas vazias consideram-se antigas (0)
+        const dateA = a.date ? new Date(a.date).getTime() : 0;
+        const dateB = b.date ? new Date(b.date).getTime() : 0;
+        if (dateA !== dateB) return dateA - dateB;
+        return (a.roundNumber || 0) - (b.roundNumber || 0);
+      });
       if (homeFilter != null) {
         const wantHome = Boolean(homeFilter);
         sorted = sorted.filter(r => Boolean(r.home) === wantHome);
@@ -2213,12 +2220,15 @@ function initEditor() {
       }
     }
 
+    const dateVal = document.getElementById('editorDate')?.value || '';
+
     return {
       roundNumber: roundNo,
       homeTeamKey: homeKey,
       awayTeamKey: awayKey,
       home: homeKey ? {
         roundNumber: roundNo,
+        date: dateVal,
         opponent: awayKey || oppName,
         home: true,
         created_goals: createdHome,
@@ -2226,6 +2236,7 @@ function initEditor() {
       } : null,
       away: awayKey ? {
         roundNumber: roundNo,
+        date: dateVal,
         opponent: homeKey || oppName,
         home: false,
         created_goals: createdAway,
@@ -2235,6 +2246,13 @@ function initEditor() {
   }
 
   saveRoundBtn && saveRoundBtn.addEventListener('click', async () => {
+    // Validação de Data (Novo Requisito)
+    const dateInput = document.getElementById('editorDate');
+    if (dateInput && !dateInput.value) {
+      alert('⚠️ ATENÇÃO: Data do Jogo é obrigatória!\nPor favor, preencha a data antes de salvar.');
+      return;
+    }
+
     const missing = findMissingLateralSides();
     if (missing.length > 0) {
       alert(`Selecione LD/LE para laterais antes de salvar. Eventos pendentes: ${missing.join(', ')}`);
@@ -2339,6 +2357,13 @@ function initEditor() {
         roundData = teamData.rounds.find(r => r.roundNumber === roundNumber);
       }
       if (!roundData) { return; }
+
+      // Carregar data no input (se existir)
+      if (roundData.date) {
+        const dateInput = document.getElementById('editorDate');
+        if (dateInput) dateInput.value = roundData.date;
+      }
+
       const events = roundData.created_goals || [];
 
       // Verificar se é o time visitante para rotacionar os gols de volta (jogar na esquerda)
@@ -2983,32 +3008,4 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   g.appendChild(titleConquistados);
 
   // CONQUISTADOS - ASSISTÊNCIAS (esquerda)
-  const conquistadosAssistX = conquistadosX - halfSectionWidth;
-  drawSection('ASSISTÊNCIAS', conquistadosAssist, conquistadosAssistX, boxStartY);
-
-  // CONQUISTADOS - GOLS (direita)
-  const conquistadosGolsX = conquistadosX + boxGap / 2;
-  drawSection('GOLS', conquistadosGols, conquistadosGolsX, boxStartY);
-
-  overlayEl.appendChild(g);
-}
-
-// Título superior dentro do SVG para ser incluído no PNG
-function drawCxTitle(overlayEl, groupId = 'cxTitleLeft') {
-  if (!overlayEl) return;
-  const existing = overlayEl.querySelector(`#${groupId}`);
-  if (existing) overlayEl.removeChild(existing);
-  const g = el('g', { id: groupId, filter: 'url(#ds)', style: 'display:none' });
-  const title = el('text', {
-    x: WIDTH / 2,
-    y: 46,
-    'text-anchor': 'middle',
-    'font-family': 'Inter, Arial, sans-serif',
-    'font-size': 24,
-    'font-weight': 900,
-    fill: '#e7f8f1'
-  });
-  title.textContent = 'CEDIDAS X CONQUISTADAS';
-  g.appendChild(title);
-  overlayEl.appendChild(g);
-}
+  const conquist
