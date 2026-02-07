@@ -1185,7 +1185,7 @@ function svgToDataUrl(svgEl, { showTitles = true, exportPaddingTop = 0, hideLaye
 
   // Opcional: esconder a legenda/resumo inferior para evitar duplicação
   if (hidePositionSummary) {
-    const summaries = clone.querySelectorAll('#positionSummary, #positionSummaryLeft, #positionSummaryRight');
+    const summaries = clone.querySelectorAll('#positionSummary, #positionSummaryLeft, #positionSummaryRight, #svgMarkerLegend');
     summaries.forEach(s => { s.style.display = 'none'; });
   }
 
