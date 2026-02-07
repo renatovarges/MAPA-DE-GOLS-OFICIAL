@@ -157,36 +157,30 @@ function drawAssistMarker({ x, y }) {
 // Marcador de finalização: emoji ⚽ ou círculo colorido
 function drawShotEmoji({ x, y }, { isPenalty, isOwnGoal } = {}) {
   const { X, Y } = toXY({ x, y });
+  // Grupo com filtro de sombra drop-shadow (#ds)
   const g = el('g', { transform: `translate(${X},${Y})`, filter: 'url(#ds)' });
 
+  // Texto base (Bola)
+  const txt = el('text', {
+    x: 0,
+    y: 0,
+    'text-anchor': 'middle',
+    'dominant-baseline': 'middle',
+    'font-size': 22,
+  }, []);
+  txt.textContent = '⚽';
+
+  // Aplicar filtros de cor se necessário (tinting)
   if (isOwnGoal) {
-    // Gol Contra: Círculo Vermelho
-    const c = el('circle', {
-      cx: 0, cy: 0, r: 8,
-      fill: '#ef4444', // Vermelho
-      stroke: '#ffffff', 'stroke-width': 2
-    });
-    g.appendChild(c);
+    // Vermelho: sepia + hue-rotate + saturation
+    txt.style.filter = 'sepia(1) saturate(100) hue-rotate(310deg)';
   } else if (isPenalty) {
-    // Pênalti: Círculo Laranja
-    const c = el('circle', {
-      cx: 0, cy: 0, r: 8,
-      fill: '#f97316', // Laranja
-      stroke: '#ffffff', 'stroke-width': 2
-    });
-    g.appendChild(c);
-  } else {
-    // Gol Normal: Emoji
-    const txt = el('text', {
-      x: 0,
-      y: 0,
-      'text-anchor': 'middle',
-      'dominant-baseline': 'middle',
-      'font-size': 22,
-    }, []);
-    txt.textContent = '⚽';
-    g.appendChild(txt);
+    // Verde claro: sepia + hue-rotate + saturation + brightness
+    // Ajustado para um verde mais vivo/claro
+    txt.style.filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
   }
+
+  g.appendChild(txt);
   return g;
 }
 
@@ -1493,32 +1487,21 @@ function initEditor() {
       el.setAttribute('stroke-width', '2');
     } else {
       // Marcador de finalização (Gol, Gol Contra ou Pênalti)
+      el = document.createElementNS(ns, 'text');
+      el.setAttribute('x', pt.x);
+      el.setAttribute('y', pt.y);
+      el.setAttribute('text-anchor', 'middle');
+      el.setAttribute('dominant-baseline', 'middle');
+      el.setAttribute('font-size', '22');
+      el.setAttribute('font-weight', 'bold');
+      el.textContent = '⚽';
+
       if (kind === 'own') {
-        el = document.createElementNS(ns, 'circle');
-        el.setAttribute('cx', pt.x);
-        el.setAttribute('cy', pt.y);
-        el.setAttribute('r', '10');
-        el.setAttribute('fill', '#ef4444'); // Vermelho
-        el.setAttribute('stroke', '#ffffff');
-        el.setAttribute('stroke-width', '2');
+        // Vermelho
+        el.style.filter = 'sepia(1) saturate(100) hue-rotate(310deg)';
       } else if (kind === 'penalty') {
-        el = document.createElementNS(ns, 'circle');
-        el.setAttribute('cx', pt.x);
-        el.setAttribute('cy', pt.y);
-        el.setAttribute('r', '10');
-        el.setAttribute('fill', '#f97316'); // Laranja
-        el.setAttribute('stroke', '#ffffff');
-        el.setAttribute('stroke-width', '2');
-      } else {
-        // Gol Normal: Emoji
-        el = document.createElementNS(ns, 'text');
-        el.setAttribute('x', pt.x);
-        el.setAttribute('y', pt.y);
-        el.setAttribute('text-anchor', 'middle');
-        el.setAttribute('dominant-baseline', 'middle');
-        el.setAttribute('font-size', '22');
-        el.setAttribute('font-weight', 'bold');
-        el.textContent = '⚽';
+        // Verde claro
+        el.style.filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
       }
     }
     el.style.cursor = 'pointer';
