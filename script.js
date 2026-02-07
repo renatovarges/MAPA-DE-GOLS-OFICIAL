@@ -1792,21 +1792,27 @@ function initEditor() {
     }
 
     // Permitir apagar clicando no próprio marcador
+    // Permitir apagar clicando no próprio marcador
     el.addEventListener('click', (e) => {
       e.stopPropagation();
       try { overlay.removeChild(el); } catch { }
-      if (tool === 'assist') {
+      if (effectiveTool === 'assist') {
         current.assistPt = null;
         current.assistEl = null;
         current.assistPlayer = null;
+        // Se apagar a assistencia, resetar flag?
+        // current.isSetPiece = false; // Talvez não, pois se recriar... 
       } else {
         current.shotPt = null;
         current.shotEl = null;
         current.shotPlayer = null;
-        if (tool === 'own') {
+        if (effectiveTool === 'own') {
           current.isOwnGoal = false;
           current.ownGoalSide = null;
         }
+        // Reset flags de shot
+        if (effectiveTool === 'penalty') current.isPenalty = false;
+        // Header é atributo de shot, se apagar o shot, a flag perde sentido, mas fica no objeto
       }
       if (current.traceEl) {
         try { overlay.removeChild(current.traceEl); } catch { }
