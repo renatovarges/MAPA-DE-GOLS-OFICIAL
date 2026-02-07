@@ -154,18 +154,39 @@ function drawAssistMarker({ x, y }) {
 }
 
 // Marcador de finalização: emoji ⚽ padrão do sistema (sem dourado)
-function drawShotEmoji({ x, y }) {
+// Marcador de finalização: emoji ⚽ ou círculo colorido
+function drawShotEmoji({ x, y }, { isPenalty, isOwnGoal } = {}) {
   const { X, Y } = toXY({ x, y });
   const g = el('g', { transform: `translate(${X},${Y})`, filter: 'url(#ds)' });
-  const txt = el('text', {
-    x: 0,
-    y: 0,
-    'text-anchor': 'middle',
-    'dominant-baseline': 'middle',
-    'font-size': 22,
-  }, []);
-  txt.textContent = '⚽';
-  g.appendChild(txt);
+
+  if (isOwnGoal) {
+    // Gol Contra: Círculo Vermelho
+    const c = el('circle', {
+      cx: 0, cy: 0, r: 8,
+      fill: '#ef4444', // Vermelho
+      stroke: '#ffffff', 'stroke-width': 2
+    });
+    g.appendChild(c);
+  } else if (isPenalty) {
+    // Pênalti: Círculo Laranja
+    const c = el('circle', {
+      cx: 0, cy: 0, r: 8,
+      fill: '#f97316', // Laranja
+      stroke: '#ffffff', 'stroke-width': 2
+    });
+    g.appendChild(c);
+  } else {
+    // Gol Normal: Emoji
+    const txt = el('text', {
+      x: 0,
+      y: 0,
+      'text-anchor': 'middle',
+      'dominant-baseline': 'middle',
+      'font-size': 22,
+    }, []);
+    txt.textContent = '⚽';
+    g.appendChild(txt);
+  }
   return g;
 }
 
@@ -286,7 +307,7 @@ function renderEvents(layer, events, { flipX = false } = {}) {
       a.setAttribute('data-event-index', String(idx));
       nodesG.appendChild(a);
     }
-    const s = drawShotEmoji(shot);
+    const s = drawShotEmoji(shot, { isPenalty: ev.isPenalty, isOwnGoal: ev.isOwnGoal });
     s.setAttribute('data-event-index', String(idx));
     nodesG.appendChild(s);
   });
@@ -375,7 +396,14 @@ async function getTeamAggregatedData(teamKey, { homeFilter = null } = {}) {
     // Conversor para formato padrão disponível em todo o escopo da função
     const toStandard = (ev) => {
       if (ev && typeof ev === 'object') {
-        if (ev.shot || ev.pass) return ev;
+        // Normalizar chaves snake_case para camelCase se necessário
+        if (ev.shot || ev.pass) {
+          return {
+            ...ev,
+            isOwnGoal: ev.isOwnGoal || ev.own_goal,
+            isPenalty: ev.isPenalty || ev.is_penalty
+          };
+        }
         const hasShotCell = typeof ev.shot_cell !== 'undefined';
         const hasPassCell = typeof ev.pass_cell !== 'undefined';
         if (hasShotCell || hasPassCell) {
@@ -1464,21 +1492,34 @@ function initEditor() {
       el.setAttribute('stroke', '#0f172a');
       el.setAttribute('stroke-width', '2');
     } else {
-      el = document.createElementNS(ns, 'text');
-      el.setAttribute('x', pt.x);
-      el.setAttribute('y', pt.y);
-      el.setAttribute('text-anchor', 'middle');
-      el.setAttribute('dominant-baseline', 'middle');
-      el.setAttribute('font-size', '22');
-      el.setAttribute('font-weight', 'bold');
-
-      // Cor baseada no tipo
-      let fillCol = '#f7d36a'; // Padrão: Gol normal (Dourado)
-      if (kind === 'own') fillCol = '#ef4444'; // Gol contra (Vermelho)
-      if (kind === 'penalty') fillCol = '#f97316'; // Pênalti (Laranja)
-
-      el.setAttribute('fill', fillCol);
-      el.textContent = '⚽';
+      // Marcador de finalização (Gol, Gol Contra ou Pênalti)
+      if (kind === 'own') {
+        el = document.createElementNS(ns, 'circle');
+        el.setAttribute('cx', pt.x);
+        el.setAttribute('cy', pt.y);
+        el.setAttribute('r', '10');
+        el.setAttribute('fill', '#ef4444'); // Vermelho
+        el.setAttribute('stroke', '#ffffff');
+        el.setAttribute('stroke-width', '2');
+      } else if (kind === 'penalty') {
+        el = document.createElementNS(ns, 'circle');
+        el.setAttribute('cx', pt.x);
+        el.setAttribute('cy', pt.y);
+        el.setAttribute('r', '10');
+        el.setAttribute('fill', '#f97316'); // Laranja
+        el.setAttribute('stroke', '#ffffff');
+        el.setAttribute('stroke-width', '2');
+      } else {
+        // Gol Normal: Emoji
+        el = document.createElementNS(ns, 'text');
+        el.setAttribute('x', pt.x);
+        el.setAttribute('y', pt.y);
+        el.setAttribute('text-anchor', 'middle');
+        el.setAttribute('dominant-baseline', 'middle');
+        el.setAttribute('font-size', '22');
+        el.setAttribute('font-weight', 'bold');
+        el.textContent = '⚽';
+      }
     }
     el.style.cursor = 'pointer';
     overlay.appendChild(el);
@@ -2458,80 +2499,68 @@ function initEditor() {
         if (shotPtLogic) {
           const pt = logicalToEditorSVG(shotPtLogic.x, shotPtLogic.y);
           newEvent.shotPt = pt;
-          const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          circle.setAttribute('cx', pt.x); circle.setAttribute('cy', pt.y); circle.setAttribute('r', '10');
-          // Verde para gol normal, Vermelho para gol contra, Laranja para Pênalti
-          let fillCol = '#10b981'; // Verde padrão
-          let labelText = 'G';
 
-          if (newEvent.isOwnGoal) {
-            fillCol = '#ef4444'; // Vermelho
-            labelText = 'GC';
-          } else if (newEvent.isPenalty) {
-            fillCol = '#f97316'; // Laranja
-            labelText = 'GP';
-          }
+          let kind = 'shot';
+          if (newEvent.isOwnGoal) kind = 'own';
+          else if (newEvent.isPenalty) kind = 'penalty';
 
-          circle.setAttribute('fill', fillCol); circle.setAttribute('stroke', '#fff'); circle.setAttribute('stroke-width', '2');
-          overlay.appendChild(circle); newEvent.shotEl = circle;
-          const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-          text.setAttribute('x', pt.x); text.setAttribute('y', pt.y); text.setAttribute('text-anchor', 'middle');
-          text.setAttribute('dominant-baseline', 'middle'); text.setAttribute('fill', '#fff');
-          text.setAttribute('font-size', '12'); text.setAttribute('font-weight', 'bold'); text.textContent = labelText;
-          overlay.appendChild(text);
-          if (newEvent.assistPt && state.trace) {
-            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            line.setAttribute('x1', newEvent.assistPt.x); line.setAttribute('y1', newEvent.assistPt.y);
-            line.setAttribute('x2', pt.x); line.setAttribute('y2', pt.y);
-            line.setAttribute('stroke', '#f7d36a'); line.setAttribute('stroke-width', '2');
-            line.setAttribute('stroke-dasharray', '4 3'); overlay.appendChild(line); newEvent.traceEl = line;
-          }
+          const circle = addMarker(pt, kind);
+          newEvent.shotEl = circle;
         }
+
+        if (newEvent.assistPt && state.trace) {
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', newEvent.assistPt.x); line.setAttribute('y1', newEvent.assistPt.y);
+          line.setAttribute('x2', pt.x); line.setAttribute('y2', pt.y);
+          line.setAttribute('stroke', '#f7d36a'); line.setAttribute('stroke-width', '2');
+          line.setAttribute('stroke-dasharray', '4 3'); overlay.appendChild(line); newEvent.traceEl = line;
+        }
+      }
         state.roundEvents.push(newEvent);
-      });
-    } catch (err) { console.error('Erro ao carregar rodada:', err); }
-  }
-
-  // Função auxiliar para carregar dados de ambos os times
-  async function loadBothTeamsData() {
-    const homeKey = homeSelect && homeSelect.value ? homeSelect.value : null;
-    const awayKey = awaySelect && awaySelect.value ? awaySelect.value : null;
-    const roundNo = Number(roundInput.value) || 1;
-
-    // Limpar campo antes de carregar
-    const nodes = Array.from(overlay.querySelectorAll('text,circle,line'));
-    nodes.forEach(n => n.parentNode && n.parentNode.removeChild(n));
-    state.roundEvents = [];
-
-    // Carregar dados do mandante
-    if (homeKey) {
-      await loadRoundDataIntoEditor(homeKey, roundNo, false); // false = não limpar campo
-    }
-
-    // Carregar dados do visitante
-    if (awayKey) {
-      await loadRoundDataIntoEditor(awayKey, roundNo, false); // false = não limpar campo
-    }
-
-    updateList();
-  }
-
-  // Listeners para carregar automaticamente quando mudar time ou rodada
-  if (homeSelect) {
-    homeSelect.addEventListener('change', () => {
-      loadBothTeamsData();
     });
+  } catch (err) { console.error('Erro ao carregar rodada:', err); }
+}
+
+// Função auxiliar para carregar dados de ambos os times
+async function loadBothTeamsData() {
+  const homeKey = homeSelect && homeSelect.value ? homeSelect.value : null;
+  const awayKey = awaySelect && awaySelect.value ? awaySelect.value : null;
+  const roundNo = Number(roundInput.value) || 1;
+
+  // Limpar campo antes de carregar
+  const nodes = Array.from(overlay.querySelectorAll('text,circle,line'));
+  nodes.forEach(n => n.parentNode && n.parentNode.removeChild(n));
+  state.roundEvents = [];
+
+  // Carregar dados do mandante
+  if (homeKey) {
+    await loadRoundDataIntoEditor(homeKey, roundNo, false); // false = não limpar campo
   }
-  if (awaySelect) {
-    awaySelect.addEventListener('change', () => {
-      loadBothTeamsData();
-    });
+
+  // Carregar dados do visitante
+  if (awayKey) {
+    await loadRoundDataIntoEditor(awayKey, roundNo, false); // false = não limpar campo
   }
-  if (roundInput) {
-    roundInput.addEventListener('change', () => {
-      loadBothTeamsData();
-    });
-  }
+
+  updateList();
+}
+
+// Listeners para carregar automaticamente quando mudar time ou rodada
+if (homeSelect) {
+  homeSelect.addEventListener('change', () => {
+    loadBothTeamsData();
+  });
+}
+if (awaySelect) {
+  awaySelect.addEventListener('change', () => {
+    loadBothTeamsData();
+  });
+}
+if (roundInput) {
+  roundInput.addEventListener('change', () => {
+    loadBothTeamsData();
+  });
+}
 }
 
 // (Removido) Função de simulação de rodadas
@@ -2769,7 +2798,16 @@ function showPlayerTooltip(event, eventData) {
 
   if (eventData.shotPlayer && eventData.shotPlayer.name) {
     const side = eventData.shotPlayer.side;
-    content += `<div style="margin-bottom:2px;display:flex;align-items:center"><span style="font-weight:700;color:#ffd24d;margin-right:8px">GOL:</span><span>${eventData.shotPlayer.name} (${abbr(eventData.shotPlayer.position, side)})</span></div>`;
+    const label = eventData.isOwnGoal ? 'GOL CONTRA:' : 'GOL:';
+    const color = eventData.isOwnGoal ? '#ef4444' : '#ffd24d';
+    content += `<div style="margin-bottom:2px;display:flex;align-items:center"><span style="font-weight:700;color:${color};margin-right:8px">${label}</span><span>${eventData.shotPlayer.name} (${abbr(eventData.shotPlayer.position, side)})</span></div>`;
+  }
+
+  if (eventData.isOwnGoal) {
+    // Manter o aviso extra se desejar, ou removê-lo já que o título mudou.
+    // O usuário pediu para "não aparecer que foi gol normal", a mudança acima resolve.
+    // Mas vou manter o aviso extra para reforçar, ou removê-lo se ficar redundante.
+    // Vou remover o aviso extra redundante na próxima etapa se necessário, mas por ora atualização do label é o principal.
   }
 
   if (eventData.isOwnGoal) {
