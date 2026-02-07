@@ -26,7 +26,7 @@ const offensiveLayerRx = document.getElementById('offensiveLayerRx');
 
 // Dimensões do canvas (viewBox) e do campo desenhado
 const WIDTH = 1000;
-const HEIGHT = 800; // aumentado de 660 para 900 para criar espaço para o rodapé
+const HEIGHT = 850; // Aumentado para 850 para dar mais respiro no rodapé
 // Área útil do campo (retângulo interno das linhas):
 const PITCH = {
   unitsX: 100,   // largura lógica
@@ -3260,9 +3260,9 @@ function drawSVGMarkerLegend(overlayEl, groupId = 'svgMarkerLegend') {
   const g = el('g', { id: groupId });
 
   // Posicionada abaixo do quadro de estatísticas (y=740)
-  const legendY = 770;
-  // Alterado para 744 para caber na altura 800 (744 + 50 = 794)
-  const rectY = 744;
+  const legendY = 800;
+  // Alterado para 780 para centralizar no novo espaço (740 a 850)
+  const rectY = 780;
   const rectH = 50;
   const WIDTH = 1000;
 
