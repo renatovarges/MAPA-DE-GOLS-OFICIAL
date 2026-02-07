@@ -2511,56 +2511,62 @@ function initEditor() {
         if (newEvent.assistPt && state.trace) {
           const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
           line.setAttribute('x1', newEvent.assistPt.x); line.setAttribute('y1', newEvent.assistPt.y);
-          line.setAttribute('x2', pt.x); line.setAttribute('y2', pt.y);
-          line.setAttribute('stroke', '#f7d36a'); line.setAttribute('stroke-width', '2');
-          line.setAttribute('stroke-dasharray', '4 3'); overlay.appendChild(line); newEvent.traceEl = line;
+          // O ponto final do traçado deve ser shotPt (pt)
+          // Mas 'pt' é local ao if(shotPtLogic), então precisamos recalcular ou garantir escopo
+          // No entanto, logicamente só desenhamos traço se houver passe E chute.
+          if (newEvent.shotPt) {
+            const endPt = newEvent.shotPt;
+            line.setAttribute('x2', endPt.x); line.setAttribute('y2', endPt.y);
+            line.setAttribute('stroke', '#f7d36a'); line.setAttribute('stroke-width', '2');
+            line.setAttribute('stroke-dasharray', '4 3'); overlay.appendChild(line); newEvent.traceEl = line;
+          }
         }
-      }
+
         state.roundEvents.push(newEvent);
+      });
+    } catch (err) { console.error('Erro ao carregar rodada:', err); }
+  }
+
+  // Função auxiliar para carregar dados de ambos os times
+  async function loadBothTeamsData() {
+    const homeKey = homeSelect && homeSelect.value ? homeSelect.value : null;
+    const awayKey = awaySelect && awaySelect.value ? awaySelect.value : null;
+    const roundNo = Number(roundInput.value) || 1;
+
+    // Limpar campo antes de carregar
+    const nodes = Array.from(overlay.querySelectorAll('text,circle,line'));
+    nodes.forEach(n => n.parentNode && n.parentNode.removeChild(n));
+    state.roundEvents = [];
+
+    // Carregar dados do mandante
+    if (homeKey) {
+      await loadRoundDataIntoEditor(homeKey, roundNo, false); // false = não limpar campo
+    }
+
+    // Carregar dados do visitante
+    if (awayKey) {
+      await loadRoundDataIntoEditor(awayKey, roundNo, false); // false = não limpar campo
+    }
+
+    updateList();
+  }
+
+  // Listeners para carregar automaticamente quando mudar time ou rodada
+  if (homeSelect) {
+    homeSelect.addEventListener('change', () => {
+      loadBothTeamsData();
     });
-  } catch (err) { console.error('Erro ao carregar rodada:', err); }
-}
-
-// Função auxiliar para carregar dados de ambos os times
-async function loadBothTeamsData() {
-  const homeKey = homeSelect && homeSelect.value ? homeSelect.value : null;
-  const awayKey = awaySelect && awaySelect.value ? awaySelect.value : null;
-  const roundNo = Number(roundInput.value) || 1;
-
-  // Limpar campo antes de carregar
-  const nodes = Array.from(overlay.querySelectorAll('text,circle,line'));
-  nodes.forEach(n => n.parentNode && n.parentNode.removeChild(n));
-  state.roundEvents = [];
-
-  // Carregar dados do mandante
-  if (homeKey) {
-    await loadRoundDataIntoEditor(homeKey, roundNo, false); // false = não limpar campo
   }
-
-  // Carregar dados do visitante
-  if (awayKey) {
-    await loadRoundDataIntoEditor(awayKey, roundNo, false); // false = não limpar campo
+  if (awaySelect) {
+    awaySelect.addEventListener('change', () => {
+      loadBothTeamsData();
+    });
   }
-
-  updateList();
-}
-
-// Listeners para carregar automaticamente quando mudar time ou rodada
-if (homeSelect) {
-  homeSelect.addEventListener('change', () => {
-    loadBothTeamsData();
-  });
-}
-if (awaySelect) {
-  awaySelect.addEventListener('change', () => {
-    loadBothTeamsData();
-  });
-}
-if (roundInput) {
-  roundInput.addEventListener('change', () => {
-    loadBothTeamsData();
-  });
-}
+  if (roundInput) {
+    roundInput.addEventListener('change', () => {
+      loadBothTeamsData();
+    });
+  }
 }
 
 // (Removido) Função de simulação de rodadas
