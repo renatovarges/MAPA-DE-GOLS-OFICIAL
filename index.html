@@ -349,6 +349,11 @@
             <option value="penalty">Gol de pênalti</option>
           </select>
         </label>
+        <!-- Opções extras dinâmicas -->
+        <div id="editorExtraOptions" style="display:inline-flex;gap:8px;align-items:center">
+          <label id="optSetPiece" style="display:none"><input type="checkbox" id="checkSetPiece"> Bola Parada</label>
+          <label id="optHeader" style="display:none"><input type="checkbox" id="checkHeader"> De Cabeça</label>
+        </div>
 
         <label><input id="editorTrace" type="checkbox" checked /> Traçado A → G</label>
         <button id="editorSaveRoundBtn" type="button">Salvar rodada</button>

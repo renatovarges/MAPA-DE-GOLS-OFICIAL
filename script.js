@@ -138,14 +138,15 @@ function fromXY({ X, Y }) {
 }
 
 // Marcador de assistência igual ao Editor: círculo branco com borda azul-escuro
-function drawAssistMarker({ x, y }) {
+// Marcador de assistência: círculo branco (padrão) ou amarelo (bola parada)
+function drawAssistMarker({ x, y }, { isSetPiece } = {}) {
   const { X, Y } = toXY({ x, y });
   const g = el('g', { transform: `translate(${X},${Y})`, filter: 'url(#ds)' });
   const circle = el('circle', {
     r: 10,
     cx: 0,
     cy: 0,
-    fill: '#ffffff',
+    fill: isSetPiece ? '#fef08a' : '#ffffff', // Amarelo claro se bola parada
     stroke: '#0f172a',
     'stroke-width': 2,
   });
@@ -155,7 +156,7 @@ function drawAssistMarker({ x, y }) {
 
 // Marcador de finalização: emoji ⚽ padrão do sistema (sem dourado)
 // Marcador de finalização: emoji ⚽ ou círculo colorido
-function drawShotEmoji({ x, y }, { isPenalty, isOwnGoal } = {}) {
+function drawShotEmoji({ x, y }, { isPenalty, isOwnGoal, isHeader } = {}) {
   const { X, Y } = toXY({ x, y });
   // Grupo com filtro de sombra drop-shadow (#ds)
   const g = el('g', { transform: `translate(${X},${Y})`, filter: 'url(#ds)' });
@@ -172,12 +173,17 @@ function drawShotEmoji({ x, y }, { isPenalty, isOwnGoal } = {}) {
 
   // Aplicar filtros de cor se necessário (tinting)
   if (isOwnGoal) {
-    // Vermelho mais sutil: menos saturação e ajuste de matiz
+    // Vermelho mais sutil
     txt.style.filter = 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)';
   } else if (isPenalty) {
-    // Verde claro: sepia + hue-rotate + saturation + brightness
-    // Ajustado para um verde mais vivo/claro
+    // Verde claro
     txt.style.filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
+  } else if (isHeader) {
+    // Azul Celeste / Ciano (#38bdf8 aprox)
+    // Ajuste de filtro para transformar o dourado padrão em azul
+    txt.style.filter = 'sepia(1) saturate(100) hue-rotate(150deg) brightness(1.1) contrast(1.2)';
+  } else {
+    // Normal (Dourado/Original) - sem filtro ou filtro leve se quiser padronizar
   }
 
   g.appendChild(txt);
@@ -297,11 +303,15 @@ function renderEvents(layer, events, { flipX = false } = {}) {
   items.forEach(({ ev, shot, pass }, idx) => {
     if (pass) {
       linesG.appendChild(drawDashedLine(pass, shot));
-      const a = drawAssistMarker(pass);
+      const a = drawAssistMarker(pass, { isSetPiece: ev.isSetPiece });
       a.setAttribute('data-event-index', String(idx));
       nodesG.appendChild(a);
     }
-    const s = drawShotEmoji(shot, { isPenalty: ev.isPenalty, isOwnGoal: ev.isOwnGoal });
+    const s = drawShotEmoji(shot, {
+      isPenalty: ev.isPenalty,
+      isOwnGoal: ev.isOwnGoal,
+      isHeader: ev.isHeader
+    });
     s.setAttribute('data-event-index', String(idx));
     nodesG.appendChild(s);
   });
@@ -1397,6 +1407,31 @@ function initEditor() {
   const exportBtn = document.getElementById('editorExportBtn');
   const listEl = document.getElementById('editorEventsList');
   const addTestGoalsBtn = document.getElementById('editorAddTestGoalsBtn');
+
+  // Checkboxes dinâmicos
+  const optSetPiece = document.getElementById('optSetPiece');
+  const checkSetPiece = document.getElementById('checkSetPiece');
+  const optHeader = document.getElementById('optHeader');
+  const checkHeader = document.getElementById('checkHeader');
+
+  if (toolSelect) {
+    toolSelect.addEventListener('change', updateExtraOptions);
+    updateExtraOptions(); // estado inicial
+  }
+
+  function updateExtraOptions() {
+    if (!toolSelect) return;
+    const v = toolSelect.value;
+    // Resetar displays
+    if (optSetPiece) optSetPiece.style.display = 'none';
+    if (optHeader) optHeader.style.display = 'none';
+
+    if (v === 'assist') {
+      if (optSetPiece) optSetPiece.style.display = 'inline-flex';
+    } else if (v === 'shot') {
+      if (optHeader) optHeader.style.display = 'inline-flex';
+    }
+  }
 
   if (!modal || !overlay) return;
 
@@ -2707,6 +2742,63 @@ function populatePlayersLegend(legendId, events) {
   });
 
   legendEl.style.display = 'block';
+}
+
+// Função para desenhar a legenda explicativa abaixo dos painéis
+function drawPositionSummaryLegend() {
+  const legendId = 'customLegend';
+  let legendDiv = document.getElementById(legendId);
+
+  if (!legendDiv) {
+    // Tentar encontrar um container apropriado. O usuário disse "abaixo do painel de indicação".
+    // Vou assumir que o 'statsPanel' ou o container principal é o alvo.
+    // Vou criar um container fixo se não achar um gancho melhor, ou anexar ao body/container principal.
+    // Melhor: Criar um container novo após o `statsPanel`.
+    const statsPanel = document.getElementById('statsPanel');
+    if (!statsPanel) return; // Se não tiver painel, não desenha legenda
+
+    legendDiv = document.createElement('div');
+    legendDiv.id = legendId;
+    legendDiv.style.cssText = 'display:flex;justify-content:center;gap:20px;margin-top:20px;flex-wrap:wrap;color:#e7f8f1;font-size:14px;background:rgba(11,31,22,0.6);padding:10px;border-radius:8px';
+    statsPanel.insertAdjacentElement('afterend', legendDiv);
+  }
+
+  // Itens da legenda
+  // ⚪ Bola Branca: Assistência Normal
+  // 🟡 Bola Amarela: Assistência Bola Parada
+  // ⚽ (Dourado): Gol
+  // ⚽ (Azul): Gol de Cabeça
+  // ⚽ (Verde): Pênalti
+  // ⚽ (Vermelho): Gol Contra
+
+  const items = [
+    { type: 'circle', color: '#ffffff', label: 'Assistência' },
+    { type: 'circle', color: '#fef08a', label: 'Ass. Bola Parada' },
+    { type: 'emoji', color: 'standard', label: 'Gol' },
+    { type: 'emoji', color: 'header', label: 'Gol de Cabeça' },
+    { type: 'emoji', color: 'penalty', label: 'Pênalti' },
+    { type: 'emoji', color: 'own', label: 'Gol Contra' }
+  ];
+
+  let html = '';
+  items.forEach(item => {
+    let icon = '';
+    if (item.type === 'circle') {
+      icon = `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${item.color};border:2px solid #0f172a;margin-right:6px"></span>`;
+    } else {
+      // Emoji com filtros
+      let filter = '';
+      if (item.color === 'own') filter = 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)';
+      else if (item.color === 'penalty') filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
+      else if (item.color === 'header') filter = 'sepia(1) saturate(100) hue-rotate(150deg) brightness(1.1) contrast(1.2)';
+
+      icon = `<span style="display:inline-block;font-size:16px;margin-right:6px;filter:${filter}">⚽</span>`;
+    }
+
+    html += `<div style="display:flex;align-items:center;">${icon}<span>${item.label}</span></div>`;
+  });
+
+  legendDiv.innerHTML = html;
 }
 
 function addClickInteractivity(layer, events) {
