@@ -3245,10 +3245,26 @@ function drawSVGMarkerLegend(overlayEl, groupId = 'svgMarkerLegend') {
 
   const g = el('g', { id: groupId });
 
-  // Posicionada abaixo do quadro de estatísticas (y=740 até 800)
-  // Se não houver estatísticas, ele fica lá embaixo sozinho, o que é bom.
+  // Posicionada abaixo do quadro de estatísticas (y=740)
   const legendY = 770;
+  // Alterado para 760 para garantir visibilidade, com fundo
+  const rectY = 750;
+  const rectH = 46;
   const WIDTH = 1000;
+
+  // Fundo para garantir contraste e visibilidade
+  const bg = el('rect', {
+    x: 20,
+    y: rectY,
+    width: WIDTH - 40,
+    height: rectH,
+    rx: 8,
+    ry: 8,
+    fill: 'rgba(11,31,22,0.9)', // Fundo escuro igual ao do HTML antigo
+    stroke: '#7eccb2',
+    'stroke-width': 1
+  });
+  g.appendChild(bg);
 
   const legendItems = [
     { type: 'circle', color: '#ffffff', label: 'Assistência' },
@@ -3259,15 +3275,17 @@ function drawSVGMarkerLegend(overlayEl, groupId = 'svgMarkerLegend') {
     { type: 'emoji', filter: 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)', label: 'Gol Contra' }
   ];
 
-  const itemWidth = 135;
+  const itemWidth = 145; // Mais espaço
   const totalLegendWidth = legendItems.length * itemWidth;
   let currentX = (WIDTH - totalLegendWidth) / 2 + (itemWidth / 2);
+
+  const textY = rectY + (rectH / 2) + 5; // Centralizado verticalmente no rect
 
   legendItems.forEach(item => {
     if (item.type === 'circle') {
       const icon = el('circle', {
-        cx: currentX - 45,
-        cy: legendY,
+        cx: currentX - 50,
+        cy: textY - 4,
         r: 6,
         fill: item.color,
         stroke: '#0b1f16',
@@ -3276,8 +3294,8 @@ function drawSVGMarkerLegend(overlayEl, groupId = 'svgMarkerLegend') {
       g.appendChild(icon);
     } else {
       const icon = el('text', {
-        x: currentX - 45,
-        y: legendY + 5,
+        x: currentX - 50,
+        y: textY,
         'text-anchor': 'middle',
         'font-size': 16,
         fill: '#ffffff',
@@ -3288,8 +3306,8 @@ function drawSVGMarkerLegend(overlayEl, groupId = 'svgMarkerLegend') {
     }
 
     const text = el('text', {
-      x: currentX - 30,
-      y: legendY + 4,
+      x: currentX - 35,
+      y: textY - 1,
       'text-anchor': 'start',
       'font-family': 'Inter, Arial, sans-serif',
       'font-size': 12,
