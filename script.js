@@ -1820,7 +1820,7 @@ function initEditor() {
     });
 
     // Abrir painel de seleção de jogadores (incluindo gol contra)
-    openPlayerSelectionPanel(current, tool);
+    openPlayerSelectionPanel(current, effectiveTool);
 
     updateList();
   });
@@ -3234,3 +3234,11 @@ function drawCxTitle(overlayEl, groupId = 'cxTitleLeft') {
   g.appendChild(title);
   overlayEl.appendChild(g);
 }
+
+// Inicializar legenda ao carregar o script
+drawMainLegend();
+
+// Garantir que a legenda apareça mesmo se o script carregar antes do DOM
+window.addEventListener('load', () => {
+  drawMainLegend();
+});
