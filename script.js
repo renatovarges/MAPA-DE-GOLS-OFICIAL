@@ -1200,8 +1200,9 @@ async function exportFieldAsPng(pitchEl, overlayEl, scale = 6) {
   ctx.scale(scale, scale);
 
   // URLs para exportação com padding superior
-  const pitchUrl = svgToDataUrl(pitchEl, { exportPaddingTop: EXPORT_TOP_PADDING, showTitles: false });
-  const overlayNoTitleUrl = svgToDataUrl(overlayEl, { exportPaddingTop: EXPORT_TOP_PADDING, showTitles: false });
+  // URLs para exportação com padding superior (CORREÇÃO: padding 0 para manter aspecto 1:1)
+  const pitchUrl = svgToDataUrl(pitchEl, { exportPaddingTop: 0, showTitles: false });
+  const overlayNoTitleUrl = svgToDataUrl(overlayEl, { exportPaddingTop: 0, showTitles: false });
   const overlayTitleOnlyUrl = svgToDataUrl(overlayEl, { exportPaddingTop: EXPORT_TOP_PADDING, showTitles: true, hideLayers: true, hidePositionSummary: true, titleYOffset: -24 });
 
   // Desenhar gramado e eventos deslocados para baixo (criando margem superior)
@@ -1665,6 +1666,13 @@ function initEditor() {
     // Atualizar painel de estatísticas por posição no overlay do editor
     // (Removido a pedido do usuário)
     // drawEditorPositionStatsPanel();
+
+    // DESENHAR LEGENDA DE MARCADORES (SVG) EM TODOS OS CAMPOS
+    // Garante que apareça no download
+    drawSVGMarkerLegend(overlay);
+    if (typeof overlay2 !== 'undefined') drawSVGMarkerLegend(overlay2);
+    if (typeof overlayLx !== 'undefined') drawSVGMarkerLegend(overlayLx);
+    if (typeof overlayRx !== 'undefined') drawSVGMarkerLegend(overlayRx);
   }
 
   // Função para deletar um evento específico
@@ -3229,6 +3237,74 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   overlayEl.appendChild(g);
 }
 
+// Nova função dedicada para desenhar a legenda de marcadores no SVG (sem depender de estatísticas)
+function drawSVGMarkerLegend(overlayEl, groupId = 'svgMarkerLegend') {
+  if (!overlayEl) return;
+  const existing = overlayEl.querySelector(`#${groupId}`);
+  if (existing) existing.remove();
+
+  const g = el('g', { id: groupId });
+
+  // Posicionada abaixo do quadro de estatísticas (y=740 até 800)
+  // Se não houver estatísticas, ele fica lá embaixo sozinho, o que é bom.
+  const legendY = 770;
+  const WIDTH = 1000;
+
+  const legendItems = [
+    { type: 'circle', color: '#ffffff', label: 'Assistência' },
+    { type: 'circle', color: '#fef08a', label: 'Ass. Bola Parada' },
+    { type: 'emoji', filter: '', label: 'Gol Normal' },
+    { type: 'emoji', filter: 'sepia(1) saturate(50) hue-rotate(45deg) brightness(1.2)', label: 'Gol de Cabeça' },
+    { type: 'emoji', filter: 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)', label: 'Pênalti' },
+    { type: 'emoji', filter: 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)', label: 'Gol Contra' }
+  ];
+
+  const itemWidth = 135;
+  const totalLegendWidth = legendItems.length * itemWidth;
+  let currentX = (WIDTH - totalLegendWidth) / 2 + (itemWidth / 2);
+
+  legendItems.forEach(item => {
+    if (item.type === 'circle') {
+      const icon = el('circle', {
+        cx: currentX - 45,
+        cy: legendY,
+        r: 6,
+        fill: item.color,
+        stroke: '#0b1f16',
+        'stroke-width': 2
+      });
+      g.appendChild(icon);
+    } else {
+      const icon = el('text', {
+        x: currentX - 45,
+        y: legendY + 5,
+        'text-anchor': 'middle',
+        'font-size': 16,
+        fill: '#ffffff',
+        style: item.filter ? `filter:${item.filter}` : ''
+      });
+      icon.textContent = '⚽';
+      g.appendChild(icon);
+    }
+
+    const text = el('text', {
+      x: currentX - 30,
+      y: legendY + 4,
+      'text-anchor': 'start',
+      'font-family': 'Inter, Arial, sans-serif',
+      'font-size': 12,
+      'font-weight': 600,
+      fill: '#e7f8f1'
+    });
+    text.textContent = item.label;
+    g.appendChild(text);
+
+    currentX += itemWidth;
+  });
+
+  overlayEl.appendChild(g);
+}
+
 // Título superior dentro do SVG para ser incluído no PNG
 function drawCxTitle(overlayEl, groupId = 'cxTitleLeft') {
   if (!overlayEl) return;
@@ -3248,5 +3324,3 @@ function drawCxTitle(overlayEl, groupId = 'cxTitleLeft') {
   g.appendChild(title);
   overlayEl.appendChild(g);
 }
-
-// Legenda agora é estática no HTML para garantir visibilidade.
