@@ -1218,7 +1218,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitch');
         const overlayEl = document.getElementById('overlay');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 10);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6);
         const a = document.createElement('a');
         const base = slugify(currentTeamLeft || 'campo1');
         a.href = dataUrl;
@@ -1236,7 +1236,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitch2');
         const overlayEl = document.getElementById('overlay2');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 10);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6);
         const a = document.createElement('a');
         const base = slugify(currentTeamRight || 'campo2');
         a.href = dataUrl;
@@ -1254,7 +1254,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitchLx');
         const overlayEl = document.getElementById('overlayLx');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 10);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6);
         const a = document.createElement('a');
         const base = slugify(currentTeamLeftExtra || 'campo1-extra');
         a.href = dataUrl;
@@ -1272,7 +1272,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitchRx');
         const overlayEl = document.getElementById('overlayRx');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 10);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6);
         const a = document.createElement('a');
         const base = slugify(currentTeamRightExtra || 'campo2-extra');
         a.href = dataUrl;
@@ -1469,7 +1469,13 @@ function initEditor() {
       el.setAttribute('dominant-baseline', 'middle');
       el.setAttribute('font-size', '22');
       el.setAttribute('font-weight', 'bold');
-      el.setAttribute('fill', '#f7d36a');
+
+      // Cor baseada no tipo
+      let fillCol = '#f7d36a'; // Padrão: Gol normal (Dourado)
+      if (kind === 'own') fillCol = '#ef4444'; // Gol contra (Vermelho)
+      if (kind === 'penalty') fillCol = '#f97316'; // Pênalti (Laranja)
+
+      el.setAttribute('fill', fillCol);
       el.textContent = '⚽';
     }
     el.style.cursor = 'pointer';
@@ -1662,13 +1668,18 @@ function initEditor() {
     let current = state.roundEvents[state.roundEvents.length - 1];
     // Regra: se o último evento já tem uma finalização sem assistência,
     // começar um novo evento para não acoplar automaticamente.
+    // MAS: Se for pênalti ou gol contra, sempre criar novo, pois não tem assistência.
+    const isSoloEvent = (tool === 'own' || tool === 'penalty');
+
     const shouldStartNew = (
       !current ||
       (current.assistPt && current.shotPt) ||
-      (current.shotPt && !current.assistPt) // último é "gol sem assistência" -> iniciar novo
+      (current.shotPt && !current.assistPt) || // último é "gol sem assistência" -> iniciar novo
+      isSoloEvent // Se a ferramenta atual é solo, força novo evento
     );
+
     if (shouldStartNew) {
-      current = { assistPt: null, shotPt: null, assistEl: null, shotEl: null, traceEl: null, assistPlayer: null, shotPlayer: null, isOwnGoal: false, ownGoalSide: null };
+      current = { assistPt: null, shotPt: null, assistEl: null, shotEl: null, traceEl: null, assistPlayer: null, shotPlayer: null, isOwnGoal: false, ownGoalSide: null, isPenalty: false };
       state.roundEvents.push(current);
     }
 
@@ -1680,9 +1691,19 @@ function initEditor() {
       current.shotPt = pt;
       current.shotEl = el;
       if (tool === 'own') {
-        // Marcar como gol contra, sem abrir painel de seleção
+        // Marcar como gol contra
         current.isOwnGoal = true;
+        current.isPenalty = false;
         current.ownGoalSide = ownGoalSideSelect ? (ownGoalSideSelect.value || 'mandante') : 'mandante';
+      } else if (tool === 'penalty') {
+        // Marcar como pênalti
+        current.isPenalty = true;
+        current.isOwnGoal = false;
+        current.ownGoalSide = null;
+      } else {
+        // Gol normal
+        current.isOwnGoal = false;
+        current.isPenalty = false;
       }
     }
 
@@ -2195,7 +2216,8 @@ function initEditor() {
         // Incluir dados dos jogadores se disponíveis (não aplicável a gol contra)
         assistPlayer: isOwn ? null : (ev.assistPlayer || null),
         shotPlayer: (ev.shotPlayer || null),
-        own_goal: isOwn || undefined
+        own_goal: isOwn || undefined,
+        is_penalty: ev.isPenalty || undefined
       };
       const rotated = {
         pass: homeEvent.pass ? rotate180(homeEvent.pass) : null,
@@ -2203,7 +2225,8 @@ function initEditor() {
         // Manter os mesmos dados (nulo em gol contra / originais caso não seja)
         assistPlayer: isOwn ? null : (ev.assistPlayer || null),
         shotPlayer: (ev.shotPlayer || null),
-        own_goal: isOwn || undefined
+        own_goal: isOwn || undefined,
+        is_penalty: ev.isPenalty || undefined
       };
 
       if (isOwn) {
@@ -2262,11 +2285,13 @@ function initEditor() {
   }
 
   saveRoundBtn && saveRoundBtn.addEventListener('click', async () => {
-    // Validação de Data (Novo Requisito)
-    const dateInput = document.getElementById('editorDate');
-    if (dateInput && !dateInput.value) {
-      alert('⚠️ ATENÇÃO: Data do Jogo é obrigatória!\nPor favor, preencha a data antes de salvar.');
-      return;
+    // Validação de Data (Simplificada)
+    const dInput = document.getElementById('editorDate');
+    if (dInput) {
+      if (!dInput.value) {
+        alert('⚠️ ATENÇÃO: Data do Jogo é obrigatória!\nPor favor, preencha a data antes de salvar.');
+        return;
+      }
     }
 
     const missing = findMissingLateralSides();
@@ -2411,7 +2436,8 @@ function initEditor() {
         const newEvent = {
           assistPt: null, shotPt: null, assistEl: null, shotEl: null, traceEl: null,
           assistPlayer: ev.assistPlayer || null, shotPlayer: ev.shotPlayer || null,
-          isOwnGoal: ev.own_goal || false, ownGoalSide: ev.ownGoalSide || null
+          isOwnGoal: ev.own_goal || false, ownGoalSide: ev.ownGoalSide || null,
+          isPenalty: ev.is_penalty || false
         };
 
         if (passPtLogic) {
@@ -2432,14 +2458,24 @@ function initEditor() {
           newEvent.shotPt = pt;
           const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
           circle.setAttribute('cx', pt.x); circle.setAttribute('cy', pt.y); circle.setAttribute('r', '10');
-          // Verde para gol normal, Vermelho/Laranja para gol contra
-          const fillCol = newEvent.isOwnGoal ? '#ef4444' : '#10b981';
+          // Verde para gol normal, Vermelho para gol contra, Laranja para Pênalti
+          let fillCol = '#10b981'; // Verde padrão
+          let labelText = 'G';
+
+          if (newEvent.isOwnGoal) {
+            fillCol = '#ef4444'; // Vermelho
+            labelText = 'GC';
+          } else if (newEvent.isPenalty) {
+            fillCol = '#f97316'; // Laranja
+            labelText = 'GP';
+          }
+
           circle.setAttribute('fill', fillCol); circle.setAttribute('stroke', '#fff'); circle.setAttribute('stroke-width', '2');
           overlay.appendChild(circle); newEvent.shotEl = circle;
           const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
           text.setAttribute('x', pt.x); text.setAttribute('y', pt.y); text.setAttribute('text-anchor', 'middle');
           text.setAttribute('dominant-baseline', 'middle'); text.setAttribute('fill', '#fff');
-          text.setAttribute('font-size', '12'); text.setAttribute('font-weight', 'bold'); text.textContent = newEvent.isOwnGoal ? 'GC' : 'G';
+          text.setAttribute('font-size', '12'); text.setAttribute('font-weight', 'bold'); text.textContent = labelText;
           overlay.appendChild(text);
           if (newEvent.assistPt && state.trace) {
             const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -2666,16 +2702,13 @@ function addClickInteractivity(layer, events) {
 }
 
 function showPlayerTooltip(event, eventData) {
-  const markerEl = event.currentTarget;
-
-  // Alternar (Toggle) behavior
-  const existingFn = markerEl._tooltipToggle;
-  if (existingFn) {
-    existingFn(); // Fecha o tooltip atual se já existir
-    return;
+  // Remover tooltip existente
+  const existingTooltip = document.getElementById('playerTooltip');
+  if (existingTooltip) {
+    existingTooltip.remove();
   }
 
-  // Verificar se há dados de jogador (embora o listener só seja adicionado se houver)
+  // Verificar se há dados de jogador
   const hasPlayerData = (eventData.assistPlayer && eventData.assistPlayer.name) ||
     (eventData.shotPlayer && eventData.shotPlayer.name);
 
@@ -2685,7 +2718,7 @@ function showPlayerTooltip(event, eventData) {
 
   // Criar tooltip
   const tooltip = document.createElement('div');
-  tooltip.className = 'player-tooltip-popup';
+  tooltip.id = 'playerTooltip';
   tooltip.style.cssText = `
     position: absolute;
     background: rgba(11,31,22,0.98);
@@ -2697,19 +2730,19 @@ function showPlayerTooltip(event, eventData) {
     z-index: 99999;
     max-width: 280px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1);
-    pointer-events: auto;
+    pointer-events: none;
     backdrop-filter: blur(4px);
     font-family: inherit;
   `;
 
-  // Conteúdo
+  // Abreviações e rótulos simples
   const POS_ABBR = { 'Goleiro': 'GOL', 'Zagueiro': 'ZAG', 'Meia': 'MEI', 'Atacante': 'ATA' };
   const abbr = (p, side) => {
     if (p === 'Lateral') return side === 'LD' ? 'LAT D' : (side === 'LE' ? 'LAT E' : 'LAT');
     return POS_ABBR[p] || p;
   };
   let content = '';
-
+  // Cabeçalho com confronto (escudos + nomes) quando disponível
   const crestSrcFor = (teamKey) => {
     const key = String(teamKey || '').toLowerCase().replace(/-/g, '_');
     const norm = normalizeTeamKey(key);
@@ -2721,7 +2754,6 @@ function showPlayerTooltip(event, eventData) {
     const imgHtml = src ? `<img src="${src}" alt="" style="width:18px;height:18px;border-radius:50%;background:#fff;padding:2px;box-shadow:0 1px 2px rgba(0,0,0,.2)">` : '';
     return `<div style="display:flex;align-items:center;gap:6px">${imgHtml}<span style="font-weight:700">${name}</span></div>`;
   };
-
   if (eventData.match && (eventData.match.homeName || eventData.match.awayName)) {
     const m = eventData.match;
     const headHtml = `<div style="margin-bottom:8px;display:flex;align-items:center;gap:8px">${renderTeamHeaderItem(m.homeName, m.homeTeamKey)}<span style="opacity:.6">vs</span>${renderTeamHeaderItem(m.awayName, m.awayTeamKey)}</div>`;
@@ -2742,123 +2774,78 @@ function showPlayerTooltip(event, eventData) {
     content += `<div style="margin-top:8px;color:#ef4444;font-weight:bold">⚠️ Gol Contra (${eventData.ownGoalSide})</div>`;
   }
 
-  // Botão de fechar
-  const closeBtn = document.createElement('div');
-  closeBtn.textContent = '×';
-  closeBtn.style.cssText = 'position:absolute;top:4px;right:6px;font-size:16px;cursor:pointer;opacity:0.7';
-  closeBtn.onclick = (e) => { e.stopPropagation(); cleanup(); };
-  tooltip.appendChild(closeBtn);
+  tooltip.innerHTML = content;
 
-  const contentDiv = document.createElement('div');
-  contentDiv.innerHTML = content;
-  tooltip.appendChild(contentDiv);
-
-  // Posicionamento
+  // Ancorar ao marcador e acompanhar zoom/resize
+  const markerEl = event.currentTarget;
   const overlayEl = markerEl?.ownerSVGElement || markerEl?.closest('svg');
   const containerEl = overlayEl?.parentElement || document.body;
 
   function positionTooltip() {
-    // 1. Posicionamento Inicial (estimado)
-    if (!tooltip.parentElement) return;
     const markerRect = markerEl.getBoundingClientRect();
     const containerRect = containerEl.getBoundingClientRect();
-
-    // Centralizar em relação ao marcador
     const centerX = markerRect.left - containerRect.left + (markerRect.width / 2);
     const centerY = markerRect.top - containerRect.top + (markerRect.height / 2);
 
-    let tooltipX = centerX + 12; // Padrão: à direita e um pouco abaixo
+    // Posição inicial
+    let tooltipX = centerX + 12;
     let tooltipY = centerY - 10;
 
+    // Obter dimensões do tooltip (precisa estar no DOM primeiro)
     tooltip.style.left = tooltipX + 'px';
     tooltip.style.top = tooltipY + 'px';
-    tooltip.style.visibility = 'hidden'; // Esconder até calcular limites
+    tooltip.style.visibility = 'hidden';
 
-    // 2. Ajuste de Limites (Boundary Check)
+    // Aguardar um frame para o tooltip ser renderizado
     requestAnimationFrame(() => {
-      if (!tooltip.parentElement) return;
       const tooltipRect = tooltip.getBoundingClientRect();
       const containerBounds = containerEl.getBoundingClientRect();
 
-      // Se estourar a DIREITA do container
+      // Ajustar horizontalmente se sair da tela
       if (tooltipRect.right > containerBounds.right) {
-        // Mover para a ESQUERDA do marcador
-        tooltipX = centerX - tooltipRect.width - 12;
+        tooltipX = centerX - tooltipRect.width - 12; // Posicionar à esquerda
       }
-
-      // Se estourar a ESQUERDA do container (casos raros, mas possíveis)
       if (tooltipX < 0) {
-        tooltipX = 10; // Margem mínima
+        tooltipX = 8; // Margem mínima da esquerda
       }
 
-      // Se estourar EMBAIXO do container
+      // Ajustar verticalmente se sair da tela
       if (tooltipRect.bottom > containerBounds.bottom) {
-        // Mover para CIMA
-        tooltipY = centerY - tooltipRect.height - 10;
+        tooltipY = centerY - tooltipRect.height - 12; // Posicionar acima
       }
-
-      // Se estourar EM CIMA
       if (tooltipY < 0) {
-        tooltipY = 10;
+        tooltipY = 8; // Margem mínima do topo
       }
 
-      // Aplicar coordenadas finais
+      // Aplicar posição final
       tooltip.style.left = tooltipX + 'px';
       tooltip.style.top = tooltipY + 'px';
       tooltip.style.visibility = 'visible';
     });
   }
 
+  // Inserir no mesmo container que o overlay
   containerEl.appendChild(tooltip);
   positionTooltip();
 
+  // Remover tooltip ao clicar fora
   function cleanup() {
-    if (tooltip.parentElement) tooltip.parentElement.removeChild(tooltip);
-    delete markerEl._tooltipToggle;
+    try { tooltip.remove(); } catch { }
     window.removeEventListener('resize', positionTooltip);
+    document.removeEventListener('scroll', positionTooltip, true);
+    document.removeEventListener('click', onDocClick);
   }
 
-  markerEl._tooltipToggle = cleanup;
+  function onDocClick() { cleanup(); }
+  // Reposicionar em zoom/resize/scroll
   window.addEventListener('resize', positionTooltip);
+  document.addEventListener('scroll', positionTooltip, true);
+  setTimeout(() => { document.addEventListener('click', onDocClick); }, 100);
 }
-
-// Fechar todos os tooltips ao clicar fora
-document.addEventListener('click', (e) => {
-  // Se o clique não foi em um marcador (que tem stopPropagation), fecha tudo
-  // Mas precisamos verificar se o clique foi DENTRO de um tooltip também
-  if (e.target.closest('.player-tooltip-popup')) return;
-
-  document.querySelectorAll('.player-tooltip-popup').forEach(t => t.remove());
-  // Limpar referências nos marcadores seria ideal, mas complexo de iterar. 
-  // Como os elementos DOM sumiram, o cleanup individual não é crítico, mas as referências _tooltipToggle ficarão orfãs.
-  // Melhor abordagem: iterar sobre tooltips abertos e chamar seu cleanup se possível, ou apenas remover do DOM.
-});
 
 // Legenda compacta de participações em gols por posição separando CEDIDOS e CONQUISTADOS (incluída no PNG)
 // Nova função drawPositionSummaryLegend com layout em blocos grandes e fundo claro
 // Baseado no modelo fornecido pelo usuário (Athletico-PR)
-
-// Função para desenhar o título "CEDIDAS X CONQUISTADAS" no SVG (para exportação)
-function drawCxTitle(overlayEl, id) {
-  if (!overlayEl) return;
-  const existing = overlayEl.querySelector(`#${id}`);
-  if (existing) existing.remove();
-
-  const g = el('g', { id: id, style: 'display:none' });
-
-  const text = el('text', {
-    x: 500,
-    y: 40,
-    'text-anchor': 'middle',
-    'font-family': 'Inter, Arial, sans-serif',
-    'font-size': 20,
-    'font-weight': 900,
-    fill: '#e7f8f1'
-  });
-  text.textContent = 'CEDIDAS  X  CONQUISTADAS';
-  g.appendChild(text);
-  overlayEl.appendChild(g);
-}
 
 // Nova versão DEFINITIVA do rodapé - Layout baseado na imagem de referência do usuário
 function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, groupId = 'positionSummary') {
@@ -2925,14 +2912,11 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   }
 
   // Verificar se há dados
-  // Verificar se há dados
   const totalCedidos = Object.values(cedidosAssist).reduce((a, b) => a + b, 0) + Object.values(cedidosGols).reduce((a, b) => a + b, 0);
   const totalConquistados = Object.values(conquistadosAssist).reduce((a, b) => a + b, 0) + Object.values(conquistadosGols).reduce((a, b) => a + b, 0);
-  // REMOVIDO: if (totalCedidos === 0 && totalConquistados === 0) return;
-  // Agora desenha sempre para garantir que o layout fique fixo.
+  if (totalCedidos === 0 && totalConquistados === 0) return;
 
-  // REMOVIDO FILTRO para evitar problemas de renderização local
-  const g = el('g', { id: groupId });
+  const g = el('g', { id: groupId, filter: 'url(#ds)' });
 
   // LAYOUT BASEADO NA IMAGEM DE REFERÊNCIA
   const startY = 590; // Início do rodapé (logo abaixo do campo que termina em 570)
@@ -3083,29 +3067,25 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   const conquistadosGolsX = conquistadosX + boxGap / 2;
   drawSection('GOLS', conquistadosGols, conquistadosGolsX, boxStartY);
 
-  // IMPORTANTE: Adicionar o grupo ao overlay!
   overlayEl.appendChild(g);
 }
 
-function initGridToggle() {
-  // Função stub ou implementação real caso exista o checkbox
-  const chk = document.getElementById('gridToggle');
-  if (!chk) return;
-  const update = () => {
-    const g1 = document.getElementById('gridImg');
-    const g2 = document.getElementById('gridImg2');
-    if (g1) g1.style.display = chk.checked ? 'block' : 'none';
-    if (g2) g2.style.display = chk.checked ? 'block' : 'none';
-  };
-  chk.addEventListener('change', update);
-  update();
+// Título superior dentro do SVG para ser incluído no PNG
+function drawCxTitle(overlayEl, groupId = 'cxTitleLeft') {
+  if (!overlayEl) return;
+  const existing = overlayEl.querySelector(`#${groupId}`);
+  if (existing) overlayEl.removeChild(existing);
+  const g = el('g', { id: groupId, filter: 'url(#ds)', style: 'display:none' });
+  const title = el('text', {
+    x: WIDTH / 2,
+    y: 46,
+    'text-anchor': 'middle',
+    'font-family': 'Inter, Arial, sans-serif',
+    'font-size': 24,
+    'font-weight': 900,
+    fill: '#e7f8f1'
+  });
+  title.textContent = 'CEDIDAS X CONQUISTADAS';
+  g.appendChild(title);
+  overlayEl.appendChild(g);
 }
-
-// Inicialização
-window.addEventListener('DOMContentLoaded', () => {
-  initTeamInteractions();
-  initGridToggle();
-  // Iniciar com campos limpos (sem times carregados)
-  // loadTeamData('');
-  // loadTeamData2('');
-});
