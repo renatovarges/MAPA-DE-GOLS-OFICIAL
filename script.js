@@ -1697,8 +1697,6 @@ function initEditor() {
     const sp = m ? p.matrixTransform(m.inverse()) : { x: (evt.offsetX) * (1000 / overlay.clientWidth), y: (evt.offsetY) * (600 / overlay.clientHeight) };
     const pt = { x: sp.x, y: sp.y };
 
-    const tool = toolSelect ? toolSelect.value : 'assist';
-    let current = state.roundEvents[state.roundEvents.length - 1];
     // Regra: se o último evento já tem uma finalização sem assistência,
     // começar um novo evento para não acoplar automaticamente.
     const toolVal = toolSelect ? toolSelect.value : 'assist';
@@ -1721,18 +1719,20 @@ function initEditor() {
       effectiveTool = 'shot';
       isHeader = true;
     } else if (toolVal === 'penalty') {
-      effectiveTool = 'shot';
+      effectiveTool = 'penalty'; // Passar 'penalty' para addMarker
       isPenalty = true;
     } else if (toolVal === 'own') {
-      effectiveTool = 'shot';
+      effectiveTool = 'own'; // Passar 'own' para addMarker
       isOwn = true;
     }
 
     const isSoloEvent = (isOwn || isPenalty);
+    // Para efeito de 'novo evento', considerar own/penalty como shot
+    const isShotType = (effectiveTool === 'shot' || effectiveTool === 'penalty' || effectiveTool === 'own');
 
     const shouldStartNew = (
       !current ||
-      (current.assistPt && current.shotPt) ||
+      (current.assistPt && (current.shotPt || isShotType)) || // Já tem assist e agora vem shot
       (current.shotPt && !current.assistPt) || // último é "gol sem assistência" -> iniciar novo
       isSoloEvent // Se a ferramenta atual é solo, força novo evento
     );
@@ -1742,7 +1742,9 @@ function initEditor() {
       state.roundEvents.push(current);
     }
 
+    // AQUI ESTÁ A CORREÇÃO: Passamos a ferramenta específica ('penalty', 'own') para addMarker
     const el = addMarker(pt, effectiveTool);
+
     if (effectiveTool === 'assist') {
       current.assistPt = pt;
       current.assistEl = el;
@@ -1755,6 +1757,7 @@ function initEditor() {
       }
 
     } else {
+      // shot, penalty, own
       current.shotPt = pt;
       current.shotEl = el;
       current.isOwnGoal = isOwn;
