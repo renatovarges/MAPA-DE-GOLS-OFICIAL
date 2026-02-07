@@ -1697,8 +1697,6 @@ function initEditor() {
     const sp = m ? p.matrixTransform(m.inverse()) : { x: (evt.offsetX) * (1000 / overlay.clientWidth), y: (evt.offsetY) * (600 / overlay.clientHeight) };
     const pt = { x: sp.x, y: sp.y };
 
-    // Regra: se o último evento já tem uma finalização sem assistência,
-    // começar um novo evento para não acoplar automaticamente.
     const toolVal = toolSelect ? toolSelect.value : 'assist';
 
     // Determinar ferramenta real e atributos
