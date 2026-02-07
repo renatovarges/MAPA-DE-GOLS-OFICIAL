@@ -541,6 +541,7 @@ async function loadTeamData(teamKey = 'cruzeiro', { showCrest = true } = {}) {
   // Título superior escondido no DOM, visível apenas na exportação
   drawCxTitle(overlayEl, 'cxTitleLeft');
   drawPositionSummaryLegend(overlayEl, data.conceded || [], data.created || [], 'positionSummaryLeft');
+  drawSVGMarkerLegend(overlayEl); // Adicionado para garantir legenda de marcadores
 }
 
 async function loadTeamData2(teamKey = 'fortaleza', { showCrest = true } = {}) {
@@ -563,6 +564,7 @@ async function loadTeamData2(teamKey = 'fortaleza', { showCrest = true } = {}) {
   // Título superior escondido no DOM, visível apenas na exportação
   drawCxTitle(overlayEl2, 'cxTitleRight');
   drawPositionSummaryLegend(overlayEl2, data.conceded || [], data.created || [], 'positionSummaryRight');
+  drawSVGMarkerLegend(overlayEl2); // Adicionado para garantia
 }
 async function loadTeamDataLeftExtra(teamKey = 'cruzeiro') {
   currentTeamLeftExtra = teamKey;
@@ -577,6 +579,12 @@ async function loadTeamDataLeftExtra(teamKey = 'cruzeiro') {
   }
   const lbl = document.getElementById('homeTeamNameLx');
   if (lbl) lbl.textContent = ` — ${(data.name || formatTeamName(teamKey)).toUpperCase()}`;
+
+  if (typeof svgLx !== 'undefined' && svgLx) {
+    drawCxTitle(svgLx, 'cxTitleLx');
+    drawPositionSummaryLegend(svgLx, data.conceded || [], data.created || [], 'positionSummaryLx');
+    drawSVGMarkerLegend(svgLx);
+  }
 }
 async function loadTeamDataRightExtra(teamKey = 'fortaleza') {
   currentTeamRightExtra = teamKey;
@@ -591,6 +599,12 @@ async function loadTeamDataRightExtra(teamKey = 'fortaleza') {
   }
   const lbl = document.getElementById('awayTeamNameRx');
   if (lbl) lbl.textContent = ` — ${(data.name || formatTeamName(teamKey)).toUpperCase()}`;
+
+  if (typeof svgRx !== 'undefined' && svgRx) {
+    drawCxTitle(svgRx, 'cxTitleRx');
+    drawPositionSummaryLegend(svgRx, data.conceded || [], data.created || [], 'positionSummaryRx');
+    drawSVGMarkerLegend(svgRx);
+  }
 }
 
 function slugify(s) {
@@ -3245,13 +3259,12 @@ function drawSVGMarkerLegend(overlayEl, groupId = 'svgMarkerLegend') {
 
   const g = el('g', { id: groupId });
 
-  // DEBUG (VERMELHO NO MEIO)
-  const legendY = 420; // 
-  const rectY = 400; // Centro
+  // Posicionada abaixo do quadro de estatísticas (y=740)
+  const legendY = 770;
+  // Alterado para 760 para garantir visibilidade, com fundo
+  const rectY = 750;
   const rectH = 46;
   const WIDTH = 1000;
-
-  console.log('Desenhando legenda DEBUG em', overlayEl.id);
 
   // Fundo para garantir contraste e visibilidade
   const bg = el('rect', {
@@ -3261,7 +3274,7 @@ function drawSVGMarkerLegend(overlayEl, groupId = 'svgMarkerLegend') {
     height: rectH,
     rx: 8,
     ry: 8,
-    fill: '#ff0000', // VERMELHO DEBUG
+    fill: 'rgba(11,31,22,0.9)', // Fundo escuro igual ao do HTML antigo
     stroke: '#7eccb2',
     'stroke-width': 1
   });
