@@ -3263,7 +3263,7 @@ function drawSVGMarkerLegend(overlayEl, groupId = 'svgMarkerLegend') {
   const legendY = 770;
   // Alterado para 760 para garantir visibilidade, com fundo
   const rectY = 750;
-  const rectH = 46;
+  const rectH = 52; // Aumentado para acomodar fonte maior
   const WIDTH = 1000;
 
   // Fundo para garantir contraste e visibilidade
@@ -3289,7 +3289,7 @@ function drawSVGMarkerLegend(overlayEl, groupId = 'svgMarkerLegend') {
     { type: 'emoji', filter: 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)', label: 'Gol Contra' }
   ];
 
-  const itemWidth = 145; // Mais espaço
+  const itemWidth = 160; // Mais espaço para fonte 14px
   const totalLegendWidth = legendItems.length * itemWidth;
   let currentX = (WIDTH - totalLegendWidth) / 2 + (itemWidth / 2);
 
@@ -3324,7 +3324,7 @@ function drawSVGMarkerLegend(overlayEl, groupId = 'svgMarkerLegend') {
       y: textY - 1,
       'text-anchor': 'start',
       'font-family': 'Inter, Arial, sans-serif',
-      'font-size': 12,
+      'font-size': 14, // Fonte aumentada
       'font-weight': 600,
       fill: '#e7f8f1'
     });
