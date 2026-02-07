@@ -416,24 +416,26 @@ async function getTeamAggregatedData(teamKey, { homeFilter = null } = {}) {
       // Ordenar por Data (Crescente: mais antigo -> mais recente) e depois por Rodada
       // Para pegar os "últimos X jogos", usamos slice do final, então queremos os mais recentes no fim do array.
       // Ordenar por Data (Crescente) defensivo
-      console.log('Ordenando rodadas...');
+      console.log('Ordenando jogos por DATA (Cronológico)...');
       let sorted = roundsArr.slice().sort((a, b) => {
-        try {
-          const dA = a.date ? String(a.date) : '';
-          const dB = b.date ? String(b.date) : '';
+        // Prioridade TOTAL para a a Data do jogo (YYYY-MM-DD).
+        // Quem tem data vem antes ou depois baseado no tempo.
+        // Quem NÃO tem data, assumimos que é muito antigo ou indefinido (vem antes de quem tem data).
+        const dA = a.date ? String(a.date).trim() : '';
+        const dB = b.date ? String(b.date).trim() : '';
 
-          if (dA && dB) {
-            if (dA < dB) return -1;
-            if (dA > dB) return 1;
-          } else if (dA && !dB) {
-            return 1; // Com data vem depois (mais recente)
-          } else if (!dA && dB) {
-            return -1; // Sem data vem antes (mais antigo)
-          }
-        } catch (e) {
-          console.error('Erro no sort de datas:', e);
+        if (dA && dB) {
+          // Comparação de strings ISO (YYYY-MM-DD) funciona corretamente para ordem cronológica
+          if (dA < dB) return -1; // A é mais antigo
+          if (dA > dB) return 1;  // A é mais recente
+          // Se datas iguais, desempata pela rodada
+        } else if (dA && !dB) {
+          return 1; // A tem data (recente), B não (antigo) -> A vem depois
+        } else if (!dA && dB) {
+          return -1; // A não tem data (antigo), B tem (recente) -> A vem antes
         }
-        // Desempate por número da rodada
+
+        // Fallback: Desempate por número da rodada se as datas forem idênticas ou ambas ausentes
         return (a.roundNumber || 0) - (b.roundNumber || 0);
       });
       console.log('Ordenacao concluida', sorted.length);
