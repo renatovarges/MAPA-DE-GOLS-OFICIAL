@@ -1732,13 +1732,13 @@ function initEditor() {
 
     const isSoloEvent = (isOwn || isPenalty);
     // Para efeito de 'novo evento', considerar own/penalty como shot
-    const isShotType = (effectiveTool === 'shot' || effectiveTool === 'penalty' || effectiveTool === 'own');
+    // const isShotType = ... (removido, causava bug no tracejado)
 
     const shouldStartNew = (
       !current ||
-      (current.assistPt && (current.shotPt || isShotType)) || // Já tem assist e agora vem shot
-      (current.shotPt && !current.assistPt) || // último é "gol sem assistência" -> iniciar novo
-      isSoloEvent // Se a ferramenta atual é solo, força novo evento
+      (current.assistPt && current.shotPt) || // Já está cheio (assist + shot) -> novo
+      (current.shotPt && !current.assistPt) || // Já tem shot e não tem assist -> novo
+      isSoloEvent // Se é Penalti/Contra -> sempre novo
     );
 
     if (shouldStartNew) {
@@ -1754,9 +1754,8 @@ function initEditor() {
       current.assistEl = el;
       current.isSetPiece = isSetPiece;
 
-      // Atualizar visual se for bola parada
+      // Visual Bola Parada (Amarelo)
       if (isSetPiece) {
-        // addMarker retorna um circle geralmente
         el.setAttribute('fill', '#fef08a');
       }
 
@@ -1779,20 +1778,19 @@ function initEditor() {
       // Atualizar visual do emoji
       // addMarker retorna o elemento <text> diretamente.
 
-      // Lógica de Cores Explícita:
+      // -- LÓGICA DE CORES REFINADA (Solicitação do Usuário) --
       if (isOwn) {
-        // Vermelho (Gol Contra) - Já tratado no addMarker, mas reforçando
+        // Vermelho (Gol Contra)
         el.style.filter = 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)';
       } else if (isPenalty) {
-        // Verde (Pênalti) - Já tratado no addMarker
+        // Verde (Pênalti)
         el.style.filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
       } else if (isHeader) {
-        // AZUL CIANO (Cabeça)
-        el.style.filter = 'sepia(1) saturate(200) hue-rotate(180deg) brightness(1.1)';
-      } else {
-        // GOL NORMAL -> DOURADO/LARANJA
-        // Para diferenciar do azul se o emoji padrão for azul
+        // GOL DE CABEÇA -> Agora usa o DOURADO/LARANJA (antigo normal)
         el.style.filter = 'sepia(1) saturate(50) hue-rotate(45deg) brightness(1.2)';
+      } else {
+        // GOL NORMAL -> SEM FILTRO (Original)
+        el.style.filter = '';
       }
     }
 
@@ -1811,7 +1809,7 @@ function initEditor() {
         current.assistEl = null;
         current.assistPlayer = null;
         // Se apagar a assistencia, resetar flag?
-        // current.isSetPiece = false; // Talvez não, pois se recriar... 
+        // current.isSetPiece = false; // Talvez não, pois se recriar...
       } else {
         current.shotPt = null;
         current.shotEl = null;
@@ -3251,10 +3249,54 @@ function drawCxTitle(overlayEl, groupId = 'cxTitleLeft') {
   overlayEl.appendChild(g);
 }
 
-// Inicializar legenda ao carregar o script
-drawMainLegend();
+// Função GLOBAL para desenhar a legenda (fora de initEditor)
+function drawMainLegend() {
+  // Remover legenda antiga se existir (pelo ID)
+  const legendId = 'customMainLegendGlobal';
+  let existing = document.getElementById(legendId);
+  if (existing) existing.remove();
 
-// Garantir que a legenda apareça mesmo se o script carregar antes do DOM
-window.addEventListener('load', () => {
-  drawMainLegend();
-});
+  const legendDiv = document.createElement('div');
+  legendDiv.id = legendId;
+  // Estilo flutuante/fixo no rodapé caso não encontre lugar, ou apenas visível
+  legendDiv.style.cssText = 'display:flex;justify-content:center;gap:15px;margin:20px auto;flex-wrap:wrap;color:#e7f8f1;font-size:14px;background:rgba(15,23,42,0.95);padding:15px;border-radius:8px;width:95%;max-width:1000px;border: 1px solid #7eccb2;z-index:9999;';
+
+  // Tentar inserir APÓS o container .fields-row
+  const fieldsRow = document.querySelector('.fields-row');
+  if (fieldsRow && fieldsRow.parentNode) {
+    fieldsRow.parentNode.insertBefore(legendDiv, fieldsRow.nextSibling);
+  } else {
+    // Fallback agressivo: Body
+    document.body.appendChild(legendDiv);
+  }
+
+  // Itens atualizados com as novas regras
+  const items = [
+    { type: 'circle', color: '#ffffff', label: 'Assistência' },
+    { type: 'circle', color: '#fef08a', label: 'Ass. Bola Parada' },
+    { type: 'emoji', filter: '', label: 'Gol Normal' }, // Original
+    { type: 'emoji', filter: 'sepia(1) saturate(50) hue-rotate(45deg) brightness(1.2)', label: 'Gol de Cabeça' }, // Dourado
+    { type: 'emoji', filter: 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)', label: 'Pênalti' },
+    { type: 'emoji', filter: 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)', label: 'Gol Contra' }
+  ];
+
+  let html = '';
+  items.forEach(item => {
+    let icon = '';
+    if (item.type === 'circle') {
+      icon = `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${item.color};border:2px solid #0f172a;margin-right:6px"></span>`;
+    } else {
+      // Se filter for vazio, usa style normal
+      const fStyle = item.filter ? `filter:${item.filter}` : '';
+      icon = `<span style="display:inline-block;font-size:16px;margin-right:6px;${fStyle}">⚽</span>`;
+    }
+    html += `<div style="display:flex;align-items:center;">${icon}<span>${item.label}</span></div>`;
+  });
+  legendDiv.innerHTML = html;
+}
+
+// Chamar agora e no onload
+drawMainLegend();
+window.addEventListener('load', drawMainLegend);
+// Reforço
+setTimeout(drawMainLegend, 2000);
