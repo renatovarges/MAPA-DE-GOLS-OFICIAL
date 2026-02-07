@@ -1391,7 +1391,7 @@ function initEditor() {
   const roundInput = document.getElementById('editorRound');
   const opponentInput = document.getElementById('editorOpponent');
   const toolSelect = document.getElementById('editorTool');
-  const ownGoalSideSelect = document.getElementById('editorOwnGoalSide');
+
   const traceCheck = document.getElementById('editorTrace');
   const saveRoundBtn = document.getElementById('editorSaveRoundBtn');
   const exportBtn = document.getElementById('editorExportBtn');
@@ -1720,7 +1720,12 @@ function initEditor() {
         // Marcar como gol contra
         current.isOwnGoal = true;
         current.isPenalty = false;
-        current.ownGoalSide = ownGoalSideSelect ? (ownGoalSideSelect.value || 'mandante') : 'mandante';
+
+        // Nova Lógica: Inferir quem fez o gol contra baseado no lado do clique.
+        // Se clicou na direita (ataque do Mandante) -> Gol a favor do Mandante -> Quem fez contra foi o Visitante.
+        // Se clicou na esquerda (ataque do Visitante) -> Gol a favor do Visitante -> Quem fez contra foi o Mandante.
+        const sideKind = classifyByShot(pt); // 'created' (direita) ou 'conceded' (esquerda)
+        current.ownGoalSide = (sideKind === 'created') ? 'visitante' : 'mandante';
       } else if (tool === 'penalty') {
         // Marcar como pênalti
         current.isPenalty = true;
@@ -1773,15 +1778,7 @@ function initEditor() {
     updateList();
   });
 
-  // Habilitar seletor de lado quando a ferramenta for "Gol contra"
-  if (toolSelect && ownGoalSideSelect) {
-    const updateOwnSideEnabled = () => {
-      const v = toolSelect.value;
-      ownGoalSideSelect.disabled = (v !== 'own');
-    };
-    toolSelect.addEventListener('change', updateOwnSideEnabled);
-    updateOwnSideEnabled();
-  }
+
 
   // Botão para adicionar eventos de teste rapidamente
   if (addTestGoalsBtn) {
@@ -2256,12 +2253,24 @@ function initEditor() {
       };
 
       if (isOwn) {
-        // Gol contra conta apenas como "conceded" para o lado indicado
-        if (ev.ownGoalSide === 'mandante' && homeKey) {
-          concededHome.push(homeEvent);
+        // Gol contra deve contar como:
+        // 1. "Conceded" para quem fez o gol contra (ownGoalSide)
+        // 2. "Created" para o time adversário (beneficiário)
+
+        if (ev.ownGoalSide === 'mandante') {
+          // Mandante fez gol contra.
+          // Conta como gol sofrido pelo Mandante:
+          if (homeKey) concededHome.push(homeEvent);
+          // Conta como gol a favor do Visitante (rotação 180° pois é para o outro lado):
+          if (awayKey) createdAway.push(rotated);
         }
-        if (ev.ownGoalSide === 'visitante' && awayKey) {
-          concededAway.push(rotated);
+
+        if (ev.ownGoalSide === 'visitante') {
+          // Visitante fez gol contra.
+          // Conta como gol sofrido pelo Visitante (rotação 180°):
+          if (awayKey) concededAway.push(rotated);
+          // Conta como gol a favor do Mandante:
+          if (homeKey) createdHome.push(homeEvent);
         }
       } else {
         if (homeKey) {
