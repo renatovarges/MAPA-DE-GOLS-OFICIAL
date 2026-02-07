@@ -3261,9 +3261,9 @@ function drawSVGMarkerLegend(overlayEl, groupId = 'svgMarkerLegend') {
 
   // Posicionada abaixo do quadro de estatísticas (y=740)
   const legendY = 770;
-  // Alterado para 760 para garantir visibilidade, com fundo
-  const rectY = 750;
-  const rectH = 52; // Aumentado para acomodar fonte maior
+  // Alterado para 744 para caber na altura 800 (744 + 50 = 794)
+  const rectY = 744;
+  const rectH = 50;
   const WIDTH = 1000;
 
   // Fundo para garantir contraste e visibilidade
