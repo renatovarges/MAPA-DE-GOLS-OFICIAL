@@ -2766,14 +2766,21 @@ function drawMainLegend() {
   let legendDiv = document.getElementById(legendId);
 
   if (!legendDiv) {
-    // Inserir após a linha dos campos (.fields-row)
+    // Tentar inserir após .fields-row
     const fieldsRow = document.querySelector('.fields-row');
-    if (!fieldsRow) return;
+    const app = document.getElementById('app');
 
     legendDiv = document.createElement('div');
     legendDiv.id = legendId;
     legendDiv.style.cssText = 'display:flex;justify-content:center;gap:20px;margin-top:20px;flex-wrap:wrap;color:#e7f8f1;font-size:14px;background:rgba(11,31,22,0.8);padding:15px;border-radius:8px;width:100%;max-width:1000px;margin-left:auto;margin-right:auto';
-    fieldsRow.insertAdjacentElement('afterend', legendDiv);
+
+    if (fieldsRow) {
+      fieldsRow.insertAdjacentElement('afterend', legendDiv);
+    } else if (app) {
+      app.appendChild(legendDiv);
+    } else {
+      document.body.appendChild(legendDiv);
+    }
   }
 
   // Itens da legenda
