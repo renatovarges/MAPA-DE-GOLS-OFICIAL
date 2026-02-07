@@ -1777,15 +1777,22 @@ function initEditor() {
       }
 
       // Atualizar visual do emoji
-      const txt = el.querySelector('text');
-      if (txt) {
-        if (isOwn) {
-          txt.style.filter = 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)';
-        } else if (isPenalty) {
-          txt.style.filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
-        } else if (isHeader) {
-          txt.style.filter = 'sepia(1) saturate(100) hue-rotate(150deg) brightness(1.1) contrast(1.2)';
-        }
+      // addMarker retorna o elemento <text> diretamente.
+
+      // Lógica de Cores Explícita:
+      if (isOwn) {
+        // Vermelho (Gol Contra) - Já tratado no addMarker, mas reforçando
+        el.style.filter = 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)';
+      } else if (isPenalty) {
+        // Verde (Pênalti) - Já tratado no addMarker
+        el.style.filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
+      } else if (isHeader) {
+        // AZUL CIANO (Cabeça)
+        el.style.filter = 'sepia(1) saturate(200) hue-rotate(180deg) brightness(1.1)';
+      } else {
+        // GOL NORMAL -> DOURADO/LARANJA
+        // Para diferenciar do azul se o emoji padrão for azul
+        el.style.filter = 'sepia(1) saturate(50) hue-rotate(45deg) brightness(1.2)';
       }
     }
 
@@ -1795,7 +1802,6 @@ function initEditor() {
       current.traceEl = lineEl;
     }
 
-    // Permitir apagar clicando no próprio marcador
     // Permitir apagar clicando no próprio marcador
     el.addEventListener('click', (e) => {
       e.stopPropagation();
