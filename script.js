@@ -1404,6 +1404,11 @@ function initEditor() {
   const toolSelect = document.getElementById('editorTool');
 
   // (Checkboxes removidos)
+  const traceCheck = document.getElementById('editorTrace');
+  const saveRoundBtn = document.getElementById('editorSaveRoundBtn');
+  const exportBtn = document.getElementById('editorExportBtn');
+  const listEl = document.getElementById('editorEventsList');
+  const addTestGoalsBtn = document.getElementById('editorAddTestGoalsBtn');
 
   if (!modal || !overlay) return;
 
@@ -1698,6 +1703,7 @@ function initEditor() {
     const pt = { x: sp.x, y: sp.y };
 
     const toolVal = toolSelect ? toolSelect.value : 'assist';
+    let current = state.roundEvents[state.roundEvents.length - 1]; // Restaurado!
 
     // Determinar ferramenta real e atributos
     let effectiveTool = 'assist';
