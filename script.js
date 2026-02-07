@@ -172,8 +172,8 @@ function drawShotEmoji({ x, y }, { isPenalty, isOwnGoal } = {}) {
 
   // Aplicar filtros de cor se necessário (tinting)
   if (isOwnGoal) {
-    // Vermelho: sepia + hue-rotate + saturation
-    txt.style.filter = 'sepia(1) saturate(100) hue-rotate(310deg)';
+    // Vermelho mais sutil: menos saturação e ajuste de matiz
+    txt.style.filter = 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)';
   } else if (isPenalty) {
     // Verde claro: sepia + hue-rotate + saturation + brightness
     // Ajustado para um verde mais vivo/claro
@@ -1497,8 +1497,8 @@ function initEditor() {
       el.textContent = '⚽';
 
       if (kind === 'own') {
-        // Vermelho
-        el.style.filter = 'sepia(1) saturate(100) hue-rotate(310deg)';
+        // Vermelho Sutil
+        el.style.filter = 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)';
       } else if (kind === 'penalty') {
         // Verde claro
         el.style.filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
