@@ -2275,7 +2275,10 @@ function initEditor() {
         assistPlayer: isOwn ? null : (ev.assistPlayer || null),
         shotPlayer: (ev.shotPlayer || null),
         own_goal: isOwn || undefined,
-        is_penalty: ev.isPenalty || undefined
+        is_penalty: ev.isPenalty || undefined,
+        // Novos campos visuais
+        isSetPiece: ev.isSetPiece || undefined,
+        isHeader: ev.isHeader || undefined
       };
       const rotated = {
         pass: homeEvent.pass ? rotate180(homeEvent.pass) : null,
@@ -2284,7 +2287,10 @@ function initEditor() {
         assistPlayer: isOwn ? null : (ev.assistPlayer || null),
         shotPlayer: (ev.shotPlayer || null),
         own_goal: isOwn || undefined,
-        is_penalty: ev.isPenalty || undefined
+        is_penalty: ev.isPenalty || undefined,
+        // Novos campos visuais
+        isSetPiece: ev.isSetPiece || undefined,
+        isHeader: ev.isHeader || undefined
       };
 
       if (isOwn) {
@@ -2576,6 +2582,7 @@ function initEditor() {
     }
 
     updateList();
+    drawMainLegend();
   }
 
   // Listeners para carregar automaticamente quando mudar time ou rodada
@@ -2745,32 +2752,22 @@ function populatePlayersLegend(legendId, events) {
 }
 
 // Função para desenhar a legenda explicativa abaixo dos painéis
-function drawPositionSummaryLegend() {
-  const legendId = 'customLegend';
+function drawMainLegend() {
+  const legendId = 'customMainLegend';
   let legendDiv = document.getElementById(legendId);
 
   if (!legendDiv) {
-    // Tentar encontrar um container apropriado. O usuário disse "abaixo do painel de indicação".
-    // Vou assumir que o 'statsPanel' ou o container principal é o alvo.
-    // Vou criar um container fixo se não achar um gancho melhor, ou anexar ao body/container principal.
-    // Melhor: Criar um container novo após o `statsPanel`.
-    const statsPanel = document.getElementById('statsPanel');
-    if (!statsPanel) return; // Se não tiver painel, não desenha legenda
+    // Inserir após a linha dos campos (.fields-row)
+    const fieldsRow = document.querySelector('.fields-row');
+    if (!fieldsRow) return;
 
     legendDiv = document.createElement('div');
     legendDiv.id = legendId;
-    legendDiv.style.cssText = 'display:flex;justify-content:center;gap:20px;margin-top:20px;flex-wrap:wrap;color:#e7f8f1;font-size:14px;background:rgba(11,31,22,0.6);padding:10px;border-radius:8px';
-    statsPanel.insertAdjacentElement('afterend', legendDiv);
+    legendDiv.style.cssText = 'display:flex;justify-content:center;gap:20px;margin-top:20px;flex-wrap:wrap;color:#e7f8f1;font-size:14px;background:rgba(11,31,22,0.8);padding:15px;border-radius:8px;width:100%;max-width:1000px;margin-left:auto;margin-right:auto';
+    fieldsRow.insertAdjacentElement('afterend', legendDiv);
   }
 
   // Itens da legenda
-  // ⚪ Bola Branca: Assistência Normal
-  // 🟡 Bola Amarela: Assistência Bola Parada
-  // ⚽ (Dourado): Gol
-  // ⚽ (Azul): Gol de Cabeça
-  // ⚽ (Verde): Pênalti
-  // ⚽ (Vermelho): Gol Contra
-
   const items = [
     { type: 'circle', color: '#ffffff', label: 'Assistência' },
     { type: 'circle', color: '#fef08a', label: 'Ass. Bola Parada' },
@@ -2791,6 +2788,7 @@ function drawPositionSummaryLegend() {
       if (item.color === 'own') filter = 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)';
       else if (item.color === 'penalty') filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
       else if (item.color === 'header') filter = 'sepia(1) saturate(100) hue-rotate(150deg) brightness(1.1) contrast(1.2)';
+      else if (item.color === 'standard') filter = '';
 
       icon = `<span style="display:inline-block;font-size:16px;margin-right:6px;filter:${filter}">⚽</span>`;
     }
