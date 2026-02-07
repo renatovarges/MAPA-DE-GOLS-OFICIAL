@@ -153,8 +153,9 @@
           <h4 style="margin:0 0 8px 0;font-size:14px;color:#f7d36a;text-align:center">Participações em Gols</h4>
           <div id="playersLegendContent" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
         </div>
-        <!-- Botão para exibir campinho extra (mandante) -->
-        <button id="addExtraLeftBtn" type="button" class="extra-toggle-btn">Adicionar campinho extra (mandante)</button>
+        <!-- Botão para exibir campinho extra (mandante) - REMOVIDO A PEDIDO DO USUÁRIO -->
+        <button id="addExtraLeftBtn" type="button" class="extra-toggle-btn" style="display:none">Adicionar campinho
+          extra (mandante)</button>
         <!-- Campinho extra (mandante) -->
         <div id="canvasLx" class="extra-canvas">
           <button id="downloadField1x" class="download-btn" title="Baixar imagem"
@@ -269,8 +270,9 @@
           <h4 style="margin:0 0 8px 0;font-size:14px;color:#f7d36a;text-align:center">Participações em Gols</h4>
           <div id="playersLegendContent2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
         </div>
-        <!-- Botão para exibir campinho extra (visitante) -->
-        <button id="addExtraRightBtn" type="button" class="extra-toggle-btn">Adicionar campinho extra
+        <!-- Botão para exibir campinho extra (visitante) - REMOVIDO -->
+        <button id="addExtraRightBtn" type="button" class="extra-toggle-btn" style="display:none">Adicionar campinho
+          extra
           (visitante)</button>
         <!-- Campinho extra (visitante) -->
         <div id="canvasRx" class="extra-canvas">
@@ -319,41 +321,42 @@
     </div>
 
     <!-- LEGENDA ESTÁTICA (Hardcoded para garantir que apareça) -->
+    <!-- Margem reduzida para ficar colado nos campos -->
     <div id="staticMainLegend"
-      style="display:flex;justify-content:center;gap:15px;margin:20px auto;flex-wrap:wrap;color:#e7f8f1;font-size:14px;background:rgba(15,23,42,0.95);padding:15px;border-radius:8px;width:95%;max-width:1000px;border: 1px solid #7eccb2;">
+      style="display:flex;justify-content:center;gap:15px;margin:4px auto 20px auto;flex-wrap:wrap;color:#e7f8f1;font-size:13px;background:rgba(15,23,42,0.95);padding:10px;border-radius:8px;width:98%;max-width:1000px;border: 1px solid #7eccb2;">
       <!-- Item: Assistência -->
       <div style="display:flex;align-items:center;">
         <span
-          style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#ffffff;border:2px solid #0f172a;margin-right:6px"></span>
+          style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ffffff;border:2px solid #0f172a;margin-right:5px"></span>
         <span>Assistência</span>
       </div>
       <!-- Item: Ass. Bola Parada -->
       <div style="display:flex;align-items:center;">
         <span
-          style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#fef08a;border:2px solid #0f172a;margin-right:6px"></span>
+          style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#fef08a;border:2px solid #0f172a;margin-right:5px"></span>
         <span>Ass. Bola Parada</span>
       </div>
       <!-- Item: Gol Normal -->
       <div style="display:flex;align-items:center;">
-        <span style="display:inline-block;font-size:16px;margin-right:6px;">⚽</span>
+        <span style="display:inline-block;font-size:14px;margin-right:5px;">⚽</span>
         <span>Gol Normal</span>
       </div>
       <!-- Item: Gol de Cabeça -->
       <div style="display:flex;align-items:center;">
         <span
-          style="display:inline-block;font-size:16px;margin-right:6px;filter:sepia(1) saturate(50) hue-rotate(45deg) brightness(1.2)">⚽</span>
+          style="display:inline-block;font-size:14px;margin-right:5px;filter:sepia(1) saturate(50) hue-rotate(45deg) brightness(1.2)">⚽</span>
         <span>Gol de Cabeça</span>
       </div>
       <!-- Item: Pênalti -->
       <div style="display:flex;align-items:center;">
         <span
-          style="display:inline-block;font-size:16px;margin-right:6px;filter:sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)">⚽</span>
+          style="display:inline-block;font-size:14px;margin-right:5px;filter:sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)">⚽</span>
         <span>Pênalti</span>
       </div>
       <!-- Item: Gol Contra -->
       <div style="display:flex;align-items:center;">
         <span
-          style="display:inline-block;font-size:16px;margin-right:6px;filter:sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)">⚽</span>
+          style="display:inline-block;font-size:14px;margin-right:5px;filter:sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)">⚽</span>
         <span>Gol Contra</span>
       </div>
     </div>
