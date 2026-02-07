@@ -2808,9 +2808,7 @@ function showPlayerTooltip(event, eventData) {
     // Vou remover o aviso extra redundante na próxima etapa se necessário, mas por ora atualização do label é o principal.
   }
 
-  if (eventData.isOwnGoal) {
-    content += `<div style="margin-top:8px;color:#ef4444;font-weight:bold">⚠️ Gol Contra (${eventData.ownGoalSide})</div>`;
-  }
+
 
   tooltip.innerHTML = content;
 
