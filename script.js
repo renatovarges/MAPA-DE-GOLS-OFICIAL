@@ -3245,12 +3245,13 @@ function drawSVGMarkerLegend(overlayEl, groupId = 'svgMarkerLegend') {
 
   const g = el('g', { id: groupId });
 
-  // Posicionada abaixo do quadro de estatísticas (y=740)
-  const legendY = 770;
-  // Alterado para 760 para garantir visibilidade, com fundo
-  const rectY = 750;
+  // DEBUG (VERMELHO NO MEIO)
+  const legendY = 420; // 
+  const rectY = 400; // Centro
   const rectH = 46;
   const WIDTH = 1000;
+
+  console.log('Desenhando legenda DEBUG em', overlayEl.id);
 
   // Fundo para garantir contraste e visibilidade
   const bg = el('rect', {
@@ -3260,7 +3261,7 @@ function drawSVGMarkerLegend(overlayEl, groupId = 'svgMarkerLegend') {
     height: rectH,
     rx: 8,
     ry: 8,
-    fill: 'rgba(11,31,22,0.9)', // Fundo escuro igual ao do HTML antigo
+    fill: '#ff0000', // VERMELHO DEBUG
     stroke: '#7eccb2',
     'stroke-width': 1
   });
