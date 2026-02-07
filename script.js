@@ -1400,38 +1400,10 @@ function initEditor() {
 
   const roundInput = document.getElementById('editorRound');
   const opponentInput = document.getElementById('editorOpponent');
+  // Inicialização do ToolSelect
   const toolSelect = document.getElementById('editorTool');
 
-  const traceCheck = document.getElementById('editorTrace');
-  const saveRoundBtn = document.getElementById('editorSaveRoundBtn');
-  const exportBtn = document.getElementById('editorExportBtn');
-  const listEl = document.getElementById('editorEventsList');
-  const addTestGoalsBtn = document.getElementById('editorAddTestGoalsBtn');
-
-  // Checkboxes dinâmicos
-  const optSetPiece = document.getElementById('optSetPiece');
-  const checkSetPiece = document.getElementById('checkSetPiece');
-  const optHeader = document.getElementById('optHeader');
-  const checkHeader = document.getElementById('checkHeader');
-
-  if (toolSelect) {
-    toolSelect.addEventListener('change', updateExtraOptions);
-    updateExtraOptions(); // estado inicial
-  }
-
-  function updateExtraOptions() {
-    if (!toolSelect) return;
-    const v = toolSelect.value;
-    // Resetar displays
-    if (optSetPiece) optSetPiece.style.display = 'none';
-    if (optHeader) optHeader.style.display = 'none';
-
-    if (v === 'assist') {
-      if (optSetPiece) optSetPiece.style.display = 'inline-flex';
-    } else if (v === 'shot') {
-      if (optHeader) optHeader.style.display = 'inline-flex';
-    }
-  }
+  // (Checkboxes removidos)
 
   if (!modal || !overlay) return;
 
@@ -1729,8 +1701,34 @@ function initEditor() {
     let current = state.roundEvents[state.roundEvents.length - 1];
     // Regra: se o último evento já tem uma finalização sem assistência,
     // começar um novo evento para não acoplar automaticamente.
-    // MAS: Se for pênalti ou gol contra, sempre criar novo, pois não tem assistência.
-    const isSoloEvent = (tool === 'own' || tool === 'penalty');
+    const toolVal = toolSelect ? toolSelect.value : 'assist';
+
+    // Determinar ferramenta real e atributos
+    let effectiveTool = 'assist';
+    let isSetPiece = false;
+    let isHeader = false;
+    let isPenalty = false;
+    let isOwn = false;
+
+    if (toolVal === 'assist') {
+      effectiveTool = 'assist';
+    } else if (toolVal === 'assist-setpiece') {
+      effectiveTool = 'assist';
+      isSetPiece = true;
+    } else if (toolVal === 'shot') {
+      effectiveTool = 'shot';
+    } else if (toolVal === 'shot-header') {
+      effectiveTool = 'shot';
+      isHeader = true;
+    } else if (toolVal === 'penalty') {
+      effectiveTool = 'shot';
+      isPenalty = true;
+    } else if (toolVal === 'own') {
+      effectiveTool = 'shot';
+      isOwn = true;
+    }
+
+    const isSoloEvent = (isOwn || isPenalty);
 
     const shouldStartNew = (
       !current ||
@@ -1740,36 +1738,47 @@ function initEditor() {
     );
 
     if (shouldStartNew) {
-      current = { assistPt: null, shotPt: null, assistEl: null, shotEl: null, traceEl: null, assistPlayer: null, shotPlayer: null, isOwnGoal: false, ownGoalSide: null, isPenalty: false };
+      current = { assistPt: null, shotPt: null, assistEl: null, shotEl: null, traceEl: null, assistPlayer: null, shotPlayer: null, isOwnGoal: false, ownGoalSide: null, isPenalty: false, isSetPiece: false, isHeader: false };
       state.roundEvents.push(current);
     }
 
-    const el = addMarker(pt, tool);
-    if (tool === 'assist') {
+    const el = addMarker(pt, effectiveTool);
+    if (effectiveTool === 'assist') {
       current.assistPt = pt;
       current.assistEl = el;
+      current.isSetPiece = isSetPiece;
+
+      // Atualizar visual se for bola parada
+      if (isSetPiece) {
+        // addMarker retorna um circle geralmente
+        el.setAttribute('fill', '#fef08a');
+      }
+
     } else {
       current.shotPt = pt;
       current.shotEl = el;
-      if (tool === 'own') {
-        // Marcar como gol contra
-        current.isOwnGoal = true;
-        current.isPenalty = false;
+      current.isOwnGoal = isOwn;
+      current.isPenalty = isPenalty;
+      current.isHeader = isHeader;
 
+      if (isOwn) {
         // Nova Lógica: Inferir quem fez o gol contra baseado no lado do clique.
-        // Se clicou na direita (ataque do Mandante) -> Gol a favor do Mandante -> Quem fez contra foi o Visitante.
-        // Se clicou na esquerda (ataque do Visitante) -> Gol a favor do Visitante -> Quem fez contra foi o Mandante.
         const sideKind = classifyByShot(pt); // 'created' (direita) ou 'conceded' (esquerda)
         current.ownGoalSide = (sideKind === 'created') ? 'visitante' : 'mandante';
-      } else if (tool === 'penalty') {
-        // Marcar como pênalti
-        current.isPenalty = true;
-        current.isOwnGoal = false;
-        current.ownGoalSide = null;
       } else {
-        // Gol normal
-        current.isOwnGoal = false;
-        current.isPenalty = false;
+        current.ownGoalSide = null;
+      }
+
+      // Atualizar visual do emoji
+      const txt = el.querySelector('text');
+      if (txt) {
+        if (isOwn) {
+          txt.style.filter = 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)';
+        } else if (isPenalty) {
+          txt.style.filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
+        } else if (isHeader) {
+          txt.style.filter = 'sepia(1) saturate(100) hue-rotate(150deg) brightness(1.1) contrast(1.2)';
+        }
       }
     }
 

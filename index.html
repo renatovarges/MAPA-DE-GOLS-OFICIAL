@@ -341,18 +341,16 @@
         <label>Data: <input id="editorDate" type="date" required
             style="padding:2px;background:#e7f8f1;border:none;border-radius:2px" /></label>
         <label>Adversário: <input id="editorOpponent" type="text" placeholder="Adversário" /></label>
-        <label>Ferramenta:
-          <select id="editorTool">
-            <option value="assist">Assistência</option>
-            <option value="shot">Finalização (gol)</option>
-            <option value="own">Gol contra</option>
-            <option value="penalty">Gol de pênalti</option>
+        <div style="margin-bottom:12px;display:flex;align-items:center;gap:8px">
+          <label for="editorTool">Ferramenta:</label>
+          <select id="editorTool" style="padding:4px">
+            <option value="assist">Assistência (Normal)</option>
+            <option value="assist-setpiece">Assistência (Bola Parada)</option>
+            <option value="shot">Finalização (Gol)</option>
+            <option value="shot-header">Finalização (Cabeça)</option>
+            <option value="own">Gol Contra</option>
+            <option value="penalty">Pênalti</option>
           </select>
-        </label>
-        <!-- Opções extras dinâmicas -->
-        <div id="editorExtraOptions" style="display:inline-flex;gap:8px;align-items:center">
-          <label id="optSetPiece" style="display:none"><input type="checkbox" id="checkSetPiece"> Bola Parada</label>
-          <label id="optHeader" style="display:none"><input type="checkbox" id="checkHeader"> De Cabeça</label>
         </div>
 
         <label><input id="editorTrace" type="checkbox" checked /> Traçado A → G</label>
