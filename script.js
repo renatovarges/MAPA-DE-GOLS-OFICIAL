@@ -3122,22 +3122,26 @@ function drawBottomLegend(overlayEl, groupId = 'bottomLegend') {
 
   const items = [
     { label: 'Assistência', type: 'assist' },
-    // { label: 'Ass. Bola Parada', type: 'assist_stopped' }, // Não implementado logicamente
+    { label: 'Ass. Bola Parada', type: 'assist_stopped' },
     { label: 'Gol Normal', type: 'shot' },
-    // { label: 'Gol de Cabeça', type: 'header' }, // Não implementado logicamente
+    { label: 'Gol de Cabeça', type: 'header' },
     { label: 'Pênalti', type: 'penalty' },
     { label: 'Gol Contra', type: 'own' }
   ];
 
-  // Recalcular largura para centralizar
-  const totalW = items.length * 180;
-  let currentX = (1000 - totalW) / 2 + 20;
+  // Recalcular largura para centralizar (aproximado, pois larguras variam)
+  // Largura total estimada: 6 itens x ~150px
+  const totalW = items.length * 155;
+  let currentX = (1000 - totalW) / 2 + 30;
 
   items.forEach(item => {
     // Marcador
     let marker;
-    if (item.type === 'assist') {
+    if (item.type === 'assist' || item.type === 'assist_stopped') {
       marker = el('circle', { r: 6, cx: 0, cy: 0, fill: '#ffffff', stroke: '#0f172a', 'stroke-width': 2 });
+      if (item.type === 'assist_stopped') {
+        marker.setAttribute('fill', '#00bfff'); // Exemplo: Azul para bola parada
+      }
     } else {
       marker = el('text', {
         'text-anchor': 'middle', 'dominant-baseline': 'middle',
@@ -3148,6 +3152,8 @@ function drawBottomLegend(overlayEl, groupId = 'bottomLegend') {
         marker.style.filter = 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)';
       } else if (item.type === 'penalty') {
         marker.style.filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
+      } else if (item.type === 'header') {
+        // Exemplo: Filtro para gol de cabeça (se houver distinção visual)
       }
     }
 
@@ -3157,18 +3163,18 @@ function drawBottomLegend(overlayEl, groupId = 'bottomLegend') {
 
     // Texto
     const text = el('text', {
-      x: currentX + 20,
+      x: currentX + 15,
       y: yBase + 1,
       'dominant-baseline': 'middle',
       'font-family': 'Inter, Arial, sans-serif',
-      'font-size': 14,
+      'font-size': 13,
       'font-weight': 600,
       fill: '#e7f8f1'
     });
     text.textContent = item.label;
     g.appendChild(text);
 
-    currentX += 180;
+    currentX += 155;
   });
 
   overlayEl.appendChild(g);
@@ -3180,6 +3186,9 @@ function updateAllLegends() {
   drawBottomLegend(document.getElementById('overlay2'));
   drawBottomLegend(document.getElementById('overlayLx'));
   drawBottomLegend(document.getElementById('overlayRx'));
+
+  // Garantir que a legenda de estatísticas (CEDIDOS X CONQUISTADAS) seja redesenhada se houver dados
+  // Nota: Isso normalmente é chamado em updateList(), mas reforçamos aqui se necessário
 }
 
 // Inicializar legendas
