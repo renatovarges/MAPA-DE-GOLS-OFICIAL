@@ -3100,7 +3100,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   const g = el('g', { id: groupId, filter: 'url(#ds)' });
 
   // LAYOUT BASEADO NA IMAGEM DE REFERÊNCIA
-  const startY = 590; // Início do rodapé (logo abaixo do campo que termina em 570)
+  const startY = 605; // Início do rodapé (espaçamento adequado do campo que termina em 570)
   const titleY = startY + 20; // Títulos CEDIDOS e CONQUISTADOS
   const boxStartY = titleY + 30; // Início das caixas brancas
   const boxW = 220; // Largura de cada caixa branca (ASSISTÊNCIAS ou GOLS)
@@ -3259,10 +3259,10 @@ function drawMarkerLegendNew(overlayEl, groupId = 'svgMarkerLegend') {
 
   const g = el('g', { id: groupId });
 
-  // Posicionada abaixo do quadro de estatísticas (y=740)
+  // Posicionada abaixo do quadro de estatísticas
   const legendY = 800;
-  // Alterado para 780 para centralizar no novo espaço (740 a 850)
-  const rectY = 780;
+  // Ajustado para 790 para garantir que caiba no viewBox de 850px
+  const rectY = 790;
   const rectH = 50;
   const WIDTH = 1000;
 
