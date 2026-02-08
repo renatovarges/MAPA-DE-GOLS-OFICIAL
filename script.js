@@ -3355,4 +3355,5 @@ function drawCxTitle(overlayEl, groupId = 'cxTitleLeft') {
   title.textContent = 'CEDIDAS X CONQUISTADAS';
   g.appendChild(title);
   overlayEl.appendChild(g);
-}
+}/ *   R e s t o r e d   f r o m   c o m m i t   c 9 1 1 2 5 9   * /  
+ 
