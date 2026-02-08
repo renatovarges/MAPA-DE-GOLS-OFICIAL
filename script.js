@@ -541,7 +541,8 @@ async function loadTeamData(teamKey = 'cruzeiro', { showCrest = true } = {}) {
   // Título superior escondido no DOM, visível apenas na exportação
   drawCxTitle(overlayEl, 'cxTitleLeft');
   drawPositionSummaryLegend(overlayEl, data.conceded || [], data.created || [], 'positionSummaryLeft');
-  drawSVGMarkerLegend(overlayEl); // Adicionado para garantir legenda de marcadores
+  drawPositionSummaryLegend(overlayEl, data.conceded || [], data.created || [], 'positionSummaryLeft');
+  drawMarkerLegendNew(overlayEl); // Adicionado para garantir legenda de marcadores
 }
 
 async function loadTeamData2(teamKey = 'fortaleza', { showCrest = true } = {}) {
@@ -564,7 +565,8 @@ async function loadTeamData2(teamKey = 'fortaleza', { showCrest = true } = {}) {
   // Título superior escondido no DOM, visível apenas na exportação
   drawCxTitle(overlayEl2, 'cxTitleRight');
   drawPositionSummaryLegend(overlayEl2, data.conceded || [], data.created || [], 'positionSummaryRight');
-  drawSVGMarkerLegend(overlayEl2); // Adicionado para garantia
+  drawPositionSummaryLegend(overlayEl2, data.conceded || [], data.created || [], 'positionSummaryRight');
+  drawMarkerLegendNew(overlayEl2); // Adicionado para garantia
 }
 async function loadTeamDataLeftExtra(teamKey = 'cruzeiro') {
   currentTeamLeftExtra = teamKey;
@@ -583,7 +585,7 @@ async function loadTeamDataLeftExtra(teamKey = 'cruzeiro') {
   if (typeof svgLx !== 'undefined' && svgLx) {
     drawCxTitle(svgLx, 'cxTitleLx');
     drawPositionSummaryLegend(svgLx, data.conceded || [], data.created || [], 'positionSummaryLx');
-    drawSVGMarkerLegend(svgLx);
+    drawMarkerLegendNew(svgLx);
   }
 }
 async function loadTeamDataRightExtra(teamKey = 'fortaleza') {
@@ -603,7 +605,7 @@ async function loadTeamDataRightExtra(teamKey = 'fortaleza') {
   if (typeof svgRx !== 'undefined' && svgRx) {
     drawCxTitle(svgRx, 'cxTitleRx');
     drawPositionSummaryLegend(svgRx, data.conceded || [], data.created || [], 'positionSummaryRx');
-    drawSVGMarkerLegend(svgRx);
+    drawMarkerLegendNew(svgRx);
   }
 }
 
@@ -1683,10 +1685,10 @@ function initEditor() {
 
     // DESENHAR LEGENDA DE MARCADORES (SVG) EM TODOS OS CAMPOS
     // Garante que apareça no download
-    drawSVGMarkerLegend(overlay);
-    if (typeof overlay2 !== 'undefined') drawSVGMarkerLegend(overlay2);
-    if (typeof overlayLx !== 'undefined') drawSVGMarkerLegend(overlayLx);
-    if (typeof overlayRx !== 'undefined') drawSVGMarkerLegend(overlayRx);
+    drawMarkerLegendNew(overlay);
+    if (typeof overlay2 !== 'undefined') drawMarkerLegendNew(overlay2);
+    if (typeof overlayLx !== 'undefined') drawMarkerLegendNew(overlayLx);
+    if (typeof overlayRx !== 'undefined') drawMarkerLegendNew(overlayRx);
   }
 
   // Função para deletar um evento específico
@@ -3252,7 +3254,7 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
 }
 
 // Nova função dedicada para desenhar a legenda de marcadores no SVG (sem depender de estatísticas)
-function drawSVGMarkerLegend(overlayEl, groupId = 'svgMarkerLegend') {
+function drawMarkerLegendNew(overlayEl, groupId = 'svgMarkerLegend') {
   if (!overlayEl) return;
   const existing = overlayEl.querySelector(`#${groupId}`);
   if (existing) existing.remove();
