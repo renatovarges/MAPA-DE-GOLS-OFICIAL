@@ -1,11 +1,11 @@
-﻿// RenderizaÃ§Ã£o com marcadores circulares (P/A/C) e linhas tracejadas
+﻿// Renderização com marcadores circulares (P/A/C) e linhas tracejadas
 
 const svg = document.getElementById('overlay');
 const defensiveLayer = document.getElementById('defensiveLayer');
 const offensiveLayer = document.getElementById('offensiveLayer');
 // Overlay de grade numerada
 const gridImg = document.getElementById('gridImg');
-// Overlay de zonas tÃ¡ticas
+// Overlay de zonas táticas
 const zonesOverlay = document.getElementById('zonesOverlay');
 
 // Contexto do segundo campo
@@ -14,7 +14,7 @@ const defensiveLayer2 = document.getElementById('defensiveLayer2');
 const offensiveLayer2 = document.getElementById('offensiveLayer2');
 // Overlay de grade numerada (segundo campo)
 const gridImg2 = document.getElementById('gridImg2');
-// Overlay de zonas tÃ¡ticas (segundo campo)
+// Overlay de zonas táticas (segundo campo)
 const zonesOverlay2 = document.getElementById('zonesOverlay2');
 // Campinhos extras (abaixo dos campos principal/visitante)
 const svgLx = document.getElementById('overlayLx');
@@ -24,27 +24,27 @@ const svgRx = document.getElementById('overlayRx');
 const defensiveLayerRx = document.getElementById('defensiveLayerRx');
 const offensiveLayerRx = document.getElementById('offensiveLayerRx');
 
-// DimensÃµes do canvas (viewBox) e do campo desenhado
+// Dimensões do canvas (viewBox) e do campo desenhado
 const WIDTH = 1000;
-const HEIGHT = 900; // aumentado de 660 para 900 para criar espaÃ§o para o rodapÃ©
-// Ãrea Ãºtil do campo (retÃ¢ngulo interno das linhas):
+const HEIGHT = 900; // aumentado de 660 para 900 para criar espaço para o rodapé
+// Ãrea útil do campo (retângulo interno das linhas):
 const PITCH = {
-  unitsX: 100,   // largura lÃ³gica
-  unitsY: 68,    // altura lÃ³gica
+  unitsX: 100,   // largura lógica
+  unitsY: 68,    // altura lógica
   maxX: 96,      // linha de gol em x=96
   maxY: 68,
-  left: 60,      // offset do retÃ¢ngulo interno no SVG
+  left: 60,      // offset do retângulo interno no SVG
   top: 30,
   widthPx: 880,  // 60 â†’ 940 (880px)
   heightPx: 540, // 30 â†’ 570 (540px)
 };
 
 const CREST_MAP = {
-  atletico_mg: 'atlÃ©tico mg.png',
+  atletico_mg: 'atlético mg.png',
   athletico_pr: 'athletico-pr.png',
   bahia: 'bahia.png',
   botafogo: 'botafogo.png',
-  ceara: 'cearÃ¡.png',
+  ceara: 'ceará.png',
   chapecoense: 'chapecoense.png',
   corinthians: 'corinthians.png',
   coritiba: 'coritiba.png',
@@ -62,24 +62,24 @@ const CREST_MAP = {
   remo: 'remo.png',
   santos: 'santos.png',
   sport: 'sport.png',
-  sao_paulo: 'sÃ£o paulo.png',
+  sao_paulo: 'são paulo.png',
   vasco: 'vasco.png',
-  vitoria: 'vitÃ³ria.png',
+  vitoria: 'vitória.png',
 };
 
-// Nomes amigÃ¡veis para exibiÃ§Ã£o nos rÃ³tulos
+// Nomes amigáveis para exibição nos rótulos
 const DISPLAY_NAME_MAP = {
-  atletico_mg: 'AtlÃ©tico-MG',
+  atletico_mg: 'Atlético-MG',
   athletico_pr: 'Athletico-PR',
   bahia: 'Bahia',
   botafogo: 'Botafogo',
-  ceara: 'CearÃ¡',
+  ceara: 'Ceará',
   corinthians: 'Corinthians',
   cruzeiro: 'Cruzeiro',
   flamengo: 'Flamengo',
   fluminense: 'Fluminense',
   fortaleza: 'Fortaleza',
-  gremio: 'GrÃªmio',
+  gremio: 'Grêmio',
   internacional: 'Internacional',
   juventude: 'Juventude',
   mirassol: 'Mirassol',
@@ -88,15 +88,15 @@ const DISPLAY_NAME_MAP = {
   red_bull_bragantino: 'Red Bull Bragantino',
   santos: 'Santos',
   sport: 'Sport',
-  sao_paulo: 'SÃ£o Paulo',
+  sao_paulo: 'São Paulo',
   vasco: 'Vasco',
-  vitoria: 'VitÃ³ria',
+  vitoria: 'Vitória',
 };
 
 function formatTeamName(teamKey) {
   const k = String(teamKey || '').toLowerCase();
   if (DISPLAY_NAME_MAP[k]) return DISPLAY_NAME_MAP[k];
-  // fallback: substitui underscores por espaÃ§os e capitaliza palavras
+  // fallback: substitui underscores por espaços e capitaliza palavras
   return k
     .replace(/_/g, ' ')
     .split(' ')
@@ -137,7 +137,7 @@ function fromXY({ X, Y }) {
   return { x: clampX(nx), y: clampY(ny) };
 }
 
-// Marcador de assistÃªncia igual ao Editor: cÃ­rculo branco com borda azul-escuro
+// Marcador de assistência igual ao Editor: círculo branco com borda azul-escuro
 function drawAssistMarker({ x, y }) {
   const { X, Y } = toXY({ x, y });
   const g = el('g', { transform: `translate(${X},${Y})`, filter: 'url(#ds)' });
@@ -153,8 +153,8 @@ function drawAssistMarker({ x, y }) {
   return g;
 }
 
-// Marcador de finalizaÃ§Ã£o: emoji âš½ padrÃ£o do sistema (sem dourado)
-// Marcador de finalizaÃ§Ã£o: emoji âš½ ou cÃ­rculo colorido
+// Marcador de finalização: emoji âš½ padrão do sistema (sem dourado)
+// Marcador de finalização: emoji âš½ ou círculo colorido
 function drawShotEmoji({ x, y }, { isPenalty, isOwnGoal } = {}) {
   const { X, Y } = toXY({ x, y });
   // Grupo com filtro de sombra drop-shadow (#ds)
@@ -170,9 +170,9 @@ function drawShotEmoji({ x, y }, { isPenalty, isOwnGoal } = {}) {
   }, []);
   txt.textContent = 'âš½';
 
-  // Aplicar filtros de cor se necessÃ¡rio (tinting)
+  // Aplicar filtros de cor se necessário (tinting)
   if (isOwnGoal) {
-    // Vermelho mais sutil: menos saturaÃ§Ã£o e ajuste de matiz
+    // Vermelho mais sutil: menos saturação e ajuste de matiz
     txt.style.filter = 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)';
   } else if (isPenalty) {
     // Verde claro: sepia + hue-rotate + saturation + brightness
@@ -200,7 +200,7 @@ function drawDashedLine(from, to) {
   });
 }
 
-// Removido uso de timestamps (nÃ£o desejado)
+// Removido uso de timestamps (não desejado)
 function drawTinyLabel(point, text, { dy = -16, fill = '#e7f8f1' } = {}) {
   if (!point || !text) return el('g');
   const { X, Y } = toXY(point);
@@ -273,7 +273,7 @@ function normalizePoint(p) {
 }
 
 function cellKeyForPoint(point) {
-  // Usa coordenadas lÃ³gicas jÃ¡ normalizadas (apÃ³s flip)
+  // Usa coordenadas lógicas já normalizadas (após flip)
   const col = Math.floor(point.x / CELL.w);
   const row = Math.floor(point.y / CELL.h);
   return `${row}:${col}`;
@@ -313,7 +313,7 @@ function setCrest(teamKey, fallbackName) {
   const text = svg?.querySelector('#crestText');
   const group = svg?.querySelector('#crestWatermark');
   if (file && img) {
-    img.setAttribute('href', `escudos  sÃ©rie A 2025/${file}`);
+    img.setAttribute('href', `escudos  série A 2025/${file}`);
     if (group) group.style.display = 'block';
     if (text) text.style.display = 'none';
   } else if (text) {
@@ -331,7 +331,7 @@ function setCrest2(teamKey, fallbackName) {
   const img = svg2?.querySelector('#crestImg2');
   const group = svg2?.querySelector('#crestWatermark2');
   if (file && img) {
-    img.setAttribute('href', `escudos  sÃ©rie A 2025/${file}`);
+    img.setAttribute('href', `escudos  série A 2025/${file}`);
     if (group) group.style.display = 'block';
   }
 }
@@ -340,7 +340,7 @@ function setCrestLx(teamKey, fallbackName) {
   const img = svgLx?.querySelector('#crestImgLx');
   const group = svgLx?.querySelector('#crestWatermarkLx');
   if (file && img) {
-    img.setAttribute('href', `escudos  sÃ©rie A 2025/${file}`);
+    img.setAttribute('href', `escudos  série A 2025/${file}`);
     if (group) group.style.display = 'block';
   } else if (group) {
     group.style.display = 'none';
@@ -351,7 +351,7 @@ function setCrestRx(teamKey, fallbackName) {
   const img = svgRx?.querySelector('#crestImgRx');
   const group = svgRx?.querySelector('#crestWatermarkRx');
   if (file && img) {
-    img.setAttribute('href', `escudos  sÃ©rie A 2025/${file}`);
+    img.setAttribute('href', `escudos  série A 2025/${file}`);
     if (group) group.style.display = 'block';
   } else if (group) {
     group.style.display = 'none';
@@ -365,7 +365,7 @@ let currentTeamRightExtra = null;
 
 function resolveDataFileKey(teamKey) {
   // Padroniza chave do arquivo JSON para casos com nome especial
-  // Suporta variaÃ§Ãµes com underscore usadas pelos escudos vs. hifens usados nos arquivos
+  // Suporta variações com underscore usadas pelos escudos vs. hifens usados nos arquivos
   const map = {
     'bragantino': 'red-bull-bragantino',
     'red_bull_bragantino': 'red-bull-bragantino',
@@ -387,10 +387,10 @@ async function getTeamAggregatedData(teamKey, { homeFilter = null } = {}) {
     const name = teamData.name || formatTeamName(teamKey);
     const settings = window.__aggregationSettings || { count: 3, mode: 'seguidas' };
 
-    // Conversor para formato padrÃ£o disponÃ­vel em todo o escopo da funÃ§Ã£o
+    // Conversor para formato padrão disponível em todo o escopo da função
     const toStandard = (ev) => {
       if (ev && typeof ev === 'object') {
-        // Normalizar chaves snake_case para camelCase se necessÃ¡rio
+        // Normalizar chaves snake_case para camelCase se necessário
         if (ev.shot || ev.pass) {
           return {
             ...ev,
@@ -417,7 +417,7 @@ async function getTeamAggregatedData(teamKey, { homeFilter = null } = {}) {
     if (Array.isArray(teamData.rounds)) {
       roundsArr = teamData.rounds.map((r) => {
         if (r && typeof r === 'object' && typeof r.roundNumber === 'number') return r;
-        // Arrays nÃ£o preservam chave da rodada; manter como estÃ¡
+        // Arrays não preservam chave da rodada; manter como está
         return r;
       });
     } else if (teamData.rounds && typeof teamData.rounds === 'object') {
@@ -436,28 +436,28 @@ async function getTeamAggregatedData(teamKey, { homeFilter = null } = {}) {
     let conceded = [];
     if (roundsArr.length > 0) {
       // Ordenar por Data (Crescente: mais antigo -> mais recente) e depois por Rodada
-      // Para pegar os "Ãºltimos X jogos", usamos slice do final, entÃ£o queremos os mais recentes no fim do array.
+      // Para pegar os "últimos X jogos", usamos slice do final, então queremos os mais recentes no fim do array.
       // Ordenar por Data (Crescente) defensivo
-      console.log('Ordenando jogos por DATA (CronolÃ³gico)...');
+      console.log('Ordenando jogos por DATA (Cronológico)...');
       let sorted = roundsArr.slice().sort((a, b) => {
         // Prioridade TOTAL para a a Data do jogo (YYYY-MM-DD).
         // Quem tem data vem antes ou depois baseado no tempo.
-        // Quem NÃƒO tem data, assumimos que Ã© muito antigo ou indefinido (vem antes de quem tem data).
+        // Quem NÃƒO tem data, assumimos que é muito antigo ou indefinido (vem antes de quem tem data).
         const dA = a.date ? String(a.date).trim() : '';
         const dB = b.date ? String(b.date).trim() : '';
 
         if (dA && dB) {
-          // ComparaÃ§Ã£o de strings ISO (YYYY-MM-DD) funciona corretamente para ordem cronolÃ³gica
-          if (dA < dB) return -1; // A Ã© mais antigo
-          if (dA > dB) return 1;  // A Ã© mais recente
+          // Comparação de strings ISO (YYYY-MM-DD) funciona corretamente para ordem cronológica
+          if (dA < dB) return -1; // A é mais antigo
+          if (dA > dB) return 1;  // A é mais recente
           // Se datas iguais, desempata pela rodada
         } else if (dA && !dB) {
-          return 1; // A tem data (recente), B nÃ£o (antigo) -> A vem depois
+          return 1; // A tem data (recente), B não (antigo) -> A vem depois
         } else if (!dA && dB) {
-          return -1; // A nÃ£o tem data (antigo), B tem (recente) -> A vem antes
+          return -1; // A não tem data (antigo), B tem (recente) -> A vem antes
         }
 
-        // Fallback: Desempate por nÃºmero da rodada se as datas forem idÃªnticas ou ambas ausentes
+        // Fallback: Desempate por número da rodada se as datas forem idênticas ou ambas ausentes
         return (a.roundNumber || 0) - (b.roundNumber || 0);
       });
       console.log('Ordenacao concluida', sorted.length);
@@ -470,9 +470,9 @@ async function getTeamAggregatedData(teamKey, { homeFilter = null } = {}) {
 
       const fmtName = (k) => formatTeamName(String(k || '').replace(/-/g, '_'));
       const toStdWithMatch = (ev, round) => {
-        // Converter para formato padrÃ£o
+        // Converter para formato padrão
         const base = toStandard(ev);
-        // Construir metadados de confronto quando possÃ­vel
+        // Construir metadados de confronto quando possível
         const oppKey = round && round.opponent ? String(round.opponent) : null;
         const isHomeRound = round ? Boolean(round.home) : null;
         const homeTeamKey = isHomeRound ? teamKey : oppKey;
@@ -496,13 +496,13 @@ async function getTeamAggregatedData(teamKey, { homeFilter = null } = {}) {
       created = teamData.created || [];
       conceded = teamData.conceded || [];
     }
-    // ConversÃ£o adicional (se ainda houver eventos em formato antigo)
+    // Conversão adicional (se ainda houver eventos em formato antigo)
     created = created.map(toStandard);
     conceded = conceded.map(toStandard);
     return { name, created, conceded };
   } catch (err) {
-    console.warn(`NÃ£o foi possÃ­vel carregar JSON externo (${teamKey}). Usando exemplo embutido.`, err);
-    // Fallback zerado: quando nÃ£o hÃ¡ arquivo JSON, nÃ£o renderizar eventos
+    console.warn(`Não foi possível carregar JSON externo (${teamKey}). Usando exemplo embutido.`, err);
+    // Fallback zerado: quando não há arquivo JSON, não renderizar eventos
     return {
       name: formatTeamName(teamKey),
       conceded: [],
@@ -515,7 +515,7 @@ async function loadTeamData(teamKey = 'cruzeiro', { showCrest = true } = {}) {
   currentTeamLeft = teamKey;
   try { window.currentTeamLeft = teamKey; } catch (e) { }
   const mode = (window.__aggregationSettings && window.__aggregationSettings.mode) ? String(window.__aggregationSettings.mode) : 'seguidas';
-  const homeFilter = (mode === 'mando') ? true : null; // 'mando' -> apenas mandante; caso contrÃ¡rio -> todas
+  const homeFilter = (mode === 'mando') ? true : null; // 'mando' -> apenas mandante; caso contrário -> todas
   const data = await getTeamAggregatedData(teamKey, { homeFilter });
   if (showCrest) setCrest(teamKey, data.name);
   renderEvents(defensiveLayer, data.conceded || [], { flipX: false });
@@ -523,12 +523,12 @@ async function loadTeamData(teamKey = 'cruzeiro', { showCrest = true } = {}) {
   const homeLbl = document.getElementById('homeTeamName');
   if (homeLbl) homeLbl.textContent = ` â€” ${(data.name || formatTeamName(teamKey)).toUpperCase()}`;
 
-  // Adicionar interatividade e desenhar legenda compacta por posiÃ§Ã£o no overlay (incluÃ­da no PNG)
+  // Adicionar interatividade e desenhar legenda compacta por posição no overlay (incluída no PNG)
   const allEvents = [...(data.conceded || []), ...(data.created || [])];
   addClickInteractivity(defensiveLayer, data.conceded || []);
   addClickInteractivity(offensiveLayer, data.created || []);
   const overlayEl = document.getElementById('overlay');
-  // TÃ­tulo superior escondido no DOM, visÃ­vel apenas na exportaÃ§Ã£o
+  // Título superior escondido no DOM, visível apenas na exportação
   drawCxTitle(overlayEl, 'cxTitleLeft');
   drawPositionSummaryLegend(overlayEl, data.conceded || [], data.created || [], 'positionSummaryLeft');
 }
@@ -537,7 +537,7 @@ async function loadTeamData2(teamKey = 'fortaleza', { showCrest = true } = {}) {
   currentTeamRight = teamKey;
   try { window.currentTeamRight = teamKey; } catch (e) { }
   const mode = (window.__aggregationSettings && window.__aggregationSettings.mode) ? String(window.__aggregationSettings.mode) : 'seguidas';
-  const homeFilter = (mode === 'mando') ? false : null; // 'mando' -> apenas visitante; caso contrÃ¡rio -> todas
+  const homeFilter = (mode === 'mando') ? false : null; // 'mando' -> apenas visitante; caso contrário -> todas
   const data = await getTeamAggregatedData(teamKey, { homeFilter });
   if (showCrest) setCrest2(teamKey, data.name);
   renderEvents(defensiveLayer2, data.conceded || [], { flipX: false });
@@ -545,12 +545,12 @@ async function loadTeamData2(teamKey = 'fortaleza', { showCrest = true } = {}) {
   const awayLbl = document.getElementById('awayTeamName');
   if (awayLbl) awayLbl.textContent = ` â€” ${(data.name || formatTeamName(teamKey)).toUpperCase()}`;
 
-  // Adicionar interatividade e desenhar legenda compacta por posiÃ§Ã£o no overlay (incluÃ­da no PNG)
+  // Adicionar interatividade e desenhar legenda compacta por posição no overlay (incluída no PNG)
   const allEvents = [...(data.conceded || []), ...(data.created || [])];
   addClickInteractivity(defensiveLayer2, data.conceded || []);
   addClickInteractivity(offensiveLayer2, data.created || []);
   const overlayEl2 = document.getElementById('overlay2');
-  // TÃ­tulo superior escondido no DOM, visÃ­vel apenas na exportaÃ§Ã£o
+  // Título superior escondido no DOM, visível apenas na exportação
   drawCxTitle(overlayEl2, 'cxTitleRight');
   drawPositionSummaryLegend(overlayEl2, data.conceded || [], data.created || [], 'positionSummaryRight');
 }
@@ -596,7 +596,7 @@ function normalizeTeamKey(k) {
   return k;
 }
 
-// AtualizaÃ§Ã£o: garantir que o dragstart dos escudos inclua o tipo 'text/team'
+// Atualização: garantir que o dragstart dos escudos inclua o tipo 'text/team'
 function initTeamInteractions() {
   const CRESTS_INV = Object.fromEntries(Object.entries(CREST_MAP).map(([k, v]) => [String(v).toLowerCase(), k]));
   const teamBadges = document.querySelectorAll('.team-badge');
@@ -675,14 +675,14 @@ function initGridToggle() {
   apply();
 }
 
-// Editor: desenha/limpa a camada de overlay para comeÃ§ar um novo lance
+// Editor: desenha/limpa a camada de overlay para começar um novo lance
 function drawEditorGrid() {
   const overlay = document.getElementById('editorOverlay');
   if (!overlay) return;
-  // Limpa quaisquer elementos antigos (cÃ­rculos, textos, linhas)
+  // Limpa quaisquer elementos antigos (círculos, textos, linhas)
   const nodes = Array.from(overlay.querySelectorAll('text,circle,line,rect'));
   nodes.forEach(n => n.parentNode && n.parentNode.removeChild(n));
-  // Opcional: borda sutil para referÃªncia visual
+  // Opcional: borda sutil para referência visual
   const ns = 'http://www.w3.org/2000/svg';
   const r = document.createElementNS(ns, 'rect');
   r.setAttribute('x', '0');
@@ -699,7 +699,7 @@ function drawZones(layer) {
   if (!layer) return;
   while (layer.firstChild) layer.removeChild(layer.firstChild);
 
-  // Desenhar fundo verde escuro para todas as cÃ©lulas
+  // Desenhar fundo verde escuro para todas as células
   for (let r = 0; r < GRID.rows; r++) {
     for (let c = 0; c < GRID.cols; c++) {
       const cellIndex = r * GRID.cols + c + 1;
@@ -708,14 +708,14 @@ function drawZones(layer) {
       const width = toXY({ x: CELL.w, y: 0 }).X - toXY({ x: 0, y: 0 }).X;
       const height = toXY({ x: 0, y: CELL.h }).Y - toXY({ x: 0, y: 0 }).Y;
 
-      // Cores especiais para cÃ©lulas destacadas
-      let fillColor = '#2d5016'; // Verde escuro padrÃ£o
+      // Cores especiais para células destacadas
+      let fillColor = '#2d5016'; // Verde escuro padrão
       if (cellIndex === 1) fillColor = '#ff8c00'; // Laranja - Escanteio defensivo direita
       else if (cellIndex === 73) fillColor = '#ffd700'; // Amarelo - Escanteio defensivo esquerda
-      else if (cellIndex === 38) fillColor = '#ff4500'; // Laranja/vermelho - PÃªnalti defensivo
+      else if (cellIndex === 38) fillColor = '#ff4500'; // Laranja/vermelho - Pênalti defensivo
       else if (cellIndex === 12) fillColor = '#00bfff'; // Ciano - Escanteio ofensivo esquerda
       else if (cellIndex === 84) fillColor = '#90ee90'; // Verde claro - Escanteio ofensivo direita
-      else if (cellIndex === 47) fillColor = '#da70d6'; // Roxo/magenta - PÃªnalti ofensivo
+      else if (cellIndex === 47) fillColor = '#da70d6'; // Roxo/magenta - Pênalti ofensivo
 
       const cellRect = el('rect', {
         x: x,
@@ -728,7 +728,7 @@ function drawZones(layer) {
       });
       layer.appendChild(cellRect);
 
-      // NÃºmero da cÃ©lula
+      // Número da célula
       const cellNumber = el('text', {
         x: x + width / 2,
         y: y + height / 2,
@@ -744,9 +744,9 @@ function drawZones(layer) {
     }
   }
 
-  // Contornos das Ã¡reas (linhas brancas mais grossas)
+  // Contornos das áreas (linhas brancas mais grossas)
 
-  // Grande Ã¡rea defensiva (linha entre colunas 2-3)
+  // Grande área defensiva (linha entre colunas 2-3)
   const gaDefX = toXY({ x: 2 * CELL.w, y: 0 }).X;
   const gaDefLine = el('line', {
     x1: gaDefX,
@@ -758,7 +758,7 @@ function drawZones(layer) {
   });
   layer.appendChild(gaDefLine);
 
-  // Contorno horizontal superior da grande Ã¡rea defensiva
+  // Contorno horizontal superior da grande área defensiva
   const gaDefTop = el('line', {
     x1: toXY({ x: 0, y: 1 * CELL.h }).X,
     y1: toXY({ x: 0, y: 1 * CELL.h }).Y,
@@ -769,7 +769,7 @@ function drawZones(layer) {
   });
   layer.appendChild(gaDefTop);
 
-  // Contorno horizontal inferior da grande Ã¡rea defensiva
+  // Contorno horizontal inferior da grande área defensiva
   const gaDefBottom = el('line', {
     x1: toXY({ x: 0, y: 6 * CELL.h }).X,
     y1: toXY({ x: 0, y: 6 * CELL.h }).Y,
@@ -780,7 +780,7 @@ function drawZones(layer) {
   });
   layer.appendChild(gaDefBottom);
 
-  // Pequena Ã¡rea defensiva (cÃ©lulas 25, 37, 49)
+  // Pequena área defensiva (células 25, 37, 49)
   const paDefX = toXY({ x: 1 * CELL.w, y: 0 }).X;
   const paDefLine = el('line', {
     x1: paDefX,
@@ -792,7 +792,7 @@ function drawZones(layer) {
   });
   layer.appendChild(paDefLine);
 
-  // Contornos horizontais da pequena Ã¡rea defensiva
+  // Contornos horizontais da pequena área defensiva
   const paDefTop = el('line', {
     x1: toXY({ x: 0, y: 2 * CELL.h }).X,
     y1: toXY({ x: 0, y: 2 * CELL.h }).Y,
@@ -813,7 +813,7 @@ function drawZones(layer) {
   });
   layer.appendChild(paDefBottom);
 
-  // Grande Ã¡rea ofensiva (linha entre colunas 10-11)
+  // Grande área ofensiva (linha entre colunas 10-11)
   const gaOfX = toXY({ x: 10 * CELL.w, y: 0 }).X;
   const gaOfLine = el('line', {
     x1: gaOfX,
@@ -825,7 +825,7 @@ function drawZones(layer) {
   });
   layer.appendChild(gaOfLine);
 
-  // Contornos horizontais da grande Ã¡rea ofensiva
+  // Contornos horizontais da grande área ofensiva
   const gaOfTop = el('line', {
     x1: gaOfX,
     y1: toXY({ x: 0, y: 1 * CELL.h }).Y,
@@ -846,7 +846,7 @@ function drawZones(layer) {
   });
   layer.appendChild(gaOfBottom);
 
-  // Pequena Ã¡rea ofensiva (cÃ©lulas 36, 48, 60)
+  // Pequena área ofensiva (células 36, 48, 60)
   const paOfX = toXY({ x: 11 * CELL.w, y: 0 }).X;
   const paOfLine = el('line', {
     x1: paOfX,
@@ -858,7 +858,7 @@ function drawZones(layer) {
   });
   layer.appendChild(paOfLine);
 
-  // Contornos horizontais da pequena Ã¡rea ofensiva
+  // Contornos horizontais da pequena área ofensiva
   const paOfTop = el('line', {
     x1: paOfX,
     y1: toXY({ x: 0, y: 2 * CELL.h }).Y,
@@ -879,7 +879,7 @@ function drawZones(layer) {
   });
   layer.appendChild(paOfBottom);
 
-  // CÃ­rculo branco no centro (entre cÃ©lulas 42-43)
+  // Círculo branco no centro (entre células 42-43)
   const centerX = toXY({ x: 6 * CELL.w, y: 3.5 * CELL.h }).X; // Entre colunas 6-7
   const centerY = toXY({ x: 0, y: 3.5 * CELL.h }).Y; // Meio da linha 4
   const centerCircle = el('circle', {
@@ -973,7 +973,7 @@ function drawPitch() {
   const svg = document.getElementById('pitch-svg');
   if (!svg) return;
 
-  // Adicionar definiÃ§Ãµes de marcadores de seta
+  // Adicionar definições de marcadores de seta
   let defs = svg.querySelector('defs');
   if (!defs) {
     defs = el('defs');
@@ -1025,12 +1025,12 @@ function drawPitch() {
 function drawLegend(layer) {
   if (!layer) return;
 
-  // PosiÃ§Ã£o da legenda (abaixo do campo)
+  // Posição da legenda (abaixo do campo)
   const legendY = toXY({ x: 0, y: 8 * CELL.h }).Y;
   const legendStartX = toXY({ x: 0, y: 0 }).X;
   const legendWidth = toXY({ x: 12 * CELL.w, y: 0 }).X - toXY({ x: 0, y: 0 }).X;
 
-  // TÃ­tulo da legenda
+  // Título da legenda
   const legendTitle = el('text', {
     x: legendStartX + legendWidth / 2,
     y: legendY + 20,
@@ -1104,26 +1104,26 @@ function initZonesToggle() {
   apply();
 }
 
-// InicializaÃ§Ãµes
-// Campos limpos: nÃ£o carregar times automaticamente
+// Inicializações
+// Campos limpos: não carregar times automaticamente
 initTeamInteractions();
 initAggregationControls();
 initEditor();
 initExtraFieldsToggle();
 
-// PrÃ©-preenchimento para testes: carregar dois times com dados existentes
+// Pré-preenchimento para testes: carregar dois times com dados existentes
 function autoPopulateForTesting() {
   // Escolhas baseadas nos arquivos presentes em /data
   const home = 'cruzeiro';
   const away = 'palmeiras';
-  // Suprimir escudos apenas na carga inicial da pÃ¡gina
+  // Suprimir escudos apenas na carga inicial da página
   loadTeamData(home, { showCrest: false });
   loadTeamData2(away, { showCrest: false });
 }
 
-// autoPopulateForTesting(); // Desabilitado: pÃ¡gina inicial deve ficar limpa
+// autoPopulateForTesting(); // Desabilitado: página inicial deve ficar limpa
 
-// ExportaÃ§Ã£o dos campinhos em PNG (alta definiÃ§Ã£o) e botÃµes de download
+// Exportação dos campinhos em PNG (alta definição) e botões de download
 function svgToDataUrl(svgEl, { showTitles = true, exportPaddingTop = 0, hideLayers = false, titleYOffset = 0, hidePositionSummary = false } = {}) {
   if (!svgEl) return '';
   const clone = svgEl.cloneNode(true);
@@ -1131,7 +1131,7 @@ function svgToDataUrl(svgEl, { showTitles = true, exportPaddingTop = 0, hideLaye
   clone.setAttribute('width', String(WIDTH));
   clone.setAttribute('height', String(HEIGHT + (exportPaddingTop || 0)));
 
-  // Mostrar/ocultar tÃ­tulos e ajustar Y opcionalmente
+  // Mostrar/ocultar títulos e ajustar Y opcionalmente
   const titles = clone.querySelectorAll('#cxTitleLeft, #cxTitleRight');
   titles.forEach(g => {
     g.style.display = showTitles ? 'block' : 'none';
@@ -1144,7 +1144,7 @@ function svgToDataUrl(svgEl, { showTitles = true, exportPaddingTop = 0, hideLaye
     }
   });
 
-  // Opcional: esconder camadas de eventos e marcas d'Ã¡gua
+  // Opcional: esconder camadas de eventos e marcas d'água
   if (hideLayers) {
     const selectors = [
       '#defensiveLayer', '#offensiveLayer',
@@ -1159,7 +1159,7 @@ function svgToDataUrl(svgEl, { showTitles = true, exportPaddingTop = 0, hideLaye
     });
   }
 
-  // Opcional: esconder a legenda/resumo inferior para evitar duplicaÃ§Ã£o
+  // Opcional: esconder a legenda/resumo inferior para evitar duplicação
   if (hidePositionSummary) {
     const summaries = clone.querySelectorAll('#positionSummary, #positionSummaryLeft, #positionSummaryRight');
     summaries.forEach(s => { s.style.display = 'none'; });
@@ -1181,15 +1181,15 @@ function loadImage(src) {
 }
 
 async function exportFieldAsPng(pitchEl, overlayEl, scale = 6) {
-  if (!pitchEl || !overlayEl) throw new Error('SVGs do campo nÃ£o encontrados');
+  if (!pitchEl || !overlayEl) throw new Error('SVGs do campo não encontrados');
   const canvas = document.createElement('canvas');
-  const EXPORT_TOP_PADDING = 56; // espaÃ§o extra acima do campo para o tÃ­tulo
+  const EXPORT_TOP_PADDING = 56; // espaço extra acima do campo para o título
   canvas.width = WIDTH * scale;
   canvas.height = (HEIGHT + EXPORT_TOP_PADDING) * scale;
   const ctx = canvas.getContext('2d');
   ctx.scale(scale, scale);
 
-  // URLs para exportaÃ§Ã£o com padding superior
+  // URLs para exportação com padding superior
   const pitchUrl = svgToDataUrl(pitchEl, { exportPaddingTop: EXPORT_TOP_PADDING, showTitles: false });
   const overlayNoTitleUrl = svgToDataUrl(overlayEl, { exportPaddingTop: EXPORT_TOP_PADDING, showTitles: false });
   const overlayTitleOnlyUrl = svgToDataUrl(overlayEl, { exportPaddingTop: EXPORT_TOP_PADDING, showTitles: true, hideLayers: true, hidePositionSummary: true, titleYOffset: -24 });
@@ -1201,11 +1201,11 @@ async function exportFieldAsPng(pitchEl, overlayEl, scale = 6) {
   const overlayImg = await loadImage(overlayNoTitleUrl);
   ctx.drawImage(overlayImg, 0, EXPORT_TOP_PADDING, WIDTH, HEIGHT);
 
-  // Desenhar apenas os tÃ­tulos no topo, sem deslocamento
+  // Desenhar apenas os títulos no topo, sem deslocamento
   const overlayTitleImg = await loadImage(overlayTitleOnlyUrl);
   ctx.drawImage(overlayTitleImg, 0, 0, WIDTH, HEIGHT + EXPORT_TOP_PADDING);
 
-  // Desenhar manualmente o escudo (imagem raster) para garantir presenÃ§a na exportaÃ§Ã£o
+  // Desenhar manualmente o escudo (imagem raster) para garantir presença na exportação
   try {
     const crestEl = overlayEl.querySelector('#crestImg') || overlayEl.querySelector('#crestImg2');
     const groupEl = overlayEl.querySelector('#crestWatermark') || overlayEl.querySelector('#crestWatermark2');
@@ -1311,7 +1311,7 @@ function initDownloadButtons() {
   }
 }
 
-// Inicializa os botÃµes de download apÃ³s o restante
+// Inicializa os botões de download após o restante
 initDownloadButtons();
 function initExtraFieldsToggle() {
   const btnL = document.getElementById('addExtraLeftBtn');
@@ -1401,7 +1401,7 @@ function initEditor() {
   if (!modal || !overlay) return;
 
   const TEAMS = [
-    { key: 'atletico-mg', name: 'AtlÃ©tico MG' },
+    { key: 'atletico-mg', name: 'Atlético MG' },
     { key: 'athletico-pr', name: 'Athletico-PR' },
     { key: 'bahia', name: 'Bahia' },
     { key: 'botafogo', name: 'Botafogo' },
@@ -1411,16 +1411,16 @@ function initEditor() {
     { key: 'cruzeiro', name: 'Cruzeiro' },
     { key: 'flamengo', name: 'Flamengo' },
     { key: 'fluminense', name: 'Fluminense' },
-    { key: 'gremio', name: 'GrÃªmio' },
+    { key: 'gremio', name: 'Grêmio' },
     { key: 'internacional', name: 'Internacional' },
     { key: 'mirassol', name: 'Mirassol' },
     { key: 'palmeiras', name: 'Palmeiras' },
     { key: 'red-bull-bragantino', name: 'Red Bull Bragantino' },
     { key: 'remo', name: 'Remo' },
     { key: 'santos', name: 'Santos' },
-    { key: 'sao-paulo', name: 'SÃ£o Paulo' },
+    { key: 'sao-paulo', name: 'São Paulo' },
     { key: 'vasco', name: 'Vasco' },
-    { key: 'vitoria', name: 'VitÃ³ria' }
+    { key: 'vitoria', name: 'Vitória' }
   ];
 
   function populateTeamSelect(select) {
@@ -1486,7 +1486,7 @@ function initEditor() {
       el.setAttribute('stroke', '#0f172a');
       el.setAttribute('stroke-width', '2');
     } else {
-      // Marcador de finalizaÃ§Ã£o (Gol, Gol Contra ou PÃªnalti)
+      // Marcador de finalização (Gol, Gol Contra ou Pênalti)
       el = document.createElementNS(ns, 'text');
       el.setAttribute('x', pt.x);
       el.setAttribute('y', pt.y);
@@ -1522,13 +1522,13 @@ function initEditor() {
     return line;
   }
 
-  // Painel elegante com estatÃ­sticas de gols por posiÃ§Ã£o (Editor)
+  // Painel elegante com estatísticas de gols por posição (Editor)
   function drawEditorPositionStatsPanel() {
     const panelId = 'positionStatsPanel';
     const existing = overlay.querySelector(`#${panelId}`);
     if (existing) existing.remove();
 
-    // Contar finalizaÃ§Ãµes (gols) por posiÃ§Ã£o do autor do chute
+    // Contar finalizações (gols) por posição do autor do chute
     const counts = { Goleiro: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0, Meia: 0, Atacante: 0 };
     for (const ev of state.roundEvents) {
       if (ev && ev.shotPt && ev.shotPlayer && ev.shotPlayer.position) {
@@ -1542,7 +1542,7 @@ function initEditor() {
       }
     }
 
-    // Se nÃ£o houver dados, nÃ£o desenhar painel
+    // Se não houver dados, não desenhar painel
     const total = Object.values(counts).reduce((a, b) => a + b, 0);
     if (total === 0) return;
 
@@ -1571,7 +1571,7 @@ function initEditor() {
     header.setAttribute('fill', '#f7d36a');
     header.setAttribute('font-weight', '700');
     header.setAttribute('font-size', '16');
-    header.textContent = 'Gols por PosiÃ§Ã£o';
+    header.textContent = 'Gols por Posição';
     g.appendChild(header);
 
     const lines = [
@@ -1619,7 +1619,7 @@ function initEditor() {
       const assistText = pc === '-' ? '-' : `${pc} â†” ${pcMirror}`;
       const shotText = sc === '-' ? '-' : `${sc} â†” ${scMirror}`;
 
-      // Adicionar informaÃ§Ãµes dos jogadores (inclui LD/LE para laterais)
+      // Adicionar informações dos jogadores (inclui LD/LE para laterais)
       const fmtPos = (p, s) => {
         if (!p) return '';
         if (p === 'Lateral') return s ? `Lateral ${s}` : 'Lateral';
@@ -1631,7 +1631,7 @@ function initEditor() {
 
       const eventText = `#${i + 1} Assist: ${assistText}${assistPlayer} | Final: ${shotText}${shotPlayer}${ownTag}`;
 
-      // Criar elemento do evento com botÃ£o de deletar
+      // Criar elemento do evento com botão de deletar
       const eventDiv = document.createElement('div');
       eventDiv.style.cssText = 'display:inline-flex;align-items:center;gap:8px;margin:4px 8px 4px 0;padding:4px 8px;background:#1a6b4f;border-radius:4px';
 
@@ -1650,12 +1650,12 @@ function initEditor() {
       listEl.appendChild(eventDiv);
     });
 
-    // Atualizar painel de estatÃ­sticas por posiÃ§Ã£o no overlay do editor
-    // (Removido a pedido do usuÃ¡rio)
+    // Atualizar painel de estatísticas por posição no overlay do editor
+    // (Removido a pedido do usuário)
     // drawEditorPositionStatsPanel();
   }
 
-  // FunÃ§Ã£o para deletar um evento especÃ­fico
+  // Função para deletar um evento específico
   function deleteEvent(index) {
     if (index < 0 || index >= state.roundEvents.length) return;
 
@@ -1679,7 +1679,7 @@ function initEditor() {
     updateList();
   }
 
-  // Estado para seleÃ§Ã£o de jogadores
+  // Estado para seleção de jogadores
   let pendingPlayerSelection = null;
 
   overlay.addEventListener('click', (evt) => {
@@ -1692,16 +1692,16 @@ function initEditor() {
 
     const tool = toolSelect ? toolSelect.value : 'assist';
     let current = state.roundEvents[state.roundEvents.length - 1];
-    // Regra: se o Ãºltimo evento jÃ¡ tem uma finalizaÃ§Ã£o sem assistÃªncia,
-    // comeÃ§ar um novo evento para nÃ£o acoplar automaticamente.
-    // MAS: Se for pÃªnalti ou gol contra, sempre criar novo, pois nÃ£o tem assistÃªncia.
+    // Regra: se o último evento já tem uma finalização sem assistência,
+    // começar um novo evento para não acoplar automaticamente.
+    // MAS: Se for pênalti ou gol contra, sempre criar novo, pois não tem assistência.
     const isSoloEvent = (tool === 'own' || tool === 'penalty');
 
     const shouldStartNew = (
       !current ||
       (current.assistPt && current.shotPt) ||
-      (current.shotPt && !current.assistPt) || // Ãºltimo Ã© "gol sem assistÃªncia" -> iniciar novo
-      isSoloEvent // Se a ferramenta atual Ã© solo, forÃ§a novo evento
+      (current.shotPt && !current.assistPt) || // último é "gol sem assistência" -> iniciar novo
+      isSoloEvent // Se a ferramenta atual é solo, força novo evento
     );
 
     if (shouldStartNew) {
@@ -1722,7 +1722,7 @@ function initEditor() {
         current.isPenalty = false;
         current.ownGoalSide = ownGoalSideSelect ? (ownGoalSideSelect.value || 'mandante') : 'mandante';
       } else if (tool === 'penalty') {
-        // Marcar como pÃªnalti
+        // Marcar como pênalti
         current.isPenalty = true;
         current.isOwnGoal = false;
         current.ownGoalSide = null;
@@ -1733,13 +1733,13 @@ function initEditor() {
       }
     }
 
-    // TraÃ§ado automÃ¡tico quando ambos existirem
+    // Traçado automático quando ambos existirem
     if (traceCheck && traceCheck.checked && current.assistPt && current.shotPt) {
       const lineEl = drawTrace(current.assistPt, current.shotPt);
       current.traceEl = lineEl;
     }
 
-    // Permitir apagar clicando no prÃ³prio marcador
+    // Permitir apagar clicando no próprio marcador
     el.addEventListener('click', (e) => {
       e.stopPropagation();
       try { overlay.removeChild(el); } catch { }
@@ -1767,7 +1767,7 @@ function initEditor() {
       updateList();
     });
 
-    // Abrir painel de seleÃ§Ã£o de jogadores (incluindo gol contra)
+    // Abrir painel de seleção de jogadores (incluindo gol contra)
     openPlayerSelectionPanel(current, tool);
 
     updateList();
@@ -1783,10 +1783,10 @@ function initEditor() {
     updateOwnSideEnabled();
   }
 
-  // BotÃ£o para adicionar eventos de teste rapidamente
+  // Botão para adicionar eventos de teste rapidamente
   if (addTestGoalsBtn) {
     addTestGoalsBtn.addEventListener('click', () => {
-      // Criar jogadores fictÃ­cios com diferentes posiÃ§Ãµes
+      // Criar jogadores fictícios com diferentes posições
       const fictitiousPlayers = [
         { name: 'Zagueiro Teste', position: 'Zagueiro', side: null },
         { name: 'Lateral E Teste', position: 'Lateral', side: 'LE' },
@@ -1795,7 +1795,7 @@ function initEditor() {
         { name: 'Atacante Teste', position: 'Atacante', side: null }
       ];
 
-      // Evento 1: Gol de Atacante com assistÃªncia de Meia (lado direito - ofensivo)
+      // Evento 1: Gol de Atacante com assistência de Meia (lado direito - ofensivo)
       const ev1 = {
         assistPt: { x: 700, y: 250 },
         shotPt: { x: 839.17, y: 300 },
@@ -1829,7 +1829,7 @@ function initEditor() {
       ev2.shotEl = drawShotEmoji(ev2.shotPt);
       state.roundEvents.push(ev2);
 
-      // Evento 3: Gol de Lateral D com assistÃªncia de Zagueiro (lado direito - ofensivo)
+      // Evento 3: Gol de Lateral D com assistência de Zagueiro (lado direito - ofensivo)
       const ev3 = {
         assistPt: { x: 650, y: 450 },
         shotPt: { x: 800, y: 400 },
@@ -1848,7 +1848,7 @@ function initEditor() {
       }
       state.roundEvents.push(ev3);
 
-      // Evento 4: Gol de Meia sem assistÃªncia (lado direito - ofensivo)
+      // Evento 4: Gol de Meia sem assistência (lado direito - ofensivo)
       const ev4 = {
         assistPt: null,
         shotPt: { x: 750, y: 200 },
@@ -1900,7 +1900,7 @@ function initEditor() {
 
     pendingPlayerSelection = { eventObj, eventType };
 
-    // Verificar se Ã© gol contra
+    // Verificar se é gol contra
     const isOwnGoal = eventObj.isOwnGoal || false;
 
     // Configurar tipo do evento
@@ -1919,8 +1919,8 @@ function initEditor() {
     const playerSelectRow = playerSelect?.parentElement;
     const playerSideRowEl = document.getElementById('playerSideRow');
 
-    // Sempre mostrar seleÃ§Ã£o de jogador (mesmo para gol contra)
-    // Gol contra agora permite selecionar jogador completo, mas lÃ³gica de sugestÃ£o de time Ã© invertida
+    // Sempre mostrar seleção de jogador (mesmo para gol contra)
+    // Gol contra agora permite selecionar jogador completo, mas lógica de sugestão de time é invertida
     if (ownGoalNameRow) ownGoalNameRow.style.display = 'none'; // Ocultar campo de texto simples
     if (playerTeamRow) playerTeamRow.style.display = 'block';
     if (playerPosRow) playerPosRow.style.display = 'block';
@@ -1934,13 +1934,13 @@ function initEditor() {
       const kind = classifyByShot(point); // 'created' (ataque do mandante) ou 'conceded' (ataque do visitante)
 
       if (isOwnGoal) {
-        // LÃ³gica Invertida para Gol Contra:
-        // Se o gol Ã© do Mandante ('created'), quem fez contra foi o Visitante.
-        // Se o gol Ã© do Visitante ('conceded'), quem fez contra foi o Mandante.
+        // Lógica Invertida para Gol Contra:
+        // Se o gol é do Mandante ('created'), quem fez contra foi o Visitante.
+        // Se o gol é do Visitante ('conceded'), quem fez contra foi o Mandante.
         suggestedTeam = (kind === 'created') ? state.awayTeamKey : state.homeTeamKey;
       } else {
-        // LÃ³gica Normal:
-        // Se o gol Ã© do Mandante, quem fez foi o Mandante.
+        // Lógica Normal:
+        // Se o gol é do Mandante, quem fez foi o Mandante.
         suggestedTeam = (kind === 'created') ? state.homeTeamKey : state.awayTeamKey;
       }
     } else {
@@ -2018,7 +2018,7 @@ function initEditor() {
     if (playerPosition) playerPosition.textContent = player.position;
     if (playerTeam) playerTeam.textContent = DISPLAY_NAME_MAP[player.teamKey] || player.teamKey;
 
-    // Se o jogador for Lateral, obrigar seleÃ§Ã£o de lado
+    // Se o jogador for Lateral, obrigar seleção de lado
     if (playerSideRow) {
       const isLateral = player.position === 'Lateral';
       playerSideRow.style.display = isLateral ? 'block' : 'none';
@@ -2038,10 +2038,10 @@ function initEditor() {
 
     const { eventObj, eventType } = pendingPlayerSelection;
 
-    // Verificar se Ã© gol contra (agora usa seleÃ§Ã£o completa de jogador tambÃ©m)
-    // if (eventObj.isOwnGoal) ... (LÃ³gica removida, agora unificada)
+    // Verificar se é gol contra (agora usa seleção completa de jogador também)
+    // if (eventObj.isOwnGoal) ... (Lógica removida, agora unificada)
 
-    // LÃ³gica unificada para gol normal e gol contra
+    // Lógica unificada para gol normal e gol contra
     if (!playerSelect) return;
     const selectedOption = playerSelect.options[playerSelect.selectedIndex];
     if (!selectedOption || !selectedOption.dataset.playerData) return;
@@ -2059,7 +2059,7 @@ function initEditor() {
     };
 
     if (eventObj.isOwnGoal) {
-      // Para gol contra, salvamos em shotPlayer tambÃ©m, mas mantemos a flag isOwnGoal true
+      // Para gol contra, salvamos em shotPlayer também, mas mantemos a flag isOwnGoal true
       // O nome 'ownGoalPlayerName' legacy pode ser removido ou mantido para retrocompatibilidade
       eventObj.ownGoalPlayerName = player.nome_completo; // Opcional
       eventObj.shotPlayer = newPlayerData;
@@ -2075,7 +2075,7 @@ function initEditor() {
     updateList();
   }
 
-  // ValidaÃ§Ã£o: impedir salvar se houver lateral sem lado (LD/LE)
+  // Validação: impedir salvar se houver lateral sem lado (LD/LE)
   function findMissingLateralSides() {
     const missing = [];
     state.roundEvents.forEach((ev, idx) => {
@@ -2103,7 +2103,7 @@ function initEditor() {
   }
   if (playerSideSelect) {
     playerSideSelect.addEventListener('change', () => {
-      // Revalidar se podemos confirmar quando o lado Ã© selecionado
+      // Revalidar se podemos confirmar quando o lado é selecionado
       updateSelectedPlayerInfo();
     });
   }
@@ -2116,7 +2116,7 @@ function initEditor() {
     cancelPlayerBtn.addEventListener('click', closePlayerSelectionPanel);
   }
 
-  // BotÃµes de desfazer e limpar
+  // Botões de desfazer e limpar
   const undoBtn = document.getElementById('editorUndoBtn');
   const clearBtn = document.getElementById('editorClearBtn');
   undoBtn && undoBtn.addEventListener('click', () => {
@@ -2143,7 +2143,7 @@ function initEditor() {
     updateList();
   });
 
-  // BotÃ£o para limpar TODOS os gols de TODOS os times
+  // Botão para limpar TODOS os gols de TODOS os times
   const clearAllBtn = document.getElementById('editorClearAllBtn');
   clearAllBtn && clearAllBtn.addEventListener('click', async () => {
     const confirmed = confirm('ATENÃ‡ÃƒO: Isso vai APAGAR TODOS OS GOLS de TODOS OS TIMES!\n\nTem certeza que deseja continuar?');
@@ -2157,7 +2157,7 @@ function initEditor() {
       const data = await res.json();
       if (res.ok) {
         alert(`Sucesso! ${data.cleared} arquivos foram limpos.`);
-        // Limpar o campo do editor tambÃ©m
+        // Limpar o campo do editor também
         const nodes = Array.from(overlay.querySelectorAll('text,circle,line'));
         nodes.forEach(n => n.parentNode && n.parentNode.removeChild(n));
         state.roundEvents = [];
@@ -2166,13 +2166,13 @@ function initEditor() {
         alert('Erro ao limpar os gols: ' + (data.error || 'desconhecido'));
       }
     } catch (err) {
-      alert('Falha na requisiÃ§Ã£o: ' + (err && err.message ? err.message : 'desconhecida'));
+      alert('Falha na requisição: ' + (err && err.message ? err.message : 'desconhecida'));
     }
   });
 
   function cellIndexFromPoint(x, y) {
-    // x,y recebidos no Editor estÃ£o em coordenadas SVG (0..1000/0..600).
-    // Converter para unidades lÃ³gicas do campo antes de calcular o quadrante.
+    // x,y recebidos no Editor estão em coordenadas SVG (0..1000/0..600).
+    // Converter para unidades lógicas do campo antes de calcular o quadrante.
     const pitchPt = fromXY({ X: x, Y: y });
     const col = clampGridCol(Math.floor(pitchPt.x / CELL.w));
     const row = clampGridRow(Math.floor(pitchPt.y / CELL.h));
@@ -2182,11 +2182,11 @@ function initEditor() {
   function mirrorCellIndex(index) {
     const total = GRID.rows * GRID.cols;
     const n = Math.max(1, Math.min(total, Math.round(Number(index) || 1)));
-    // Pares especÃ­ficos fornecidos (ataque â†’ defesa) e inversos
+    // Pares específicos fornecidos (ataque â†’ defesa) e inversos
     const specificPairs = {
       12: 73,
       47: 38,
-      // 84â†”1 nÃ£o Ã© correlaÃ§Ã£o desejada (180Â°); manter apenas horizontal
+      // 84â†”1 não é correlação desejada (180°); manter apenas horizontal
       61: 24,
       49: 36,
       37: 48,
@@ -2198,7 +2198,7 @@ function initEditor() {
     const customMap = { ...specificPairs };
     Object.entries(specificPairs).forEach(([a, b]) => { customMap[b] = Number(a); });
     if (customMap[n]) return customMap[n];
-    // Fallback: espelho horizontal (inverte a coluna, mantÃ©m a linha)
+    // Fallback: espelho horizontal (inverte a coluna, mantém a linha)
     const zero = n - 1;
     const row = Math.floor(zero / GRID.cols);
     const col = zero % GRID.cols;
@@ -2225,7 +2225,7 @@ function initEditor() {
     const createdAway = [];
     const concededAway = [];
 
-    // Regra simples: defesa do outro time = rotaÃ§Ã£o 180Â° do ataque
+    // Regra simples: defesa do outro time = rotação 180° do ataque
     const rotate180 = (pt) => ({ x: PITCH.maxX - pt.x, y: PITCH.maxY - pt.y });
 
     for (const ev of state.roundEvents) {
@@ -2239,7 +2239,7 @@ function initEditor() {
       const homeEvent = {
         pass: passPitch ? { x: passPitch.x, y: passPitch.y } : null,
         shot: { x: shotPitch.x, y: shotPitch.y },
-        // Incluir dados dos jogadores se disponÃ­veis (nÃ£o aplicÃ¡vel a gol contra)
+        // Incluir dados dos jogadores se disponíveis (não aplicável a gol contra)
         assistPlayer: isOwn ? null : (ev.assistPlayer || null),
         shotPlayer: (ev.shotPlayer || null),
         own_goal: isOwn || undefined,
@@ -2248,7 +2248,7 @@ function initEditor() {
       const rotated = {
         pass: homeEvent.pass ? rotate180(homeEvent.pass) : null,
         shot: rotate180(homeEvent.shot),
-        // Manter os mesmos dados (nulo em gol contra / originais caso nÃ£o seja)
+        // Manter os mesmos dados (nulo em gol contra / originais caso não seja)
         assistPlayer: isOwn ? null : (ev.assistPlayer || null),
         shotPlayer: (ev.shotPlayer || null),
         own_goal: isOwn || undefined,
@@ -2266,19 +2266,19 @@ function initEditor() {
       } else {
         if (homeKey) {
           if (kind === 'created') {
-            // Ataque do mandante: salva como estÃ¡
+            // Ataque do mandante: salva como está
             createdHome.push(homeEvent);
           } else {
-            // Ataque do visitante: defesa do mandante Ã© o evento original
+            // Ataque do visitante: defesa do mandante é o evento original
             concededHome.push(homeEvent);
           }
         }
         if (awayKey) {
           if (kind === 'created') {
-            // Ataque do mandante -> defesa do visitante = rotaÃ§Ã£o 180Â°
+            // Ataque do mandante -> defesa do visitante = rotação 180°
             concededAway.push(rotated);
           } else {
-            // Ataque do visitante -> criado do visitante = rotaÃ§Ã£o 180Â°
+            // Ataque do visitante -> criado do visitante = rotação 180°
             createdAway.push(rotated);
           }
         }
@@ -2311,11 +2311,11 @@ function initEditor() {
   }
 
   saveRoundBtn && saveRoundBtn.addEventListener('click', async () => {
-    // ValidaÃ§Ã£o de Data (Simplificada)
+    // Validação de Data (Simplificada)
     const dInput = document.getElementById('editorDate');
     if (dInput) {
       if (!dInput.value) {
-        alert('âš ï¸ ATENÃ‡ÃƒO: Data do Jogo Ã© obrigatÃ³ria!\nPor favor, preencha a data antes de salvar.');
+        alert('âš ï¸ ATENÃ‡ÃƒO: Data do Jogo é obrigatória!\nPor favor, preencha a data antes de salvar.');
         return;
       }
     }
@@ -2327,11 +2327,11 @@ function initEditor() {
     }
     const payload = computeRoundPayload();
     const rn = payload.roundNumber;
-    // Alerta informativo: se apenas um dos times foi selecionado, o arquivo do adversÃ¡rio nÃ£o serÃ¡ criado.
-    // O campo "AdversÃ¡rio" serve apenas como rÃ³tulo textual para o oponente.
+    // Alerta informativo: se apenas um dos times foi selecionado, o arquivo do adversário não será criado.
+    // O campo "Adversário" serve apenas como rótulo textual para o oponente.
     const onlyOneSideSelected = (!!payload.home) !== (!!payload.away);
     if (onlyOneSideSelected) {
-      alert('VocÃª selecionou apenas um dos times. Para que os dados apareÃ§am tambÃ©m no campinho do adversÃ¡rio, selecione Mandante e Visitante nas listas. O campo "AdversÃ¡rio" nÃ£o cria o arquivo do outro time.');
+      alert('Você selecionou apenas um dos times. Para que os dados apareçam também no campinho do adversário, selecione Mandante e Visitante nas listas. O campo "Adversário" não cria o arquivo do outro time.');
       // Prossegue com o salvamento para o time selecionado.
     }
     if (!payload.home && !payload.away) {
@@ -2352,7 +2352,7 @@ function initEditor() {
       return;
     }
 
-    // Atualizar memÃ³ria local para exportaÃ§Ã£o
+    // Atualizar memória local para exportação
     if (payload.home) state.roundsHome[rn] = payload.home;
     if (payload.away) state.roundsAway[rn] = payload.away;
 
@@ -2384,7 +2384,7 @@ function initEditor() {
     }
   });
 
-  // FunÃ§Ã£o para converter cell index para coordenadas SVG do editor
+  // Função para converter cell index para coordenadas SVG do editor
   function cellIndexToPoint(cellIndex) {
     const adjustedIndex = cellIndex - 1;
     const row = Math.floor(adjustedIndex / GRID.cols);
@@ -2396,8 +2396,8 @@ function initEditor() {
     return { x: X, y: Y };
   }
 
-  // FunÃ§Ã£o para carregar dados de uma rodada especÃ­fica
-  // FunÃ§Ã£o auxiliar para converter coordenadas lÃ³gicas (%) de volta para coordenadas SVG do editor
+  // Função para carregar dados de uma rodada específica
+  // Função auxiliar para converter coordenadas lógicas (%) de volta para coordenadas SVG do editor
   function logicalToEditorSVG(logicalX, logicalY) {
     const X = PITCH.left + (logicalX / 100) * PITCH.widthPx;
     const Y = PITCH.top + (logicalY / 100) * PITCH.heightPx;
@@ -2433,24 +2433,24 @@ function initEditor() {
 
       const events = roundData.created_goals || [];
 
-      // Verificar se Ã© o time visitante para rotacionar os gols de volta (jogar na esquerda)
+      // Verificar se é o time visitante para rotacionar os gols de volta (jogar na esquerda)
       // O banco salva sempre como 'created' (ataque na direita). Se for visitante, tem que inverter.
       // Comparar teamKey com o valor do select de visitante
       const awaySelectVal = document.getElementById('editorAwaySelect')?.value;
       const isAway = (teamKey === awaySelectVal);
 
-      // FunÃ§Ã£o de rotaÃ§Ã£o (inverso do rotate180 na hora de salvar)
-      // Se salvou: x = PITCH.maxY - x ... Aqui usamos a lÃ³gica do Editor SVG (0..1000, 0..600)
-      // Mas os dados vÃªm em % (0..100).
+      // Função de rotação (inverso do rotate180 na hora de salvar)
+      // Se salvou: x = PITCH.maxY - x ... Aqui usamos a lógica do Editor SVG (0..1000, 0..600)
+      // Mas os dados vêm em % (0..100).
       const rotateLogical = (lPt) => ({ x: 100 - lPt.x, y: 100 - lPt.y });
 
       events.forEach(ev => {
-        // Os dados salvos tÃªm pass.x/y e shot.x/y em coordenadas lÃ³gicas (%)
+        // Os dados salvos têm pass.x/y e shot.x/y em coordenadas lógicas (%)
         const hasPass = ev.pass && typeof ev.pass.x === 'number' && typeof ev.pass.y === 'number';
         const hasShot = ev.shot && typeof ev.shot.x === 'number' && typeof ev.shot.y === 'number';
         if (!hasPass && !hasShot) return;
 
-        // Clone para nÃ£o alterar o original
+        // Clone para não alterar o original
         let passPtLogic = hasPass ? { ...ev.pass } : null;
         let shotPtLogic = hasShot ? { ...ev.shot } : null;
 
@@ -2494,9 +2494,9 @@ function initEditor() {
         if (newEvent.assistPt && state.trace) {
           const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
           line.setAttribute('x1', newEvent.assistPt.x); line.setAttribute('y1', newEvent.assistPt.y);
-          // O ponto final do traÃ§ado deve ser shotPt (pt)
-          // Mas 'pt' Ã© local ao if(shotPtLogic), entÃ£o precisamos recalcular ou garantir escopo
-          // No entanto, logicamente sÃ³ desenhamos traÃ§o se houver passe E chute.
+          // O ponto final do traçado deve ser shotPt (pt)
+          // Mas 'pt' é local ao if(shotPtLogic), então precisamos recalcular ou garantir escopo
+          // No entanto, logicamente só desenhamos traço se houver passe E chute.
           if (newEvent.shotPt) {
             const endPt = newEvent.shotPt;
             line.setAttribute('x2', endPt.x); line.setAttribute('y2', endPt.y);
@@ -2510,7 +2510,7 @@ function initEditor() {
     } catch (err) { console.error('Erro ao carregar rodada:', err); }
   }
 
-  // FunÃ§Ã£o auxiliar para carregar dados de ambos os times
+  // Função auxiliar para carregar dados de ambos os times
   async function loadBothTeamsData() {
     const homeKey = homeSelect && homeSelect.value ? homeSelect.value : null;
     const awayKey = awaySelect && awaySelect.value ? awaySelect.value : null;
@@ -2523,12 +2523,12 @@ function initEditor() {
 
     // Carregar dados do mandante
     if (homeKey) {
-      await loadRoundDataIntoEditor(homeKey, roundNo, false); // false = nÃ£o limpar campo
+      await loadRoundDataIntoEditor(homeKey, roundNo, false); // false = não limpar campo
     }
 
     // Carregar dados do visitante
     if (awayKey) {
-      await loadRoundDataIntoEditor(awayKey, roundNo, false); // false = nÃ£o limpar campo
+      await loadRoundDataIntoEditor(awayKey, roundNo, false); // false = não limpar campo
     }
 
     updateList();
@@ -2552,11 +2552,11 @@ function initEditor() {
   }
 }
 
-// (Removido) FunÃ§Ã£o de simulaÃ§Ã£o de rodadas
+// (Removido) Função de simulação de rodadas
 
 // ===== SISTEMA DE JOGADORES =====
 
-// Mapeamento de posiÃ§Ãµes do CSV para categorias simplificadas
+// Mapeamento de posições do CSV para categorias simplificadas
 const POSITION_MAP = {
   'Goleiro': 'Goleiro',
   'Lateral': 'Lateral',
@@ -2568,7 +2568,7 @@ const POSITION_MAP = {
 // Cache para dados dos jogadores
 let playersData = null;
 
-// FunÃ§Ã£o para carregar dados do CSV de jogadores
+// Função para carregar dados do CSV de jogadores
 async function loadPlayersData() {
   if (playersData) return playersData; // Cache
 
@@ -2615,7 +2615,7 @@ async function loadPlayersData() {
   }
 }
 
-// Mapear cÃ³digos de clube do CSV para chaves de time
+// Mapear códigos de clube do CSV para chaves de time
 function mapClubToTeamKey(clubCode) {
   const clubMap = {
     'CAM': 'atletico-mg',
@@ -2646,23 +2646,23 @@ function mapClubToTeamKey(clubCode) {
   return clubMap[clubCode] || null;
 }
 
-// FunÃ§Ã£o para obter jogadores de um time especÃ­fico
+// Função para obter jogadores de um time específico
 function getPlayersByTeam(teamKey) {
   if (!playersData) return [];
   return playersData.filter(player => player.teamKey === teamKey);
 }
 
-// Carregar dados dos jogadores na inicializaÃ§Ã£o
+// Carregar dados dos jogadores na inicialização
 loadPlayersData();
 
-// FunÃ§Ãµes para legendas de jogadores e interatividade
+// Funções para legendas de jogadores e interatividade
 function populatePlayersLegend(legendId, events) {
   const legendEl = document.getElementById(legendId);
   const contentEl = document.getElementById(legendId + 'Content');
 
   if (!legendEl || !contentEl) return;
 
-  // Coletar todos os jogadores Ãºnicos dos eventos
+  // Coletar todos os jogadores únicos dos eventos
   const players = new Set();
   const sideLabel = (pos, side) => {
     if (pos !== 'Lateral') return pos;
@@ -2674,12 +2674,12 @@ function populatePlayersLegend(legendId, events) {
     if (ev.assistPlayer && ev.assistPlayer.name) {
       const s = ev.assistPlayer.side;
       const ptxt = sideLabel(ev.assistPlayer.position, s);
-      players.add(`${ev.assistPlayer.name} â€” ${ptxt} (AssistÃªncia)`);
+      players.add(`${ev.assistPlayer.name} â€” ${ptxt} (Assistência)`);
     }
     if (ev.shotPlayer && ev.shotPlayer.name) {
       const s = ev.shotPlayer.side;
       const ptxt = sideLabel(ev.shotPlayer.position, s);
-      players.add(`${ev.shotPlayer.name} â€” ${ptxt} (FinalizaÃ§Ã£o)`);
+      players.add(`${ev.shotPlayer.name} â€” ${ptxt} (Finalização)`);
     }
   });
 
@@ -2688,7 +2688,7 @@ function populatePlayersLegend(legendId, events) {
     return;
   }
 
-  // Popular conteÃºdo da legenda
+  // Popular conteúdo da legenda
   contentEl.innerHTML = '';
   Array.from(players).sort().forEach(playerInfo => {
     const div = document.createElement('div');
@@ -2711,7 +2711,7 @@ function addClickInteractivity(layer, events) {
     const hasPlayerData = (event.assistPlayer && event.assistPlayer.name) || (event.shotPlayer && event.shotPlayer.name);
     if (!hasPlayerData) return;
     marker.style.cursor = 'pointer';
-    // Para evitar mÃºltiplos listeners em re-render, clonar simples
+    // Para evitar múltiplos listeners em re-render, clonar simples
     const clone = marker.cloneNode(true);
     marker.parentNode.replaceChild(clone, marker);
     clone.addEventListener('click', (e) => {
@@ -2728,7 +2728,7 @@ function showPlayerTooltip(event, eventData) {
     existingTooltip.remove();
   }
 
-  // Verificar se hÃ¡ dados de jogador
+  // Verificar se há dados de jogador
   const hasPlayerData = (eventData.assistPlayer && eventData.assistPlayer.name) ||
     (eventData.shotPlayer && eventData.shotPlayer.name);
 
@@ -2755,19 +2755,19 @@ function showPlayerTooltip(event, eventData) {
     font-family: inherit;
   `;
 
-  // AbreviaÃ§Ãµes e rÃ³tulos simples
+  // Abreviações e rótulos simples
   const POS_ABBR = { 'Goleiro': 'GOL', 'Zagueiro': 'ZAG', 'Meia': 'MEI', 'Atacante': 'ATA' };
   const abbr = (p, side) => {
     if (p === 'Lateral') return side === 'LD' ? 'LAT D' : (side === 'LE' ? 'LAT E' : 'LAT');
     return POS_ABBR[p] || p;
   };
   let content = '';
-  // CabeÃ§alho com confronto (escudos + nomes) quando disponÃ­vel
+  // Cabeçalho com confronto (escudos + nomes) quando disponível
   const crestSrcFor = (teamKey) => {
     const key = String(teamKey || '').toLowerCase().replace(/-/g, '_');
     const norm = normalizeTeamKey(key);
     const file = CREST_MAP[norm];
-    return file ? `escudos  sÃ©rie A 2025/${file}` : null;
+    return file ? `escudos  série A 2025/${file}` : null;
   };
   const renderTeamHeaderItem = (name, key) => {
     const src = crestSrcFor(key);
@@ -2793,10 +2793,10 @@ function showPlayerTooltip(event, eventData) {
   }
 
   if (eventData.isOwnGoal) {
-    // Manter o aviso extra se desejar, ou removÃª-lo jÃ¡ que o tÃ­tulo mudou.
-    // O usuÃ¡rio pediu para "nÃ£o aparecer que foi gol normal", a mudanÃ§a acima resolve.
-    // Mas vou manter o aviso extra para reforÃ§ar, ou removÃª-lo se ficar redundante.
-    // Vou remover o aviso extra redundante na prÃ³xima etapa se necessÃ¡rio, mas por ora atualizaÃ§Ã£o do label Ã© o principal.
+    // Manter o aviso extra se desejar, ou removê-lo já que o título mudou.
+    // O usuário pediu para "não aparecer que foi gol normal", a mudança acima resolve.
+    // Mas vou manter o aviso extra para reforçar, ou removê-lo se ficar redundante.
+    // Vou remover o aviso extra redundante na próxima etapa se necessário, mas por ora atualização do label é o principal.
   }
 
   if (eventData.isOwnGoal) {
@@ -2816,11 +2816,11 @@ function showPlayerTooltip(event, eventData) {
     const centerX = markerRect.left - containerRect.left + (markerRect.width / 2);
     const centerY = markerRect.top - containerRect.top + (markerRect.height / 2);
 
-    // PosiÃ§Ã£o inicial
+    // Posição inicial
     let tooltipX = centerX + 12;
     let tooltipY = centerY - 10;
 
-    // Obter dimensÃµes do tooltip (precisa estar no DOM primeiro)
+    // Obter dimensões do tooltip (precisa estar no DOM primeiro)
     tooltip.style.left = tooltipX + 'px';
     tooltip.style.top = tooltipY + 'px';
     tooltip.style.visibility = 'hidden';
@@ -2832,10 +2832,10 @@ function showPlayerTooltip(event, eventData) {
 
       // Ajustar horizontalmente se sair da tela
       if (tooltipRect.right > containerBounds.right) {
-        tooltipX = centerX - tooltipRect.width - 12; // Posicionar Ã  esquerda
+        tooltipX = centerX - tooltipRect.width - 12; // Posicionar à esquerda
       }
       if (tooltipX < 0) {
-        tooltipX = 8; // Margem mÃ­nima da esquerda
+        tooltipX = 8; // Margem mínima da esquerda
       }
 
       // Ajustar verticalmente se sair da tela
@@ -2843,10 +2843,10 @@ function showPlayerTooltip(event, eventData) {
         tooltipY = centerY - tooltipRect.height - 12; // Posicionar acima
       }
       if (tooltipY < 0) {
-        tooltipY = 8; // Margem mÃ­nima do topo
+        tooltipY = 8; // Margem mínima do topo
       }
 
-      // Aplicar posiÃ§Ã£o final
+      // Aplicar posição final
       tooltip.style.left = tooltipX + 'px';
       tooltip.style.top = tooltipY + 'px';
       tooltip.style.visibility = 'visible';
@@ -2872,410 +2872,816 @@ function showPlayerTooltip(event, eventData) {
   setTimeout(() => { document.addEventListener('click', onDocClick); }, 100);
 }
 
-// Legenda compacta de participaÃ§Ãµes em gols por posiÃ§Ã£o separando CEDIDOS e CONQUISTADOS (incluÃ­da no PNG)
-// Nova funÃ§Ã£o drawPositionSummaryLegend com layout em blocos grandes e fundo claro
-// Baseado no modelo fornecido pelo usuÃ¡rio (Athletico-PR)
+// Legenda compacta de participações em gols por posição separando CEDIDOS e CONQUISTADOS (incluída no PNG)
+// Nova função drawPositionSummaryLegend com layout em blocos grandes e fundo claro
 
-// Nova versÃ£o DEFINITIVA do rodapÃ© - Layout baseado na imagem de referÃªncia do usuÃ¡rio
+// Baseado no modelo fornecido pelo usuário (Athletico-PR)
+
+
+
+// Nova versão DEFINITIVA do rodapé - Layout baseado na imagem de referência do usuário
+
 function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, groupId = 'positionSummary') {
+
   if (!overlayEl) return;
+
   const existing = overlayEl.querySelector(`#${groupId}`);
+
   if (existing) existing.remove();
 
+
+
   const WIDTH = 1000;
+
   const positions = ['Zagueiro', 'Lateral E', 'Lateral D', 'Meia', 'Atacante'];
+
   const abbr = { Meia: 'MEI', Atacante: 'ATA', 'Lateral D': 'LD', 'Lateral E': 'LE', Zagueiro: 'ZAG' };
 
+
+
   // Contadores separados
+
   const cedidosAssist = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
+
   const cedidosGols = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
+
   const conquistadosAssist = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
+
   const conquistadosGols = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
 
+
+
   // Processar eventos CEDIDOS
+
   for (const ev of (concededEvents || [])) {
+
     if (ev && ev.assistPlayer) {
+
       const p = ev.assistPlayer.position;
+
       if (p === 'Lateral') {
+
         const side = ev.assistPlayer.side;
+
         const key = side === 'LD' ? 'Lateral D' : (side === 'LE' ? 'Lateral E' : null);
+
         if (key) cedidosAssist[key] += 1;
+
       } else if (positions.includes(p)) {
+
         cedidosAssist[p] += 1;
+
       }
+
     }
+
     if (ev && ev.shotPlayer) {
+
       const p = ev.shotPlayer.position;
+
       if (p === 'Lateral') {
+
         const side = ev.shotPlayer.side;
+
         const key = side === 'LD' ? 'Lateral D' : (side === 'LE' ? 'Lateral E' : null);
+
         if (key) cedidosGols[key] += 1;
+
       } else if (positions.includes(p)) {
+
         cedidosGols[p] += 1;
+
       }
+
     }
+
   }
+
+
 
   // Processar eventos CONQUISTADOS
+
   for (const ev of (createdEvents || [])) {
+
     if (ev && ev.assistPlayer) {
+
       const p = ev.assistPlayer.position;
+
       if (p === 'Lateral') {
+
         const side = ev.assistPlayer.side;
+
         const key = side === 'LD' ? 'Lateral D' : (side === 'LE' ? 'Lateral E' : null);
+
         if (key) conquistadosAssist[key] += 1;
+
       } else if (positions.includes(p)) {
+
         conquistadosAssist[p] += 1;
+
       }
+
     }
+
     if (ev && ev.shotPlayer) {
+
       const p = ev.shotPlayer.position;
+
       if (p === 'Lateral') {
+
         const side = ev.shotPlayer.side;
+
         const key = side === 'LD' ? 'Lateral D' : (side === 'LE' ? 'Lateral E' : null);
+
         if (key) conquistadosGols[key] += 1;
+
       } else if (positions.includes(p)) {
+
         conquistadosGols[p] += 1;
+
       }
+
     }
+
   }
 
-  // Verificar se hÃ¡ dados
+
+
+  // Verificar se há dados
+
   const totalCedidos = Object.values(cedidosAssist).reduce((a, b) => a + b, 0) + Object.values(cedidosGols).reduce((a, b) => a + b, 0);
+
   const totalConquistados = Object.values(conquistadosAssist).reduce((a, b) => a + b, 0) + Object.values(conquistadosGols).reduce((a, b) => a + b, 0);
+
   if (totalCedidos === 0 && totalConquistados === 0) return;
+
+
 
   const g = el('g', { id: groupId, filter: 'url(#ds)' });
 
-  // LAYOUT BASEADO NA IMAGEM DE REFERÃŠNCIA
-  const startY = 590; // InÃ­cio do rodapÃ© (logo abaixo do campo que termina em 570)
-  const titleY = startY + 20; // TÃ­tulos CEDIDOS e CONQUISTADOS
-  const boxStartY = titleY + 30; // InÃ­cio das caixas brancas
-  const boxW = 220; // Largura de cada caixa branca (ASSISTÃŠNCIAS ou GOLS)
-  const boxH = 100; // Altura da caixa branca
-  const boxGap = 15; // EspaÃ§o entre caixas
-  const chipW = 38; // Largura de cada caixinha de posiÃ§Ã£o
-  const chipH = 60; // Altura de cada caixinha de posiÃ§Ã£o
-  const chipGap = 3; // EspaÃ§o entre caixinhas
 
-  // FunÃ§Ã£o para desenhar uma seÃ§Ã£o (ASSISTÃŠNCIAS ou GOLS)
+
+  // LAYOUT BASEADO NA IMAGEM DE REFERÃŠNCIA
+
+  const startY = 590; // Início do rodapé (logo abaixo do campo que termina em 570)
+
+  const titleY = startY + 20; // Títulos CEDIDOS e CONQUISTADOS
+
+  const boxStartY = titleY + 30; // Início das caixas brancas
+
+  const boxW = 220; // Largura de cada caixa branca (ASSISTÃŠNCIAS ou GOLS)
+
+  const boxH = 100; // Altura da caixa branca
+
+  const boxGap = 15; // Espaço entre caixas
+
+  const chipW = 38; // Largura de cada caixinha de posição
+
+  const chipH = 60; // Altura de cada caixinha de posição
+
+  const chipGap = 3; // Espaço entre caixinhas
+
+
+
+  // Função para desenhar uma seção (ASSISTÃŠNCIAS ou GOLS)
+
   function drawSection(title, counts, x, y) {
+
     // Fundo branco com borda arredondada
+
     const bg = el('rect', {
+
       x, y,
+
       width: boxW,
+
       height: boxH,
+
       rx: 12,
+
       ry: 12,
+
       fill: 'rgba(255,255,255,0.98)',
+
       stroke: 'none'
+
     });
+
     g.appendChild(bg);
 
-    // TÃ­tulo da seÃ§Ã£o (ASSISTÃŠNCIAS ou GOLS)
+
+
+    // Título da seção (ASSISTÃŠNCIAS ou GOLS)
+
     const titleEl = el('text', {
+
       x: x + boxW / 2,
+
       y: y + 22,
+
       'text-anchor': 'middle',
+
       'font-family': 'Inter, Arial, sans-serif',
+
       'font-size': 14,
+
       'font-weight': 900,
+
       fill: '#0b1f16'
+
     });
+
     titleEl.textContent = title;
+
     g.appendChild(titleEl);
 
-    // Caixinhas de posiÃ§Ã£o (chips horizontais)
+
+
+    // Caixinhas de posição (chips horizontais)
+
     const totalChipsW = positions.length * chipW + (positions.length - 1) * chipGap;
+
     const chipsStartX = x + (boxW - totalChipsW) / 2;
+
     const chipsY = y + 32;
 
+
+
     positions.forEach((p, i) => {
+
       const cx = chipsStartX + i * (chipW + chipGap);
 
+
+
       // Caixinha verde escura
+
       const chip = el('rect', {
+
         x: cx, y: chipsY,
+
         width: chipW,
+
         height: chipH,
+
         rx: 5,
+
         ry: 5,
+
         fill: '#0b2f25'
+
       });
+
       g.appendChild(chip);
 
-      // AbreviaÃ§Ã£o da posiÃ§Ã£o (ZAG, LE, LD, MEI, ATA)
+
+
+      // Abreviação da posição (ZAG, LE, LD, MEI, ATA)
+
       const labelPos = el('text', {
+
         x: cx + chipW / 2,
+
         y: chipsY + 18,
+
         'text-anchor': 'middle',
+
         'font-family': 'Inter, Arial, sans-serif',
+
         'font-size': 10,
+
         'font-weight': 700,
+
         fill: '#ffffff'
+
       });
+
       labelPos.textContent = abbr[p];
+
       g.appendChild(labelPos);
 
-      // NÃºmero (contador)
+
+
+      // Número (contador)
+
       const labelCount = el('text', {
+
         x: cx + chipW / 2,
+
         y: chipsY + 45,
+
         'text-anchor': 'middle',
+
         'font-family': 'Inter, Arial, sans-serif',
+
         'font-size': 22,
+
         'font-weight': 900,
+
         fill: '#f7d36a'
+
       });
+
       labelCount.textContent = counts[p] || 0;
+
       g.appendChild(labelCount);
+
     });
+
   }
 
-  // Calcular posiÃ§Ãµes horizontais
+
+
+  // Calcular posições horizontais
+
   const centerX = WIDTH / 2;
-  const halfSectionWidth = boxW + boxGap / 2; // Metade da largura de uma seÃ§Ã£o (2 caixas + gap)
+
+  const halfSectionWidth = boxW + boxGap / 2; // Metade da largura de uma seção (2 caixas + gap)
+
+
 
   // LADO ESQUERDO - CEDIDOS
+
   const cedidosX = centerX / 2; // Centro do lado esquerdo
 
-  // TÃ­tulo CEDIDOS
+
+
+  // Título CEDIDOS
+
   const titleCedidos = el('text', {
+
     x: cedidosX,
+
     y: titleY,
+
     'text-anchor': 'middle',
+
     'font-family': 'Inter, Arial, sans-serif',
+
     'font-size': 20,
+
     'font-weight': 900,
+
     fill: '#e7f8f1'
+
   });
+
   titleCedidos.textContent = 'CEDIDOS';
+
   g.appendChild(titleCedidos);
 
+
+
   // CEDIDOS - ASSISTÃŠNCIAS (esquerda)
+
   const cedidosAssistX = cedidosX - halfSectionWidth;
+
   drawSection('ASSISTÃŠNCIAS', cedidosAssist, cedidosAssistX, boxStartY);
 
+
+
   // CEDIDOS - GOLS (direita)
+
   const cedidosGolsX = cedidosX + boxGap / 2;
+
   drawSection('GOLS', cedidosGols, cedidosGolsX, boxStartY);
 
-  // Linha divisÃ³ria vertical no centro
+
+
+  // Linha divisória vertical no centro
+
   const divider = el('line', {
+
     x1: centerX,
+
     y1: titleY - 10,
+
     x2: centerX,
+
     y2: boxStartY + boxH,
+
     stroke: '#e7f8f1',
+
     'stroke-opacity': 0.4,
+
     'stroke-width': 2
+
   });
+
   g.appendChild(divider);
 
+
+
   // LADO DIREITO - CONQUISTADOS
+
   const conquistadosX = centerX + centerX / 2; // Centro do lado direito
 
-  // TÃ­tulo CONQUISTADOS
+
+
+  // Título CONQUISTADOS
+
   const titleConquistados = el('text', {
+
     x: conquistadosX,
+
     y: titleY,
+
     'text-anchor': 'middle',
+
     'font-family': 'Inter, Arial, sans-serif',
+
     'font-size': 20,
+
     'font-weight': 900,
+
     fill: '#e7f8f1'
+
   });
+
   titleConquistados.textContent = 'CONQUISTADOS';
+
   g.appendChild(titleConquistados);
 
+
+
   // CONQUISTADOS - ASSISTÃŠNCIAS (esquerda)
+
   const conquistadosAssistX = conquistadosX - halfSectionWidth;
+
   drawSection('ASSISTÃŠNCIAS', conquistadosAssist, conquistadosAssistX, boxStartY);
 
+
+
   // CONQUISTADOS - GOLS (direita)
+
   const conquistadosGolsX = conquistadosX + boxGap / 2;
+
   drawSection('GOLS', conquistadosGols, conquistadosGolsX, boxStartY);
 
+
+
   overlayEl.appendChild(g);
+
 }
 
-// FunÃ§Ã£o para desenhar a legenda de tipos de gols no rodapÃ© (para exportaÃ§Ã£o)
+
+
+// Função para desenhar a legenda de tipos de gols no rodapé (para exportação)
+
 function drawBottomLegend(overlayEl, groupId = 'bottomLegend') {
+
   if (!overlayEl) return;
+
   const existing = overlayEl.querySelector(`#${groupId}`);
+
   if (existing) existing.remove();
 
+
+
   const g = el('g', { id: groupId });
+
   const yBase = 850;
+
   const startX = 140; // Ajuste inicial para centralizar
-  const gap = 200; // EspaÃ§o entre itens
+
+  const gap = 200; // Espaço entre itens
+
+
 
   // Fundo opcional para a legenda
+
   const bg = el('rect', {
+
     x: 20, y: yBase - 20,
+
     width: 960, height: 40,
+
     rx: 8, ry: 8,
+
     fill: '#0b1f16',
+
     stroke: '#155c44', 'stroke-width': 1
+
   });
+
   g.appendChild(bg);
 
+
+
   const items = [
-    { label: 'AssistÃªncia', type: 'assist' },
+
+    { label: 'Assistência', type: 'assist' },
+
     { label: 'Ass. Bola Parada', type: 'assist_stopped' },
+
     { label: 'Gol Normal', type: 'shot' },
-    { label: 'Gol de CabeÃ§a', type: 'header' },
-    { label: 'PÃªnalti', type: 'penalty' },
+
+    { label: 'Gol de Cabeça', type: 'header' },
+
+    { label: 'Pênalti', type: 'penalty' },
+
     { label: 'Gol Contra', type: 'own' }
+
   ];
 
+
+
   // Recalcular largura para centralizar (aproximado, pois larguras variam)
+
   // Largura total estimada: 6 itens x ~150px
+
   const totalW = items.length * 155;
+
   let currentX = (1000 - totalW) / 2 + 30;
 
+
+
   items.forEach(item => {
+
     // Marcador
+
     let marker;
+
     if (item.type === 'assist' || item.type === 'assist_stopped') {
+
       marker = el('circle', { r: 6, cx: 0, cy: 0, fill: '#ffffff', stroke: '#0f172a', 'stroke-width': 2 });
+
       if (item.type === 'assist_stopped') {
+
         marker.setAttribute('fill', '#00bfff'); // Exemplo: Azul para bola parada
+
       }
+
     } else {
+
       marker = el('text', {
+
         'text-anchor': 'middle', 'dominant-baseline': 'middle',
+
         'font-size': 18, 'font-weight': 'bold'
+
       });
+
       marker.textContent = 'âš½';
+
       if (item.type === 'own') {
+
         marker.style.filter = 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)';
+
       } else if (item.type === 'penalty') {
+
         marker.style.filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
+
       } else if (item.type === 'header') {
-        // Exemplo: Filtro para gol de cabeÃ§a (se houver distinÃ§Ã£o visual)
+
+        // Exemplo: Filtro para gol de cabeça (se houver distinção visual)
+
       }
+
     }
 
+
+
     const iconG = el('g', { transform: `translate(${currentX}, ${yBase})` });
+
     iconG.appendChild(marker);
+
     g.appendChild(iconG);
 
+
+
     // Texto
+
     const text = el('text', {
+
       x: currentX + 15,
+
       y: yBase + 1,
+
       'dominant-baseline': 'middle',
+
       'font-family': 'Inter, Arial, sans-serif',
+
       'font-size': 13,
+
       'font-weight': 600,
+
       fill: '#e7f8f1'
+
     });
+
     text.textContent = item.label;
+
     g.appendChild(text);
 
+
+
     currentX += 155;
+
   });
 
+
+
   overlayEl.appendChild(g);
+
 }
 
-// Chamar a funÃ§Ã£o de desenho da legenda na inicializaÃ§Ã£o e atualizaÃ§Ãµes
+
+
+// Chamar a função de desenho da legenda na inicialização e atualizações
+
 function updateAllLegends() {
+
   drawBottomLegend(document.getElementById('overlay'));
+
   drawBottomLegend(document.getElementById('overlay2'));
+
   drawBottomLegend(document.getElementById('overlayLx'));
+
   drawBottomLegend(document.getElementById('overlayRx'));
 
-  // Garantir que a legenda de estatÃ­sticas (CEDIDOS X CONQUISTADAS) seja redesenhada se houver dados
-  // Nota: Isso normalmente Ã© chamado em updateList(), mas reforÃ§amos aqui se necessÃ¡rio
+
+
+  // Garantir que a legenda de estatísticas (CEDIDOS X CONQUISTADAS) seja redesenhada se houver dados
+
+  // Nota: Isso normalmente é chamado em updateList(), mas reforçamos aqui se necessário
+
 }
 
+
+
 // Inicializar legendas
+
 setTimeout(updateAllLegends, 500);
 
-// Nova funÃ§Ã£o dedicada para desenhar a legenda de marcadores no SVG (sem depender de estatÃ­sticas)
+
+
+// Nova função dedicada para desenhar a legenda de marcadores no SVG (sem depender de estatísticas)
+
 function drawMarkerLegendNew(overlayEl, groupId = 'svgMarkerLegend') {
+
     if (!overlayEl) return;
+
     const existing = overlayEl.querySelector(`#${groupId}`);
+
     if (existing) existing.remove();
+
+
 
     const g = el('g', { id: groupId });
 
+
+
     // Posicionada abaixo do quadro de estatÃ­sticas (y=740)
+
     const legendY = 800;
+
     // Alterado para 780 para centralizar no novo espaÃ§o (740 a 850)
+
     const rectY = 780;
+
     const rectH = 50;
+
     const WIDTH = 1000;
 
+
+
     // Fundo para garantir contraste e visibilidade
+
     const bg = el('rect', {
+
         x: 20,
+
         y: rectY,
+
         width: WIDTH - 40,
+
         height: rectH,
+
         rx: 8,
+
         ry: 8,
+
         fill: 'rgba(11,31,22,0.9)', // Fundo escuro igual ao do HTML antigo
+
         stroke: '#7eccb2',
+
         'stroke-width': 1
+
     });
+
     g.appendChild(bg);
 
+
+
     const legendItems = [
+
         { type: 'circle', color: '#ffffff', label: 'AssistÃªncia' },
+
         { type: 'circle', color: '#fef08a', label: 'Ass. Bola Parada' },
+
         { type: 'emoji', filter: '', label: 'Gol Normal' },
+
         { type: 'emoji', filter: 'sepia(1) saturate(50) hue-rotate(45deg) brightness(1.2)', label: 'Gol de CabeÃ§a' },
+
         { type: 'emoji', filter: 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)', label: 'PÃªnalti' },
+
         { type: 'emoji', filter: 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)', label: 'Gol Contra' }
+
     ];
 
+
+
     const itemWidth = 160; // Mais espaÃ§o para fonte 14px
+
     const totalLegendWidth = legendItems.length * itemWidth;
+
     let currentX = (WIDTH - totalLegendWidth) / 2 + (itemWidth / 2);
+
+
 
     const textY = rectY + (rectH / 2) + 5; // Centralizado verticalmente no rect
 
+
+
     legendItems.forEach(item => {
+
         if (item.type === 'circle') {
+
             const icon = el('circle', {
+
                 cx: currentX - 50,
+
                 cy: textY - 4,
+
                 r: 6,
+
                 fill: item.color,
+
                 stroke: '#0b1f16',
+
                 'stroke-width': 2
+
             });
+
             g.appendChild(icon);
+
         } else {
+
             const icon = el('text', {
+
                 x: currentX - 50,
+
                 y: textY,
+
                 'text-anchor': 'middle',
+
                 'font-size': 16,
+
                 fill: '#ffffff',
+
                 style: item.filter ? `filter:${item.filter}` : ''
+
             });
+
             icon.textContent = 'âš½';
+
             g.appendChild(icon);
+
         }
 
+
+
         const text = el('text', {
+
             x: currentX - 35,
+
             y: textY - 1,
+
             'text-anchor': 'start',
+
             'font-family': 'Inter, Arial, sans-serif',
+
             'font-size': 14, // Fonte aumentada
+
             'font-weight': 600,
+
             fill: '#e7f8f1'
+
         });
+
         text.textContent = item.label;
+
         g.appendChild(text);
 
+
+
         currentX += itemWidth;
+
     });
 
+
+
     overlayEl.appendChild(g);
+
 }
+
