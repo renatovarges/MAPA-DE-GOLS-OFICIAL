@@ -541,7 +541,6 @@ async function loadTeamData(teamKey = 'cruzeiro', { showCrest = true } = {}) {
   // Título superior escondido no DOM, visível apenas na exportação
   drawCxTitle(overlayEl, 'cxTitleLeft');
   drawPositionSummaryLegend(overlayEl, data.conceded || [], data.created || [], 'positionSummaryLeft');
-  drawPositionSummaryLegend(overlayEl, data.conceded || [], data.created || [], 'positionSummaryLeft');
   drawMarkerLegendNew(overlayEl); // Adicionado para garantir legenda de marcadores
 }
 
@@ -564,7 +563,6 @@ async function loadTeamData2(teamKey = 'fortaleza', { showCrest = true } = {}) {
   const overlayEl2 = document.getElementById('overlay2');
   // Título superior escondido no DOM, visível apenas na exportação
   drawCxTitle(overlayEl2, 'cxTitleRight');
-  drawPositionSummaryLegend(overlayEl2, data.conceded || [], data.created || [], 'positionSummaryRight');
   drawPositionSummaryLegend(overlayEl2, data.conceded || [], data.created || [], 'positionSummaryRight');
   drawMarkerLegendNew(overlayEl2); // Adicionado para garantia
 }
