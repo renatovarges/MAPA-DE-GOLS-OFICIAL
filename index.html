@@ -80,10 +80,10 @@
           <button id="downloadField1" class="download-btn" title="Baixar imagem"
             style="position:absolute;right:8px;top:8px;opacity:0.35;z-index:10">⤓</button>
           <!-- Campo em SVG (sem linha do meio-campo e sem círculo central) -->
-          <svg id="pitch" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet"
+          <svg id="pitch" viewBox="0 0 1000 900" preserveAspectRatio="xMidYMid meet"
             style="position:absolute;inset:0;width:100%;height:100%;display:block">
             <!-- gramado com listras -->
-            <rect x="0" y="0" width="1000" height="800" fill="#155c44" />
+            <rect x="0" y="0" width="1000" height="900" fill="#155c44" />
             <clipPath id="fieldClip">
               <rect x="60" y="30" width="880" height="540" />
             </clipPath>
@@ -114,7 +114,7 @@
           </svg>
 
           <!-- Overlay dos eventos e do escudo -->
-          <svg id="overlay" viewBox="0 0 1000 850" preserveAspectRatio="xMidYMid meet"
+          <svg id="overlay" viewBox="0 0 1000 900" preserveAspectRatio="xMidYMid meet"
             style="position:absolute;inset:0;width:100%;height:100%">
             <defs>
               <filter id="ds" x="-10%" y="-10%" width="120%" height="120%">
@@ -153,16 +153,15 @@
           <h4 style="margin:0 0 8px 0;font-size:14px;color:#f7d36a;text-align:center">Participações em Gols</h4>
           <div id="playersLegendContent" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
         </div>
-        <!-- Botão para exibir campinho extra (mandante) - REMOVIDO A PEDIDO DO USUÁRIO -->
-        <button id="addExtraLeftBtn" type="button" class="extra-toggle-btn" style="display:none">Adicionar campinho
-          extra (mandante)</button>
+        <!-- Botão para exibir campinho extra (mandante) -->
+        <button id="addExtraLeftBtn" type="button" class="extra-toggle-btn">Adicionar campinho extra (mandante)</button>
         <!-- Campinho extra (mandante) -->
         <div id="canvasLx" class="extra-canvas">
           <button id="downloadField1x" class="download-btn" title="Baixar imagem"
             style="position:absolute;right:8px;top:8px;opacity:0.35;z-index:10">⤓</button>
-          <svg id="pitchLx" viewBox="0 0 1000 850" preserveAspectRatio="xMidYMid meet"
+          <svg id="pitchLx" viewBox="0 0 1000 900" preserveAspectRatio="xMidYMid meet"
             style="position:absolute;inset:0;width:100%;height:100%;display:block">
-            <rect x="0" y="0" width="1000" height="850" fill="#155c44" />
+            <rect x="0" y="0" width="1000" height="900" fill="#155c44" />
             <clipPath id="fieldClipX">
               <rect x="60" y="30" width="880" height="540" />
             </clipPath>
@@ -185,7 +184,7 @@
               <circle cx="839.17" cy="300" r="3" />
             </g>
           </svg>
-          <svg id="overlayLx" viewBox="0 0 1000 850" preserveAspectRatio="xMidYMid meet"
+          <svg id="overlayLx" viewBox="0 0 1000 900" preserveAspectRatio="xMidYMid meet"
             style="position:absolute;inset:0;width:100%;height:100%">
             <g id="crestWatermarkLx" opacity="0.14" style="pointer-events:none; display:none">
               <image id="crestImgLx" x="400" y="200" width="200" height="200" preserveAspectRatio="xMidYMid meet" />
@@ -213,10 +212,10 @@
           <button id="downloadField2" class="download-btn" title="Baixar imagem"
             style="position:absolute;right:8px;top:8px;opacity:0.35;z-index:10">⤓</button>
           <!-- Campo em SVG (sem linha do meio-campo e sem círculo central) -->
-          <svg id="pitch2" viewBox="0 0 1000 850" preserveAspectRatio="xMidYMid meet"
+          <svg id="pitch2" viewBox="0 0 1000 900" preserveAspectRatio="xMidYMid meet"
             style="position:absolute;inset:0;width:100%;height:100%;display:block">
             <!-- gramado com listras -->
-            <rect x="0" y="0" width="1000" height="850" fill="#155c44" />
+            <rect x="0" y="0" width="1000" height="900" fill="#155c44" />
             <clipPath id="fieldClip">
               <rect x="60" y="30" width="880" height="540" />
             </clipPath>
@@ -247,7 +246,7 @@
           </svg>
 
           <!-- Overlay somente com marca d'água do escudo -->
-          <svg id="overlay2" viewBox="0 0 1000 850" preserveAspectRatio="xMidYMid meet"
+          <svg id="overlay2" viewBox="0 0 1000 900" preserveAspectRatio="xMidYMid meet"
             style="position:absolute;inset:0;width:100%;height:100%">
             <!-- overlays removidos: grade numerada e zonas táticas -->
 
@@ -270,17 +269,16 @@
           <h4 style="margin:0 0 8px 0;font-size:14px;color:#f7d36a;text-align:center">Participações em Gols</h4>
           <div id="playersLegendContent2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
         </div>
-        <!-- Botão para exibir campinho extra (visitante) - REMOVIDO -->
-        <button id="addExtraRightBtn" type="button" class="extra-toggle-btn" style="display:none">Adicionar campinho
-          extra
+        <!-- Botão para exibir campinho extra (visitante) -->
+        <button id="addExtraRightBtn" type="button" class="extra-toggle-btn">Adicionar campinho extra
           (visitante)</button>
         <!-- Campinho extra (visitante) -->
         <div id="canvasRx" class="extra-canvas">
           <button id="downloadField2x" class="download-btn" title="Baixar imagem"
             style="position:absolute;right:8px;top:8px;opacity:0.35;z-index:10">⤓</button>
-          <svg id="pitchRx" viewBox="0 0 1000 850" preserveAspectRatio="xMidYMid meet"
+          <svg id="pitchRx" viewBox="0 0 1000 900" preserveAspectRatio="xMidYMid meet"
             style="position:absolute;inset:0;width:100%;height:100%;display:block">
-            <rect x="0" y="0" width="1000" height="850" fill="#155c44" />
+            <rect x="0" y="0" width="1000" height="900" fill="#155c44" />
             <clipPath id="fieldClipX">
               <rect x="60" y="30" width="880" height="540" />
             </clipPath>
@@ -303,7 +301,7 @@
               <circle cx="839.17" cy="300" r="3" />
             </g>
           </svg>
-          <svg id="overlayRx" viewBox="0 0 1000 850" preserveAspectRatio="xMidYMid meet"
+          <svg id="overlayRx" viewBox="0 0 1000 900" preserveAspectRatio="xMidYMid meet"
             style="position:absolute;inset:0;width:100%;height:100%">
             <g id="crestWatermarkRx" opacity="0.14" style="pointer-events:none; display:none">
               <image id="crestImgRx" x="400" y="200" width="200" height="200" preserveAspectRatio="xMidYMid meet" />
@@ -316,11 +314,10 @@
         <div id="captionRx" class="field-caption" aria-hidden="true"
           style="display:none;margin-top:6px;text-align:center;color:#e7f8f1;opacity:0.9;font-weight:700">
           <span>VISITANTE</span> <span id="awayTeamNameRx" class="team-label"></span>
+          <button id="hideExtraRightBtn" class="extra-toggle-btn" style="margin-left:12px">Ocultar</button>
         </div>
       </div>
     </div>
-
-    <!-- LEGENDA AGORA É RENDERIZADA DENTRO DO SVG (SCRIPT.JS) PARA SAIR NO DOWNLOAD -->
   </div>
 
   <!-- Modal do Editor de Rodadas -->
@@ -344,18 +341,20 @@
         <label>Data: <input id="editorDate" type="date" required
             style="padding:2px;background:#e7f8f1;border:none;border-radius:2px" /></label>
         <label>Adversário: <input id="editorOpponent" type="text" placeholder="Adversário" /></label>
-        <div style="margin-bottom:12px;display:flex;align-items:center;gap:8px">
-          <label for="editorTool">Ferramenta:</label>
-          <select id="editorTool" style="padding:4px">
-            <option value="assist">Assistência (Normal)</option>
-            <option value="assist-setpiece">Assistência (Bola Parada)</option>
-            <option value="shot">Finalização (Gol)</option>
-            <option value="shot-header">Finalização (Cabeça)</option>
-            <option value="own">Gol Contra</option>
-            <option value="penalty">Pênalti</option>
+        <label>Ferramenta:
+          <select id="editorTool">
+            <option value="assist">Assistência</option>
+            <option value="shot">Finalização (gol)</option>
+            <option value="own">Gol contra</option>
+            <option value="penalty">Gol de pênalti</option>
           </select>
-        </div>
-
+        </label>
+        <label>Gol contra de:
+          <select id="editorOwnGoalSide" disabled>
+            <option value="mandante">Mandante</option>
+            <option value="visitante">Visitante</option>
+          </select>
+        </label>
         <label><input id="editorTrace" type="checkbox" checked /> Traçado A → G</label>
         <button id="editorSaveRoundBtn" type="button">Salvar rodada</button>
         <button id="editorExportBtn" type="button">Exportar rodada</button>

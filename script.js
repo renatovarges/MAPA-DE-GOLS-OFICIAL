@@ -26,7 +26,7 @@ const offensiveLayerRx = document.getElementById('offensiveLayerRx');
 
 // Dimensões do canvas (viewBox) e do campo desenhado
 const WIDTH = 1000;
-const HEIGHT = 800; // aumentado de 660 para 900 para criar espaço para o rodapé
+const HEIGHT = 900; // aumentado de 660 para 900 para criar espaço para o rodapé
 // Área útil do campo (retângulo interno das linhas):
 const PITCH = {
   unitsX: 100,   // largura lógica
@@ -1190,10 +1190,8 @@ async function exportFieldAsPng(pitchEl, overlayEl, scale = 6) {
   ctx.scale(scale, scale);
 
   // URLs para exportação com padding superior
-  // pitchUrl e overlayNoTitleUrl gerados SEM padding no SVG, para serem desenhados com offset no canvas
-  const pitchUrl = svgToDataUrl(pitchEl, { exportPaddingTop: 0, showTitles: false });
-  const overlayNoTitleUrl = svgToDataUrl(overlayEl, { exportPaddingTop: 0, showTitles: false });
-  // Título isolado precisa do padding para manter alinhamento interno ou ser desenhado a parte
+  const pitchUrl = svgToDataUrl(pitchEl, { exportPaddingTop: EXPORT_TOP_PADDING, showTitles: false });
+  const overlayNoTitleUrl = svgToDataUrl(overlayEl, { exportPaddingTop: EXPORT_TOP_PADDING, showTitles: false });
   const overlayTitleOnlyUrl = svgToDataUrl(overlayEl, { exportPaddingTop: EXPORT_TOP_PADDING, showTitles: true, hideLayers: true, hidePositionSummary: true, titleYOffset: -24 });
 
   // Desenhar gramado e eventos deslocados para baixo (criando margem superior)
