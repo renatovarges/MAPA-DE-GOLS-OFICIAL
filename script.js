@@ -3099,22 +3099,88 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   overlayEl.appendChild(g);
 }
 
-// Título superior dentro do SVG para ser incluído no PNG
-function drawCxTitle(overlayEl, groupId = 'cxTitleLeft') {
+// Função para desenhar a legenda de tipos de gols no rodapé (para exportação)
+function drawBottomLegend(overlayEl, groupId = 'bottomLegend') {
   if (!overlayEl) return;
   const existing = overlayEl.querySelector(`#${groupId}`);
-  if (existing) overlayEl.removeChild(existing);
-  const g = el('g', { id: groupId, filter: 'url(#ds)', style: 'display:none' });
-  const title = el('text', {
-    x: WIDTH / 2,
-    y: 46,
-    'text-anchor': 'middle',
-    'font-family': 'Inter, Arial, sans-serif',
-    'font-size': 24,
-    'font-weight': 900,
-    fill: '#e7f8f1'
+  if (existing) existing.remove();
+
+  const g = el('g', { id: groupId });
+  const yBase = 850;
+  const startX = 140; // Ajuste inicial para centralizar
+  const gap = 200; // Espaço entre itens
+
+  // Fundo opcional para a legenda
+  const bg = el('rect', {
+    x: 20, y: yBase - 20,
+    width: 960, height: 40,
+    rx: 8, ry: 8,
+    fill: '#0b1f16',
+    stroke: '#155c44', 'stroke-width': 1
   });
-  title.textContent = 'CEDIDAS X CONQUISTADAS';
-  g.appendChild(title);
+  g.appendChild(bg);
+
+  const items = [
+    { label: 'Assistência', type: 'assist' },
+    // { label: 'Ass. Bola Parada', type: 'assist_stopped' }, // Não implementado logicamente
+    { label: 'Gol Normal', type: 'shot' },
+    // { label: 'Gol de Cabeça', type: 'header' }, // Não implementado logicamente
+    { label: 'Pênalti', type: 'penalty' },
+    { label: 'Gol Contra', type: 'own' }
+  ];
+
+  // Recalcular largura para centralizar
+  const totalW = items.length * 180;
+  let currentX = (1000 - totalW) / 2 + 20;
+
+  items.forEach(item => {
+    // Marcador
+    let marker;
+    if (item.type === 'assist') {
+      marker = el('circle', { r: 6, cx: 0, cy: 0, fill: '#ffffff', stroke: '#0f172a', 'stroke-width': 2 });
+    } else {
+      marker = el('text', {
+        'text-anchor': 'middle', 'dominant-baseline': 'middle',
+        'font-size': 18, 'font-weight': 'bold'
+      });
+      marker.textContent = '⚽';
+      if (item.type === 'own') {
+        marker.style.filter = 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)';
+      } else if (item.type === 'penalty') {
+        marker.style.filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
+      }
+    }
+
+    const iconG = el('g', { transform: `translate(${currentX}, ${yBase})` });
+    iconG.appendChild(marker);
+    g.appendChild(iconG);
+
+    // Texto
+    const text = el('text', {
+      x: currentX + 20,
+      y: yBase + 1,
+      'dominant-baseline': 'middle',
+      'font-family': 'Inter, Arial, sans-serif',
+      'font-size': 14,
+      'font-weight': 600,
+      fill: '#e7f8f1'
+    });
+    text.textContent = item.label;
+    g.appendChild(text);
+
+    currentX += 180;
+  });
+
   overlayEl.appendChild(g);
 }
+
+// Chamar a função de desenho da legenda na inicialização e atualizações
+function updateAllLegends() {
+  drawBottomLegend(document.getElementById('overlay'));
+  drawBottomLegend(document.getElementById('overlay2'));
+  drawBottomLegend(document.getElementById('overlayLx'));
+  drawBottomLegend(document.getElementById('overlayRx'));
+}
+
+// Inicializar legendas
+setTimeout(updateAllLegends, 500);
