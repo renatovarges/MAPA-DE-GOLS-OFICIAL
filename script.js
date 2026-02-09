@@ -181,7 +181,7 @@ function drawShotEmoji({ x, y }, { isPenalty, isOwnGoal, isHeader } = {}) {
   } else if (isHeader) {
     // Azul Celeste / Ciano (#38bdf8 aprox)
     // Ajuste de filtro para transformar o dourado padrão em azul
-    txt.style.filter = 'sepia(1) saturate(100) hue-rotate(150deg) brightness(1.1) contrast(1.2)';
+    txt.style.filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
   } else {
     // Normal (Dourado/Original) - sem filtro ou filtro leve se quiser padronizar
   }
@@ -1812,7 +1812,7 @@ function initEditor() {
         el.style.filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
       } else if (isHeader) {
         // GOL DE CABEÇA -> Agora usa o DOURADO/LARANJA (antigo normal)
-        el.style.filter = 'sepia(1) saturate(50) hue-rotate(45deg) brightness(1.2)';
+        el.style.filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
       } else {
         // GOL NORMAL -> SEM FILTRO (Original)
         el.style.filter = '';
@@ -2845,7 +2845,7 @@ function drawMainLegend() {
       let filter = '';
       if (item.color === 'own') filter = 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)';
       else if (item.color === 'penalty') filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
-      else if (item.color === 'header') filter = 'sepia(1) saturate(100) hue-rotate(150deg) brightness(1.1) contrast(1.2)';
+      else if (item.color === 'header') filter = 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)';
       else if (item.color === 'standard') filter = '';
 
       icon = `<span style="display:inline-block;font-size:16px;margin-right:6px;filter:${filter}">⚽</span>`;
@@ -3327,7 +3327,7 @@ function drawMarkerLegendNew(overlayEl, groupId = 'svgMarkerLegend') {
     { type: 'circle', color: '#ffffff', label: 'Assistência' },
     { type: 'circle', color: '#fef08a', label: 'Ass. Bola Parada' },
     { type: 'emoji', filter: '', label: 'Gol Normal' },
-    { type: 'emoji', filter: 'sepia(1) saturate(50) hue-rotate(45deg) brightness(1.2)', label: 'Gol de Cabeça' },
+    { type: 'emoji', filter: 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)', label: 'Gol de Cabeça' },
     // { type: 'emoji', filter: 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)', label: 'Pênalti' }, REMOVIDO
     { type: 'emoji', filter: 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)', label: 'Gol Contra' }
   ];
