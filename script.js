@@ -307,13 +307,16 @@ function renderEvents(layer, events, { flipX = false } = {}) {
       a.setAttribute('data-event-index', String(idx));
       nodesG.appendChild(a);
     }
-    const s = drawShotEmoji(shot, {
-      isPenalty: ev.isPenalty,
-      isOwnGoal: ev.isOwnGoal,
-      isHeader: ev.isHeader
-    });
-    s.setAttribute('data-event-index', String(idx));
-    nodesG.appendChild(s);
+    // Mudança solicitada: Pênaltis não aparecem mais como bolinhas no campo principal
+    if (!ev.isPenalty) {
+      const s = drawShotEmoji(shot, {
+        isPenalty: ev.isPenalty,
+        isOwnGoal: ev.isOwnGoal,
+        isHeader: ev.isHeader
+      });
+      s.setAttribute('data-event-index', String(idx));
+      nodesG.appendChild(s);
+    }
   });
 }
 
@@ -3044,8 +3047,15 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   const conquistadosAssist = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
   const conquistadosGols = { Meia: 0, Atacante: 0, 'Lateral D': 0, 'Lateral E': 0, Zagueiro: 0 };
 
+  let cedidosPenaltis = 0;
+  let conquistadosPenaltis = 0;
+
   // Processar eventos CEDIDOS
   for (const ev of (concededEvents || [])) {
+    if (ev && ev.isPenalty) {
+      cedidosPenaltis++;
+    }
+
     if (ev && ev.assistPlayer) {
       const p = ev.assistPlayer.position;
       if (p === 'Lateral') {
@@ -3070,6 +3080,9 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
 
   // Processar eventos CONQUISTADOS
   for (const ev of (createdEvents || [])) {
+    if (ev && ev.isPenalty) {
+      conquistadosPenaltis++;
+    }
     if (ev && ev.assistPlayer) {
       const p = ev.assistPlayer.position;
       if (p === 'Lateral') {
@@ -3092,9 +3105,10 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
     }
   }
 
-  // Verificar se há dados
-  const totalCedidos = Object.values(cedidosAssist).reduce((a, b) => a + b, 0) + Object.values(cedidosGols).reduce((a, b) => a + b, 0);
-  const totalConquistados = Object.values(conquistadosAssist).reduce((a, b) => a + b, 0) + Object.values(conquistadosGols).reduce((a, b) => a + b, 0);
+  // Verificar se há dados (incluindo pênaltis)
+  const totalCedidos = Object.values(cedidosAssist).reduce((a, b) => a + b, 0) + Object.values(cedidosGols).reduce((a, b) => a + b, 0) + cedidosPenaltis;
+  const totalConquistados = Object.values(conquistadosAssist).reduce((a, b) => a + b, 0) + Object.values(conquistadosGols).reduce((a, b) => a + b, 0) + conquistadosPenaltis;
+
   if (totalCedidos === 0 && totalConquistados === 0) return;
 
   const g = el('g', { id: groupId, filter: 'url(#ds)' });
@@ -3224,6 +3238,8 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   });
   g.appendChild(divider);
 
+
+
   // LADO DIREITO - CONQUISTADOS
   const conquistadosX = centerX + centerX / 2; // Centro do lado direito
 
@@ -3249,6 +3265,33 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   drawSection('GOLS', conquistadosGols, conquistadosGolsX, boxStartY);
 
   overlayEl.appendChild(g);
+
+  // TEXTOS DE PÊNALTIS (Abaixo das caixas) - Movido para o final para garantir que conquistadosX exista
+  const penaltyY = boxStartY + boxH + 25;
+
+  const cedidosPenaltyText = el('text', {
+    x: cedidosX,
+    y: penaltyY,
+    'text-anchor': 'middle',
+    'font-family': 'Inter, Arial, sans-serif',
+    'font-size': 16,
+    'font-weight': 900,
+    fill: '#f7d36a' // Dourado
+  });
+  cedidosPenaltyText.textContent = `PENALTIS: ${cedidosPenaltis}`;
+  g.appendChild(cedidosPenaltyText);
+
+  const conquistadosPenaltyText = el('text', {
+    x: conquistadosX,
+    y: penaltyY,
+    'text-anchor': 'middle',
+    'font-family': 'Inter, Arial, sans-serif',
+    'font-size': 16,
+    'font-weight': 900,
+    fill: '#f7d36a' // Dourado
+  });
+  conquistadosPenaltyText.textContent = `PENALTIS: ${conquistadosPenaltis}`;
+  g.appendChild(conquistadosPenaltyText);
 }
 
 // Nova função dedicada para desenhar a legenda de marcadores no SVG (sem depender de estatísticas)
@@ -3285,22 +3328,22 @@ function drawMarkerLegendNew(overlayEl, groupId = 'svgMarkerLegend') {
     { type: 'circle', color: '#fef08a', label: 'Ass. Bola Parada' },
     { type: 'emoji', filter: '', label: 'Gol Normal' },
     { type: 'emoji', filter: 'sepia(1) saturate(50) hue-rotate(45deg) brightness(1.2)', label: 'Gol de Cabeça' },
-    { type: 'emoji', filter: 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)', label: 'Pênalti' },
+    // { type: 'emoji', filter: 'sepia(1) saturate(50) hue-rotate(80deg) brightness(1.3)', label: 'Pênalti' }, REMOVIDO
     { type: 'emoji', filter: 'sepia(1) saturate(20) hue-rotate(315deg) brightness(0.9)', label: 'Gol Contra' }
   ];
 
-  const itemWidth = 160; // Mais espaço para fonte 14px
+  const itemWidth = 190; // Aumentado mais ainda para distribuir melhor na largura do campo
   const totalLegendWidth = legendItems.length * itemWidth;
   let currentX = (WIDTH - totalLegendWidth) / 2 + (itemWidth / 2);
 
-  const textY = rectY + (rectH / 2) + 5; // Centralizado verticalmente no rect
+  const centerY = rectY + (rectH / 2); // Centro vertical exato (790 + 25 = 815)
 
   legendItems.forEach(item => {
     if (item.type === 'circle') {
       const icon = el('circle', {
-        cx: currentX - 50,
-        cy: textY - 4,
-        r: 6,
+        cx: currentX - 60, // Mais para a esquerda para dar espaço
+        cy: centerY, // Centro exato
+        r: 9,
         fill: item.color,
         stroke: '#0b1f16',
         'stroke-width': 2
@@ -3308,10 +3351,11 @@ function drawMarkerLegendNew(overlayEl, groupId = 'svgMarkerLegend') {
       g.appendChild(icon);
     } else {
       const icon = el('text', {
-        x: currentX - 50,
-        y: textY,
+        x: currentX - 60, // Alinhado com o círculo
+        y: centerY + 1, // Ajuste óptico mínimo
         'text-anchor': 'middle',
-        'font-size': 16,
+        'dominant-baseline': 'middle', // Centralizar verticalmente
+        'font-size': 20, // Aumentado um pouco mais
         fill: '#ffffff',
         style: item.filter ? `filter:${item.filter}` : ''
       });
@@ -3320,11 +3364,12 @@ function drawMarkerLegendNew(overlayEl, groupId = 'svgMarkerLegend') {
     }
 
     const text = el('text', {
-      x: currentX - 35,
-      y: textY - 1,
+      x: currentX - 45, // Mais afastado do ícone (gap de 15px do centro do ícone)
+      y: centerY + 1, // Ajuste óptico para fonte Inter
       'text-anchor': 'start',
+      'dominant-baseline': 'middle', // Centralizar verticalmente
       'font-family': 'Inter, Arial, sans-serif',
-      'font-size': 14, // Fonte aumentada
+      'font-size': 16,
       'font-weight': 600,
       fill: '#e7f8f1'
     });
