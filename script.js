@@ -3052,6 +3052,9 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
 
   // Processar eventos CEDIDOS
   for (const ev of (concededEvents || [])) {
+    // IGNORAR GOL CONTRA NAS ESTATÍSTICAS (mas manter no campo)
+    if (ev && ev.isOwnGoal) continue;
+
     if (ev && ev.isPenalty) {
       cedidosPenaltis++;
     }
@@ -3080,6 +3083,9 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
 
   // Processar eventos CONQUISTADOS
   for (const ev of (createdEvents || [])) {
+    // IGNORAR GOL CONTRA NAS ESTATÍSTICAS
+    if (ev && ev.isOwnGoal) continue;
+
     if (ev && ev.isPenalty) {
       conquistadosPenaltis++;
     }
