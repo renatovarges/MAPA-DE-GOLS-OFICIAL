@@ -1,6 +1,8 @@
 import os
 import json
 import csv
+import base64
+import threading
 import urllib.request
 import urllib.error
 from http.server import SimpleHTTPRequestHandler, HTTPServer
@@ -154,6 +156,90 @@ def normalize_team_key(team_key):
     return key_map.get(team_key, team_key)
 
 
+# ===== PERSISTÊNCIA VIA GITHUB =====
+# Cada vez que uma rodada é salva, o arquivo JSON é commitado no GitHub.
+# Isso garante que os dados sobrevivam a reinicializações do Render.
+
+GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN', '')
+GITHUB_REPO = os.environ.get('GITHUB_REPO', 'renatovarges/MAPA-DE-GOLS-OFICIAL')
+GITHUB_BRANCH = os.environ.get('GITHUB_BRANCH', 'main')
+
+
+def github_commit_file(file_path, commit_message):
+    """
+    Faz commit de um arquivo JSON no GitHub via API REST.
+    Executado em background para não bloquear a resposta ao usuário.
+    """
+    if not GITHUB_TOKEN:
+        print('[github-sync] GITHUB_TOKEN não configurado, pulando sync.')
+        return
+
+    try:
+        # Ler conteúdo do arquivo local
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+
+        content_b64 = base64.b64encode(content.encode('utf-8')).decode('ascii')
+
+        # Caminho relativo ao repositório
+        rel_path = os.path.relpath(file_path, ROOT).replace('\\', '/')
+
+        # Buscar SHA atual do arquivo no GitHub (necessário para atualizar)
+        api_url = f'https://api.github.com/repos/{GITHUB_REPO}/contents/{rel_path}'
+        headers = {
+            'Authorization': f'token {GITHUB_TOKEN}',
+            'Accept': 'application/vnd.github.v3+json',
+            'User-Agent': 'MapaDeGols-Server',
+        }
+
+        sha = None
+        try:
+            req = urllib.request.Request(
+                f'{api_url}?ref={GITHUB_BRANCH}',
+                headers=headers
+            )
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                file_info = json.loads(resp.read().decode('utf-8'))
+                sha = file_info.get('sha')
+        except urllib.error.HTTPError as e:
+            if e.code != 404:
+                raise
+
+        # Montar payload do commit
+        payload = {
+            'message': commit_message,
+            'content': content_b64,
+            'branch': GITHUB_BRANCH,
+        }
+        if sha:
+            payload['sha'] = sha
+
+        data = json.dumps(payload).encode('utf-8')
+        req = urllib.request.Request(
+            api_url,
+            data=data,
+            headers={**headers, 'Content-Type': 'application/json'},
+            method='PUT'
+        )
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            result = json.loads(resp.read().decode('utf-8'))
+            commit_sha = result.get('commit', {}).get('sha', '?')[:7]
+            print(f'[github-sync] ✅ {rel_path} commitado ({commit_sha})')
+
+    except Exception as e:
+        print(f'[github-sync] ⚠️ Erro ao sincronizar {file_path}: {e}')
+
+
+def sync_to_github_async(file_paths, round_no, home_key, away_key):
+    """Dispara o sync com GitHub em thread separada para não bloquear o servidor."""
+    def _sync():
+        msg = f'data: salvar rodada {round_no} ({home_key} x {away_key})'
+        for path in file_paths:
+            github_commit_file(path, msg)
+    t = threading.Thread(target=_sync, daemon=True)
+    t.start()
+
+
 class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
@@ -267,6 +353,10 @@ class Handler(SimpleHTTPRequestHandler):
                 print(f"[save-round] round={round_no} home={home_key} away={away_key} saved={saved_paths}")
             except Exception:
                 pass
+
+            # Sincronizar com GitHub em background (persistência permanente)
+            if saved_paths:
+                sync_to_github_async(saved_paths, round_no, home_key, away_key)
 
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
