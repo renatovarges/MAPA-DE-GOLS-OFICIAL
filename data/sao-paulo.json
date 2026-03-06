@@ -1,1 +1,187 @@
-{"rounds":{}}
+{
+  "rounds": {
+    "1": {
+      "roundNumber": 1,
+      "date": "2026-01-28",
+      "opponent": "flamengo",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 84.47316450639204,
+            "y": 5.780453660753039
+          },
+          "shot": {
+            "x": 87.75903542258523,
+            "y": 34.796517605251736
+          },
+          "assistPlayer": {
+            "id": "104758",
+            "name": "Enzo Díaz",
+            "fullName": "Enzo Hernán Díaz",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "sao-paulo"
+          },
+          "shotPlayer": {
+            "id": "80287",
+            "name": "Luciano",
+            "fullName": "Luciano da Rocha Neves",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 89.07337979403408,
+            "y": 43.33065456814236
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "85403",
+            "name": "Danielzinho",
+            "fullName": "Daniel de Oliveira Sertanejo",
+            "position": "Meia",
+            "side": null,
+            "team": "sao-paulo"
+          }
+        }
+      ],
+      "conceded_goals": []
+    },
+    "2": {
+      "roundNumber": 2,
+      "date": "2026-02-04",
+      "opponent": "santos",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 85.62322332208807,
+            "y": 61.08166102656612
+          },
+          "shot": {
+            "x": 87.10186490145597,
+            "y": 34.53101557978877
+          },
+          "assistPlayer": {
+            "id": "70164",
+            "name": "Lucas Moura",
+            "fullName": "Lucas Rodrigues Moura da Silva",
+            "position": "Meia",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "shotPlayer": {
+            "id": "89840",
+            "name": "Calleri",
+            "fullName": "Jonathan Calleri",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 9.88390003551136,
+            "y": 39.65149660463686
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "82455",
+            "name": "Zé Rafael",
+            "fullName": "José Rafael Vivian",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          }
+        }
+      ]
+    },
+    "3": {
+      "roundNumber": 3,
+      "date": "2026-02-10",
+      "opponent": "gremio",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.96604447798296,
+            "y": 33.658634214048035
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "70164",
+            "name": "Lucas Moura",
+            "fullName": "Lucas Rodrigues Moura da Silva",
+            "position": "Meia",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 83.81598899147727,
+            "y": 46.1753668891059
+          },
+          "shot": {
+            "x": 81.68017356178977,
+            "y": 35.555109094690394
+          },
+          "assistPlayer": {
+            "id": "80287",
+            "name": "Luciano",
+            "fullName": "Luciano da Rocha Neves",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "shotPlayer": {
+            "id": "89840",
+            "name": "Calleri",
+            "fullName": "Jonathan Calleri",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          }
+        }
+      ],
+      "conceded_goals": []
+    },
+    "4": {
+      "roundNumber": 4,
+      "date": "2026-02-25",
+      "opponent": "coritiba",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 85.45892944335938,
+            "y": 34.53101557978877
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "70164",
+            "name": "Lucas Moura",
+            "fullName": "Lucas Rodrigues Moura da Silva",
+            "position": "Meia",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "is_penalty": true
+        }
+      ],
+      "conceded_goals": []
+    }
+  }
+}
