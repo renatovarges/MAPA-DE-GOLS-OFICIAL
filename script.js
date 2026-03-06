@@ -2670,10 +2670,33 @@ const POSITION_MAP = {
 // Cache para dados dos jogadores
 let playersData = null;
 
-// Função para carregar dados do CSV de jogadores
+// Função para carregar dados dos jogadores:
+// 1. Tenta buscar da API do servidor (que busca do Cartola em tempo real)
+// 2. Se falhar, usa o CSV local como fallback automático
 async function loadPlayersData() {
   if (playersData) return playersData; // Cache
 
+  // Tentativa 1: API do servidor (tempo real)
+  try {
+    const response = await fetch('/api/jogadores');
+    if (response.ok) {
+      const data = await response.json();
+      if (data.jogadores && data.jogadores.length > 0) {
+        const players = data.jogadores.map(j => ({
+          ...j,
+          position: POSITION_MAP[j.posicao] || j.posicao,
+        }));
+        playersData = players;
+        const fonte = data.fonte === 'api' ? 'API do Cartola (tempo real)' : 'CSV (fallback do servidor)';
+        console.log(`[jogadores] ✅ ${players.length} jogadores carregados via ${fonte}`);
+        return players;
+      }
+    }
+  } catch (err) {
+    console.warn('[jogadores] Servidor indisponível, usando CSV local:', err.message);
+  }
+
+  // Tentativa 2: CSV local (fallback final)
   try {
     const response = await fetch('cartola_jogadores_time_posicao_preco (1).csv');
     const csvText = await response.text();
@@ -2696,10 +2719,10 @@ async function loadPlayersData() {
         clube: values[4],
         clube_id: values[5],
         posicao: values[6],
-        posicao_id: values[7]
+        posicao_id: values[7],
+        fonte: 'csv'
       };
 
-      // Mapear clube para chave do time
       const teamKey = mapClubToTeamKey(player.clube);
       if (teamKey) {
         player.teamKey = teamKey;
@@ -2709,41 +2732,38 @@ async function loadPlayersData() {
     }
 
     playersData = players;
-    console.log(`Carregados ${players.length} jogadores`);
+    console.log(`[jogadores] ✅ ${players.length} jogadores carregados via CSV local`);
     return players;
   } catch (error) {
-    console.error('Erro ao carregar dados dos jogadores:', error);
+    console.error('[jogadores] ❌ Erro ao carregar dados dos jogadores:', error);
     return [];
   }
 }
 
 // Mapear códigos de clube do CSV para chaves de time
+// Códigos verificados na API do Cartola em março/2026
 function mapClubToTeamKey(clubCode) {
   const clubMap = {
-    'CAM': 'atletico-mg',
-    'CAP': 'athletico-pr',
-    'BAH': 'bahia',
-    'BOT': 'botafogo',
-    'CEA': 'ceara',
-    'CHA': 'chapecoense',
-    'COR': 'corinthians',
-    'CFC': 'coritiba',
-    'CRU': 'cruzeiro',
     'FLA': 'flamengo',
+    'BOT': 'botafogo',
+    'COR': 'corinthians',
+    'BAH': 'bahia',
     'FLU': 'fluminense',
-    'FOR': 'fortaleza',
+    'VAS': 'vasco',
+    'PAL': 'palmeiras',
+    'SAO': 'sao-paulo',
+    'SAN': 'santos',
+    'RBB': 'red-bull-bragantino',
+    'CAM': 'atletico-mg',
+    'CRU': 'cruzeiro',
     'GRE': 'gremio',
     'INT': 'internacional',
-    'JUV': 'juventude',
-    'MIR': 'mirassol',
-    'RBB': 'red-bull-bragantino',
-    'REM': 'remo',
-    'SAN': 'santos',
-    'SPT': 'sport',
-    'SAO': 'sao-paulo',
-    'VAS': 'vasco',
     'VIT': 'vitoria',
-    'PAL': 'palmeiras'
+    'CAP': 'athletico-pr',
+    'CFC': 'coritiba',
+    'CHA': 'chapecoense',
+    'REM': 'remo',
+    'MIR': 'mirassol'
   };
   return clubMap[clubCode] || null;
 }
