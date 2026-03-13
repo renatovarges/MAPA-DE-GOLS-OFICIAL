@@ -165,6 +165,69 @@
           }
         }
       ]
+    },
+    "5": {
+      "roundNumber": 5,
+      "date": "2026-03-12",
+      "opponent": "gremio",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 81.84447243430398,
+            "y": 9.876842131438082
+          },
+          "shot": {
+            "x": 77.24425381747159,
+            "y": 16.704150164568865
+          },
+          "assistPlayer": {
+            "id": "94968",
+            "name": "Juninho Capixaba",
+            "fullName": "Luis Antônio da Rocha Júnior",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "red-bull-bragantino"
+          },
+          "shotPlayer": {
+            "id": "118563",
+            "name": "Rodriguinho",
+            "fullName": "Rodrigo Huendra Almeida Mendonça",
+            "position": "Meia",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 10.869666637073863,
+            "y": 7.980367250795716
+          },
+          "shot": {
+            "x": 9.39102006392045,
+            "y": 34.15171983506944
+          },
+          "assistPlayer": {
+            "id": "106104",
+            "name": "Enamorado",
+            "fullName": "José David Enamorado Gómez",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "105563",
+            "name": "Carlos Vinícius",
+            "fullName": "Carlos Vinícius Alves Morais",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
