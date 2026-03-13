@@ -245,6 +245,94 @@
           }
         }
       ]
+    },
+    "5": {
+      "roundNumber": 5,
+      "date": "2026-02-25",
+      "opponent": "palmeiras",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 76.2584872159091,
+            "y": 24.934849378797743
+          },
+          "shot": {
+            "x": 81.84446244673296,
+            "y": 29.86568445276331
+          },
+          "assistPlayer": {
+            "id": "90309",
+            "name": "David",
+            "fullName": "David Corrêa da Fonseca",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          },
+          "shotPlayer": {
+            "id": "71123",
+            "name": "Thiago Mendes",
+            "fullName": "Thiago Henrique Mendes Ribeiro",
+            "position": "Meia",
+            "side": null,
+            "team": "vasco"
+          }
+        },
+        {
+          "pass": {
+            "x": 85.7875088778409,
+            "y": 21.710841313114873
+          },
+          "shot": {
+            "x": 86.28038884943182,
+            "y": 36.124050790292245
+          },
+          "assistPlayer": {
+            "id": "93716",
+            "name": "Paulo Henrique",
+            "fullName": "Paulo Henrique de Oliveira Alves",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "vasco"
+          },
+          "shotPlayer": {
+            "id": "116065",
+            "name": "Cuiabano",
+            "fullName": "Luís Eduardo Soares da Silva",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "vasco"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 31.570642089843748,
+            "y": 20.383310049551504
+          },
+          "shot": {
+            "x": 12.019712136008522,
+            "y": 13.935295839662906
+          },
+          "assistPlayer": {
+            "id": "93790",
+            "name": "Marlon Freitas",
+            "fullName": "Marlon Rodrigues Freitas",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "shotPlayer": {
+            "id": "113103",
+            "name": "Flaco López",
+            "fullName": "José Manuel Alberto López",
+            "position": "Atacante",
+            "side": null,
+            "team": "palmeiras"
+          }
+        }
+      ]
     }
   }
 }
