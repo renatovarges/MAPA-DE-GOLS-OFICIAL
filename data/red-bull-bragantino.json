@@ -228,6 +228,86 @@
           "isHeader": true
         }
       ]
+    },
+    "6": {
+      "roundNumber": 6,
+      "date": "2026-03-15",
+      "opponent": "sao-paulo",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 78.37397460937501,
+            "y": 33.30509010597512
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "123738",
+            "name": "Herrera",
+            "fullName": "José María Herrera Ares",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 23.372454279119317,
+            "y": 19.659604899088542
+          },
+          "shot": {
+            "x": 3.177866155450994,
+            "y": 46.571533203125
+          },
+          "assistPlayer": {
+            "id": "85403",
+            "name": "Danielzinho",
+            "fullName": "Daniel de Oliveira Sertanejo",
+            "position": "Meia",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "shotPlayer": {
+            "id": "104075",
+            "name": "Sabino",
+            "fullName": "José Sabino Chagas Monteiro",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "isSetPiece": true
+        },
+        {
+          "pass": {
+            "x": 8.59592618075284,
+            "y": 10.941655589916087
+          },
+          "shot": {
+            "x": 6.297355790571733,
+            "y": 38.99070638020834
+          },
+          "assistPlayer": {
+            "id": "82775",
+            "name": "Lucas Ramon",
+            "fullName": "Lucas Ramon Batista Silva",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "sao-paulo"
+          },
+          "shotPlayer": {
+            "id": "89840",
+            "name": "Calleri",
+            "fullName": "Jonathan Calleri",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
