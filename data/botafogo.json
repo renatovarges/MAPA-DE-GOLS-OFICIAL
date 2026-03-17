@@ -308,6 +308,74 @@
       "opponent": "flamengo",
       "home": false,
       "created_goals": []
+    },
+    "6": {
+      "roundNumber": 6,
+      "date": "2026-03-14",
+      "opponent": "flamengo",
+      "home": true,
+      "created_goals": [],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 12.207966197620738,
+            "y": 16.437752730758103
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "98873",
+            "name": "Samuel Lino",
+            "fullName": "Samuel Dias Lino",
+            "position": "Atacante",
+            "side": null,
+            "team": "flamengo"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 25.34265913529829,
+            "y": 20.79672738534433
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "83528",
+            "name": "Léo Pereira",
+            "fullName": "Leonardo Pereira",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "flamengo"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 16.148374245383522,
+            "y": 11.320696738914208
+          },
+          "shot": {
+            "x": 7.610825417258523,
+            "y": 41.64399730541088
+          },
+          "assistPlayer": {
+            "id": "84816",
+            "name": "Varela",
+            "fullName": "Guillermo Varela Olivera",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "flamengo"
+          },
+          "shotPlayer": {
+            "id": "94583",
+            "name": "Pedro",
+            "fullName": "Pedro Guilherme Abreu dos Santos",
+            "position": "Atacante",
+            "side": null,
+            "team": "flamengo"
+          }
+        }
+      ]
     }
   }
 }
