@@ -455,6 +455,49 @@
           }
         }
       ]
+    },
+    "6": {
+      "roundNumber": 6,
+      "date": "2026-03-16",
+      "opponent": "chapecoense",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 86.09060502485795,
+            "y": 29.009293619791663
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "108162",
+            "name": "Nardoni",
+            "fullName": "Juan Ignacio Martín Nardoni",
+            "position": "Meia",
+            "side": null,
+            "team": "gremio"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.22286044034091,
+            "y": 33.936829517505785
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "105664",
+            "name": "Walter Clar",
+            "fullName": "Walter David Clar Fritz",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "chapecoense"
+          },
+          "is_penalty": true
+        }
+      ]
     }
   }
 }
