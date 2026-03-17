@@ -393,6 +393,58 @@
         }
       ],
       "conceded_goals": []
+    },
+    "6": {
+      "roundNumber": 6,
+      "date": "2026-03-14",
+      "opponent": "vitoria",
+      "home": false,
+      "created_goals": [],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 29.611430220170462,
+            "y": 49.85656161838108
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "92696",
+            "name": "Renato Kayzer",
+            "fullName": "Renato Kayzer de Souza",
+            "position": "Atacante",
+            "side": null,
+            "team": "vitoria"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 10.40194868607955,
+            "y": 1.3392849392361086
+          },
+          "shot": {
+            "x": 14.5065340909091,
+            "y": 15.742850522641781
+          },
+          "assistPlayer": {
+            "id": "99440",
+            "name": "Baralhas",
+            "fullName": "Gabriel Baralhas dos Santos",
+            "position": "Meia",
+            "side": null,
+            "team": "vitoria"
+          },
+          "shotPlayer": {
+            "id": "97810",
+            "name": "Erick",
+            "fullName": "Erick de Arruda Serafim",
+            "position": "Atacante",
+            "side": null,
+            "team": "vitoria"
+          }
+        }
+      ]
     }
   }
 }
