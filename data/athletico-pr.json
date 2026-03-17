@@ -190,6 +190,137 @@
           }
         }
       ]
+    },
+    "6": {
+      "roundNumber": 6,
+      "date": "2026-03-14",
+      "opponent": "fluminense",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 76.40376975319603,
+            "y": 34.50539076063368
+          },
+          "shot": {
+            "x": 85.43386896306818,
+            "y": 14.226682083695017
+          },
+          "assistPlayer": {
+            "id": "125926",
+            "name": "Zapelli",
+            "fullName": "Bruno Zapelli",
+            "position": "Meia",
+            "side": null,
+            "team": "athletico-pr"
+          },
+          "shotPlayer": {
+            "id": "90031",
+            "name": "Mendoza",
+            "fullName": "John Stiven Mendoza Valencia",
+            "position": "Atacante",
+            "side": null,
+            "team": "athletico-pr"
+          }
+        },
+        {
+          "pass": {
+            "x": 65.89601606889204,
+            "y": 53.26793292010272
+          },
+          "shot": {
+            "x": 87.23988980379971,
+            "y": 39.432926658347796
+          },
+          "assistPlayer": {
+            "id": "110668",
+            "name": "Esquivel",
+            "fullName": "Lucas Ángel Esquivel",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "athletico-pr"
+          },
+          "shotPlayer": {
+            "id": "71536",
+            "name": "Luiz Gustavo",
+            "fullName": "Luiz Gustavo Dias",
+            "position": "Meia",
+            "side": null,
+            "team": "athletico-pr"
+          },
+          "isSetPiece": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 20.745516690340907,
+            "y": 49.09847932038484
+          },
+          "shot": {
+            "x": 9.088476562500006,
+            "y": 51.7517664026331
+          },
+          "assistPlayer": {
+            "id": "98672",
+            "name": "Savarino",
+            "fullName": "Jefferson David Savarino Quintero",
+            "position": "Meia",
+            "side": null,
+            "team": "fluminense"
+          },
+          "shotPlayer": {
+            "id": "116447",
+            "name": "Hércules",
+            "fullName": "Hércules Pereira do Nascimento",
+            "position": "Meia",
+            "side": null,
+            "team": "fluminense"
+          }
+        },
+        {
+          "pass": {
+            "x": 12.20796786221591,
+            "y": 49.09847932038484
+          },
+          "shot": {
+            "x": 5.968985262784088,
+            "y": 49.47751950864439
+          },
+          "assistPlayer": {
+            "id": "98672",
+            "name": "Savarino",
+            "fullName": "Jefferson David Savarino Quintero",
+            "position": "Meia",
+            "side": null,
+            "team": "fluminense"
+          },
+          "shotPlayer": {
+            "id": "102928",
+            "name": "Canobbio",
+            "fullName": "Agustín Canobbio Graviz",
+            "position": "Atacante",
+            "side": null,
+            "team": "fluminense"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 13.849804687500011,
+            "y": 45.687108018663196
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "87228",
+            "name": "Guilherme Arana",
+            "fullName": "Guilherme Antonio Arana Lopes",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "fluminense"
+          }
+        }
+      ]
     }
   }
 }
