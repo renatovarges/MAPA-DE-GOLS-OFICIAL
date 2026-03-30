@@ -576,6 +576,58 @@
           }
         }
       ]
+    },
+    "7": {
+      "roundNumber": 7,
+      "date": "2026-03-19",
+      "opponent": "vitoria",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 93.15049937855113,
+            "y": 24.776661851671005
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "96793",
+            "name": "Camutanga",
+            "fullName": "Cleidson Andrade de Souza Silva",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "vitoria"
+          },
+          "own_goal": true
+        },
+        {
+          "pass": {
+            "x": 48.164185680042614,
+            "y": 32.73652886284722
+          },
+          "shot": {
+            "x": 79.03071067116477,
+            "y": 31.220360423900463
+          },
+          "assistPlayer": {
+            "id": "71631",
+            "name": "Weverton",
+            "fullName": "Weverton Pereira da Silva",
+            "position": "Goleiro",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "142004",
+            "name": "Amuzu",
+            "fullName": "Francis Amuzu",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          }
+        }
+      ],
+      "conceded_goals": []
     }
   }
 }
