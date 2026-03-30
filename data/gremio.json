@@ -498,6 +498,84 @@
           "is_penalty": true
         }
       ]
+    },
+    "8": {
+      "roundNumber": 8,
+      "date": "2026-03-21",
+      "opponent": "vasco",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 81.18729858398437,
+            "y": 29.410532633463546
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "105563",
+            "name": "Carlos Vinícius",
+            "fullName": "Carlos Vinícius Alves Morais",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 14.648417524857962,
+            "y": 46.28915868688513
+          },
+          "shot": {
+            "x": 7.583795720880687,
+            "y": 39.461848732277204
+          },
+          "assistPlayer": {
+            "id": "116065",
+            "name": "Cuiabano",
+            "fullName": "Luís Eduardo Soares da Silva",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "vasco"
+          },
+          "shotPlayer": {
+            "id": "71123",
+            "name": "Thiago Mendes",
+            "fullName": "Thiago Henrique Mendes Ribeiro",
+            "position": "Meia",
+            "side": null,
+            "team": "vasco"
+          }
+        },
+        {
+          "pass": {
+            "x": 7.090915749289778,
+            "y": 60.51271837022569
+          },
+          "shot": {
+            "x": 10.869666637073863,
+            "y": 33.393128345630785
+          },
+          "assistPlayer": {
+            "id": "116065",
+            "name": "Cuiabano",
+            "fullName": "Luís Eduardo Soares da Silva",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "vasco"
+          },
+          "shotPlayer": {
+            "id": "90309",
+            "name": "David",
+            "fullName": "David Corrêa da Fonseca",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          }
+        }
+      ]
     }
   }
 }
