@@ -2,14 +2,21 @@ import os
 import json
 import csv
 import base64
+import time
 import threading
-import urllib.request
-import urllib.error
-from http.server import SimpleHTTPRequestHandler, HTTPServer
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(ROOT, 'data')
 CSV_PATH = os.path.join(ROOT, 'cartola_jogadores_time_posicao_preco (1).csv')
+
+# --- CONFIGURAÇÕES DE CACHE ---
+JOGADORES_CACHE = {
+    'data': None,
+    'timestamp': 0,
+    'ttl': 7200  # 2 horas de cache
+}
+# --- CONTROLE DE CONCORRÊNCIA ---
+GITHUB_SYNC_LOCK = threading.Lock()
 
 # Mapeamento de clube_id da API do Cartola para chave de time usada no site
 # IDs verificados diretamente na API em março/2026
@@ -72,14 +79,24 @@ CSV_CLUBE_TO_KEY = {
 }
 
 def buscar_jogadores_api():
-    """Busca jogadores em tempo real da API do Cartola."""
+    """Busca jogadores em tempo real da API do Cartola com cache na memória."""
+    global JOGADORES_CACHE
+
+    agora = time.time()
+    # Verifica se o cache ainda é válido
+    if JOGADORES_CACHE['data'] is not None and (agora - JOGADORES_CACHE['timestamp'] < JOGADORES_CACHE['ttl']):
+        print(f'[jogadores-api] Usando cache (idade: {int(agora - JOGADORES_CACHE['timestamp'])}s)')
+        return JOGADORES_CACHE['data'], True
+
     try:
+        print('[jogadores-api] Buscando novos dados da API do Cartola...')
         url = 'https://api.cartola.globo.com/atletas/mercado'
         req = urllib.request.Request(url, headers={
-            'User-Agent': 'Mozilla/5.0',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'Accept': 'application/json',
         })
-        with urllib.request.urlopen(req, timeout=10) as response:
+        # Timeout curto de 6s para não prender a thread se a API da Globo estiver lenta
+        with urllib.request.urlopen(req, timeout=6) as response:
             data = json.loads(response.read().decode('utf-8'))
 
         atletas = data.get('atletas', [])
@@ -110,10 +127,20 @@ def buscar_jogadores_api():
                 'fonte': 'api',
             })
 
-        return jogadores, True  # (dados, sucesso)
+        # Atualiza cache
+        if jogadores:
+            JOGADORES_CACHE['data'] = jogadores
+            JOGADORES_CACHE['timestamp'] = agora
+            print(f'[jogadores-api] Cache atualizado com {len(jogadores)} jogadores.')
+
+        return jogadores, True
 
     except Exception as e:
-        print(f'[jogadores-api] Erro ao buscar da API: {e}')
+        print(f'[jogadores-api] ⚠️ Erro ao buscar da API: {e}')
+        # Se falhar mas tivermos cache antigo, usamos ele como fallback secundário
+        if JOGADORES_CACHE['data']:
+            print('[jogadores-api] Usando cache expirado devido a falha na API.')
+            return JOGADORES_CACHE['data'], True
         return [], False
 
 
@@ -168,66 +195,70 @@ GITHUB_BRANCH = os.environ.get('GITHUB_BRANCH', 'main')
 def github_commit_file(file_path, commit_message):
     """
     Faz commit de um arquivo JSON no GitHub via API REST.
-    Executado em background para não bloquear a resposta ao usuário.
+    Usa um Lock para evitar condições de corrida com o SHA do arquivo.
     """
     if not GITHUB_TOKEN:
         print('[github-sync] GITHUB_TOKEN não configurado, pulando sync.')
         return
 
-    try:
-        # Ler conteúdo do arquivo local
-        with open(file_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-
-        content_b64 = base64.b64encode(content.encode('utf-8')).decode('ascii')
-
-        # Caminho relativo ao repositório
-        rel_path = os.path.relpath(file_path, ROOT).replace('\\', '/')
-
-        # Buscar SHA atual do arquivo no GitHub (necessário para atualizar)
-        api_url = f'https://api.github.com/repos/{GITHUB_REPO}/contents/{rel_path}'
-        headers = {
-            'Authorization': f'token {GITHUB_TOKEN}',
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'MapaDeGols-Server',
-        }
-
-        sha = None
+    with GITHUB_SYNC_LOCK:
         try:
+            # Ler conteúdo do arquivo local
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+
+            content_b64 = base64.b64encode(content.encode('utf-8')).decode('ascii')
+
+            # Caminho relativo ao repositório
+            rel_path = os.path.relpath(file_path, ROOT).replace('\\', '/')
+
+            # Buscar SHA atual do arquivo no GitHub (necessário para atualizar)
+            api_url = f'https://api.github.com/repos/{GITHUB_REPO}/contents/{rel_path}'
+            headers = {
+                'Authorization': f'token {GITHUB_TOKEN}',
+                'Accept': 'application/vnd.github.v3+json',
+                'User-Agent': 'MapaDeGols-Server',
+            }
+
+            sha = None
+            try:
+                req = urllib.request.Request(
+                    f'{api_url}?ref={GITHUB_BRANCH}',
+                    headers=headers
+                )
+                with urllib.request.urlopen(req, timeout=8) as resp:
+                    file_info = json.loads(resp.read().decode('utf-8'))
+                    sha = file_info.get('sha')
+            except urllib.error.HTTPError as e:
+                if e.code != 404:
+                    raise
+            except Exception as e:
+                print(f'[github-sync] Erro ao obter SHA de {rel_path}: {e}')
+                return
+
+            # Montar payload do commit
+            payload = {
+                'message': commit_message,
+                'content': content_b64,
+                'branch': GITHUB_BRANCH,
+            }
+            if sha:
+                payload['sha'] = sha
+
+            data = json.dumps(payload).encode('utf-8')
             req = urllib.request.Request(
-                f'{api_url}?ref={GITHUB_BRANCH}',
-                headers=headers
+                api_url,
+                data=data,
+                headers={**headers, 'Content-Type': 'application/json'},
+                method='PUT'
             )
-            with urllib.request.urlopen(req, timeout=10) as resp:
-                file_info = json.loads(resp.read().decode('utf-8'))
-                sha = file_info.get('sha')
-        except urllib.error.HTTPError as e:
-            if e.code != 404:
-                raise
+            with urllib.request.urlopen(req, timeout=12) as resp:
+                result = json.loads(resp.read().decode('utf-8'))
+                commit_sha = result.get('commit', {}).get('sha', '?')[:7]
+                print(f'[github-sync] ✅ {rel_path} commitado ({commit_sha})')
 
-        # Montar payload do commit
-        payload = {
-            'message': commit_message,
-            'content': content_b64,
-            'branch': GITHUB_BRANCH,
-        }
-        if sha:
-            payload['sha'] = sha
-
-        data = json.dumps(payload).encode('utf-8')
-        req = urllib.request.Request(
-            api_url,
-            data=data,
-            headers={**headers, 'Content-Type': 'application/json'},
-            method='PUT'
-        )
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            result = json.loads(resp.read().decode('utf-8'))
-            commit_sha = result.get('commit', {}).get('sha', '?')[:7]
-            print(f'[github-sync] ✅ {rel_path} commitado ({commit_sha})')
-
-    except Exception as e:
-        print(f'[github-sync] ⚠️ Erro ao sincronizar {file_path}: {e}')
+        except Exception as e:
+            print(f'[github-sync] ⚠️ Erro ao sincronizar {file_path}: {e}')
 
 
 def sync_to_github_async(file_paths, round_no, home_key, away_key):
@@ -370,9 +401,22 @@ class Handler(SimpleHTTPRequestHandler):
             self.wfile.write(json.dumps({'error': 'not_found'}).encode('utf-8'))
 
 
+def log_status():
+    """Log periódico para monitorar a saúde do servidor no Render."""
+    while True:
+        try:
+            count = threading.active_count()
+            print(f'[status] Threads ativas: {count} | Cache: {"OK" if JOGADORES_CACHE["data"] else "Vazio"}')
+        except Exception:
+            pass
+        time.sleep(300)  # Log a cada 5 minutos
+
 if __name__ == '__main__':
     os.chdir(ROOT)
+    # Iniciar thread de monitoramento
+    threading.Thread(target=log_status, daemon=True).start()
+    
     port = int(os.environ.get('PORT', '8000'))
-    httpd = HTTPServer(('', port), Handler)
+    httpd = ThreadingHTTPServer(('', port), Handler)
     print(f'Serving at http://localhost:{port}/')
     httpd.serve_forever()
