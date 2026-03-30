@@ -305,6 +305,59 @@
           }
         }
       ]
+    },
+    "8": {
+      "roundNumber": 8,
+      "date": "2026-03-21",
+      "opponent": "chapecoense",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 88.74479536576705,
+            "y": 17.728245600947627
+          },
+          "shot": {
+            "x": 89.07337979403408,
+            "y": 32.52074697989004
+          },
+          "assistPlayer": {
+            "id": "101960",
+            "name": "Vitinho",
+            "fullName": "Vitor Hugo Naum dos Santos",
+            "position": "Atacante",
+            "side": null,
+            "team": "internacional"
+          },
+          "shotPlayer": {
+            "id": "72951",
+            "name": "Mercado",
+            "fullName": "Gabriel Iván Mercado",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "internacional"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.63745339133523,
+            "y": 33.46898442021123
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "68685",
+            "name": "Alan Patrick",
+            "fullName": "Alan Patrick Lourenço",
+            "position": "Meia",
+            "side": null,
+            "team": "internacional"
+          },
+          "is_penalty": true
+        }
+      ],
+      "conceded_goals": []
     }
   }
 }
