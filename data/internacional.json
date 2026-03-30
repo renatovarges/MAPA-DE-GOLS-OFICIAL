@@ -358,6 +358,66 @@
         }
       ],
       "conceded_goals": []
+    },
+    "7": {
+      "roundNumber": 7,
+      "date": "2026-03-18",
+      "opponent": "santos",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 91.67284823330967,
+            "y": 27.49312902379919
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "91866",
+            "name": "Zé Ivaldo",
+            "fullName": "José Ivaldo Almeida Silva",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "santos"
+          },
+          "own_goal": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 85.76223699396307,
+            "y": 22.56558928313079
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "107989",
+            "name": "Carbonero",
+            "fullName": "Johan Stiven Carbonero Balanta",
+            "position": "Atacante",
+            "side": null,
+            "team": "internacional"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.387049449573865,
+            "y": 34.31587162724248
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "63007",
+            "name": "Neymar",
+            "fullName": "Neymar da Silva Santos Júnior",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          },
+          "is_penalty": true
+        }
+      ]
     }
   }
 }
