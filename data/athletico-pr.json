@@ -321,6 +321,75 @@
           }
         }
       ]
+    },
+    "7": {
+      "roundNumber": 7,
+      "date": "2026-03-18",
+      "opponent": "cruzeiro",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 78.53815696022727,
+            "y": 12.647341240776909
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "90031",
+            "name": "Mendoza",
+            "fullName": "John Stiven Mendoza Valencia",
+            "position": "Atacante",
+            "side": null,
+            "team": "athletico-pr"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.77713955965909,
+            "y": 33.68412837275752
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "143193",
+            "name": "Viveros",
+            "fullName": "Kevin Stiven Viveros Rodallega",
+            "position": "Atacante",
+            "side": null,
+            "team": "athletico-pr"
+          },
+          "is_penalty": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 16.805108642578126,
+            "y": 38.61166811342593
+          },
+          "shot": {
+            "x": 10.730313387784092,
+            "y": 27.619469988787618
+          },
+          "assistPlayer": {
+            "id": "112709",
+            "name": "Kaiki Bruno",
+            "fullName": "Kaiki Bruno da Silva",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "cruzeiro"
+          },
+          "shotPlayer": {
+            "id": "131967",
+            "name": "Villarreal",
+            "fullName": "Neyser Villarreal - Neiser",
+            "position": "Atacante",
+            "side": null,
+            "team": "cruzeiro"
+          }
+        }
+      ]
     }
   }
 }
