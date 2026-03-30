@@ -244,6 +244,157 @@
         }
       ],
       "conceded_goals": []
+    },
+    "6": {
+      "roundNumber": 6,
+      "date": "2026-03-15",
+      "opponent": "red-bull-bragantino",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 72.62754572088068,
+            "y": 48.34039510091146
+          },
+          "shot": {
+            "x": 92.822133844549,
+            "y": 21.428466796875
+          },
+          "assistPlayer": {
+            "id": "85403",
+            "name": "Danielzinho",
+            "fullName": "Daniel de Oliveira Sertanejo",
+            "position": "Meia",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "shotPlayer": {
+            "id": "104075",
+            "name": "Sabino",
+            "fullName": "José Sabino Chagas Monteiro",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "isSetPiece": true
+        },
+        {
+          "pass": {
+            "x": 87.40407381924716,
+            "y": 57.05834441008391
+          },
+          "shot": {
+            "x": 89.70264420942827,
+            "y": 29.009293619791663
+          },
+          "assistPlayer": {
+            "id": "82775",
+            "name": "Lucas Ramon",
+            "fullName": "Lucas Ramon Batista Silva",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "sao-paulo"
+          },
+          "shotPlayer": {
+            "id": "89840",
+            "name": "Calleri",
+            "fullName": "Jonathan Calleri",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 17.62602539062499,
+            "y": 34.69490989402488
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "123738",
+            "name": "Herrera",
+            "fullName": "José María Herrera Ares",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        }
+      ]
+    },
+    "8": {
+      "roundNumber": 8,
+      "date": "2026-03-21",
+      "opponent": "palmeiras",
+      "home": true,
+      "created_goals": [],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 27.29901123046875,
+            "y": 8.814813854076244
+          },
+          "shot": {
+            "x": 17.605692360617898,
+            "y": 42.951358823423035
+          },
+          "assistPlayer": {
+            "id": "113103",
+            "name": "Flaco López",
+            "fullName": "José Manuel Alberto López",
+            "position": "Atacante",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "shotPlayer": {
+            "id": "99815",
+            "name": "Arias",
+            "fullName": "Jhon Adolfo Arias Andrade",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          }
+        }
+      ]
+    },
+    "7": {
+      "roundNumber": 7,
+      "date": "2026-03-18",
+      "opponent": "atletico-mg",
+      "home": false,
+      "created_goals": [],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 2.685311612215912,
+            "y": 44.17094150119358
+          },
+          "shot": {
+            "x": 3.0136829723011402,
+            "y": 26.356002694589122
+          },
+          "assistPlayer": {
+            "id": "39656",
+            "name": "Alan Franco",
+            "fullName": "Alan Steven Franco Palma",
+            "position": "Meia",
+            "side": null,
+            "team": "atletico-mg"
+          },
+          "shotPlayer": {
+            "id": "124661",
+            "name": "Iván Román",
+            "fullName": "Ivan Ramiro Román Hurtado",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "atletico-mg"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }

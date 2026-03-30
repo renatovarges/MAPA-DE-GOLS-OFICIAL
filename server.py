@@ -4,6 +4,8 @@ import csv
 import base64
 import time
 import threading
+import urllib.request
+from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(ROOT, 'data')
@@ -85,7 +87,7 @@ def buscar_jogadores_api():
     agora = time.time()
     # Verifica se o cache ainda é válido
     if JOGADORES_CACHE['data'] is not None and (agora - JOGADORES_CACHE['timestamp'] < JOGADORES_CACHE['ttl']):
-        print(f'[jogadores-api] Usando cache (idade: {int(agora - JOGADORES_CACHE['timestamp'])}s)')
+        print(f"[jogadores-api] Usando cache (idade: {int(agora - JOGADORES_CACHE['timestamp'])}s)")
         return JOGADORES_CACHE['data'], True
 
     try:
@@ -406,7 +408,8 @@ def log_status():
     while True:
         try:
             count = threading.active_count()
-            print(f'[status] Threads ativas: {count} | Cache: {"OK" if JOGADORES_CACHE["data"] else "Vazio"}')
+            cache_status = "OK" if JOGADORES_CACHE["data"] else "Vazio"
+            print(f"[status] Threads ativas: {count} | Cache: {cache_status}")
         except Exception:
             pass
         time.sleep(300)  # Log a cada 5 minutos

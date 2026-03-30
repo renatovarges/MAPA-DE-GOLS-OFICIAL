@@ -421,6 +421,83 @@
         }
       ],
       "conceded_goals": []
+    },
+    "8": {
+      "roundNumber": 8,
+      "date": "2026-03-21",
+      "opponent": "mirassol",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 86.11609996448864,
+            "y": 42.76171287254051
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "99440",
+            "name": "Baralhas",
+            "fullName": "Gabriel Baralhas dos Santos",
+            "position": "Meia",
+            "side": null,
+            "team": "vitoria"
+          }
+        }
+      ],
+      "conceded_goals": []
+    },
+    "7": {
+      "roundNumber": 7,
+      "date": "2026-03-19",
+      "opponent": "gremio",
+      "home": false,
+      "created_goals": [],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 2.8495006214488683,
+            "y": 43.22333814832899
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "96793",
+            "name": "Camutanga",
+            "fullName": "Cleidson Andrade de Souza Silva",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "vitoria"
+          },
+          "own_goal": true
+        },
+        {
+          "pass": {
+            "x": 47.835814319957386,
+            "y": 35.26347113715278
+          },
+          "shot": {
+            "x": 16.96928932883523,
+            "y": 36.77963957609954
+          },
+          "assistPlayer": {
+            "id": "71631",
+            "name": "Weverton",
+            "fullName": "Weverton Pereira da Silva",
+            "position": "Goleiro",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "142004",
+            "name": "Amuzu",
+            "fullName": "Francis Amuzu",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          }
+        }
+      ]
     }
   }
 }
