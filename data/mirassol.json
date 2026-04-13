@@ -448,6 +448,119 @@
           }
         }
       ]
+    },
+    "9": {
+      "roundNumber": 9,
+      "date": "2026-04-01",
+      "opponent": "botafogo",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 71.97080965909092,
+            "y": 20.670386420355904
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "97520",
+            "name": "Shaylon",
+            "fullName": "Shaylon Kallyson Cardozo - Cardoso",
+            "position": "Meia",
+            "side": null,
+            "team": "mirassol"
+          }
+        },
+        {
+          "pass": {
+            "x": 95.7774390480735,
+            "y": 1.1497581199363367
+          },
+          "shot": {
+            "x": 85.10550259676846,
+            "y": 34.12634865089699
+          },
+          "assistPlayer": {
+            "id": "71898",
+            "name": "Gabriel Pires",
+            "fullName": "Gabriel Appelt Pires",
+            "position": "Meia",
+            "side": null,
+            "team": "mirassol"
+          },
+          "shotPlayer": {
+            "id": "106708",
+            "name": "Igor Formiga",
+            "fullName": "Igor Marques Paciência Cardoso",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "mirassol"
+          },
+          "isSetPiece": true,
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 15.327452503551143,
+            "y": 53.26793292010272
+          },
+          "shot": {
+            "x": 19.26786221590909,
+            "y": 49.09847932038484
+          },
+          "assistPlayer": {
+            "id": "63289",
+            "name": "Edenílson",
+            "fullName": "Edenílson Andrade dos Santos",
+            "position": "Meia",
+            "side": null,
+            "team": "botafogo"
+          },
+          "shotPlayer": {
+            "id": "92171",
+            "name": "Arthur Cabral",
+            "fullName": "Arthur Mendonça Cabral",
+            "position": "Atacante",
+            "side": null,
+            "team": "botafogo"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.22286044034091,
+            "y": 33.936829517505785
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "72493",
+            "name": "Alex Telles",
+            "fullName": "Alex Nicolao Telles",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "botafogo"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 13.028886274857953,
+            "y": 45.30806590892651
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "101002",
+            "name": "Júnior Santos",
+            "fullName": "José Antonio dos Santos Júnior",
+            "position": "Atacante",
+            "side": null,
+            "team": "botafogo"
+          }
+        }
+      ]
     }
   }
 }
