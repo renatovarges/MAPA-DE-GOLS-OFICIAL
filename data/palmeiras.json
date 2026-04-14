@@ -655,6 +655,86 @@
         }
       ],
       "conceded_goals": []
+    },
+    "9": {
+      "roundNumber": 9,
+      "date": "2026-04-02",
+      "opponent": "gremio",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 75.7470370205966,
+            "y": 62.30174424913194
+          },
+          "shot": {
+            "x": 88.06080655184658,
+            "y": 41.26495519567419
+          },
+          "assistPlayer": {
+            "id": "89274",
+            "name": "Andreas Pereira",
+            "fullName": "Andreas Hugo Hoelgebaum Pereira",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "shotPlayer": {
+            "id": "93790",
+            "name": "Marlon Freitas",
+            "fullName": "Marlon Rodrigues Freitas",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "isSetPiece": true,
+          "isHeader": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 78.37397460937501,
+            "y": 38.61166811342593
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "93790",
+            "name": "Marlon Freitas",
+            "fullName": "Marlon Rodrigues Freitas",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 47.671631969105114,
+            "y": 32.547005886501736
+          },
+          "shot": {
+            "x": 15.327455832741478,
+            "y": 38.23262600368924
+          },
+          "assistPlayer": {
+            "id": "111309",
+            "name": "Gustavo Martins",
+            "fullName": "Gustavo Martins de Souza Santos",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "105563",
+            "name": "Carlos Vinícius",
+            "fullName": "Carlos Vinícius Alves Morais",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          }
+        }
+      ]
     }
   }
 }
