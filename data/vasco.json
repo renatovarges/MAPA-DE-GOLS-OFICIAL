@@ -758,6 +758,95 @@
           "own_goal": true
         }
       ]
+    },
+    "10": {
+      "roundNumber": 10,
+      "date": "2026-04-04",
+      "opponent": "botafogo",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 79.85162908380681,
+            "y": 55.66852077907986
+          },
+          "shot": {
+            "x": 90.35937943892046,
+            "y": 26.10330539279514
+          },
+          "assistPlayer": {
+            "id": "99213",
+            "name": "Puma Rodríguez",
+            "fullName": "José Luis Rodríguez Bebanz",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "vasco"
+          },
+          "shotPlayer": {
+            "id": "90309",
+            "name": "David",
+            "fullName": "David Corrêa da Fonseca",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 15.820006214488636,
+            "y": 56.04756288881655
+          },
+          "shot": {
+            "x": 5.148070179332387,
+            "y": 20.79672738534433
+          },
+          "assistPlayer": {
+            "id": "130232",
+            "name": "Caio Roque",
+            "fullName": "Caio Alves Roque Gomes",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "botafogo"
+          },
+          "shotPlayer": {
+            "id": "142877",
+            "name": "Villalba",
+            "fullName": "Lucas Martín Villalba Jaume",
+            "position": "Atacante",
+            "side": null,
+            "team": "botafogo"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": {
+            "x": 20.088782293146306,
+            "y": 61.35414089626736
+          },
+          "shot": {
+            "x": 18.282761452414775,
+            "y": 43.53920401114004
+          },
+          "assistPlayer": {
+            "id": "142890",
+            "name": "Montoro",
+            "fullName": "Álvaro Montoro",
+            "position": "Meia",
+            "side": null,
+            "team": "botafogo"
+          },
+          "shotPlayer": {
+            "id": "111831",
+            "name": "Matheus Martins",
+            "fullName": "Matheus Martins Silva dos Santos",
+            "position": "Atacante",
+            "side": null,
+            "team": "botafogo"
+          }
+        }
+      ]
     }
   }
 }
