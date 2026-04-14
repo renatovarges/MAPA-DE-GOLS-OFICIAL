@@ -535,6 +535,59 @@
           }
         }
       ]
+    },
+    "10": {
+      "roundNumber": 10,
+      "date": "2026-04-04",
+      "opponent": "fluminense",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 76.07540172230114,
+            "y": 3.7398718374746815
+          },
+          "shot": {
+            "x": 89.70264337713068,
+            "y": 45.05536860713253
+          },
+          "assistPlayer": {
+            "id": "84626",
+            "name": "Josué",
+            "fullName": "Josué Filipe Soares Pesqueira",
+            "position": "Meia",
+            "side": null,
+            "team": "coritiba"
+          },
+          "shotPlayer": {
+            "id": "109127",
+            "name": "Tiago Cóser",
+            "fullName": "Tiago Cóser",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "coritiba"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 6.954090187766335,
+            "y": 39.74879059968171
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "81845",
+            "name": "Alisson",
+            "fullName": "Alisson Euler de Freitas Castro",
+            "position": "Meia",
+            "side": null,
+            "team": "fluminense"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
