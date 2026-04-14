@@ -705,6 +705,59 @@
           }
         }
       ]
+    },
+    "9": {
+      "roundNumber": 9,
+      "date": "2026-04-01",
+      "opponent": "coritiba",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 87.73244018554688,
+            "y": 62.74396356653284
+          },
+          "shot": {
+            "x": 81.98601296164773,
+            "y": 52.130808512369796
+          },
+          "assistPlayer": {
+            "id": "93716",
+            "name": "Paulo Henrique",
+            "fullName": "Paulo Henrique de Oliveira Alves",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "vasco"
+          },
+          "shotPlayer": {
+            "id": "86686",
+            "name": "Tchê Tchê",
+            "fullName": "Danilo das Neves Pinheiro",
+            "position": "Meia",
+            "side": null,
+            "team": "vasco"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 1.7002108487215821,
+            "y": 31.283538592303245
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "118655",
+            "name": "Saldivia",
+            "fullName": "Alan Gabriel Saldivia Vázquez",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "vasco"
+          },
+          "own_goal": true
+        }
+      ]
     }
   }
 }
