@@ -628,6 +628,86 @@
         }
       ],
       "conceded_goals": []
+    },
+    "9": {
+      "roundNumber": 9,
+      "date": "2026-04-02",
+      "opponent": "palmeiras",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 48.328368030894886,
+            "y": 35.452994113498264
+          },
+          "shot": {
+            "x": 80.67254416725852,
+            "y": 29.76737399631076
+          },
+          "assistPlayer": {
+            "id": "111309",
+            "name": "Gustavo Martins",
+            "fullName": "Gustavo Martins de Souza Santos",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "105563",
+            "name": "Carlos Vinícius",
+            "fullName": "Carlos Vinícius Alves Morais",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 20.252962979403407,
+            "y": 5.698255750868057
+          },
+          "shot": {
+            "x": 7.939193448153418,
+            "y": 26.73504480432581
+          },
+          "assistPlayer": {
+            "id": "89274",
+            "name": "Andreas Pereira",
+            "fullName": "Andreas Hugo Hoelgebaum Pereira",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "shotPlayer": {
+            "id": "93790",
+            "name": "Marlon Freitas",
+            "fullName": "Marlon Rodrigues Freitas",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "isSetPiece": true,
+          "isHeader": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 17.62602539062499,
+            "y": 29.388331886574072
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "93790",
+            "name": "Marlon Freitas",
+            "fullName": "Marlon Rodrigues Freitas",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          }
+        }
+      ]
     }
   }
 }
