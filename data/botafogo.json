@@ -688,6 +688,95 @@
           "isHeader": true
         }
       ]
+    },
+    "10": {
+      "roundNumber": 10,
+      "date": "2026-04-04",
+      "opponent": "vasco",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 80.17999378551136,
+            "y": 11.95243711118345
+          },
+          "shot": {
+            "x": 90.8519298206676,
+            "y": 47.203272614655674
+          },
+          "assistPlayer": {
+            "id": "130232",
+            "name": "Caio Roque",
+            "fullName": "Caio Alves Roque Gomes",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "botafogo"
+          },
+          "shotPlayer": {
+            "id": "142877",
+            "name": "Villalba",
+            "fullName": "Lucas Martín Villalba Jaume",
+            "position": "Atacante",
+            "side": null,
+            "team": "botafogo"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": {
+            "x": 75.91121770685369,
+            "y": 6.64585910373264
+          },
+          "shot": {
+            "x": 77.71723854758523,
+            "y": 24.460795988859957
+          },
+          "assistPlayer": {
+            "id": "142890",
+            "name": "Montoro",
+            "fullName": "Álvaro Montoro",
+            "position": "Meia",
+            "side": null,
+            "team": "botafogo"
+          },
+          "shotPlayer": {
+            "id": "111831",
+            "name": "Matheus Martins",
+            "fullName": "Matheus Martins Silva dos Santos",
+            "position": "Atacante",
+            "side": null,
+            "team": "botafogo"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 16.148370916193187,
+            "y": 12.331479220920137
+          },
+          "shot": {
+            "x": 5.640620561079544,
+            "y": 41.896694607204864
+          },
+          "assistPlayer": {
+            "id": "99213",
+            "name": "Puma Rodríguez",
+            "fullName": "José Luis Rodríguez Bebanz",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "vasco"
+          },
+          "shotPlayer": {
+            "id": "90309",
+            "name": "David",
+            "fullName": "David Corrêa da Fonseca",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          }
+        }
+      ]
     }
   }
 }
