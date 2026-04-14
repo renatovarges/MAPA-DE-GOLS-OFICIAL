@@ -586,6 +586,60 @@
           "isHeader": true
         }
       ]
+    },
+    "10": {
+      "roundNumber": 10,
+      "date": "2026-04-05",
+      "opponent": "chapecoense",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 85.43386896306818,
+            "y": 34.12634865089699
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "90703",
+            "name": "Matheuzinho",
+            "fullName": "Matheus Martins Fogaça de Paulo",
+            "position": "Meia",
+            "side": null,
+            "team": "vitoria"
+          },
+          "is_penalty": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 11.551231800426137,
+            "y": 4.940171531394675
+          },
+          "shot": {
+            "x": 6.461538973721588,
+            "y": 45.687108018663196
+          },
+          "assistPlayer": {
+            "id": "97969",
+            "name": "Marcos Vinícius",
+            "fullName": "Marcos Vinícius da Silva Santos",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "chapecoense"
+          },
+          "shotPlayer": {
+            "id": "88293",
+            "name": "Neto Pessoa",
+            "fullName": "Altemir Cordeiro Pessôa Neto",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
