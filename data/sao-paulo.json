@@ -457,6 +457,127 @@
           }
         }
       ]
+    },
+    "10": {
+      "roundNumber": 10,
+      "date": "2026-04-04",
+      "opponent": "cruzeiro",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 85.10550426136363,
+            "y": 33.68412837275752
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "89840",
+            "name": "Calleri",
+            "fullName": "Jonathan Calleri",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 68.03040660511364,
+            "y": 32.926047996238424
+          },
+          "shot": {
+            "x": 86.9115234375,
+            "y": 21.744330738208912
+          },
+          "assistPlayer": {
+            "id": "95799",
+            "name": "Artur",
+            "fullName": "Artur Victor Guimarães",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "shotPlayer": {
+            "id": "101290",
+            "name": "Ferreira",
+            "fullName": "Aldemir dos Santos Ferreira",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 89.04591397372158,
+            "y": 19.659604899088542
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "101290",
+            "name": "Ferreira",
+            "fullName": "Aldemir dos Santos Ferreira",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          }
+        },
+        {
+          "pass": {
+            "x": 57.686838600852276,
+            "y": 6.014118731463397
+          },
+          "shot": {
+            "x": 86.09060502485795,
+            "y": 17.764398193359376
+          },
+          "assistPlayer": {
+            "id": "80570",
+            "name": "Wendell",
+            "fullName": "Wendell Nascimento Borges",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "sao-paulo"
+          },
+          "shotPlayer": {
+            "id": "101290",
+            "name": "Ferreira",
+            "fullName": "Aldemir dos Santos Ferreira",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 6.954090187766335,
+            "y": 12.647341240776909
+          },
+          "shot": {
+            "x": 1.3718461470170453,
+            "y": 43.91824227792246
+          },
+          "assistPlayer": {
+            "id": "132264",
+            "name": "Arroyo",
+            "fullName": "Keny Alexander Arroyo Alvarado",
+            "position": "Atacante",
+            "side": null,
+            "team": "cruzeiro"
+          },
+          "shotPlayer": {
+            "id": "104502",
+            "name": "Christian",
+            "fullName": "Christian Roberto Alves Cardoso",
+            "position": "Meia",
+            "side": null,
+            "team": "cruzeiro"
+          }
+        }
+      ]
     }
   }
 }
