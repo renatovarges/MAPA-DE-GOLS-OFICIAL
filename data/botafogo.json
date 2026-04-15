@@ -777,6 +777,100 @@
           }
         }
       ]
+    },
+    "11": {
+      "roundNumber": 11,
+      "date": "2026-04-12",
+      "opponent": "coritiba",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 77.22469149502841,
+            "y": 58.32181170428241
+          },
+          "shot": {
+            "x": 83.13530273437499,
+            "y": 50.74098488136574
+          },
+          "assistPlayer": {
+            "id": "100898",
+            "name": "Vitinho",
+            "fullName": "Victor Alexander da Silva",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "botafogo"
+          },
+          "shotPlayer": {
+            "id": "107231",
+            "name": "Danilo",
+            "fullName": "Danilo dos Santos de Oliveira",
+            "position": "Meia",
+            "side": null,
+            "team": "botafogo"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 89.37427867542614,
+            "y": 39.180229356553816
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "92171",
+            "name": "Arthur Cabral",
+            "fullName": "Arthur Mendonça Cabral",
+            "position": "Atacante",
+            "side": null,
+            "team": "botafogo"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 25.178473455255684,
+            "y": 33.30509010597512
+          },
+          "shot": {
+            "x": 6.954090187766335,
+            "y": 45.813448983651625
+          },
+          "assistPlayer": {
+            "id": "84626",
+            "name": "Josué",
+            "fullName": "Josué Filipe Soares Pesqueira",
+            "position": "Meia",
+            "side": null,
+            "team": "coritiba"
+          },
+          "shotPlayer": {
+            "id": "93988",
+            "name": "Breno Lopes",
+            "fullName": "Breno Henrique Vasconcelos Lopes",
+            "position": "Atacante",
+            "side": null,
+            "team": "coritiba"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.22286543412642,
+            "y": 46.192491093388306
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "117930",
+            "name": "Lavega",
+            "fullName": "Joaquín Lavega Colzada",
+            "position": "Atacante",
+            "side": null,
+            "team": "coritiba"
+          }
+        }
+      ]
     }
   }
 }
