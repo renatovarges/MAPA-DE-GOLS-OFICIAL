@@ -810,6 +810,84 @@
           }
         }
       ]
+    },
+    "11": {
+      "roundNumber": 11,
+      "date": "2026-04-12",
+      "opponent": "red-bull-bragantino",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 48.328368030894886,
+            "y": 63.249347601996526
+          },
+          "shot": {
+            "x": 79.5232577237216,
+            "y": 40.50687097620081
+          },
+          "assistPlayer": {
+            "id": "42500",
+            "name": "Fagner",
+            "fullName": "Fagner Conserva Lemos",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "cruzeiro"
+          },
+          "shotPlayer": {
+            "id": "131967",
+            "name": "Villarreal",
+            "fullName": "Neyser Villarreal - Neiser",
+            "position": "Atacante",
+            "side": null,
+            "team": "cruzeiro"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 87.89662420099431,
+            "y": 41.64399730541088
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "104502",
+            "name": "Christian",
+            "fullName": "Christian Roberto Alves Cardoso",
+            "position": "Meia",
+            "side": null,
+            "team": "cruzeiro"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 10.730313387784092,
+            "y": 48.65625904224537
+          },
+          "shot": {
+            "x": 16.148374245383522,
+            "y": 18.90152067961516
+          },
+          "assistPlayer": {
+            "id": "108133",
+            "name": "Isidro Pitta",
+            "fullName": "Isidro Miguel Pitta Saldívar",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "shotPlayer": {
+            "id": "110715",
+            "name": "Andrés Hurtado",
+            "fullName": "José Andrés Hurtado Cheme",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "red-bull-bragantino"
+          }
+        }
+      ]
     }
   }
 }
