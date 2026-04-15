@@ -561,6 +561,42 @@
           }
         }
       ]
+    },
+    "10": {
+      "roundNumber": 10,
+      "date": "2026-04-05",
+      "opponent": "red-bull-bragantino",
+      "home": true,
+      "created_goals": [],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 0.38674455122514206,
+            "y": 0.7075416847511574
+          },
+          "shot": {
+            "x": 3.8346013849431824,
+            "y": 43.53920401114004
+          },
+          "assistPlayer": {
+            "id": "112886",
+            "name": "Lucas Barbosa",
+            "fullName": "Lucas Henrique Barbosa",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "shotPlayer": {
+            "id": "108133",
+            "name": "Isidro Pitta",
+            "fullName": "Isidro Miguel Pitta Saldívar",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "isSetPiece": true
+        }
+      ]
     }
   }
 }
