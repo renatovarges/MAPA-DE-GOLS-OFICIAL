@@ -493,6 +493,87 @@
         }
       ],
       "conceded_goals": []
+    },
+    "10": {
+      "roundNumber": 10,
+      "date": "2026-04-05",
+      "opponent": "palmeiras",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 81.32927689985794,
+            "y": 6.014118731463397
+          },
+          "shot": {
+            "x": 87.07570578835227,
+            "y": 43.728723144531244
+          },
+          "assistPlayer": {
+            "id": "51772",
+            "name": "Everton Ribeiro",
+            "fullName": "Everton Augusto de Barros Ribeiro",
+            "position": "Meia",
+            "side": null,
+            "team": "bahia"
+          },
+          "shotPlayer": {
+            "id": "91772",
+            "name": "David Duarte",
+            "fullName": "David de Duarte Macedo",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "bahia"
+          },
+          "isSetPiece": true,
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 6.297355790571733,
+            "y": 54.72092126916956
+          },
+          "shot": {
+            "x": 14.013987038352273,
+            "y": 49.60386239510996
+          },
+          "assistPlayer": {
+            "id": "113103",
+            "name": "Flaco López",
+            "fullName": "José Manuel Alberto López",
+            "position": "Atacante",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "shotPlayer": {
+            "id": "99815",
+            "name": "Arias",
+            "fullName": "Jhon Adolfo Arias Andrade",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 3.0136829723011362,
+            "y": 27.998512098524305
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "105990",
+            "name": "Santiago Mingo",
+            "fullName": "Santiago Martín Ramos Mingo",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "bahia"
+          },
+          "own_goal": true
+        }
+      ]
     }
   }
 }
