@@ -597,6 +597,66 @@
           "isSetPiece": true
         }
       ]
+    },
+    "11": {
+      "roundNumber": 11,
+      "date": "2026-04-11",
+      "opponent": "bahia",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 92.32958096590909,
+            "y": 40.8859130859375
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "91772",
+            "name": "David Duarte",
+            "fullName": "David de Duarte Macedo",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "bahia"
+          },
+          "own_goal": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 10.894497403231535,
+            "y": 33.87365134910301
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "107093",
+            "name": "Luciano Juba",
+            "fullName": "Luciano Batista da Silva Júnior",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "bahia"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 3.6704173694957385,
+            "y": 42.97063892505787
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "136955",
+            "name": "Sanabria",
+            "fullName": "Mateo Naín Sanabria Doracio",
+            "position": "Atacante",
+            "side": null,
+            "team": "bahia"
+          }
+        }
+      ]
     }
   }
 }
