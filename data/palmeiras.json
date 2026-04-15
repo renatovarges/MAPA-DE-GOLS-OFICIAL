@@ -735,6 +735,87 @@
           }
         }
       ]
+    },
+    "10": {
+      "roundNumber": 10,
+      "date": "2026-04-05",
+      "opponent": "bahia",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 89.70264420942827,
+            "y": 13.279078730830442
+          },
+          "shot": {
+            "x": 81.98601296164773,
+            "y": 18.396137604890043
+          },
+          "assistPlayer": {
+            "id": "113103",
+            "name": "Flaco López",
+            "fullName": "José Manuel Alberto López",
+            "position": "Atacante",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "shotPlayer": {
+            "id": "99815",
+            "name": "Arias",
+            "fullName": "Jhon Adolfo Arias Andrade",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 92.98631702769886,
+            "y": 40.0014879014757
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "105990",
+            "name": "Santiago Mingo",
+            "fullName": "Santiago Martín Ramos Mingo",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "bahia"
+          },
+          "own_goal": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 14.670723100142055,
+            "y": 61.9858812685366
+          },
+          "shot": {
+            "x": 8.924294211647734,
+            "y": 24.271276855468756
+          },
+          "assistPlayer": {
+            "id": "51772",
+            "name": "Everton Ribeiro",
+            "fullName": "Everton Augusto de Barros Ribeiro",
+            "position": "Meia",
+            "side": null,
+            "team": "bahia"
+          },
+          "shotPlayer": {
+            "id": "91772",
+            "name": "David Duarte",
+            "fullName": "David de Duarte Macedo",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "bahia"
+          },
+          "isSetPiece": true,
+          "isHeader": true
+        }
+      ]
     }
   }
 }
