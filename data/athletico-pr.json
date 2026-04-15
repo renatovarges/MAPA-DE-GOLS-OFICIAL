@@ -590,6 +590,86 @@
           }
         }
       ]
+    },
+    "10": {
+      "roundNumber": 10,
+      "date": "2026-04-05",
+      "opponent": "atletico-mg",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 95.7774390480735,
+            "y": 67.48197888974791
+          },
+          "shot": {
+            "x": 90.03101140802556,
+            "y": 44.929023799189814
+          },
+          "assistPlayer": {
+            "id": "128431",
+            "name": "João Cruz",
+            "fullName": "João Victor Machado Cruz",
+            "position": "Meia",
+            "side": null,
+            "team": "athletico-pr"
+          },
+          "shotPlayer": {
+            "id": "102796",
+            "name": "Julimar",
+            "fullName": "Julimar Silva Oliveira Júnior",
+            "position": "Atacante",
+            "side": null,
+            "team": "athletico-pr"
+          },
+          "isSetPiece": true,
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 18.61112615411932,
+            "y": 34.12634865089699
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "116034",
+            "name": "Victor Hugo",
+            "fullName": "Victor Hugo Gomes Silva",
+            "position": "Meia",
+            "side": null,
+            "team": "atletico-mg"
+          }
+        },
+        {
+          "pass": {
+            "x": 34.865305397727276,
+            "y": 7.403939480251736
+          },
+          "shot": {
+            "x": 21.56643510298295,
+            "y": 23.323673502604166
+          },
+          "assistPlayer": {
+            "id": "107554",
+            "name": "Natanael",
+            "fullName": "Natanael Moreira Milouski",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "atletico-mg"
+          },
+          "shotPlayer": {
+            "id": "87999",
+            "name": "Gustavo Scarpa",
+            "fullName": "Gustavo Henrique Furtado Scarpa",
+            "position": "Meia",
+            "side": null,
+            "team": "atletico-mg"
+          }
+        }
+      ]
     }
   }
 }
