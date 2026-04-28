@@ -640,6 +640,75 @@
           }
         }
       ]
+    },
+    "12": {
+      "roundNumber": 12,
+      "date": "2026-04-18",
+      "opponent": "vasco",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 89.33107577237216,
+            "y": 33.02579187463831
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "80287",
+            "name": "Luciano",
+            "fullName": "Luciano da Rocha Neves",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.216987748579555,
+            "y": 34.162372504340276
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "99213",
+            "name": "Puma Rodríguez",
+            "fullName": "José Luis Rodríguez Bebanz",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "vasco"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 6.786148348721582,
+            "y": 29.04775774920428
+          },
+          "shot": {
+            "x": 12.693936434659093,
+            "y": 25.069727466724537
+          },
+          "assistPlayer": {
+            "id": "99789",
+            "name": "Brenner",
+            "fullName": "Brenner Souza da Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          },
+          "shotPlayer": {
+            "id": "116706",
+            "name": "Andrés Gómez",
+            "fullName": "Carlos Andrés Gómez Hinestroza",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          }
+        }
+      ]
     }
   }
 }
