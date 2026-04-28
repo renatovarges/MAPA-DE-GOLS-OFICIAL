@@ -746,6 +746,101 @@
           }
         }
       ]
+    },
+    "13": {
+      "roundNumber": 13,
+      "date": "2026-04-26",
+      "opponent": "vitoria",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.77713955965909,
+            "y": 33.68412837275752
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "143193",
+            "name": "Viveros",
+            "fullName": "Kevin Stiven Viveros Rodallega",
+            "position": "Atacante",
+            "side": null,
+            "team": "athletico-pr"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 90.19519708806818,
+            "y": 23.829058498806422
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "143193",
+            "name": "Viveros",
+            "fullName": "Kevin Stiven Viveros Rodallega",
+            "position": "Atacante",
+            "side": null,
+            "team": "athletico-pr"
+          }
+        },
+        {
+          "pass": {
+            "x": 80.17999378551136,
+            "y": 62.68078251591435
+          },
+          "shot": {
+            "x": 90.35937943892046,
+            "y": 33.30509010597512
+          },
+          "assistPlayer": {
+            "id": "125746",
+            "name": "Dudu",
+            "fullName": "Eduardo Kogitzki Anastacio",
+            "position": "Meia",
+            "side": null,
+            "team": "athletico-pr"
+          },
+          "shotPlayer": {
+            "id": "71536",
+            "name": "Luiz Gustavo",
+            "fullName": "Luiz Gustavo Dias",
+            "position": "Meia",
+            "side": null,
+            "team": "athletico-pr"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 19.924598277698863,
+            "y": 44.10776525426794
+          },
+          "shot": {
+            "x": 12.207966197620738,
+            "y": 48.08769779911747
+          },
+          "assistPlayer": {
+            "id": "90703",
+            "name": "Matheuzinho",
+            "fullName": "Matheus Martins Fogaça de Paulo",
+            "position": "Meia",
+            "side": null,
+            "team": "vitoria"
+          },
+          "shotPlayer": {
+            "id": "130209",
+            "name": "Renê",
+            "fullName": "Carlos Renê de Sousa Ferreira - Souza",
+            "position": "Atacante",
+            "side": null,
+            "team": "vitoria"
+          }
+        }
+      ]
     }
   }
 }
