@@ -798,6 +798,135 @@
           }
         }
       ]
+    },
+    "12": {
+      "roundNumber": 12,
+      "date": "2026-04-19",
+      "opponent": "red-bull-bragantino",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 52.268774414062506,
+            "y": 34.31587162724248
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "95131",
+            "name": "Gabriel Taliari",
+            "fullName": "Gabriel Pereira Taliari",
+            "position": "Atacante",
+            "side": null,
+            "team": "remo"
+          }
+        },
+        {
+          "pass": {
+            "x": 79.5232577237216,
+            "y": 1.9078423394097257
+          },
+          "shot": {
+            "x": 86.58315540660512,
+            "y": 45.11854485405816
+          },
+          "assistPlayer": {
+            "id": "105048",
+            "name": "Jajá",
+            "fullName": "Jandir Breno Souza Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "remo"
+          },
+          "shotPlayer": {
+            "id": "97795",
+            "name": "Marcelinho",
+            "fullName": "Marcelo Rodrigues Souza",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "remo"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 8.267558149857962,
+            "y": 33.7473065411603
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "108133",
+            "name": "Isidro Pitta",
+            "fullName": "Isidro Miguel Pitta Saldívar",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        },
+        {
+          "pass": {
+            "x": 4.8197021484375,
+            "y": 16.500930899160878
+          },
+          "shot": {
+            "x": 14.834905450994313,
+            "y": 26.16648356119792
+          },
+          "assistPlayer": {
+            "id": "94067",
+            "name": "Matheus Fernandes",
+            "fullName": "Matheus Fernandes Siqueira",
+            "position": "Meia",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "shotPlayer": {
+            "id": "108133",
+            "name": "Isidro Pitta",
+            "fullName": "Isidro Miguel Pitta Saldívar",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.71541415127841,
+            "y": 39.05388454861111
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "100804",
+            "name": "Tchamba",
+            "fullName": "Duplexe Tchamba Bangou",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "remo"
+          },
+          "own_goal": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 5.640620561079544,
+            "y": 40.0014879014757
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "100804",
+            "name": "Tchamba",
+            "fullName": "Duplexe Tchamba Bangou",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "remo"
+          },
+          "own_goal": true
+        }
+      ]
     }
   }
 }
