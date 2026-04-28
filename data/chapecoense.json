@@ -875,6 +875,85 @@
           }
         }
       ]
+    },
+    "13": {
+      "roundNumber": 13,
+      "date": "2026-04-26",
+      "opponent": "fluminense",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 74.43356489701705,
+            "y": 5.129690664785883
+          },
+          "shot": {
+            "x": 73.612646484375,
+            "y": 43.41285920319734
+          },
+          "assistPlayer": {
+            "id": "95332",
+            "name": "Marcinho",
+            "fullName": "Márcio Antônio de Sousa Júnior",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "shotPlayer": {
+            "id": "107516",
+            "name": "Ênio",
+            "fullName": "Sebastião Ênio Santos de Almeida",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.22286044034091,
+            "y": 33.936829517505785
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "98672",
+            "name": "Savarino",
+            "fullName": "Jefferson David Savarino Quintero",
+            "position": "Meia",
+            "side": null,
+            "team": "fluminense"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 13.028886274857953,
+            "y": 54.40505540635851
+          },
+          "shot": {
+            "x": 12.864697265625011,
+            "y": 38.10628119574653
+          },
+          "assistPlayer": {
+            "id": "81845",
+            "name": "Alisson",
+            "fullName": "Alisson Euler de Freitas Castro",
+            "position": "Meia",
+            "side": null,
+            "team": "fluminense"
+          },
+          "shotPlayer": {
+            "id": "110759",
+            "name": "John Kennedy",
+            "fullName": "John Kennedy Batista de Souza",
+            "position": "Atacante",
+            "side": null,
+            "team": "fluminense"
+          }
+        }
+      ]
     }
   }
 }
