@@ -911,6 +911,75 @@
           "isHeader": true
         }
       ]
+    },
+    "12": {
+      "roundNumber": 12,
+      "date": "2026-04-18",
+      "opponent": "sao-paulo",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.78301225142044,
+            "y": 33.837627495659724
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "99213",
+            "name": "Puma Rodríguez",
+            "fullName": "José Luis Rodríguez Bebanz",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "vasco"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 89.21385165127842,
+            "y": 38.95224225079572
+          },
+          "shot": {
+            "x": 83.3060635653409,
+            "y": 42.93027253327546
+          },
+          "assistPlayer": {
+            "id": "99789",
+            "name": "Brenner",
+            "fullName": "Brenner Souza da Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          },
+          "shotPlayer": {
+            "id": "116706",
+            "name": "Andrés Gómez",
+            "fullName": "Carlos Andrés Gómez Hinestroza",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 6.6689242276278415,
+            "y": 34.97420812536169
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "80287",
+            "name": "Luciano",
+            "fullName": "Luciano da Rocha Neves",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          }
+        }
+      ]
     }
   }
 }
