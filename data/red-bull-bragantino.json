@@ -597,6 +597,135 @@
           }
         }
       ]
+    },
+    "12": {
+      "roundNumber": 12,
+      "date": "2026-04-19",
+      "opponent": "remo",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 87.73244185014204,
+            "y": 34.2526934588397
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "108133",
+            "name": "Isidro Pitta",
+            "fullName": "Isidro Miguel Pitta Saldívar",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        },
+        {
+          "pass": {
+            "x": 91.1802978515625,
+            "y": 51.49906910083912
+          },
+          "shot": {
+            "x": 81.16509454900569,
+            "y": 41.83351643880208
+          },
+          "assistPlayer": {
+            "id": "94067",
+            "name": "Matheus Fernandes",
+            "fullName": "Matheus Fernandes Siqueira",
+            "position": "Meia",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "shotPlayer": {
+            "id": "108133",
+            "name": "Isidro Pitta",
+            "fullName": "Isidro Miguel Pitta Saldívar",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.28458584872159,
+            "y": 28.946115451388888
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "100804",
+            "name": "Tchamba",
+            "fullName": "Duplexe Tchamba Bangou",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "remo"
+          },
+          "own_goal": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 90.35937943892046,
+            "y": 27.998512098524305
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "100804",
+            "name": "Tchamba",
+            "fullName": "Duplexe Tchamba Bangou",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "remo"
+          },
+          "own_goal": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 43.731225585937494,
+            "y": 33.68412837275752
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "95131",
+            "name": "Gabriel Taliari",
+            "fullName": "Gabriel Pereira Taliari",
+            "position": "Atacante",
+            "side": null,
+            "team": "remo"
+          }
+        },
+        {
+          "pass": {
+            "x": 16.476742276278408,
+            "y": 66.09215766059027
+          },
+          "shot": {
+            "x": 9.416844593394886,
+            "y": 22.88145514594184
+          },
+          "assistPlayer": {
+            "id": "105048",
+            "name": "Jajá",
+            "fullName": "Jandir Breno Souza Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "remo"
+          },
+          "shotPlayer": {
+            "id": "97795",
+            "name": "Marcelinho",
+            "fullName": "Marcelo Rodrigues Souza",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "remo"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
