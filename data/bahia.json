@@ -696,6 +696,93 @@
           "isSetPiece": true
         }
       ]
+    },
+    "13": {
+      "roundNumber": 13,
+      "date": "2026-04-25",
+      "opponent": "santos",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 74.26938254616478,
+            "y": 46.950575312861694
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "107093",
+            "name": "Luciano Juba",
+            "fullName": "Luciano Batista da Silva Júnior",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "bahia"
+          }
+        },
+        {
+          "pass": {
+            "x": 93.47887073863636,
+            "y": 63.059828468605325
+          },
+          "shot": {
+            "x": 85.10550426136363,
+            "y": 35.95837718822338
+          },
+          "assistPlayer": {
+            "id": "109401",
+            "name": "Erick Pulga",
+            "fullName": "Erick da Costa Farias",
+            "position": "Atacante",
+            "side": null,
+            "team": "bahia"
+          },
+          "shotPlayer": {
+            "id": "68996",
+            "name": "Willian José",
+            "fullName": "Willian José da Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "bahia"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 10.566131036931818,
+            "y": 33.68412837275752
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "102256",
+            "name": "Rollheiser",
+            "fullName": "Benjamín Rollheiser",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 10.566131036931818,
+            "y": 36.33741929796007
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "102256",
+            "name": "Rollheiser",
+            "fullName": "Benjamín Rollheiser",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          },
+          "is_penalty": true
+        }
+      ]
     }
   }
 }
