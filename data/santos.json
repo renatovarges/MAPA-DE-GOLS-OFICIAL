@@ -897,6 +897,93 @@
           }
         }
       ]
+    },
+    "13": {
+      "roundNumber": 13,
+      "date": "2026-04-25",
+      "opponent": "bahia",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 85.43386896306818,
+            "y": 34.31587162724248
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "102256",
+            "name": "Rollheiser",
+            "fullName": "Benjamín Rollheiser",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 85.43386896306818,
+            "y": 31.662580702039932
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "102256",
+            "name": "Rollheiser",
+            "fullName": "Benjamín Rollheiser",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          },
+          "is_penalty": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 21.730617453835222,
+            "y": 21.049424687138306
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "107093",
+            "name": "Luciano Juba",
+            "fullName": "Luciano Batista da Silva Júnior",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "bahia"
+          }
+        },
+        {
+          "pass": {
+            "x": 2.5211292613636402,
+            "y": 4.940171531394675
+          },
+          "shot": {
+            "x": 10.894495738636365,
+            "y": 32.04162281177662
+          },
+          "assistPlayer": {
+            "id": "109401",
+            "name": "Erick Pulga",
+            "fullName": "Erick da Costa Farias",
+            "position": "Atacante",
+            "side": null,
+            "team": "bahia"
+          },
+          "shotPlayer": {
+            "id": "68996",
+            "name": "Willian José",
+            "fullName": "Willian José da Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "bahia"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
