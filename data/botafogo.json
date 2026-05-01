@@ -1013,6 +1013,100 @@
           }
         }
       ]
+    },
+    "13": {
+      "roundNumber": 13,
+      "date": "2026-04-25",
+      "opponent": "internacional",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 79.85162908380681,
+            "y": 57.942769594545716
+          },
+          "shot": {
+            "x": 82.15019531249999,
+            "y": 37.47454178421585
+          },
+          "assistPlayer": {
+            "id": "124481",
+            "name": "Mateo Ponte",
+            "fullName": "Mateo Ponte Costa",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "botafogo"
+          },
+          "shotPlayer": {
+            "id": "107231",
+            "name": "Danilo",
+            "fullName": "Danilo dos Santos de Oliveira",
+            "position": "Meia",
+            "side": null,
+            "team": "botafogo"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 89.70264337713068,
+            "y": 45.24488774052373
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "109987",
+            "name": "Medina",
+            "fullName": "Cristian Nicolás Medina",
+            "position": "Meia",
+            "side": null,
+            "team": "botafogo"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 47.179081587357956,
+            "y": 34.63173172562211
+          },
+          "shot": {
+            "x": 15.491639848188921,
+            "y": 21.17576949508102
+          },
+          "assistPlayer": {
+            "id": "101715",
+            "name": "Alerrandro",
+            "fullName": "Alerrandro Barra Mansa Realino de Souza",
+            "position": "Atacante",
+            "side": null,
+            "team": "internacional"
+          },
+          "shotPlayer": {
+            "id": "107989",
+            "name": "Carbonero",
+            "fullName": "Johan Stiven Carbonero Balanta",
+            "position": "Atacante",
+            "side": null,
+            "team": "internacional"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 18.282761452414775,
+            "y": 41.83351643880208
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "110426",
+            "name": "Bernabei",
+            "fullName": "Alexandro Ezequiel Bernabei",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "internacional"
+          }
+        }
+      ]
     }
   }
 }
