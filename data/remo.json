@@ -962,6 +962,76 @@
           }
         }
       ]
+    },
+    "14": {
+      "roundNumber": 14,
+      "date": "2026-05-02",
+      "opponent": "botafogo",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 85.10550259676846,
+            "y": 49.47751950864439
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "101254",
+            "name": "Alef Manga",
+            "fullName": "Alef Mangueira Severino Pereira",
+            "position": "Atacante",
+            "side": null,
+            "team": "remo"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 86.74733942205256,
+            "y": 23.323673502604166
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "105048",
+            "name": "Jajá",
+            "fullName": "Jandir Breno Souza Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "remo"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 0.38674538352272236,
+            "y": 0.7707198531539348
+          },
+          "shot": {
+            "x": 6.62572132457386,
+            "y": 26.356002694589122
+          },
+          "assistPlayer": {
+            "id": "72493",
+            "name": "Alex Telles",
+            "fullName": "Alex Nicolao Telles",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "botafogo"
+          },
+          "shotPlayer": {
+            "id": "105300",
+            "name": "Ferraresi",
+            "fullName": "Nahuel Adolfo Ferraresi Hernández",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "botafogo"
+          },
+          "isSetPiece": true,
+          "isHeader": true
+        }
+      ]
     }
   }
 }
