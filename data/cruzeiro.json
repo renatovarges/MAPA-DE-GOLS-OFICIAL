@@ -984,6 +984,103 @@
         }
       ],
       "conceded_goals": []
+    },
+    "14": {
+      "roundNumber": 14,
+      "date": "2026-05-02",
+      "opponent": "atletico-mg",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.94132191051136,
+            "y": 34.063170482494215
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "103445",
+            "name": "Kaio Jorge",
+            "fullName": "Kaio Jorge Pinto Ramos",
+            "position": "Atacante",
+            "side": null,
+            "team": "cruzeiro"
+          },
+          "is_penalty": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 6.297355790571733,
+            "y": 42.402077681929974
+          },
+          "shot": {
+            "x": 8.103375799005683,
+            "y": 43.160161901403356
+          },
+          "assistPlayer": {
+            "id": "95362",
+            "name": "Cassierra",
+            "fullName": "Zander Mateo Casierra Cabezas",
+            "position": "Atacante",
+            "side": null,
+            "team": "atletico-mg"
+          },
+          "shotPlayer": {
+            "id": "114040",
+            "name": "Minda",
+            "fullName": "Alan Steve Minda García",
+            "position": "Atacante",
+            "side": null,
+            "team": "atletico-mg"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 10.894497403231535,
+            "y": 34.063170482494215
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "94154",
+            "name": "Maycon",
+            "fullName": "Maycon de Andrade Barberan",
+            "position": "Meia",
+            "side": null,
+            "team": "atletico-mg"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 20.74551669034091,
+            "y": 63.628385868778935
+          },
+          "shot": {
+            "x": 6.6257229891690335,
+            "y": 33.30509010597512
+          },
+          "assistPlayer": {
+            "id": "96591",
+            "name": "Renan Lodi",
+            "fullName": "Renan Augusto Lodi dos Santos",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "atletico-mg"
+          },
+          "shotPlayer": {
+            "id": "95362",
+            "name": "Cassierra",
+            "fullName": "Zander Mateo Casierra Cabezas",
+            "position": "Atacante",
+            "side": null,
+            "team": "atletico-mg"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
