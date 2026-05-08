@@ -1107,6 +1107,76 @@
           }
         }
       ]
+    },
+    "14": {
+      "roundNumber": 14,
+      "date": "2026-05-02",
+      "opponent": "remo",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 95.61325461647728,
+            "y": 67.22928014684607
+          },
+          "shot": {
+            "x": 89.37427867542614,
+            "y": 41.64399730541088
+          },
+          "assistPlayer": {
+            "id": "72493",
+            "name": "Alex Telles",
+            "fullName": "Alex Nicolao Telles",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "botafogo"
+          },
+          "shotPlayer": {
+            "id": "105300",
+            "name": "Ferraresi",
+            "fullName": "Nahuel Adolfo Ferraresi Hernández",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "botafogo"
+          },
+          "isSetPiece": true,
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 10.894497403231535,
+            "y": 18.522480491355612
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "101254",
+            "name": "Alef Manga",
+            "fullName": "Alef Mangueira Severino Pereira",
+            "position": "Atacante",
+            "side": null,
+            "team": "remo"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 9.252660577947443,
+            "y": 44.676326497395834
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "105048",
+            "name": "Jajá",
+            "fullName": "Jandir Breno Souza Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "remo"
+          }
+        }
+      ]
     }
   }
 }
