@@ -954,6 +954,86 @@
           }
         }
       ]
+    },
+    "14": {
+      "roundNumber": 14,
+      "date": "2026-05-03",
+      "opponent": "red-bull-bragantino",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.50866255326704,
+            "y": 15.11110918963397
+          },
+          "shot": {
+            "x": 89.37427867542614,
+            "y": 40.696393952546295
+          },
+          "assistPlayer": {
+            "id": "90061",
+            "name": "Bruno Pacheco",
+            "fullName": "Bruno de Jesus Pacheco",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "chapecoense"
+          },
+          "shotPlayer": {
+            "id": "86292",
+            "name": "Bolasie",
+            "fullName": "Yannick Bolasie",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 15.327455832741478,
+            "y": 51.87811121057581
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "78605",
+            "name": "Gabriel",
+            "fullName": "Gabriel Girotto Franco",
+            "position": "Meia",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": {
+            "x": 23.208271928267045,
+            "y": 40.50687097620081
+          },
+          "shot": {
+            "x": 13.193068625710227,
+            "y": 27.998512098524305
+          },
+          "assistPlayer": {
+            "id": "122394",
+            "name": "Gustavinho",
+            "fullName": "Gustavo Ribeiro Neves",
+            "position": "Meia",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "shotPlayer": {
+            "id": "112886",
+            "name": "Lucas Barbosa",
+            "fullName": "Lucas Henrique Barbosa",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        }
+      ]
     }
   }
 }
