@@ -726,6 +726,111 @@
           "isHeader": true
         }
       ]
+    },
+    "13": {
+      "roundNumber": 13,
+      "date": "2026-04-26",
+      "opponent": "palmeiras",
+      "home": true,
+      "created_goals": [],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 13.193068625710227,
+            "y": 32.547005886501736
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "113103",
+            "name": "Flaco López",
+            "fullName": "José Manuel Alberto López",
+            "position": "Atacante",
+            "side": null,
+            "team": "palmeiras"
+          }
+        }
+      ]
+    },
+    "14": {
+      "roundNumber": 14,
+      "date": "2026-05-03",
+      "opponent": "chapecoense",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 80.67254416725852,
+            "y": 16.12188878942419
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "78605",
+            "name": "Gabriel",
+            "fullName": "Gabriel Girotto Franco",
+            "position": "Meia",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": {
+            "x": 72.79172807173296,
+            "y": 27.49312902379919
+          },
+          "shot": {
+            "x": 82.80693137428977,
+            "y": 40.0014879014757
+          },
+          "assistPlayer": {
+            "id": "122394",
+            "name": "Gustavinho",
+            "fullName": "Gustavo Ribeiro Neves",
+            "position": "Meia",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "shotPlayer": {
+            "id": "112886",
+            "name": "Lucas Barbosa",
+            "fullName": "Lucas Henrique Barbosa",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.491337446732956,
+            "y": 52.88889081036603
+          },
+          "shot": {
+            "x": 6.62572132457386,
+            "y": 27.303606047453705
+          },
+          "assistPlayer": {
+            "id": "90061",
+            "name": "Bruno Pacheco",
+            "fullName": "Bruno de Jesus Pacheco",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "chapecoense"
+          },
+          "shotPlayer": {
+            "id": "86292",
+            "name": "Bolasie",
+            "fullName": "Yannick Bolasie",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
