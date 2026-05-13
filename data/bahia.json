@@ -889,6 +889,85 @@
           "isHeader": true
         }
       ]
+    },
+    "15": {
+      "roundNumber": 15,
+      "date": "2026-05-09",
+      "opponent": "cruzeiro",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.77713955965909,
+            "y": 33.68412837275752
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "107093",
+            "name": "Luciano Juba",
+            "fullName": "Luciano Batista da Silva Júnior",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "bahia"
+          },
+          "is_penalty": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 20.41714865944602,
+            "y": 30.27275707103588
+          },
+          "shot": {
+            "x": 9.58102860884233,
+            "y": 48.08769779911747
+          },
+          "assistPlayer": {
+            "id": "131967",
+            "name": "Villarreal",
+            "fullName": "Neyser Villarreal - Neiser",
+            "position": "Atacante",
+            "side": null,
+            "team": "cruzeiro"
+          },
+          "shotPlayer": {
+            "id": "143600",
+            "name": "Kauã Moraes",
+            "fullName": "Kauã Moraes da Silva",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "cruzeiro"
+          }
+        },
+        {
+          "pass": {
+            "x": 26.6561279296875,
+            "y": 33.115567129629625
+          },
+          "shot": {
+            "x": 10.894497403231535,
+            "y": 20.417687197084778
+          },
+          "assistPlayer": {
+            "id": "84558",
+            "name": "Lucas Romero",
+            "fullName": "Lucas Daniel Romero",
+            "position": "Meia",
+            "side": null,
+            "team": "cruzeiro"
+          },
+          "shotPlayer": {
+            "id": "137542",
+            "name": "Kaique Kenji",
+            "fullName": "Kaique Kenji Takamura Correa",
+            "position": "Atacante",
+            "side": null,
+            "team": "cruzeiro"
+          }
+        }
+      ]
     }
   }
 }
