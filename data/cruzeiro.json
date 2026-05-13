@@ -1081,6 +1081,85 @@
           "isHeader": true
         }
       ]
+    },
+    "15": {
+      "roundNumber": 15,
+      "date": "2026-05-09",
+      "opponent": "bahia",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 75.58285134055399,
+            "y": 37.72724292896412
+          },
+          "shot": {
+            "x": 86.41897139115767,
+            "y": 19.91230220088253
+          },
+          "assistPlayer": {
+            "id": "131967",
+            "name": "Villarreal",
+            "fullName": "Neyser Villarreal - Neiser",
+            "position": "Atacante",
+            "side": null,
+            "team": "cruzeiro"
+          },
+          "shotPlayer": {
+            "id": "143600",
+            "name": "Kauã Moraes",
+            "fullName": "Kauã Moraes da Silva",
+            "position": "Lateral",
+            "side": "LD",
+            "team": "cruzeiro"
+          }
+        },
+        {
+          "pass": {
+            "x": 69.3438720703125,
+            "y": 34.884432870370375
+          },
+          "shot": {
+            "x": 85.10550259676846,
+            "y": 47.582312802915226
+          },
+          "assistPlayer": {
+            "id": "84558",
+            "name": "Lucas Romero",
+            "fullName": "Lucas Daniel Romero",
+            "position": "Meia",
+            "side": null,
+            "team": "cruzeiro"
+          },
+          "shotPlayer": {
+            "id": "137542",
+            "name": "Kaique Kenji",
+            "fullName": "Kaique Kenji Takamura Correa",
+            "position": "Atacante",
+            "side": null,
+            "team": "cruzeiro"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.22286044034091,
+            "y": 34.31587162724248
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "107093",
+            "name": "Luciano Juba",
+            "fullName": "Luciano Batista da Silva Júnior",
+            "position": "Lateral",
+            "side": "LE",
+            "team": "bahia"
+          },
+          "is_penalty": true
+        }
+      ]
     }
   }
 }
