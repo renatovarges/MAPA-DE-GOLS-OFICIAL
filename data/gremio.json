@@ -839,6 +839,87 @@
           }
         }
       ]
+    },
+    "17": {
+      "roundNumber": 17,
+      "date": "2026-05-23",
+      "opponent": "santos",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 73.73555353338068,
+            "y": 50.726908139829284
+          },
+          "shot": {
+            "x": 91.1506680575284,
+            "y": 24.555553634078414
+          },
+          "assistPlayer": {
+            "id": "142004",
+            "name": "Amuzu",
+            "fullName": "Francis Amuzu",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "105563",
+            "name": "Carlos Vinícius",
+            "fullName": "Carlos Vinícius Alves Morais",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          }
+        },
+        {
+          "pass": {
+            "x": 62.89218084161932,
+            "y": 60.019632749204284
+          },
+          "shot": {
+            "x": 83.92175736860796,
+            "y": 45.60642519350405
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "105089",
+            "name": "Tetê",
+            "fullName": "Mateus Cardoso Lemos Martins",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 9.989663418856534,
+            "y": 44.278892008463544
+          },
+          "shot": {
+            "x": 12.454066606001422,
+            "y": 27.96920957212095
+          },
+          "assistPlayer": {
+            "id": "141754",
+            "name": "Gabriel Bontempo",
+            "fullName": "Gabriel Morais Silva Bontempo",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          },
+          "shotPlayer": {
+            "id": "83257",
+            "name": "Gabriel",
+            "fullName": "Gabriel Barbosa Almeida",
+            "position": "Atacante",
+            "side": null,
+            "team": "santos"
+          }
+        }
+      ]
     }
   }
 }
