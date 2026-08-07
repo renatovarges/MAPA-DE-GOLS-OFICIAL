@@ -1,6 +1,7 @@
 import { fetchJsonWithRetry } from "./lib/http.mjs";
 import { finalizacoesPonderadas, detectarPadroesInternos, distintividade, agruparPorCategoria, DIMENSOES } from "./lib/shot-patterns.mjs";
 import { gerarFrases } from "./lib/shot-phrases.mjs";
+import { dispatchAlert } from "./lib/alerts.mjs";
 
 /**
  * Monta o retrato de cada time (o que ele CRIA e o que CEDE) a partir de
@@ -15,7 +16,12 @@ import { gerarFrases } from "./lib/shot-phrases.mjs";
  *   TIME_ALVO=vasco       -> só um time
  *   MAX_FRASES=3          -> teto de frases por lado
  *   PISO_MINIMO=0.15      -> quão grande a fatia precisa ser pra virar padrão
- *   JSON=1                -> imprime JSON em vez de texto (pra alimentar a UI)
+ *   JSON=1                -> imprime JSON em vez de texto (só leitura, não grava)
+ *   ENVIO_REAL=1          -> grava de verdade em data/padroes/{time}.json
+ *                            (via POST /api/save-patterns, mesmo servidor)
+ *
+ * Roda como 3º passo do mesmo workflow do harvester (depois das
+ * finalizações já estarem atualizadas) — ver .github/workflows.
  */
 
 const SITE_URL = process.env.SITE_URL || "https://mapa-de-gols-oficial.onrender.com";
@@ -23,6 +29,7 @@ const MAX_FRASES = Number(process.env.MAX_FRASES) || 4;
 const PISO_MINIMO = Number(process.env.PISO_MINIMO) || 0.12;
 const TIME_ALVO = process.env.TIME_ALVO || null;
 const SAIDA_JSON = process.env.JSON === "1";
+const ENVIO_REAL = process.env.ENVIO_REAL === "1";
 
 const TIMES = [
   "flamengo", "botafogo", "corinthians", "bahia", "fluminense", "vasco", "palmeiras",
@@ -88,7 +95,18 @@ function analisarLado(dadosPorTime, lado) {
   return resultado;
 }
 
+async function salvarPadrao(slug, payload) {
+  if (!ENVIO_REAL) return { ok: true, simulado: true };
+  const res = await fetch(`${SITE_URL}/api/save-patterns`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.ok) throw new Error(`save-patterns falhou (HTTP ${res.status}): ${JSON.stringify(body)}`);
+  return body;
+}
+
 async function main() {
+  if (!SAIDA_JSON) console.log(`→ modo: ${ENVIO_REAL ? "ENVIO REAL (grava no site ao vivo)" : "SIMULAÇÃO"}`);
   if (!SAIDA_JSON) console.log(`→ carregando finalizações de ${TIMES.length} times...`);
 
   const dadosPorTime = new Map();
@@ -116,6 +134,8 @@ async function main() {
     return;
   }
 
+  let salvos = 0, falhas = 0;
+  const geradoEm = new Date().toISOString();
   for (const slug of alvos) {
     const ofensivo = criadas.get(slug) || [];
     const defensivo = cedidas.get(slug) || [];
@@ -130,10 +150,31 @@ async function main() {
     for (const { frase, achado } of defensivo) {
       console.log(`    · ${frase}  [${(achado.share * 100).toFixed(0)}%, piso ${(achado.pisoIC * 100).toFixed(0)}%, n=${achado.ocorrencias}]`);
     }
+
+    try {
+      await salvarPadrao(slug, {
+        teamKey: slug, geradoEm,
+        ataca: ofensivo.map((r) => r.frase),
+        sofre: defensivo.map((r) => r.frase),
+      });
+      salvos++;
+    } catch (e) {
+      falhas++;
+      console.log(`  ! falha ao salvar padrão de ${slug}: ${e.message}`);
+    }
   }
+
+  if (ENVIO_REAL) console.log(`\n✓ ${salvos} time(s) salvos, ${falhas} falha(s)`);
+  else console.log("\nEssa foi uma SIMULAÇÃO — rode com ENVIO_REAL=1 pra gravar de verdade no site ao vivo.");
 }
 
-main().catch((e) => {
+main().catch(async (e) => {
   console.error("✗", e);
+  if (process.env.ENVIO_REAL === "1") {
+    await dispatchAlert({
+      title: "build_shot_patterns falhou por completo — retrato dos times não foi atualizado",
+      details: String(e && e.stack ? e.stack : e),
+    }).catch(() => {});
+  }
   process.exitCode = 1;
 });

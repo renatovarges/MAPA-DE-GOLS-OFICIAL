@@ -283,6 +283,16 @@ def sync_shots_to_github_async(file_paths, match_id, home_key, away_key):
     t.start()
 
 
+def sync_patterns_to_github_async(file_paths, team_key):
+    """Igual a sync_to_github_async, mas para o retrato de padrões (data/padroes/)."""
+    def _sync():
+        msg = f'data: padroes {team_key}'
+        for path in file_paths:
+            github_commit_file(path, msg)
+    t = threading.Thread(target=_sync, daemon=True)
+    t.start()
+
+
 class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
@@ -479,6 +489,57 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps({'ok': True, 'matchId': match_id, 'saved_files': saved_paths}).encode('utf-8'))
+
+        elif self.path == '/api/save-patterns':
+            # Retrato de cada time (o que cria e o que cede), calculado a
+            # partir de data/finalizacoes/ — ver build_shot_patterns.mjs.
+            # Um arquivo por time, sempre sobrescrito por completo (não tem
+            # histórico por rodada aqui, é sempre o retrato mais atual).
+            length = int(self.headers.get('Content-Length', '0'))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode('utf-8'))
+            except Exception as e:
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_json', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            team_key = payload.get('teamKey')
+            if not team_key:
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'missing_teamKey'}).encode('utf-8'))
+                return
+
+            patterns_dir = os.path.join(DATA_DIR, 'padroes')
+            os.makedirs(patterns_dir, exist_ok=True)
+            normalized_key = normalize_team_key(team_key)
+            path = os.path.join(patterns_dir, f'{normalized_key}.json')
+
+            try:
+                with open(path, 'w', encoding='utf-8') as f:
+                    json.dump(payload, f, ensure_ascii=False, indent=2)
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'persist_failed', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            try:
+                print(f"[save-patterns] time={team_key} saved={path}")
+            except Exception:
+                pass
+
+            sync_patterns_to_github_async([path], team_key)
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'teamKey': team_key, 'saved_files': [path]}).encode('utf-8'))
 
         else:
             self.send_response(404)

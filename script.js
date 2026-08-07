@@ -1249,12 +1249,129 @@ function loadImage(src) {
   });
 }
 
-async function exportFieldAsPng(pitchEl, overlayEl, scale = 6) {
+// Retrato de padrão do time (o que cria / o que cede) — ver
+// build_shot_patterns.mjs. Arquivo por time, sempre o mais atual; se ainda
+// não existir (ex.: time sem dado suficiente) o download simplesmente sai
+// sem essa seção, sem erro.
+async function carregarPadroes(teamKey) {
+  if (!teamKey) return null;
+  try {
+    const res = await fetch(`/data/padroes/${teamKey}.json?t=${Date.now()}`);
+    if (!res.ok) return null;
+    const d = await res.json();
+    if (!d || (!(d.ataca || []).length && !(d.sofre || []).length)) return null;
+    return d;
+  } catch (e) {
+    return null;
+  }
+}
+
+// Cores da seção de frases no PNG exportado — mesma paleta escura do site
+// (ver body{background} em styles.css), com um acento quente pra separar
+// "cria" de "cede" sem depender de vermelho/verde (mais legível impresso).
+const FRASES_FONT = 'Inter, system-ui, "Segoe UI", Roboto, Arial, sans-serif';
+const FRASES_COR_FUNDO = '#0a2a21';
+const FRASES_COR_TEXTO = '#e7f8f1';
+const FRASES_COR_ATACA = '#f2c14e';
+const FRASES_COR_SOFRE = '#e2895a';
+
+/** quebra `texto` em linhas que respeitam `maxWidth` no contexto/fonte já configurados. */
+function quebrarLinhas(ctx, texto, maxWidth) {
+  const palavras = texto.split(' ');
+  const linhas = [];
+  let atual = '';
+  for (const p of palavras) {
+    const tentativa = atual ? atual + ' ' + p : p;
+    if (atual && ctx.measureText(tentativa).width > maxWidth) {
+      linhas.push(atual);
+      atual = p;
+    } else {
+      atual = tentativa;
+    }
+  }
+  if (atual) linhas.push(atual);
+  return linhas;
+}
+
+/**
+ * Pré-calcula a altura necessária pra seção de frases ANTES de saber o
+ * tamanho final do canvas (por isso mede num canvas descartável, com a
+ * mesma fonte que será usada no desenho real).
+ */
+function montarLayoutFrases(padroes, larguraDisponivel) {
+  const medidor = document.createElement('canvas').getContext('2d');
+  const margem = 40;
+  const maxWidth = larguraDisponivel - margem * 2 - 22; // 22 = recuo do marcador
+  const tituloAlt = 34, linhaAlt = 30, blocoGap = 22, itemGap = 10;
+
+  function montarBloco(titulo, frases) {
+    medidor.font = `600 20px ${FRASES_FONT}`;
+    const itens = frases.map((frase) => {
+      const linhas = quebrarLinhas(medidor, frase, maxWidth);
+      return { frase, linhas };
+    });
+    const altura = tituloAlt + itens.reduce((acc, it) => acc + it.linhas.length * linhaAlt + itemGap, 0);
+    return { titulo, itens, altura };
+  }
+
+  const blocos = [];
+  if (padroes.ataca && padroes.ataca.length) blocos.push(montarBloco('COMO ATACA', padroes.ataca));
+  if (padroes.sofre && padroes.sofre.length) blocos.push(montarBloco('COMO SOFRE', padroes.sofre));
+  if (!blocos.length) return null;
+
+  const padTop = 34, padBottom = 30;
+  const alturaTotal = padTop + blocos.reduce((acc, b) => acc + b.altura, 0) + (blocos.length - 1) * blocoGap + padBottom;
+  return { blocos, alturaTotal, margem, maxWidth, tituloAlt, linhaAlt, itemGap, blocoGap, padTop };
+}
+
+/** desenha o layout já calculado a partir de `yTopo` (fundo cheio + texto). */
+function desenharFrases(ctx, layout, xLargura, yTopo) {
+  ctx.save();
+  ctx.fillStyle = FRASES_COR_FUNDO;
+  ctx.fillRect(0, yTopo, xLargura, layout.alturaTotal);
+
+  let y = yTopo + layout.padTop;
+  const xTexto = layout.margem;
+  for (const bloco of layout.blocos) {
+    const cor = bloco.titulo === 'COMO ATACA' ? FRASES_COR_ATACA : FRASES_COR_SOFRE;
+    ctx.fillStyle = cor;
+    ctx.font = `700 15px ${FRASES_FONT}`;
+    ctx.textBaseline = 'alphabetic';
+    ctx.font = `800 15px ${FRASES_FONT}`;
+    // letter-spacing manual (canvas não tem a propriedade nativamente)
+    let xTitulo = xTexto;
+    for (const ch of bloco.titulo) {
+      ctx.fillText(ch, xTitulo, y);
+      xTitulo += ctx.measureText(ch).width + 1.6;
+    }
+    y += layout.tituloAlt;
+
+    ctx.font = `600 20px ${FRASES_FONT}`;
+    for (const item of bloco.itens) {
+      ctx.fillStyle = cor;
+      ctx.fillText('•', xTexto, y);
+      ctx.fillStyle = FRASES_COR_TEXTO;
+      for (const linha of item.linhas) {
+        ctx.fillText(linha, xTexto + 22, y);
+        y += layout.linhaAlt;
+      }
+      y += layout.itemGap;
+    }
+    y += layout.blocoGap;
+  }
+  ctx.restore();
+}
+
+async function exportFieldAsPng(pitchEl, overlayEl, scale = 6, teamKeyParaFrases = null) {
   if (!pitchEl || !overlayEl) throw new Error('SVGs do campo não encontrados');
+  const padroes = await carregarPadroes(teamKeyParaFrases);
+  const layoutFrases = padroes ? montarLayoutFrases(padroes, WIDTH) : null;
+
   const canvas = document.createElement('canvas');
   const EXPORT_TOP_PADDING = 56; // espaço extra acima do campo para o título
+  const alturaFrases = layoutFrases ? layoutFrases.alturaTotal : 0;
   canvas.width = WIDTH * scale;
-  canvas.height = (HEIGHT + EXPORT_TOP_PADDING) * scale;
+  canvas.height = (HEIGHT + EXPORT_TOP_PADDING + alturaFrases) * scale;
   const ctx = canvas.getContext('2d');
   ctx.scale(scale, scale);
 
@@ -1299,6 +1416,10 @@ async function exportFieldAsPng(pitchEl, overlayEl, scale = 6) {
     // Se falhar, seguimos com o restante sem interromper o download
   }
 
+  if (layoutFrases) {
+    desenharFrases(ctx, layoutFrases, WIDTH, EXPORT_TOP_PADDING + HEIGHT);
+  }
+
   return canvas.toDataURL('image/png');
 }
 
@@ -1312,7 +1433,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitch');
         const overlayEl = document.getElementById('overlay');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6, currentTeamLeft);
         const a = document.createElement('a');
         const base = slugify(currentTeamLeft || 'campo1');
         a.href = dataUrl;
@@ -1330,7 +1451,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitch2');
         const overlayEl = document.getElementById('overlay2');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6, currentTeamRight);
         const a = document.createElement('a');
         const base = slugify(currentTeamRight || 'campo2');
         a.href = dataUrl;
@@ -1348,7 +1469,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitchLx');
         const overlayEl = document.getElementById('overlayLx');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6, currentTeamLeftExtra);
         const a = document.createElement('a');
         const base = slugify(currentTeamLeftExtra || 'campo1-extra');
         a.href = dataUrl;
@@ -1366,7 +1487,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitchRx');
         const overlayEl = document.getElementById('overlayRx');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 6, currentTeamRightExtra);
         const a = document.createElement('a');
         const base = slugify(currentTeamRightExtra || 'campo2-extra');
         a.href = dataUrl;

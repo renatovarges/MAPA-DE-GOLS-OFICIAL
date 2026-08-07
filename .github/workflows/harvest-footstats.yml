@@ -60,3 +60,15 @@ jobs:
           CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
         # reaproveita o token já cacheado pelo login do passo acima (mesmo job)
         run: node scripts/harvest_footstats_shots.mjs
+
+      - name: Recalcular o retrato de cada time (padrões de ataque/defesa)
+        env:
+          ENVIO_REAL: "1"
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          ALERT_EMAIL_FROM: ${{ secrets.ALERT_EMAIL_FROM }}
+          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
+          CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
+        # não precisa de login na FootStats — só lê data/finalizacoes/ do
+        # próprio site (já atualizado pelo passo anterior) e grava o retrato
+        run: node scripts/build_shot_patterns.mjs
