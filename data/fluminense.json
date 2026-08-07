@@ -408,6 +408,42 @@
         }
       ]
     },
+    "8": {
+      "roundNumber": 8,
+      "date": "2026-03-21",
+      "opponent": "red-bull-bragantino",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 84.96604447798296,
+            "y": 61.72646167896412
+          },
+          "shot": {
+            "x": 86.9375643643466,
+            "y": 35.555109094690394
+          },
+          "assistPlayer": {
+            "id": "102928",
+            "name": "Canobbio",
+            "fullName": "Agustín Canobbio Graviz",
+            "position": "Atacante",
+            "side": null,
+            "team": "fluminense"
+          },
+          "shotPlayer": {
+            "id": "124424",
+            "name": "Rodrigo Castillo",
+            "fullName": "Rodrigo Castillo",
+            "position": "Atacante",
+            "side": null,
+            "team": "fluminense"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": []
+    },
     "7": {
       "roundNumber": 7,
       "date": "2026-03-18",
@@ -540,42 +576,6 @@
           "isHeader": true
         }
       ]
-    },
-    "8": {
-      "roundNumber": 8,
-      "date": "2026-03-21",
-      "opponent": "red-bull-bragantino",
-      "home": true,
-      "created_goals": [
-        {
-          "pass": {
-            "x": 84.96604447798296,
-            "y": 61.72646167896412
-          },
-          "shot": {
-            "x": 86.9375643643466,
-            "y": 35.555109094690394
-          },
-          "assistPlayer": {
-            "id": "102928",
-            "name": "Canobbio",
-            "fullName": "Agustín Canobbio Graviz",
-            "position": "Atacante",
-            "side": null,
-            "team": "fluminense"
-          },
-          "shotPlayer": {
-            "id": "124424",
-            "name": "Rodrigo Castillo",
-            "fullName": "Rodrigo Castillo",
-            "position": "Atacante",
-            "side": null,
-            "team": "fluminense"
-          },
-          "isHeader": true
-        }
-      ],
-      "conceded_goals": []
     },
     "9": {
       "roundNumber": 9,
@@ -1237,6 +1237,59 @@
         }
       ]
     },
+    "20": {
+      "roundNumber": 20,
+      "date": "2026-07-26",
+      "opponent": "gremio",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.34114000000001,
+            "y": 34.354
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "39148",
+            "name": "Hulk",
+            "fullName": "Givanildo Vieira de Souza",
+            "position": "Atacante",
+            "side": null,
+            "team": "fluminense"
+          },
+          "is_penalty": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 37.666666666666664,
+            "y": 39.666666666666664
+          },
+          "shot": {
+            "x": 8.706729999999993,
+            "y": 16.47438000000001
+          },
+          "assistPlayer": {
+            "id": "109097",
+            "name": "Jovane Cabral",
+            "fullName": "Jovane Eduardo Borges Cabral",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "122670",
+            "name": "Diego Caito",
+            "fullName": "Diego Caito Barcellos Oliveira dos Santos",
+            "position": "Lateral",
+            "side": null,
+            "team": "gremio"
+          }
+        }
+      ]
+    },
     "18": {
       "roundNumber": 18,
       "date": "2026-05-31",
@@ -1350,59 +1403,6 @@
             "team": "red-bull-bragantino"
           },
           "isHeader": true
-        }
-      ]
-    },
-    "20": {
-      "roundNumber": 20,
-      "date": "2026-07-26",
-      "opponent": "gremio",
-      "home": false,
-      "created_goals": [
-        {
-          "pass": null,
-          "shot": {
-            "x": 84.34114000000001,
-            "y": 34.354
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "39148",
-            "name": "Hulk",
-            "fullName": "Givanildo Vieira de Souza",
-            "position": "Atacante",
-            "side": null,
-            "team": "fluminense"
-          },
-          "is_penalty": true
-        }
-      ],
-      "conceded_goals": [
-        {
-          "pass": {
-            "x": 37.666666666666664,
-            "y": 39.666666666666664
-          },
-          "shot": {
-            "x": 8.706729999999993,
-            "y": 16.47438000000001
-          },
-          "assistPlayer": {
-            "id": "109097",
-            "name": "Jovane Cabral",
-            "fullName": "Jovane Eduardo Borges Cabral",
-            "position": "Atacante",
-            "side": null,
-            "team": "gremio"
-          },
-          "shotPlayer": {
-            "id": "122670",
-            "name": "Diego Caito",
-            "fullName": "Diego Caito Barcellos Oliveira dos Santos",
-            "position": "Lateral",
-            "side": null,
-            "team": "gremio"
-          }
         }
       ]
     }
