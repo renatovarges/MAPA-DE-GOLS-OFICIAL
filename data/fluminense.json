@@ -1341,6 +1341,70 @@
           }
         }
       ]
+    },
+    "19": {
+      "roundNumber": 19,
+      "date": "2026-07-17",
+      "opponent": "red-bull-bragantino",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 17
+          },
+          "shot": {
+            "x": 87.24375040000001,
+            "y": 39.787479999999995
+          },
+          "assistPlayer": {
+            "id": "102928",
+            "name": "Canobbio",
+            "fullName": "Agustín Canobbio Graviz",
+            "position": "Atacante",
+            "side": null,
+            "team": "fluminense"
+          },
+          "shotPlayer": {
+            "id": "103523",
+            "name": "Ignácio",
+            "fullName": "Ignácio da Silva Oliveira",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "fluminense"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 17
+          },
+          "shot": {
+            "x": 4.780397099999988,
+            "y": 39.58
+          },
+          "assistPlayer": {
+            "id": "123738",
+            "name": "Herrera",
+            "fullName": "José María Herrera Ares",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "shotPlayer": {
+            "id": "70360",
+            "name": "Eduardo Sasha",
+            "fullName": "Eduardo Colcenti Antunes",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
