@@ -1374,6 +1374,85 @@
           }
         }
       ]
+    },
+    "20": {
+      "roundNumber": 20,
+      "date": "2026-07-25",
+      "opponent": "chapecoense",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 28.333333333333336
+          },
+          "shot": {
+            "x": 83.4916884,
+            "y": 29.345359999999996
+          },
+          "assistPlayer": {
+            "id": "126471",
+            "name": "Barreal",
+            "fullName": "Álvaro Martín Barreal",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          },
+          "shotPlayer": {
+            "id": "63007",
+            "name": "Neymar",
+            "fullName": "Neymar da Silva Santos Júnior",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.34114000000001,
+            "y": 34.354
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "63007",
+            "name": "Neymar",
+            "fullName": "Neymar da Silva Santos Júnior",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          },
+          "is_penalty": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 17
+          },
+          "shot": {
+            "x": 9.913294100000002,
+            "y": 29.048440000000006
+          },
+          "assistPlayer": {
+            "id": "68938",
+            "name": "Giovanni Augusto",
+            "fullName": "Giovanni Augusto Oliveira Cardoso",
+            "position": "Meia",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "shotPlayer": {
+            "id": "95332",
+            "name": "Marcinho",
+            "fullName": "Márcio Antônio de Sousa Júnior",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          }
+        }
+      ]
     }
   }
 }
