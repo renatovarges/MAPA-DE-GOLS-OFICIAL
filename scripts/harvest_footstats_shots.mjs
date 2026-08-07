@@ -68,6 +68,17 @@ function footstatsToShotXY(fsX, fsY) {
 }
 function rotate180(pt) { return { x: Math.round((PITCH.maxX - pt.x) * 100) / 100, y: Math.round((PITCH.maxY - pt.y) * 100) / 100 }; }
 
+/** centro do quadrante 1-36 (grade 6x6) — mesma fórmula do harvester de gols. */
+function quadrantCentroid(idQuadrant36) {
+  if (!Number.isInteger(idQuadrant36) || idQuadrant36 < 1 || idQuadrant36 > 36) return null;
+  const col = Math.ceil(idQuadrant36 / 6);
+  const row = ((idQuadrant36 - 1) % 6) + 1;
+  return {
+    x: Math.round(((col - 0.5) / 6) * PITCH.unitsX * 100) / 100,
+    y: Math.round(((row - 0.5) / 6) * PITCH.unitsY * 100) / 100,
+  };
+}
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const posicoes = JSON.parse(fs.readFileSync(path.join(__dirname, "posicoes-granulares.json"), "utf8"));
 
@@ -107,16 +118,66 @@ async function salvarFinalizacoes(payload) {
   return body;
 }
 
-/** monta os registros de finalização de UM time (o que ele CRIOU) a partir de todos os chutes da partida. */
-function construirFinalizacoes(matchShots, timeSlug) {
+/** ponte idPlayer (interno FootStats) -> atleta_id, construída a partir dos próprios chutes da partida. */
+function buildIdBridge(matchShots) {
+  const bridge = new Map();
+  for (const s of matchShots) {
+    if (s.idPlayer && s.atleta_id) bridge.set(s.idPlayer, s.atleta_id);
+    if (s.idAssistantPlayer && s.atleta_id_assistente) bridge.set(s.idAssistantPlayer, s.atleta_id_assistente);
+  }
+  return bridge;
+}
+
+/**
+ * Filas de zona de assistência por jogador, com idSkill=27 SEMPRE preferido
+ * sobre idSkill=28 — mesma correção do harvester de gols (ver o histórico
+ * do bug do Reinaldo lá). Aqui a 28 é a fila principal na prática, porque
+ * ela é justamente "assistência para finalização" e cobre 98,4% das
+ * finalizações assistidas (medido); a 27 só existe pras que viraram gol.
+ */
+function construirFilasDeAssistencia(fieldPosData, bridge) {
+  const preferida = new Map();
+  const fallback = new Map();
+  for (const ev of fieldPosData || []) {
+    if (ev.idSkill !== 27 && ev.idSkill !== 28) continue;
+    const atletaId = bridge.get(ev.idPlayer);
+    if (!atletaId) continue;
+    const key = String(atletaId);
+    const alvo = ev.idSkill === 27 ? preferida : fallback;
+    if (!alvo.has(key)) alvo.set(key, []);
+    alvo.get(key).push(ev);
+  }
+  return { preferida, fallback };
+}
+
+/**
+ * monta os registros de finalização de UM time (o que ele CRIOU).
+ * `filas` é mutado ao longo da chamada (cada zona é consumida uma vez) —
+ * por isso as duas chamadas (home/away) recebem filas recém-construídas.
+ */
+function construirFinalizacoes(matchShots, timeSlug, filas) {
   const registros = [];
   for (const s of matchShots) {
     const timeDoChute = CLUBE_ID[s.equipe_id];
     if (timeDoChute !== timeSlug) continue;
+
+    // de onde NASCEU a jogada (não de onde saiu o chute) — é isso que
+    // permite dizer "cruzamento pela direita". Só existe quando houve
+    // assistente registrado; jogada individual/rebote fica sem.
+    let origemZona = null;
+    if (s.atleta_id_assistente > 0) {
+      const k = String(s.atleta_id_assistente);
+      const p = filas.preferida.get(k);
+      const f = filas.fallback.get(k);
+      const ev = (p && p.length ? p.shift() : null) || (f && f.length ? f.shift() : null);
+      if (ev) origemZona = quadrantCentroid(ev.idQuadrant36);
+    }
+
     registros.push({
       jogadorId: String(s.atleta_id),
       posicao: posicaoGranular(s.atleta_id),
       zona: footstatsToShotXY(s.fieldPositionX, s.fieldPositionY),
+      origemZona,
       origem: s.originOfShot || null,
       perna: s.bodyPart || null,
       contraAtaque: !!s.counterAttack,
@@ -132,9 +193,19 @@ function construirFinalizacoes(matchShots, timeSlug) {
   return registros;
 }
 
-/** espelha as finalizações CRIADAS pelo adversário como "cedidas" por este time — zona rotacionada 180° (mesma convenção do mapa de gols). */
+/**
+ * espelha as finalizações CRIADAS pelo adversário como "cedidas" por este
+ * time — zonas rotacionadas 180° (mesma convenção do mapa de gols).
+ * A rotação também é o que faz "flanco direito do atacante" virar
+ * corretamente "flanco esquerdo de quem defende", exatamente como aparece
+ * no campinho do site.
+ */
 function espelharCedidas(finalizacoesDoAdversario) {
-  return finalizacoesDoAdversario.map((f) => ({ ...f, zona: rotate180(f.zona) }));
+  return finalizacoesDoAdversario.map((f) => ({
+    ...f,
+    zona: rotate180(f.zona),
+    origemZona: f.origemZona ? rotate180(f.origemZona) : null,
+  }));
 }
 
 async function main() {
@@ -162,9 +233,12 @@ async function main() {
     ]);
     if (existentesHome.has(String(m.id)) && existentesAway.has(String(m.id))) { puladas++; continue; }
 
-    let shotDetail;
+    let shotDetail, fieldPos;
     try {
-      shotDetail = await authedGet(`${API_BASE}/api/1.0/partidas/${CAMPEONATO_ID}/finalizacao-detalhada/${m.id}/partida`, token);
+      [shotDetail, fieldPos] = await Promise.all([
+        authedGet(`${API_BASE}/api/1.0/partidas/${CAMPEONATO_ID}/finalizacao-detalhada/${m.id}/partida`, token),
+        authedGet(`${API_BASE}/api/1.0/partidas/${m.id}/fieldPositionByMatch`, token),
+      ]);
     } catch (e) {
       console.log(`  ! partida ${m.id} (${homeSlug} x ${awaySlug}): ${e.message}`);
       partidasComErro.push(`${homeSlug} x ${awaySlug} (id ${m.id}): ${e.message}`);
@@ -173,8 +247,11 @@ async function main() {
     const matchShots = shotDetail.matchShots || [];
     if (!matchShots.length) continue;
 
-    const finalizacoesHome = construirFinalizacoes(matchShots, homeSlug);
-    const finalizacoesAway = construirFinalizacoes(matchShots, awaySlug);
+    // filas recém-construídas pra cada lado: construirFinalizacoes consome
+    // as zonas conforme casa, então cada chamada precisa da sua própria.
+    const bridge = buildIdBridge(matchShots);
+    const finalizacoesHome = construirFinalizacoes(matchShots, homeSlug, construirFilasDeAssistencia(fieldPos.data, bridge));
+    const finalizacoesAway = construirFinalizacoes(matchShots, awaySlug, construirFilasDeAssistencia(fieldPos.data, bridge));
     const dataISO = m.date ? m.date.slice(0, 10) : null;
 
     const payload = {
