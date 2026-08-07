@@ -1,0 +1,13 @@
+{
+  "name": "mapa-de-gols-oficial-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Scripts de automacao (harvester FootStats) do Mapa de Finalizacoes",
+  "scripts": {
+    "harvest-gols": "node --env-file=.env.local scripts/harvest_footstats_goals.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.48.0"
+  }
+}
