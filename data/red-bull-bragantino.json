@@ -1011,6 +1011,101 @@
         }
       ],
       "conceded_goals": []
+    },
+    "18": {
+      "roundNumber": 18,
+      "date": "2026-05-31",
+      "opponent": "internacional",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.34114000000001,
+            "y": 34.354
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "72018",
+            "name": "Tiago Volpi",
+            "fullName": "Tiago Luis Volpi",
+            "position": "Goleiro",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 75,
+            "y": 39.66666666666667
+          },
+          "shot": {
+            "x": 71.05465040000001,
+            "y": 33.07948
+          },
+          "assistPlayer": {
+            "id": "112886",
+            "name": "Lucas Barbosa",
+            "fullName": "Lucas Henrique Barbosa",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "shotPlayer": {
+            "id": "100695",
+            "name": "Fernando",
+            "fullName": "Fernando dos Santos Pedro",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 71.5308004,
+            "y": 50.10747999999999
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "94968",
+            "name": "Juninho Capixaba",
+            "fullName": "Luis Antônio da Rocha Júnior",
+            "position": "Lateral",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 21,
+            "y": 28.33333333333333
+          },
+          "shot": {
+            "x": 22.302717099999995,
+            "y": 16.330760000000005
+          },
+          "assistPlayer": {
+            "id": "70944",
+            "name": "Bruno Henrique",
+            "fullName": "Bruno Henrique Corsini",
+            "position": "Meia",
+            "side": null,
+            "team": "internacional"
+          },
+          "shotPlayer": {
+            "id": "110510",
+            "name": "Aguirre",
+            "fullName": "Braian Nahuel Aguirre",
+            "position": "Lateral",
+            "side": null,
+            "team": "internacional"
+          }
+        }
+      ]
     }
   }
 }
