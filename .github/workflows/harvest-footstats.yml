@@ -47,3 +47,16 @@ jobs:
           CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
           CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
         run: node scripts/harvest_footstats_goals.mjs
+
+      - name: Rodar harvester de finalizações (base de padrão, não aparece no campinho)
+        env:
+          FOOTSTATS_EMAIL: ${{ secrets.FOOTSTATS_EMAIL }}
+          FOOTSTATS_PASSWORD: ${{ secrets.FOOTSTATS_PASSWORD }}
+          ENVIO_REAL: "1"
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          ALERT_EMAIL_FROM: ${{ secrets.ALERT_EMAIL_FROM }}
+          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
+          CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
+        # reaproveita o token já cacheado pelo login do passo acima (mesmo job)
+        run: node scripts/harvest_footstats_shots.mjs

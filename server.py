@@ -273,6 +273,16 @@ def sync_to_github_async(file_paths, round_no, home_key, away_key):
     t.start()
 
 
+def sync_shots_to_github_async(file_paths, match_id, home_key, away_key):
+    """Igual a sync_to_github_async, mas para o dataset de finalizações (data/finalizacoes/)."""
+    def _sync():
+        msg = f'data: finalizacoes partida {match_id} ({home_key} x {away_key})'
+        for path in file_paths:
+            github_commit_file(path, msg)
+    t = threading.Thread(target=_sync, daemon=True)
+    t.start()
+
+
 class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
@@ -395,6 +405,80 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps({'ok': True, 'round': round_no, 'saved_files': saved_paths}).encode('utf-8'))
+
+        elif self.path == '/api/save-shots':
+            # Dataset novo e independente do mapa de gols: guarda TODAS as
+            # finalizações (não só gols) por time, uma entrada por partida
+            # (chave = matchId da FootStats). Não aparece no campinho — é
+            # a base pra detectar padrão de onde/como cada time cria e cede
+            # chance. Sempre sobrescreve pelo matchId: é dado 100% derivado
+            # da FootStats, sem edição manual, então não precisa da mesma
+            # trava de "nunca sobrescrever" do /api/save-round.
+            length = int(self.headers.get('Content-Length', '0'))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode('utf-8'))
+            except Exception as e:
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_json', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            match_id = payload.get('matchId')
+            home_key = payload.get('homeTeamKey')
+            away_key = payload.get('awayTeamKey')
+            home_obj = payload.get('home')
+            away_obj = payload.get('away')
+
+            shots_dir = os.path.join(DATA_DIR, 'finalizacoes')
+            os.makedirs(shots_dir, exist_ok=True)
+            saved_paths = []
+
+            def upsert_team_match(team_key, match_obj):
+                normalized_key = normalize_team_key(team_key)
+                path = os.path.join(shots_dir, f'{normalized_key}.json')
+                if os.path.exists(path):
+                    try:
+                        with open(path, 'r', encoding='utf-8') as f:
+                            data = json.load(f)
+                    except Exception:
+                        data = {}
+                else:
+                    data = {}
+                matches = data.get('matches')
+                if not isinstance(matches, dict):
+                    matches = {}
+                matches[str(match_id)] = match_obj
+                data['matches'] = matches
+                with open(path, 'w', encoding='utf-8') as f:
+                    json.dump(data, f, ensure_ascii=False, indent=2)
+                saved_paths.append(path)
+
+            try:
+                if home_key and home_obj:
+                    upsert_team_match(home_key, home_obj)
+                if away_key and away_obj:
+                    upsert_team_match(away_key, away_obj)
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'persist_failed', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            try:
+                print(f"[save-shots] match={match_id} home={home_key} away={away_key} saved={saved_paths}")
+            except Exception:
+                pass
+
+            if saved_paths:
+                sync_shots_to_github_async(saved_paths, match_id, home_key, away_key)
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'matchId': match_id, 'saved_files': saved_paths}).encode('utf-8'))
 
         else:
             self.send_response(404)
