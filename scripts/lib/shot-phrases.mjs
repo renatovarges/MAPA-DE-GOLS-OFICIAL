@@ -1,9 +1,17 @@
 /**
  * Traduz um achado de `detectarPadroesInternos` (shot-patterns.mjs) numa
  * frase pronta — sem jargão, sem número de modelo, sem comparação com a
- * liga (o time é descrito por ele mesmo, ver decisão em shot-patterns.mjs)
- * e, sempre que o dado sustentar, apontando qual POSIÇÃO se beneficia
- * (cria) ou deve ser vigiada (sofre) — ver `posicaoDominante`.
+ * liga (o time é descrito por ele mesmo, ver decisão em shot-patterns.mjs).
+ *
+ * REGRA DO RENATO (2026-08, reforçada na 4ª rodada): "toda frase mostre
+ * claramente a força ou fraqueza, em qual scout, pra qual posição e o
+ * número" — os quatro são obrigatórios, não "quando o dado permitir". Por
+ * isso `gerarFrase` DESCARTA (retorna null) qualquer achado que não consiga
+ * apontar uma posição — ver `POSICAO_OBRIGATORIA` e `posicaoDominante` em
+ * shot-patterns.mjs (limiar baixo de propósito: o objetivo deixou de ser
+ * "só afirmo se for dominante" e passou a ser "sempre reporto a posição
+ * mais associada"). As dimensões `posicao`/`assistentePosicao` já têm a
+ * posição na própria categoria, então não passam por esse crivo de novo.
  *
  * REDESENHO (Renato, 2026-08, segunda rodada de feedback): a versão
  * anterior comparava com a liga ("mais que a maioria dos times") e incluía
@@ -13,11 +21,10 @@
  *      própria ("O Vasco é um time que..."), não por ranking.
  *   2. "PASSE" nunca gera frase (ver `descrever`) — é jogada aberta comum,
  *      sem ligação com um perfil de jogador específico.
- *   3. Toda frase, quando o dado sustenta, termina apontando uma posição —
- *      é isso que transforma "cria muita chance de cruzamento" (que não
- *      diz nada) em "...e é o ponta-direita quem mais aparece nessas
- *      jogadas" (diz quem escalar).
  */
+
+/** dimensões cuja categoria JÁ É uma posição — não passam pelo crivo de posicaoDominante. */
+const DIMENSAO_JA_TEM_POSICAO = new Set(["posicao", "assistentePosicao"]);
 
 const POSICAO_LABEL = {
   "lateral-esquerdo": "lateral-esquerdo",
@@ -49,11 +56,11 @@ function frequencia(porJogo) {
   return "de vez em quando";
 }
 
-/** clausula final apontando a posição, quando o dado sustenta (ver posicaoDominante). */
+/** clausula final apontando a posição — retorna null (não string vazia) quando não há posição válida, pra `gerarFrase` distinguir "sem posição" de "com posição". */
 function clausulaPosicao(posDom, cede) {
-  if (!posDom) return "";
+  if (!posDom) return null;
   const label = POSICAO_LABEL[posDom.posicao];
-  if (!label) return "";
+  if (!label) return null;
   return cede ? ` Fique de olho no ${label} adversário nesses lances.` : ` Quem mais aparece nessas jogadas é o ${label}.`;
 }
 
@@ -74,7 +81,15 @@ export function gerarFrase(achado, { time, lado } = {}) {
 
   const cede = lado === "shots_against";
   const freq = frequencia(porJogo);
-  const posClausula = clausulaPosicao(posicaoDominante, cede);
+
+  // posição é obrigatória (ver cabeçalho) — exceto quando a própria
+  // categoria já é uma posição, aí não há o que apontar de novo.
+  let posClausula = "";
+  if (!DIMENSAO_JA_TEM_POSICAO.has(dimensao)) {
+    const clausula = clausulaPosicao(posicaoDominante, cede);
+    if (!clausula) return null; // sem posição clara -> descarta o achado, não sai frase incompleta
+    posClausula = clausula;
+  }
 
   const corpo = descrever(dimensao, categoria, { time, cede, freq });
   if (!corpo) return null;

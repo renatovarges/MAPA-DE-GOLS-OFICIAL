@@ -144,19 +144,25 @@ export function agruparPorCategoria(shots, dimensao) {
  * "escanteio", "pela esquerda"), qual posição de jogador mais aparece
  * finalizando. Isso é o que transforma "o time cria muita chance de
  * cruzamento" (não diz nada pro cartoleiro) em "...e é o ponta-direita quem
- * mais finaliza essas jogadas" (diz quem escalar). Pedido do Renato,
- * 2026-08: toda frase tem que apontar pra uma posição, não só descrever um
- * tipo de jogada.
+ * mais finaliza essas jogadas" (diz quem escalar).
+ *
+ * REGRA DO RENATO (2026-08, reforçada): "toda frase tem que mostrar
+ * claramente a força ou fraqueza, em qual scout, pra qual posição e o
+ * número" — os quatro elementos são obrigatórios, não "quando o dado
+ * permitir". Por isso o corte aqui é baixo (20%, bem acima do 1/7 ≈ 14% que
+ * seria puro acaso entre as posições possíveis, mas não exige "domínio"
+ * como antes) e a contagem mínima é só 3: o objetivo mudou de "só afirmo se
+ * for dominante" pra "sempre reporto a posição mais associada, com o
+ * cuidado mínimo de não ser 1 chute isolado". Quem decide se o achado
+ * inteiro é confiável o bastante pra virar frase já foi o
+ * `detectarPadroesInternos` (piso de Wilson, amostra mínima) — isso aqui só
+ * escolhe QUEM apontar dentro de um padrão que já passou por aquele crivo.
  *
  * Não se aplica quando a dimensão JÁ é a posição (posicao/assistentePosicao
  * — nesse caso a posição é a própria categoria, calcular de novo seria
  * redundante).
- *
- * Exige uma fatia clara (default 30%) e uma contagem mínima (default 5)
- * dentro do subconjunto — mesma lógica de "não afirma sem dado" do resto do
- * módulo, aplicada num recorte mais estreito.
  */
-export function posicaoDominante(shotsDaCategoria, { minShare = 0.3, minOcorrencias = 5 } = {}) {
+export function posicaoDominante(shotsDaCategoria, { minShare = 0.2, minOcorrencias = 3 } = {}) {
   const { grupos, pesosTotais } = agruparPorCategoria(shotsDaCategoria, "posicao");
   const pesoTotal = pesosTotais.reduce((a, b) => a + b, 0);
   if (!pesoTotal) return null;

@@ -191,21 +191,31 @@ test("posicaoDominante acha a posicao clara quando ela domina o subconjunto", ()
   assert.equal(r.ocorrencias, 8);
 });
 
-test("posicaoDominante nao aponta nada quando a fatia esta espalhada (nao inventa)", () => {
-  const shots = [
-    ...Array.from({ length: 4 }, () => shot({ posicao: "ponta-direita" })),
-    ...Array.from({ length: 4 }, () => shot({ posicao: "meia" })),
-    ...Array.from({ length: 4 }, () => shot({ posicao: "volante" })),
-  ];
+test("posicaoDominante nao aponta nada quando a fatia esta espalhada demais (abaixo dos 20%, nao inventa)", () => {
+  // 6 posicoes com 3 cada (18 no total, 16,7% cada) - abaixo do limiar de 20%
+  const posicoes = ["ponta-direita", "ponta-esquerda", "meia", "volante", "lateral-direito", "lateral-esquerdo"];
+  const shots = posicoes.flatMap((p) => Array.from({ length: 3 }, () => shot({ posicao: p })));
   assert.equal(posicaoDominante(shots), null);
 });
 
 test("posicaoDominante exige contagem minima mesmo com fatia grande (amostra pequena demais)", () => {
+  // 66% de fatia (bem acima do limiar de 20%), mas só 2 ocorrências — abaixo do minimo de 3
   const shots = [
-    ...Array.from({ length: 3 }, () => shot({ posicao: "ponta-direita" })),
+    ...Array.from({ length: 2 }, () => shot({ posicao: "ponta-direita" })),
     shot({ posicao: "meia" }),
   ];
   assert.equal(posicaoDominante(shots), null);
+});
+
+test("posicaoDominante acha posicao com fatia moderada (20%), nao so quando domina (regra reforcada: toda frase precisa de posicao)", () => {
+  // 20% de fatia é o suficiente agora — o objetivo deixou de ser "só afirmo
+  // se for dominante" e passou a ser "sempre reporto a mais associada".
+  const shots = [
+    ...Array.from({ length: 4 }, () => shot({ posicao: "ponta-direita" })), // 20%
+    ...Array.from({ length: 16 }, () => shot({ posicao: "meia" })),
+  ];
+  const r = posicaoDominante(shots);
+  assert.equal(r.posicao, "meia", "meia domina (80%), mas so pra confirmar que a funcao acha o MAIOR, nao qualquer um acima do piso");
 });
 
 test("detectarPadroesInternos anexa posicaoDominante pras dimensoes que nao sao posicao/assistentePosicao", () => {
