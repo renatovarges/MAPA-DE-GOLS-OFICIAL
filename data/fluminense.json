@@ -1236,6 +1236,59 @@
           }
         }
       ]
+    },
+    "20": {
+      "roundNumber": 20,
+      "date": "2026-07-26",
+      "opponent": "gremio",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.34114000000001,
+            "y": 34.354
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "39148",
+            "name": "Hulk",
+            "fullName": "Givanildo Vieira de Souza",
+            "position": "Atacante",
+            "side": null,
+            "team": "fluminense"
+          },
+          "is_penalty": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 37.666666666666664,
+            "y": 39.666666666666664
+          },
+          "shot": {
+            "x": 8.706729999999993,
+            "y": 16.47438000000001
+          },
+          "assistPlayer": {
+            "id": "109097",
+            "name": "Jovane Cabral",
+            "fullName": "Jovane Eduardo Borges Cabral",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "122670",
+            "name": "Diego Caito",
+            "fullName": "Diego Caito Barcellos Oliveira dos Santos",
+            "position": "Lateral",
+            "side": null,
+            "team": "gremio"
+          }
+        }
+      ]
     }
   }
 }
