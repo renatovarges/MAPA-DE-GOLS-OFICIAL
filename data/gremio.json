@@ -499,6 +499,58 @@
         }
       ]
     },
+    "7": {
+      "roundNumber": 7,
+      "date": "2026-03-19",
+      "opponent": "vitoria",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 93.15049937855113,
+            "y": 24.776661851671005
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "96793",
+            "name": "Camutanga",
+            "fullName": "Cleidson Andrade de Souza Silva",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "vitoria"
+          },
+          "own_goal": true
+        },
+        {
+          "pass": {
+            "x": 48.164185680042614,
+            "y": 32.73652886284722
+          },
+          "shot": {
+            "x": 79.03071067116477,
+            "y": 31.220360423900463
+          },
+          "assistPlayer": {
+            "id": "71631",
+            "name": "Weverton",
+            "fullName": "Weverton Pereira da Silva",
+            "position": "Goleiro",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "142004",
+            "name": "Amuzu",
+            "fullName": "Francis Amuzu",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          }
+        }
+      ],
+      "conceded_goals": []
+    },
     "8": {
       "roundNumber": 8,
       "date": "2026-03-21",
@@ -576,58 +628,6 @@
           }
         }
       ]
-    },
-    "7": {
-      "roundNumber": 7,
-      "date": "2026-03-19",
-      "opponent": "vitoria",
-      "home": true,
-      "created_goals": [
-        {
-          "pass": null,
-          "shot": {
-            "x": 93.15049937855113,
-            "y": 24.776661851671005
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "96793",
-            "name": "Camutanga",
-            "fullName": "Cleidson Andrade de Souza Silva",
-            "position": "Zagueiro",
-            "side": null,
-            "team": "vitoria"
-          },
-          "own_goal": true
-        },
-        {
-          "pass": {
-            "x": 48.164185680042614,
-            "y": 32.73652886284722
-          },
-          "shot": {
-            "x": 79.03071067116477,
-            "y": 31.220360423900463
-          },
-          "assistPlayer": {
-            "id": "71631",
-            "name": "Weverton",
-            "fullName": "Weverton Pereira da Silva",
-            "position": "Goleiro",
-            "side": null,
-            "team": "gremio"
-          },
-          "shotPlayer": {
-            "id": "142004",
-            "name": "Amuzu",
-            "fullName": "Francis Amuzu",
-            "position": "Atacante",
-            "side": null,
-            "team": "gremio"
-          }
-        }
-      ],
-      "conceded_goals": []
     },
     "9": {
       "roundNumber": 9,
@@ -840,6 +840,59 @@
         }
       ]
     },
+    "16": {
+      "roundNumber": 16,
+      "date": "2026-05-17",
+      "opponent": "bahia",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 62.33333333333333
+          },
+          "shot": {
+            "x": 88.7531459,
+            "y": 41.65539999999999
+          },
+          "assistPlayer": {
+            "id": "141594",
+            "name": "Pedro Gabriel",
+            "fullName": "Pedro Gabriel Crisostomo Pinheiro",
+            "position": "Lateral",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "125467",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
+            "side": null,
+            "team": "gremio"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 6.516439999999989,
+            "y": 28.284760000000006
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "136955",
+            "name": "Sanabria",
+            "fullName": "Mateo Naín Sanabria Doracio",
+            "position": "Atacante",
+            "side": null,
+            "team": "bahia"
+          }
+        }
+      ]
+    },
     "17": {
       "roundNumber": 17,
       "date": "2026-05-23",
@@ -872,6 +925,241 @@
             "side": null,
             "team": "santos"
           }
+        }
+      ]
+    },
+    "18": {
+      "roundNumber": 18,
+      "date": "2026-05-30",
+      "opponent": "corinthians",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 89.5149859,
+            "y": 36.773179999999996
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "141595",
+            "name": "Gabriel Mec",
+            "fullName": "Gabriel Ferreira de Carvalho",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 21,
+            "y": 28.33333333333333
+          },
+          "shot": {
+            "x": 13.62726409999999,
+            "y": 31.266380000000005
+          },
+          "assistPlayer": {
+            "id": "100652",
+            "name": "Yuri Alberto",
+            "fullName": "Yuri Alberto Monteiro da Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "corinthians"
+          },
+          "shotPlayer": {
+            "id": "145744",
+            "name": "André",
+            "fullName": "André Luiz Santos Dias",
+            "position": "Meia",
+            "side": null,
+            "team": "corinthians"
+          }
+        },
+        {
+          "pass": {
+            "x": 21,
+            "y": 28.33333333333333
+          },
+          "shot": {
+            "x": 9.818064099999987,
+            "y": 26.708380000000005
+          },
+          "assistPlayer": {
+            "id": "100652",
+            "name": "Yuri Alberto",
+            "fullName": "Yuri Alberto Monteiro da Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "corinthians"
+          },
+          "shotPlayer": {
+            "id": "118844",
+            "name": "Kaio César",
+            "fullName": "Kaio César Andrade Lima",
+            "position": "Atacante",
+            "side": null,
+            "team": "corinthians"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 17.817384099999998,
+            "y": 32.29838
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "145744",
+            "name": "André",
+            "fullName": "André Luiz Santos Dias",
+            "position": "Meia",
+            "side": null,
+            "team": "corinthians"
+          }
+        }
+      ]
+    },
+    "19": {
+      "roundNumber": 19,
+      "date": "2026-07-17",
+      "opponent": "mirassol",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 41.66666666666667,
+            "y": 51
+          },
+          "shot": {
+            "x": 86.3866804,
+            "y": 37.55148
+          },
+          "assistPlayer": {
+            "id": "91908",
+            "name": "Pavón",
+            "fullName": "Cristian David Pavón",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "105563",
+            "name": "Carlos Vinícius",
+            "fullName": "Carlos Vinícius Alves Morais",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 21,
+            "y": 5.666666666666671
+          },
+          "shot": {
+            "x": 6.127901600000001,
+            "y": 34.186080000000004
+          },
+          "assistPlayer": {
+            "id": "106708",
+            "name": "Igor Formiga",
+            "fullName": "Igor Marques Paciência Cardoso",
+            "position": "Lateral",
+            "side": null,
+            "team": "mirassol"
+          },
+          "shotPlayer": {
+            "id": "103967",
+            "name": "Bruno Santos",
+            "fullName": "Bruno Santos de Oliveira",
+            "position": "Atacante",
+            "side": null,
+            "team": "mirassol"
+          }
+        },
+        {
+          "pass": {
+            "x": 21,
+            "y": 28.33333333333333
+          },
+          "shot": {
+            "x": 12.413081599999998,
+            "y": 34.44408
+          },
+          "assistPlayer": {
+            "id": "115986",
+            "name": "Denilson",
+            "fullName": "Denilson Alves Borges",
+            "position": "Meia",
+            "side": null,
+            "team": "mirassol"
+          },
+          "shotPlayer": {
+            "id": "104204",
+            "name": "Edson Carioca",
+            "fullName": "Edson Guilherme Mendes dos Santos",
+            "position": "Atacante",
+            "side": null,
+            "team": "mirassol"
+          }
+        }
+      ]
+    },
+    "20": {
+      "roundNumber": 20,
+      "date": "2026-07-26",
+      "opponent": "fluminense",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 58.333333333333336,
+            "y": 28.333333333333336
+          },
+          "shot": {
+            "x": 87.29327,
+            "y": 51.52561999999999
+          },
+          "assistPlayer": {
+            "id": "109097",
+            "name": "Jovane Cabral",
+            "fullName": "Jovane Eduardo Borges Cabral",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "122670",
+            "name": "Diego Caito",
+            "fullName": "Diego Caito Barcellos Oliveira dos Santos",
+            "position": "Lateral",
+            "side": null,
+            "team": "gremio"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.65885999999999,
+            "y": 33.646
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "39148",
+            "name": "Hulk",
+            "fullName": "Givanildo Vieira de Souza",
+            "position": "Atacante",
+            "side": null,
+            "team": "fluminense"
+          },
+          "is_penalty": true
         }
       ]
     }
