@@ -1,38 +1,44 @@
 /**
  * Traduz um achado de `detectarPadroesInternos` (shot-patterns.mjs) numa
- * frase pronta — sem jargão e sem número de modelo, mesma regra do projeto
- * "Linha": a tela mostra frase, não estatística.
+ * frase pronta — sem jargão, sem número de modelo, sem comparação com a
+ * liga (o time é descrito por ele mesmo, ver decisão em shot-patterns.mjs)
+ * e, sempre que o dado sustentar, apontando qual POSIÇÃO se beneficia
+ * (cria) ou deve ser vigiada (sofre) — ver `posicaoDominante`.
  *
- * A frase descreve o PADRÃO DO TIME ("boa parte do que o Vasco sofre vem de
- * cruzamento pela direita"), não uma comparação. A liga entra só como
- * complemento opcional, quando o time também destoa dela — ver `sufixoLiga`.
- *
- * O único número que aparece é a frequência por jogo, que é concreta e
- * intuitiva ("cerca de 2 por jogo"). A porcentagem do modelo e o intervalo
- * de confiança ficam disponíveis no objeto do achado, mas fora do texto.
+ * REDESENHO (Renato, 2026-08, segunda rodada de feedback): a versão
+ * anterior comparava com a liga ("mais que a maioria dos times") e incluía
+ * categorias sem valor prático pro cartoleiro ("passe no chão" — é assim em
+ * todo time, não diz o que fazer com a informação). As duas coisas saíram:
+ *   1. Nada de comparação no texto — cada time é descrito por identidade
+ *      própria ("O Vasco é um time que..."), não por ranking.
+ *   2. "PASSE" nunca gera frase (ver `descrever`) — é jogada aberta comum,
+ *      sem ligação com um perfil de jogador específico.
+ *   3. Toda frase, quando o dado sustenta, termina apontando uma posição —
+ *      é isso que transforma "cria muita chance de cruzamento" (que não
+ *      diz nada) em "...e é o ponta-direita quem mais aparece nessas
+ *      jogadas" (diz quem escalar).
  */
 
 const POSICAO_LABEL = {
-  "lateral-esquerdo": "lateral pela esquerda",
-  "lateral-direito": "lateral pela direita",
+  "lateral-esquerdo": "lateral-esquerdo",
+  "lateral-direito": "lateral-direito",
   "meia": "meia",
   "volante": "volante",
-  "ponta-esquerda": "ponta pela esquerda",
-  "ponta-direita": "ponta pela direita",
+  "ponta-esquerda": "ponta-esquerda",
+  "ponta-direita": "ponta-direita",
   "atacante-area": "atacante de área",
 };
 
 const ORIGEM_LABEL = {
-  PASSE: "passe no chão",
   CRUZAMENTO: "cruzamento",
   ESCANTEIO: "escanteio",
-  FALTA: "cobrança de falta",
+  FALTA: "bola parada (falta)",
   LANCAMENTO: "lançamento longo",
   REBATIDA: "sobra de bola",
+  // PASSE fica de fora de propósito — ver cabeçalho do arquivo.
 };
 
-const CORPO_LABEL = { cabeca: "de cabeça", pe: "com o pé" };
-const LADO_LABEL = { esquerda: "pela esquerda", direita: "pela direita", centro: "pelo meio" };
+const LADO_LABEL = { esquerda: "esquerdo", direita: "direito" };
 
 /** "cerca de 2 por jogo" / "quase 1 por jogo" — número concreto, sem decimal quebrado. */
 function frequencia(porJogo) {
@@ -43,98 +49,113 @@ function frequencia(porJogo) {
   return "de vez em quando";
 }
 
-/**
- * Qualificador de intensidade a partir da posição do time na liga.
- * "alto" = está na ponta de cima; "meio" = parecido com os outros.
- * Nunca sai "baixo" aqui: quando o time é ponta de baixo numa categoria,
- * quem vira frase é a categoria oposta da mesma dimensão, onde ele é ponta
- * de cima (ver gerarFrases) — dizer "faz pouco de X" é mais confuso que
- * dizer "faz muito de Y".
- */
-function qualificador(distint) {
-  if (!distint || distint.direcao !== "alto") return "com frequência";
-  return distint.percentil >= 0.9 ? "muito mais que a maioria dos times" : "mais que a maioria dos times";
+/** clausula final apontando a posição, quando o dado sustenta (ver posicaoDominante). */
+function clausulaPosicao(posDom, cede) {
+  if (!posDom) return "";
+  const label = POSICAO_LABEL[posDom.posicao];
+  if (!label) return "";
+  return cede ? ` Fique de olho no ${label} adversário nesses lances.` : ` Quem mais aparece nessas jogadas é o ${label}.`;
 }
+
+/**
+ * Acima disso a categoria é "o default do futebol", não característica do
+ * time: 93% de jogada trabalhada (em vez de contra-ataque) ou 84% de
+ * finalização com o pé não informa nada.
+ */
+const TETO_TRIVIAL = 0.75;
 
 /**
  * `lado`: "shots_for" (o que o time CRIA) | "shots_against" (o que CEDE).
  * Retorna null quando não há template — mais seguro que frase genérica errada.
  */
-/**
- * Acima disso a categoria é "o default do futebol", não padrão do time:
- * dizer que 93% do que o time sofre veio de jogada trabalhada (em vez de
- * contra-ataque) ou que 84% das finalizações são com o pé não informa nada
- * a ninguém. Nesses pares a informação mora sempre no lado minoritário, e
- * se o lado minoritário não alcança o piso, a dimensão não tem o que dizer.
- * Aferido no dado real: as categorias que ficam entre ~40% e ~65% (dentro
- * da área, passe no chão) variam bastante entre times e seguem valendo.
- */
-const TETO_TRIVIAL = 0.75;
-
 export function gerarFrase(achado, { time, lado } = {}) {
-  const { dimensao, categoria, porJogo, distintividade, share } = achado;
+  const { dimensao, categoria, porJogo, share, posicaoDominante } = achado;
   if (share > TETO_TRIVIAL) return null;
 
   const cede = lado === "shots_against";
   const freq = frequencia(porJogo);
-  const verbo = cede ? "sofre" : "cria";
-  const qual = qualificador(distintividade);
+  const posClausula = clausulaPosicao(posicaoDominante, cede);
 
-  const descricao = descrever(dimensao, categoria);
-  if (!descricao) return null;
+  const corpo = descrever(dimensao, categoria, { time, cede, freq });
+  if (!corpo) return null;
 
-  const miolo = `O ${time} ${verbo} ${descricao} ${qual}`;
-  return freq ? `${miolo} — ${freq}.` : `${miolo}.`;
+  return corpo + posClausula;
 }
 
-/** devolve o miolo da frase ("chance de cruzamento pela direita"), ou null se a categoria não tiver rótulo. */
-function descrever(dimensao, categoria) {
+/** monta a frase inteira (sem a cláusula de posição, que é anexada depois) por dimensão. */
+function descrever(dimensao, categoria, { time, cede, freq }) {
+  const f = freq ? ` — ${freq}.` : ".";
+
   switch (dimensao) {
     case "origem": {
       const l = ORIGEM_LABEL[categoria];
-      return l ? `chance de ${l}` : null;
+      if (!l) return null; // PASSE cai aqui
+      return cede
+        ? `O ${time} sofre bastante chance de ${l}${f}`
+        : `O ${time} é um time que cria muita chance de ${l}${f}`;
     }
     case "posicao": {
       const l = POSICAO_LABEL[categoria];
-      return l ? `finalização de ${l}` : null;
+      if (!l) return null;
+      return cede
+        ? `O ${time} sofre bastante do ${l} adversário${f}`
+        : `No ${time}, o ${l} é quem mais finaliza${f}`;
     }
     case "assistentePosicao": {
       const l = POSICAO_LABEL[categoria];
-      return l ? `chance armada por ${l}` : null;
+      if (!l) return null;
+      return cede
+        ? `As chances que o ${time} sofre costumam nascer do ${l} adversário armando a jogada${f}`
+        : `No ${time}, o ${l} é quem mais arma as jogadas${f}`;
     }
     case "parteDoCorpo":
-      // "com o pé" é ~84% em todo time; só vira frase quando o time é ponta
-      // de cima nisso, e aí o que interessa dizer é que ele quase não
-      // cabeceia. Quem decide qual das duas aparece é o maxPorDimensao.
-      return categoria === "cabeca" ? "finalização de cabeça" : "finalização com o pé (quase nada de cabeça)";
+      // "com o pé" é a esmagadora maioria — só cabeça informa algo.
+      if (categoria !== "cabeca") return null;
+      return cede
+        ? `O ${time} sofre bastante gol de cabeça${f}`
+        : `O ${time} é um time que finaliza bastante de cabeça${f}`;
+    case "area": {
+      const local = categoria === "dentro-da-area" ? "de dentro da área" : "de fora da área";
+      return cede
+        ? `O ${time} sofre bastante finalização ${local}${f}`
+        : `O ${time} é um time que finaliza muito ${local}${f}`;
+    }
+    case "contraAtaque":
+      if (categoria !== "contra-ataque") return null;
+      return cede
+        ? `O ${time} é vulnerável ao contra-ataque${f}`
+        : `O ${time} é um time que usa bastante o contra-ataque${f}`;
     case "ladoDaJogada": {
       const l = LADO_LABEL[categoria];
-      return l && categoria !== "centro" ? `jogada construída ${l}` : null;
+      if (!l) return null;
+      return cede
+        ? `O ${time} sofre bastante pelo lado ${l} da própria defesa${f}`
+        : `O ${time} é um time que constrói muito pelo lado ${l}${f}`;
     }
-    case "area":
-      // as duas metades são elegíveis — vence a em que o time é mais
-      // extremo na liga. Fixar "dentro da área" fazia a frase afirmar o
-      // contrário do dado pra quem chuta muito de fora (caso real do Vasco,
-      // 18º de 20 em finalizar de dentro).
-      return categoria === "dentro-da-area" ? "finalização de dentro da área" : "finalização de fora da área";
-    case "contraAtaque":
-      return categoria === "contra-ataque" ? "chance em contra-ataque" : "chance em jogada trabalhada";
     case "origem+lado": {
       const [origem, ladoCampo] = categoria.split("|");
       const o = ORIGEM_LABEL[origem];
       const l = LADO_LABEL[ladoCampo];
-      return o && l ? `chance de ${o} ${l}` : null;
+      if (!o || !l) return null;
+      return cede
+        ? `O ${time} sofre bastante chance de ${o} pelo lado ${l}${f}`
+        : `O ${time} cria bastante chance de ${o} pelo lado ${l}${f}`;
     }
     case "origem+corpo": {
       const [origem, corpo] = categoria.split("|");
       const o = ORIGEM_LABEL[origem];
-      // só cabeça vira frase aqui — "de pé" seria trivialidade
-      return o && corpo === "cabeca" ? `chance de ${o} finalizada de cabeça` : null;
+      if (!o || corpo !== "cabeca") return null;
+      return cede
+        ? `O ${time} sofre gol de cabeça em jogadas de ${o}${f}`
+        : `O ${time} cria bastante chance de ${o} finalizada de cabeça${f}`;
     }
     case "lado+corpo": {
       const [ladoCampo, corpo] = categoria.split("|");
       const l = LADO_LABEL[ladoCampo];
-      return l && corpo === "cabeca" ? `finalização de cabeça em jogada ${l}` : null;
+      if (!l || corpo !== "cabeca") return null;
+      return cede
+        ? `O ${time} sofre gol de cabeça em jogadas pelo lado ${l}${f}`
+        : `O ${time} finaliza bastante de cabeça em jogadas pelo lado ${l}${f}`;
     }
     default:
       return null;
@@ -145,12 +166,8 @@ function descrever(dimensao, categoria) {
  * Aplica gerarFrase numa lista de achados e devolve os melhores.
  *
  * ORDEM: por distintividade (o quanto o time destoa dos outros naquela
- * categoria), não pelo tamanho da fatia — ver o porquê documentado em
- * `distintividade` (shot-patterns.mjs). Isso NÃO filtra nada: um padrão
- * comum a toda liga continua elegível e aparece quando o time não tem nada
- * mais marcante; só perde a vaga pra algo mais característico quando há.
- * O `pisoIC` entra como desempate, pra preferir o achado mais bem sustentado
- * entre dois igualmente distintivos.
+ * categoria) — ver `distintividade` em shot-patterns.mjs. Isso decide QUAL
+ * fato é mais digno de uma das poucas vagas de texto; não aparece no texto.
  *
  * `maxPorDimensao` evita cinco variações do mesmo fato (ex.: "cruzamento",
  * "cruzamento pela direita", "cruzamento de cabeça" na mesma lista).

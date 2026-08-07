@@ -140,6 +140,38 @@ export function agruparPorCategoria(shots, dimensao) {
 // ---------------------------------------------------------------------------
 
 /**
+ * QUEM SE BENEFICIA — dentro dos chutes de uma categoria já detectada (ex.:
+ * "escanteio", "pela esquerda"), qual posição de jogador mais aparece
+ * finalizando. Isso é o que transforma "o time cria muita chance de
+ * cruzamento" (não diz nada pro cartoleiro) em "...e é o ponta-direita quem
+ * mais finaliza essas jogadas" (diz quem escalar). Pedido do Renato,
+ * 2026-08: toda frase tem que apontar pra uma posição, não só descrever um
+ * tipo de jogada.
+ *
+ * Não se aplica quando a dimensão JÁ é a posição (posicao/assistentePosicao
+ * — nesse caso a posição é a própria categoria, calcular de novo seria
+ * redundante).
+ *
+ * Exige uma fatia clara (default 30%) e uma contagem mínima (default 5)
+ * dentro do subconjunto — mesma lógica de "não afirma sem dado" do resto do
+ * módulo, aplicada num recorte mais estreito.
+ */
+export function posicaoDominante(shotsDaCategoria, { minShare = 0.3, minOcorrencias = 5 } = {}) {
+  const { grupos, pesosTotais } = agruparPorCategoria(shotsDaCategoria, "posicao");
+  const pesoTotal = pesosTotais.reduce((a, b) => a + b, 0);
+  if (!pesoTotal) return null;
+
+  let melhor = null;
+  for (const [posicao, pesos] of grupos) {
+    if (pesos.length < minOcorrencias) continue;
+    const share = pesos.reduce((a, b) => a + b, 0) / pesoTotal;
+    if (share < minShare) continue;
+    if (!melhor || share > melhor.share) melhor = { posicao, share, ocorrencias: pesos.length };
+  }
+  return melhor;
+}
+
+/**
  * Padrão INTERNO do time: quais categorias ocupam uma fatia relevante do
  * que ele cria/cede, com confiança suficiente. Sem comparar com ninguém.
  *
@@ -162,20 +194,27 @@ export function detectarPadroesInternos({
   const nEfetivoTotal = amostraEfetiva(pesosTotais);
   if (!pesoTotal || !nEfetivoTotal) return [];
 
+  const calcularPosicao = dimensao !== "posicao" && dimensao !== "assistentePosicao";
+
   const achados = [];
   for (const [categoria, pesos] of grupos) {
     if (pesos.length < minOcorrencias) continue;
     const share = pesos.reduce((a, b) => a + b, 0) / pesoTotal;
     const { lo, hi } = intervaloWilson(share, nEfetivoTotal);
     if (lo < pisoMinimo) continue;
-    achados.push({
+    const achado = {
       dimensao, categoria,
       share, pisoIC: lo, tetoIC: hi,
       ocorrencias: pesos.length,
       porJogo: jogosUsados ? pesos.length / jogosUsados : null,
       nEfetivo: nEfetivoTotal,
       jogosUsados,
-    });
+    };
+    if (calcularPosicao) {
+      const subset = shots.filter((s) => extrairValor(s, dimensao) === categoria);
+      achado.posicaoDominante = posicaoDominante(subset);
+    }
+    achados.push(achado);
   }
   // ordena pelo piso do IC: o que sobrevive melhor à leitura pessimista
   return achados.sort((a, b) => b.pisoIC - a.pisoIC);

@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   pesoDoJogo, finalizacoesPonderadas, amostraEfetiva, intervaloWilson,
-  ladoDoCampo, extrairValor, detectarPadroesInternos, compararComLiga,
+  ladoDoCampo, extrairValor, detectarPadroesInternos, compararComLiga, posicaoDominante,
 } from "./shot-patterns.mjs";
 
 function shot(over = {}) {
@@ -177,4 +177,51 @@ test("padrao interno sobrevive mesmo quando o time e IGUAL a liga (o ponto do re
   assert.ok(achado, "deve continuar sendo padrao do time");
   const ligaIgual = repetir(200, { origem: "CRUZAMENTO" }).concat(repetir(200, { origem: "PASSE" }));
   assert.equal(compararComLiga({ achado, shotsLiga: ligaIgual }).destaque, null, "sem destaque vs liga, mas o padrao permanece");
+});
+
+// --- quem se beneficia (posicaoDominante) ---
+
+test("posicaoDominante acha a posicao clara quando ela domina o subconjunto", () => {
+  const shots = [
+    ...Array.from({ length: 8 }, () => shot({ posicao: "ponta-direita" })),
+    ...Array.from({ length: 2 }, () => shot({ posicao: "meia" })),
+  ];
+  const r = posicaoDominante(shots);
+  assert.equal(r.posicao, "ponta-direita");
+  assert.equal(r.ocorrencias, 8);
+});
+
+test("posicaoDominante nao aponta nada quando a fatia esta espalhada (nao inventa)", () => {
+  const shots = [
+    ...Array.from({ length: 4 }, () => shot({ posicao: "ponta-direita" })),
+    ...Array.from({ length: 4 }, () => shot({ posicao: "meia" })),
+    ...Array.from({ length: 4 }, () => shot({ posicao: "volante" })),
+  ];
+  assert.equal(posicaoDominante(shots), null);
+});
+
+test("posicaoDominante exige contagem minima mesmo com fatia grande (amostra pequena demais)", () => {
+  const shots = [
+    ...Array.from({ length: 3 }, () => shot({ posicao: "ponta-direita" })),
+    shot({ posicao: "meia" }),
+  ];
+  assert.equal(posicaoDominante(shots), null);
+});
+
+test("detectarPadroesInternos anexa posicaoDominante pras dimensoes que nao sao posicao/assistentePosicao", () => {
+  const shots = [
+    ...Array.from({ length: 30 }, () => shot({ origem: "CRUZAMENTO", posicao: "ponta-direita" })),
+    ...Array.from({ length: 70 }, () => shot({ origem: "PASSE" })),
+  ];
+  const achado = detectarPadroesInternos({ shots, jogosUsados: 15, dimensao: "origem" })
+    .find((a) => a.categoria === "CRUZAMENTO");
+  assert.ok(achado.posicaoDominante, "cruzamento deveria vir com uma posicao dominante");
+  assert.equal(achado.posicaoDominante.posicao, "ponta-direita");
+});
+
+test("detectarPadroesInternos NAO anexa posicaoDominante quando a dimensao ja e posicao (seria redundante)", () => {
+  const shots = Array.from({ length: 30 }, () => shot({ posicao: "ponta-direita" }));
+  const achado = detectarPadroesInternos({ shots, jogosUsados: 15, dimensao: "posicao" })
+    .find((a) => a.categoria === "ponta-direita");
+  assert.equal(achado.posicaoDominante, undefined);
 });
