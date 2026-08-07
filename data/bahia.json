@@ -1205,6 +1205,59 @@
           }
         }
       ]
+    },
+    "4": {
+      "roundNumber": 4,
+      "date": "2026-07-17",
+      "opponent": "chapecoense",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.34114000000001,
+            "y": 34.354
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "106822",
+            "name": "Rodrigo Nestor",
+            "fullName": "Rodrigo Nestor Bertalia",
+            "position": "Meia",
+            "side": null,
+            "team": "bahia"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 51
+          },
+          "shot": {
+            "x": 88.81695,
+            "y": 37.995239999999995
+          },
+          "assistPlayer": {
+            "id": "91772",
+            "name": "David Duarte",
+            "fullName": "David de Duarte Macedo",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "bahia"
+          },
+          "shotPlayer": {
+            "id": "132412",
+            "name": "Román Gómez",
+            "fullName": "Román Agustín Gómez",
+            "position": "Lateral",
+            "side": null,
+            "team": "bahia"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": []
     }
   }
 }
