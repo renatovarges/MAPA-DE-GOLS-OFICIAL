@@ -1306,6 +1306,59 @@
           }
         }
       ]
+    },
+    "4": {
+      "roundNumber": 4,
+      "date": "2026-07-17",
+      "opponent": "bahia",
+      "home": false,
+      "created_goals": [],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.65885999999999,
+            "y": 33.646
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "106822",
+            "name": "Rodrigo Nestor",
+            "fullName": "Rodrigo Nestor Bertalia",
+            "position": "Meia",
+            "side": null,
+            "team": "bahia"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 17
+          },
+          "shot": {
+            "x": 7.183049999999994,
+            "y": 30.004760000000005
+          },
+          "assistPlayer": {
+            "id": "91772",
+            "name": "David Duarte",
+            "fullName": "David de Duarte Macedo",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "bahia"
+          },
+          "shotPlayer": {
+            "id": "132412",
+            "name": "Román Gómez",
+            "fullName": "Román Agustín Gómez",
+            "position": "Lateral",
+            "side": null,
+            "team": "bahia"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
