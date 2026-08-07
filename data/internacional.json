@@ -1011,6 +1011,153 @@
           }
         }
       ]
+    },
+    "21": {
+      "roundNumber": 21,
+      "date": "2026-07-29",
+      "opponent": "flamengo",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 77.6645647,
+            "y": 33.75114
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "101960",
+            "name": "Vitinho",
+            "fullName": "Vitor Hugo Naum dos Santos",
+            "position": "Atacante",
+            "side": null,
+            "team": "internacional"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 39.666666666666664
+          },
+          "shot": {
+            "x": 8.706729999999993,
+            "y": 27.080760000000005
+          },
+          "assistPlayer": {
+            "id": "90285",
+            "name": "Bruno Henrique",
+            "fullName": "Bruno Henrique Pinto",
+            "position": "Atacante",
+            "side": null,
+            "team": "flamengo"
+          },
+          "shotPlayer": {
+            "id": "98873",
+            "name": "Samuel Lino",
+            "fullName": "Samuel Dias Lino",
+            "position": "Atacante",
+            "side": null,
+            "team": "flamengo"
+          }
+        }
+      ]
+    },
+    "18": {
+      "roundNumber": 18,
+      "date": "2026-05-31",
+      "opponent": "red-bull-bragantino",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 75,
+            "y": 39.66666666666667
+          },
+          "shot": {
+            "x": 73.6972829,
+            "y": 51.669239999999995
+          },
+          "assistPlayer": {
+            "id": "70944",
+            "name": "Bruno Henrique",
+            "fullName": "Bruno Henrique Corsini",
+            "position": "Meia",
+            "side": null,
+            "team": "internacional"
+          },
+          "shotPlayer": {
+            "id": "110510",
+            "name": "Aguirre",
+            "fullName": "Braian Nahuel Aguirre",
+            "position": "Lateral",
+            "side": null,
+            "team": "internacional"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.65885999999999,
+            "y": 33.646
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "72018",
+            "name": "Tiago Volpi",
+            "fullName": "Tiago Luis Volpi",
+            "position": "Goleiro",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 21,
+            "y": 28.33333333333333
+          },
+          "shot": {
+            "x": 24.945349599999986,
+            "y": 34.92052
+          },
+          "assistPlayer": {
+            "id": "112886",
+            "name": "Lucas Barbosa",
+            "fullName": "Lucas Henrique Barbosa",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "shotPlayer": {
+            "id": "100695",
+            "name": "Fernando",
+            "fullName": "Fernando dos Santos Pedro",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 24.469199599999996,
+            "y": 17.89252000000001
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "94968",
+            "name": "Juninho Capixaba",
+            "fullName": "Luis Antônio da Rocha Júnior",
+            "position": "Lateral",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        }
+      ]
     }
   }
 }
