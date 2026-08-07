@@ -1437,6 +1437,85 @@
           "isHeader": true
         }
       ]
+    },
+    "20": {
+      "roundNumber": 20,
+      "date": "2026-07-25",
+      "opponent": "santos",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 51
+          },
+          "shot": {
+            "x": 86.0867059,
+            "y": 38.95155999999999
+          },
+          "assistPlayer": {
+            "id": "68938",
+            "name": "Giovanni Augusto",
+            "fullName": "Giovanni Augusto Oliveira Cardoso",
+            "position": "Meia",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "shotPlayer": {
+            "id": "95332",
+            "name": "Marcinho",
+            "fullName": "Márcio Antônio de Sousa Júnior",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 39.666666666666664
+          },
+          "shot": {
+            "x": 12.508311599999999,
+            "y": 38.65464
+          },
+          "assistPlayer": {
+            "id": "126471",
+            "name": "Barreal",
+            "fullName": "Álvaro Martín Barreal",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          },
+          "shotPlayer": {
+            "id": "63007",
+            "name": "Neymar",
+            "fullName": "Neymar da Silva Santos Júnior",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.65885999999999,
+            "y": 33.646
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "63007",
+            "name": "Neymar",
+            "fullName": "Neymar da Silva Santos Júnior",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          },
+          "is_penalty": true
+        }
+      ]
     }
   }
 }
