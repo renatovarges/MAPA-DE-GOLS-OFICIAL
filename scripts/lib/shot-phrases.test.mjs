@@ -47,14 +47,33 @@ test("dimensao posicao ja NOMEIA a posicao no corpo da frase (nao usa clausula e
   assert.match(f, /o meia é quem mais finaliza/);
 });
 
-test("dimensao area: fora da área gera frase natural igual ao exemplo do Renato", () => {
+test("dimensao area: fora da área gera frase natural igual ao exemplo do Renato, com o substantivo explicito", () => {
   const f = gerarFrase(achado({ dimensao: "area", categoria: "fora-da-area", porJogo: 8 }), { time: "Vasco", lado: "shots_for" });
-  assert.equal(f, "O Vasco é um time que finaliza muito de fora da área — cerca de 8 por jogo.");
+  assert.equal(f, "O Vasco cria muitas finalizações de fora da área — cerca de 8 por jogo.");
 });
 
-test("dimensao ladoDaJogada gera frase de identidade, sem 'mais que a maioria'", () => {
+test("dimensao ladoDaJogada gera frase de identidade, sem 'mais que a maioria', com o substantivo explicito", () => {
   const f = gerarFrase(achado({ dimensao: "ladoDaJogada", categoria: "esquerda", porJogo: 5 }), { time: "Vasco", lado: "shots_for" });
-  assert.equal(f, "O Vasco é um time que constrói muito pelo lado esquerdo — cerca de 5 por jogo.");
+  assert.equal(f, "O Vasco cria muitas finalizações em jogadas construídas pelo lado esquerdo — cerca de 5 por jogo.");
+});
+
+test("REGRA (Renato, 3a rodada): toda frase nomeia o que esta sendo contado — nunca so a posicao, sem dizer 'o que'", () => {
+  const f = gerarFrase(achado({ dimensao: "posicao", categoria: "meia" }), { time: "Palmeiras", lado: "shots_against" });
+  assert.match(f, /finalizaç/i, "tem que dizer 'finalizações', nao so 'sofre do meia adversário'");
+  assert.equal(f, "O Palmeiras sofre muitas finalizações do meia adversário — cerca de 2 por jogo.");
+});
+
+test("assistentePosicao tambem nomeia 'assistências' explicitamente, nos dois lados", () => {
+  const cria = gerarFrase(achado({ dimensao: "assistentePosicao", categoria: "volante" }), { time: "Vasco", lado: "shots_for" });
+  const sofre = gerarFrase(achado({ dimensao: "assistentePosicao", categoria: "volante" }), { time: "Vasco", lado: "shots_against" });
+  assert.match(cria, /assistência/i);
+  assert.match(sofre, /assistência/i);
+});
+
+test("finalização de cabeça nunca é chamada de 'gol' (a base conta chute, nao gol)", () => {
+  const f = gerarFrase(achado({ dimensao: "parteDoCorpo", categoria: "cabeca" }), { time: "Cruzeiro", lado: "shots_against" });
+  assert.doesNotMatch(f, /\bgol\b/i);
+  assert.match(f, /finalizaç/i);
 });
 
 test("categoria que e 'o default do futebol' (share > 75%) nao vira frase", () => {

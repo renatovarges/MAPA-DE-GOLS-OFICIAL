@@ -82,80 +82,81 @@ export function gerarFrase(achado, { time, lado } = {}) {
   return corpo + posClausula;
 }
 
-/** monta a frase inteira (sem a cláusula de posição, que é anexada depois) por dimensão. */
+/**
+ * monta a frase inteira (sem a cláusula de posição, que é anexada depois)
+ * por dimensão.
+ *
+ * REGRA FIXA (Renato, 2026-08, terceira rodada): toda frase tem que deixar
+ * explícito O QUE está sendo contado — "sofre do meia adversário" não diz
+ * se é finalização, assistência ou gol; "sofre muitas finalizações do meia
+ * adversário" não deixa dúvida. Por isso cada `switch` abaixo nomeia
+ * "finalizações" (dimensões que contam chutes) ou "assistências" (as duas
+ * dimensões que contam quem armou a jogada) explicitamente no corpo da
+ * frase — nunca só implícito no verbo. Erro real que essa regra também
+ * corrigiu: "sofre gol de cabeça" dizia GOL quando o dado é sobre
+ * FINALIZAÇÃO (todo chute de cabeça, não só os que entraram) — imprecisão
+ * factual, não só de estilo.
+ */
 function descrever(dimensao, categoria, { time, cede, freq }) {
   const f = freq ? ` — ${freq}.` : ".";
+  const finaliza = cede ? "sofre muitas finalizações" : "cria muitas finalizações";
 
   switch (dimensao) {
     case "origem": {
       const l = ORIGEM_LABEL[categoria];
       if (!l) return null; // PASSE cai aqui
-      return cede
-        ? `O ${time} sofre bastante chance de ${l}${f}`
-        : `O ${time} é um time que cria muita chance de ${l}${f}`;
+      return `O ${time} ${finaliza} de ${l}${f}`;
     }
     case "posicao": {
       const l = POSICAO_LABEL[categoria];
       if (!l) return null;
       return cede
-        ? `O ${time} sofre bastante do ${l} adversário${f}`
+        ? `O ${time} ${finaliza} do ${l} adversário${f}`
         : `No ${time}, o ${l} é quem mais finaliza${f}`;
     }
     case "assistentePosicao": {
       const l = POSICAO_LABEL[categoria];
       if (!l) return null;
       return cede
-        ? `As chances que o ${time} sofre costumam nascer do ${l} adversário armando a jogada${f}`
-        : `No ${time}, o ${l} é quem mais arma as jogadas${f}`;
+        ? `O ${time} sofre muitas assistências do ${l} adversário${f}`
+        : `No ${time}, o ${l} é quem mais dá assistências${f}`;
     }
     case "parteDoCorpo":
       // "com o pé" é a esmagadora maioria — só cabeça informa algo.
       if (categoria !== "cabeca") return null;
-      return cede
-        ? `O ${time} sofre bastante gol de cabeça${f}`
-        : `O ${time} é um time que finaliza bastante de cabeça${f}`;
+      return `O ${time} ${finaliza} de cabeça${f}`;
     case "area": {
       const local = categoria === "dentro-da-area" ? "de dentro da área" : "de fora da área";
-      return cede
-        ? `O ${time} sofre bastante finalização ${local}${f}`
-        : `O ${time} é um time que finaliza muito ${local}${f}`;
+      return `O ${time} ${finaliza} ${local}${f}`;
     }
     case "contraAtaque":
       if (categoria !== "contra-ataque") return null;
-      return cede
-        ? `O ${time} é vulnerável ao contra-ataque${f}`
-        : `O ${time} é um time que usa bastante o contra-ataque${f}`;
+      return `O ${time} ${finaliza} em contra-ataque${f}`;
     case "ladoDaJogada": {
       const l = LADO_LABEL[categoria];
       if (!l) return null;
       return cede
-        ? `O ${time} sofre bastante pelo lado ${l} da própria defesa${f}`
-        : `O ${time} é um time que constrói muito pelo lado ${l}${f}`;
+        ? `O ${time} ${finaliza} vindas do lado ${l} da própria defesa${f}`
+        : `O ${time} ${finaliza} em jogadas construídas pelo lado ${l}${f}`;
     }
     case "origem+lado": {
       const [origem, ladoCampo] = categoria.split("|");
       const o = ORIGEM_LABEL[origem];
       const l = LADO_LABEL[ladoCampo];
       if (!o || !l) return null;
-      return cede
-        ? `O ${time} sofre bastante chance de ${o} pelo lado ${l}${f}`
-        : `O ${time} cria bastante chance de ${o} pelo lado ${l}${f}`;
+      return `O ${time} ${finaliza} de ${o} pelo lado ${l}${f}`;
     }
     case "origem+corpo": {
       const [origem, corpo] = categoria.split("|");
       const o = ORIGEM_LABEL[origem];
       if (!o || corpo !== "cabeca") return null;
-      return cede
-        ? `O ${time} sofre gol de cabeça em jogadas de ${o}${f}`
-        : `O ${time} cria bastante chance de ${o} finalizada de cabeça${f}`;
+      return `O ${time} ${finaliza} de cabeça em jogadas de ${o}${f}`;
     }
     case "lado+corpo": {
       const [ladoCampo, corpo] = categoria.split("|");
       const l = LADO_LABEL[ladoCampo];
       if (!l || corpo !== "cabeca") return null;
-      return cede
-        ? `O ${time} sofre gol de cabeça em jogadas pelo lado ${l}${f}`
-        : `O ${time} finaliza bastante de cabeça em jogadas pelo lado ${l}${f}`;
+      return `O ${time} ${finaliza} de cabeça em jogadas pelo lado ${l}${f}`;
     }
     default:
       return null;
