@@ -38,4 +38,12 @@ jobs:
           FOOTSTATS_EMAIL: ${{ secrets.FOOTSTATS_EMAIL }}
           FOOTSTATS_PASSWORD: ${{ secrets.FOOTSTATS_PASSWORD }}
           ENVIO_REAL: "1"
+          # alerta de falha (e-mail via Resend + WhatsApp via CallMeBot) —
+          # se algum secret não estiver configurado, aquele canal só é
+          # pulado (ver scripts/lib/alerts.mjs), nunca quebra o harvester.
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          ALERT_EMAIL_FROM: ${{ secrets.ALERT_EMAIL_FROM }}
+          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
+          CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
         run: node scripts/harvest_footstats_goals.mjs

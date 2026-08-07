@@ -1,5 +1,6 @@
 import { getFootstatsToken } from "./lib/footstats-auth.mjs";
 import { fetchJsonWithRetry } from "./lib/http.mjs";
+import { dispatchAlert } from "./lib/alerts.mjs";
 
 /**
  * Harvester automático de gols — Mapa de Finalizações
@@ -225,6 +226,7 @@ async function main() {
   let totalGols = 0, comAssistPossivel = 0, assistCasada = 0;
   let rodadasEnviadas = 0, rodadasPuladas = 0;
   const divergenciasPlacar = [];
+  const partidasComErro = [];
 
   // LIMITE_ENVIOS: pra depois do susto do 502 (muitos /api/save-round em
   // sequência pareceram esgotar algum recurso do servidor pequeno do
@@ -258,6 +260,7 @@ async function main() {
       ]);
     } catch (e) {
       console.log(`  ! partida ${m.id} (${homeSlug} x ${awaySlug}): ${e.message}`);
+      partidasComErro.push(`${homeSlug} x ${awaySlug} (id ${m.id}): ${e.message}`);
       continue;
     }
 
@@ -368,9 +371,25 @@ async function main() {
   if (!ENVIO_REAL) {
     console.log("\nEssa foi uma SIMULAÇÃO — nada foi gravado. Rode de novo com ENVIO_REAL=1 pra gravar de verdade no site ao vivo.");
   }
+
+  // aviso (não fatal) — se alguma partida individual falhou ao buscar dado
+  // da FootStats, ninguém fica sabendo só pelo log do GitHub Actions (que
+  // não é lido todo dia); manda um e-mail/WhatsApp resumindo o que faltou.
+  if (ENVIO_REAL && partidasComErro.length) {
+    await dispatchAlert({
+      title: `${partidasComErro.length} partida(s) não atualizaram (erro ao buscar na FootStats)`,
+      details: partidasComErro.join("\n"),
+    });
+  }
 }
 
-main().catch((e) => {
+main().catch(async (e) => {
   console.error("✗", e);
+  if (process.env.ENVIO_REAL === "1") {
+    await dispatchAlert({
+      title: "harvester falhou por completo — nenhuma rodada foi atualizada",
+      details: String(e && e.stack ? e.stack : e),
+    }).catch(() => {}); // alerta é best-effort — nunca deve mascarar o erro original
+  }
   process.exitCode = 1;
 });
