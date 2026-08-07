@@ -3,13 +3,17 @@ name: Atualizar gols via FootStats
 # Roda sozinho todo dia às 09:00 UTC (06:00 no horário de Brasília) e também
 # pode ser disparado manualmente pela aba "Actions" do GitHub (botão "Run
 # workflow") — use o disparo manual pra TESTAR antes de confiar no agendado.
+#
+# O harvester (scripts/harvest_footstats_goals.mjs) NÃO grava mais arquivo
+# local nem comita no Git — ele fala direto com o site ao vivo
+# (POST /api/save-round, o mesmo endpoint do editor manual). É o PRÓPRIO
+# servidor quem grava no disco e sincroniza com o GitHub depois. Por isso
+# esse workflow não precisa (nem deve) fazer commit/push — só rodar o
+# script com ENVIO_REAL=1.
 on:
   schedule:
     - cron: "0 9 * * *"
   workflow_dispatch: {}
-
-permissions:
-  contents: write
 
 jobs:
   harvest:
@@ -29,20 +33,9 @@ jobs:
         working-directory: scripts
         run: npx playwright install --with-deps chromium
 
-      - name: Rodar harvester da FootStats
+      - name: Rodar harvester da FootStats (grava direto no site ao vivo)
         env:
           FOOTSTATS_EMAIL: ${{ secrets.FOOTSTATS_EMAIL }}
           FOOTSTATS_PASSWORD: ${{ secrets.FOOTSTATS_PASSWORD }}
+          ENVIO_REAL: "1"
         run: node scripts/harvest_footstats_goals.mjs
-
-      - name: Publicar mudancas (se houver)
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/
-          if git diff --cached --quiet; then
-            echo "Nenhuma rodada nova — nada pra publicar."
-          else
-            git commit -m "Atualiza gols via FootStats (automatico)"
-            git push
-          fi

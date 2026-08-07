@@ -12,7 +12,15 @@ import { chromium } from "playwright";
  *
  * Precisa de FOOTSTATS_EMAIL / FOOTSTATS_PASSWORD num .env.local nesta
  * pasta (mesmas credenciais usadas no outro projeto).
+ *
+ * TIMEOUT GENEROSO DE PROPÓSITO (2026-08): medido ao vivo, a página de
+ * login às vezes leva até ~55s pra ficar de fato pronta (o site da
+ * FootStats é lento, não é uma falha de rede daqui) — o padrão do
+ * Playwright (30s) já falhou por causa disso. Como isso agora roda sozinho
+ * (GitHub Actions, sem ninguém pra simplesmente tentar de novo), a margem
+ * tem que ser folgada.
  */
+const TIMEOUT_MS = 90000;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..", "..");
@@ -22,15 +30,15 @@ async function loginViaBrowser(email, password) {
   const browser = await chromium.launch();
   try {
     const page = await browser.newPage();
-    await page.goto("https://old.footstats.com.br/", { waitUntil: "networkidle" });
+    await page.goto("https://old.footstats.com.br/", { waitUntil: "networkidle", timeout: TIMEOUT_MS });
 
-    await page.waitForSelector('input[type="password"]', { timeout: 15000 });
+    await page.waitForSelector('input[type="password"]', { timeout: TIMEOUT_MS });
     await page.fill('input[type="text"], input[name="username"]', email);
     await page.fill('input[type="password"]', password);
     await page.click('input[type="submit"], button[type="submit"]');
 
-    await page.waitForURL(/old\.footstats\.com\.br/, { timeout: 15000 });
-    await page.waitForLoadState("networkidle");
+    await page.waitForURL(/old\.footstats\.com\.br/, { timeout: TIMEOUT_MS });
+    await page.waitForLoadState("networkidle", { timeout: TIMEOUT_MS });
 
     const token = await page.evaluate(() => localStorage.getItem("Bearer"));
     if (!token) {

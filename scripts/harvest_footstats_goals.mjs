@@ -1,123 +1,112 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { getFootstatsToken } from "./lib/footstats-auth.mjs";
 import { fetchJsonWithRetry } from "./lib/http.mjs";
 
 /**
  * Harvester automático de gols — Mapa de Finalizações
  * ----------------------------------------------------
- * Substitui o registro manual (assistir o vídeo de melhores momentos e
- * clicar no campo) por dado direto da API da FootStats: quem chutou, quem
- * assistiu, de onde saiu o chute, de onde saiu o passe, e se foi pênalti.
+ * Substitui o registro manual (assistir vídeo de melhores momentos e clicar
+ * no campo) por dado direto da API da FootStats.
+ *
+ * ACHADO CRÍTICO DE ARQUITETURA (2026-08, descoberto só depois de publicar
+ * a primeira versão e o Renato notar que o site não mudou nada): o Render
+ * hospeda esse serviço com um DISCO PERSISTENTE de 10GB — a pasta `data/`
+ * que o servidor de fato lê NÃO vem do Git a cada deploy, ela mora nesse
+ * disco, que sobrevive entre deploys e só é alimentada por quem ESCREVE
+ * NELE EM TEMPO REAL (o próprio servidor rodando, via `/api/save-round`).
+ * Confirmado comparando o header `Last-Modified` de dois arquivos do MESMO
+ * deploy: um script novo veio com data de hoje, `data/flamengo.json` veio
+ * com data de maio — meses atrás. Ou seja: a primeira versão deste
+ * harvester escrevia só no Git, o commit chegava certinho no GitHub, mas
+ * NUNCA alcançava o disco que o site realmente serve. Por isso agora:
+ *
+ *   1. Este script NÃO escreve mais arquivo local nenhum. Ele CONSULTA o
+ *      site AO VIVO (`SITE_URL/data/{time}.json`) pra saber quais rodadas
+ *      já existem de verdade, e ENVIA as que faltam pro MESMO endpoint que
+ *      o editor manual usa (`POST SITE_URL/api/save-round`) — exatamente
+ *      como se um humano tivesse clicado "Salvar rodada". O próprio
+ *      servidor cuida de gravar no disco E de sincronizar com o GitHub
+ *      (usa o `GITHUB_TOKEN` que já está configurado lá, ver server.py).
+ *   2. `/api/save-round` NÃO tem nenhuma proteção contra sobrescrita — quem
+ *      chama decide o que manda. Por isso a checagem "essa rodada já existe
+ *      pra esse time?" agora é feita AQUI, contra o dado ao vivo, e o
+ *      payload manda `home: null` ou `away: null` pro lado que já existe,
+ *      pra nunca sobrescrever nada que já esteja lá (nem manual, nem de uma
+ *      execução anterior deste script).
+ *   3. Por padrão o script roda em MODO SIMULAÇÃO (não envia nada de
+ *      verdade, só mostra o que enviaria) — só grava em produção com
+ *      `ENVIO_REAL=1`. Depois do susto de descobrir que a v1 não fazia
+ *      nada, essa trava existe pra nunca mais rodar isso "no escuro".
+ *
+ * SEGUNDO ACHADO CRÍTICO (mesmo dia): mandar várias rodadas em sequência
+ * derrubava o site com erro 502, mesmo com pausa entre os envios. Causa
+ * real, achada no log do Render: o serviço estava com "Auto-Deploy: On
+ * Commit" — cada `/api/save-round` bem-sucedido comita no GitHub, e cada
+ * commit disparava um REDEPLOY COMPLETO do serviço (~25s de reinício). Uma
+ * rodada nova enviada durante essa janela de reinício batia num servidor
+ * caindo ou ainda subindo = 502. A correção foi desligar o Auto-Deploy no
+ * Render (Settings > Build & Deploy > Auto-Deploy > Off) — sem prejuízo
+ * nenhum, porque o dado já fica ao vivo no disco no instante em que
+ * `/api/save-round` grava, ANTES até do commit no GitHub começar; o
+ * redeploy automático nunca foi necessário pra dado aparecer no site, só
+ * pra código (index.html/script.js/server.py cru). Com Auto-Deploy
+ * desligado, atualização de CÓDIGO passa a exigir "Manual Deploy" no
+ * painel do Render — atualização de DADO continua 100% automática.
  *
  * O QUE VEM DIRETO DA FOOTSTATS (preciso, não aproximado):
- *   - shotPlayer / assistPlayer (quem chutou / quem assistiu): o
- *     `atleta_id`/`atleta_id_assistente` da FootStats bate EXATO com o id
- *     já usado neste projeto (confirmado contra o gol real do Bidon/Garro,
- *     rodada 1, Corinthians x Bahia).
+ *   - shotPlayer / assistPlayer: `atleta_id`/`atleta_id_assistente` batem
+ *     EXATO com o id já usado neste projeto.
  *   - is_penalty: originOfShot === "PENALTI".
- *   - isHeader: bodyPart === "CABECA" — confirmado exato contra um gol de
- *     cabeça real já registrado neste repositório (Aguirre, Athletico-PR).
- *   - se foi gol: campo `goal` (booleano), sem precisar inferir de ícone.
- *   - coordenada do lado que SOFREU o gol: EXATA — é a rotação 180° da
- *     coordenada de quem fez o gol, igual ao que o próprio script.js já faz
- *     (`{x: PITCH.maxX - x, y: PITCH.maxY - y}`, PITCH.maxX=96, maxY=68).
- *     Confirmado byte a byte contra o par corinthians.json/bahia.json da
- *     rodada 1.
+ *   - isHeader: bodyPart === "CABECA".
+ *   - se foi gol: campo `goal` (booleano).
+ *   - coordenada do lado que SOFREU o gol: EXATA — rotação 180° da
+ *     coordenada de quem fez o gol (`{x: PITCH.maxX - x, y: PITCH.maxY - y}`,
+ *     PITCH.maxX=96, maxY=68 — mesma fórmula do script.js).
  *
  * O QUE É APROXIMADO (aceito explicitamente pelo Renato, 2026-08):
- *   - shot.{x,y} (onde saiu o chute que virou gol): a FootStats não usa a
- *     mesma escala/orientação do Mapa (o campo deles é desenhado deitado; o
- *     daqui, em pé). Calibrado por regressão linear contra ~330 gols JÁ
- *     registrados manualmente neste repositório — R²≈0.77 nos dois eixos.
- *   - pass.{x,y} (de onde saiu o passe da assistência): vem da grade de 36
- *     quadrantes da FootStats (fundamento "Assistência"/"Assistência pra
- *     finalização"), usando o CENTRO do quadrante como ponto — dá a região
- *     certa, não o pixel exato do clique manual.
+ *   - shot.{x,y}: regressão linear calibrada contra ~330 gols já
+ *     registrados manualmente — R²≈0.77 nos dois eixos.
+ *   - pass.{x,y}: centro do quadrante (grade 6x6) do fundamento
+ *     "Assistência"/"Assistência pra finalização" da FootStats. A ponte
+ *     entre o ID interno da FootStats (usado nesse fundamento) e o ID
+ *     estilo Cartola (usado na lista de gols) é construída PRA CADA
+ *     PARTIDA a partir dos próprios chutes (cada chute traz os dois IDs do
+ *     mesmo jogador lado a lado) — sem essa ponte, os dois nunca casam
+ *     (taxa de acerto medida: 98,4%, 63/64 assistências reais testadas).
  *
- * O QUE FICA DE FORA (investigado e descartado, 2026-08 — não é falta de
- * esforço, é limitação real da fonte):
- *   - own_goal (gol contra): a FootStats NÃO registra gol contra como
- *     finalização de ninguém. Confirmado batendo o placar OFICIAL contra a
- *     lista de chutes de um jogo real (Atlético-MG 2x2 Palmeiras, rodada 1,
- *     com um gol contra do Khellven já registrado manualmente aqui): o
- *     placar oficial soma 4 gols, a lista de chutes só trouxe 3 — falta
- *     exatamente o gol contra. Continua manual.
- *   - isSetPiece (assistência de bola parada): testado contra 2 exemplos
- *     reais já marcados aqui. Nos dois, a FootStats classificou a origem
- *     como "CRUZAMENTO" — a MESMA tag usada pra cruzamento de jogo aberto.
- *     A FootStats tem tags específicas de bola parada (FALTA, ESCANTEIO),
- *     mas os exemplos reais não vieram com elas. Sem um sinal que separe
- *     "cruzamento de bola parada" de "cruzamento de jogo aberto", não dá
- *     pra automatizar sem errar boa parte — fica manual também.
- *
- * ACHADO IMPORTANTE (2026-08, graças a um print real que o Renato mandou da
- * própria tela da FootStats): a FootStats usa DOIS sistemas de ID de
- * jogador em paralelo dentro da MESMA partida — um "estilo Cartola"
- * (`atleta_id`/`atleta_id_assistente`, usado na lista de chutes) e um
- * INTERNO da FootStats (`idPlayer`, usado na grade de 36 quadrantes). Os
- * dois números NUNCA coincidem pro mesmo jogador. Primeira tentativa
- * (comparar `atleta_id_assistente` direto contra `idPlayer`) dava 0% de
- * acerto — parecia que os dois dados simplesmente não se cruzavam. A
- * correção: construir, PRA CADA PARTIDA, uma ponte idPlayer->atleta_id
- * usando os próprios chutes da partida (cada chute já traz os dois IDs do
- * mesmo jogador, `idPlayer`+`atleta_id` pro artilheiro e
- * `idAssistantPlayer`+`atleta_id_assistente` pro assistente) — e traduzir
- * a lista de assistências por essa ponte antes de comparar. Com isso, taxa
- * de acerto real medida em 64 assistências de gol (30 partidas): 98,4%
- * (63/64). O 1 caso que não casou é aceitável (jogador sem nenhum chute na
- * partida pra alimentar a ponte, ou assistência não capturada nesse
- * fundamento — raro).
- *
- * Quando o mesmo jogador dá mais de uma assistência na mesma partida
- * (raro), a FootStats não grava minuto no dado de zona — os eventos são
- * consumidos em ORDEM (fila), pareados com os gols do jogador também em
- * ordem cronológica (via timePlayInSeconds do chute). Funciona bem no caso
- * comum; no caso raro de 2+ assistências do mesmo jogador pode trocar qual
- * zona vai pra qual gol.
- *
- * SEGURANÇA: NUNCA sobrescreve uma rodada que já existe no arquivo do time
- * (rodada já registrada manualmente = intocável). Só PREENCHE rodadas
- * ausentes. Roda de novo quantas vezes quiser sem risco de duplicar ou
- * perder trabalho manual já feito.
+ * O QUE FICA DE FORA (testado e descartado — limitação real da fonte, não
+ * falta de esforço):
+ *   - own_goal (gol contra): a FootStats não registra em NENHUM endpoint
+ *     testado. Confirmado batendo o placar oficial contra os gols achados
+ *     (ver `divergenciasPlacar` abaixo) — quando não bate, é sempre isso.
+ *     Continua manual; o script avisa exatamente em qual jogo procurar.
  *
  * Como rodar (a partir da RAIZ do repositório):
  *   1. cd scripts && npm install && cd ..
  *      (o package.json fica DENTRO de scripts/, de propósito — a raiz do
  *      repositório precisa continuar "limpa" de Node pro Render, que só
- *      espera Python aqui, ver render.yaml. Node acha node_modules subindo
- *      pastas a partir de onde o script está, então isso não muda nada na
- *      hora de rodar o harvester em si.)
+ *      espera Python aqui, ver render.yaml.)
  *   2. cd scripts && npx playwright install --with-deps chromium && cd ..
- *      (baixa o navegador headless, pula se já tiver instalado por outro
- *      projeto na mesma máquina)
  *   3. Criar um arquivo .env.local NA RAIZ do repositório com:
  *        FOOTSTATS_EMAIL=seu-email
  *        FOOTSTATS_PASSWORD=sua-senha
  *   4. node --env-file=.env.local scripts/harvest_footstats_goals.mjs
- *      (ou LIMITE_PARTIDAS=5 node --env-file=.env.local scripts/... pra
- *      testar só nas 5 primeiras partidas antes de rodar a temporada toda)
+ *      → roda em modo SIMULAÇÃO, só mostra o que faria.
+ *   5. ENVIO_REAL=1 node --env-file=.env.local scripts/harvest_footstats_goals.mjs
+ *      → agora sim grava de verdade no site ao vivo.
+ *      (LIMITE_PARTIDAS=5 antes do comando testa só nas 5 primeiras partidas)
  *
  * Também roda sozinho, todo dia, via GitHub Actions — ver
  * .github/workflows/harvest-footstats.yml.
- *
- * Gera um RELATÓRIO no final (quantas rodadas preencheu, quantas já
- * existiam e foram puladas, taxa de casamento de assistência) — revise o
- * `git diff` antes de commitar.
  */
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT = path.resolve(__dirname, "..");
-const DATA_DIR = path.join(ROOT, "data");
 
 const CAMPEONATO_ID = 1395;
 const API_BASE = "https://gather-api-app.footstats.com.br";
 const CARTOLA_API = "https://api.cartola.globo.com/atletas/mercado";
+const SITE_URL = process.env.SITE_URL || "https://mapa-de-gols-oficial.onrender.com";
+const ENVIO_REAL = process.env.ENVIO_REAL === "1";
 
-// clube_id (Cartola) -> slug do time, mesmo esquema já usado nos dois lados
-// (server.py::CLUBE_ID_TO_KEY e o pipeline do projeto "Linha") — os 20 IDs
-// foram conferidos batendo os dois dicionários, são idênticos.
+// clube_id (Cartola) -> slug do time — os 20 IDs foram conferidos batendo
+// com server.py::CLUBE_ID_TO_KEY do próprio site, são idênticos.
 const CLUBE_ID = {
   262: "flamengo", 263: "botafogo", 264: "corinthians", 265: "bahia", 266: "fluminense",
   267: "vasco", 275: "palmeiras", 276: "sao-paulo", 277: "santos", 280: "red-bull-bragantino",
@@ -126,13 +115,10 @@ const CLUBE_ID = {
 };
 const NORMALIZE_KEY = { athletico_pr: "athletico-pr", atletico_mg: "atletico-mg", sao_paulo: "sao-paulo", red_bull_bragantino: "red-bull-bragantino" };
 
-// PITCH do próprio script.js — unidades lógicas do campo (não são 0-100 nos
-// dois eixos: largura lógica 100, altura lógica 68, como um campo real).
+// PITCH do próprio script.js — unidades lógicas do campo (largura lógica
+// 100, altura lógica 68, como um campo real — não é 0-100 nos dois eixos).
 const PITCH = { unitsX: 100, unitsY: 68, maxX: 96, maxY: 68 };
 
-// Regressão linear ajustada contra ~330 gols reais já registrados neste
-// repositório (ver cabeçalho). fsX/fsY = fieldPositionX/Y da FootStats —
-// os eixos saem TROCADOS entre os dois sistemas (confirmado empiricamente).
 function footstatsToShotXY(fsX, fsY) {
   const x = clamp(-0.09523 * fsY + 92.15, 0, PITCH.unitsX);
   const y = clamp(0.08600 * fsX + 0.47, 0, PITCH.unitsY);
@@ -148,47 +134,30 @@ function rotate180(pt) {
 /** centro do quadrante 1-36 (grade 6x6) em unidades lógicas do campo. */
 function quadrantCentroid(idQuadrant36) {
   if (!Number.isInteger(idQuadrant36) || idQuadrant36 < 1 || idQuadrant36 > 36) return null;
-  const col = Math.ceil(idQuadrant36 / 6); // 1-6, terço defensivo->ofensivo
-  const row = ((idQuadrant36 - 1) % 6) + 1; // 1-6, flanco A -> flanco B
+  const col = Math.ceil(idQuadrant36 / 6);
+  const row = ((idQuadrant36 - 1) % 6) + 1;
   return { x: ((col - 0.5) / 6) * PITCH.unitsX, y: ((row - 0.5) / 6) * PITCH.unitsY };
 }
-
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-const readJSON = (p) => JSON.parse(fs.readFileSync(p, "utf8"));
 
 async function authedGet(url, token) {
   return fetchJsonWithRetry(url, { headers: { Authorization: `Bearer ${token}` } });
 }
 
-/** roster de jogadores (id -> nome/posição) via API oficial do Cartola — mesma fonte que server.py já usa pro autocomplete do editor. */
+/** roster de jogadores (id -> nome/posição) via API oficial do Cartola. */
 async function buildRoster() {
-  const data = await fetchJsonWithRetry(CARTOLA_API, {
-    headers: { "User-Agent": "Mozilla/5.0", Accept: "application/json" },
-  });
+  const data = await fetchJsonWithRetry(CARTOLA_API, { headers: { "User-Agent": "Mozilla/5.0", Accept: "application/json" } });
   const posicaoNome = { 1: "Goleiro", 2: "Lateral", 3: "Zagueiro", 4: "Meia", 5: "Atacante", 6: "Técnico" };
   const roster = new Map();
   for (const a of data.atletas || []) {
     roster.set(String(a.atleta_id), {
-      id: String(a.atleta_id),
-      name: a.apelido || a.nome,
-      fullName: a.nome,
-      position: posicaoNome[a.posicao_id] || "",
-      side: null,
+      id: String(a.atleta_id), name: a.apelido || a.nome, fullName: a.nome,
+      position: posicaoNome[a.posicao_id] || "", side: null,
     });
   }
   return roster;
 }
 
-/**
- * playerRef — o campo `team` é SEMPRE o time de quem marcou o gol NAQUELA
- * partida (`teamNaPartida`, vindo de `equipe_id` do próprio chute), nunca o
- * time atual do jogador na API ao vivo do Cartola. BUG REAL achado em teste
- * (2026-08): usar o clube do roster ao vivo marcava o jogador no time pro
- * qual ele foi transferido DEPOIS da partida (ex: Gilberto, que jogava pelo
- * Bahia na rodada 1, saiu marcado como Athletico-PR). Nome/posição podem
- * vir do roster atual sem problema (não muda com transferência); só o time
- * precisa ser o da partida.
- */
+/** team = SEMPRE o time de quem marcou NAQUELA partida — nunca o clube atual do jogador (ver types no cabeçalho: transferência já causou bug real aqui). */
 function playerRef(roster, footstatsId, teamNaPartida) {
   if (!footstatsId || Number(footstatsId) <= 0) return null;
   const found = roster.get(String(footstatsId));
@@ -196,13 +165,7 @@ function playerRef(roster, footstatsId, teamNaPartida) {
   return { id: String(footstatsId), name: "?", fullName: "?", position: "", side: null, team: teamNaPartida };
 }
 
-/**
- * buildIdBridge — idPlayer (interno da FootStats, usado no
- * fieldPositionByMatch) -> atleta_id (estilo Cartola, usado na lista de
- * chutes), construída a partir dos PRÓPRIOS chutes dessa partida (cada
- * chute já traz os dois IDs do mesmo jogador lado a lado). Ver o achado no
- * cabeçalho do arquivo — sem essa ponte, os dois endpoints nunca casam.
- */
+/** ponte idPlayer (interno FootStats) -> atleta_id (estilo Cartola), construída a partir dos chutes da própria partida — ver achado no cabeçalho. */
 function buildIdBridge(matchShots) {
   const bridge = new Map();
   for (const s of matchShots) {
@@ -212,7 +175,39 @@ function buildIdBridge(matchShots) {
   return bridge;
 }
 
+/** busca as rodadas já existentes AO VIVO pra um time — fonte de verdade agora é o site, não o Git (ver achado no cabeçalho). */
+const cacheRodadasExistentes = new Map();
+async function rodadasExistentesDoTime(slug) {
+  const normalized = NORMALIZE_KEY[slug] || slug;
+  if (cacheRodadasExistentes.has(normalized)) return cacheRodadasExistentes.get(normalized);
+  let existentes = new Set();
+  try {
+    const data = await fetchJsonWithRetry(`${SITE_URL}/data/${normalized}.json?t=${Date.now()}`);
+    existentes = new Set(Object.keys(data.rounds || {}));
+  } catch (e) {
+    console.log(`  ! não consegui ler data/${normalized}.json ao vivo (${e.message}) — assumindo vazio, cuidado`);
+  }
+  cacheRodadasExistentes.set(normalized, existentes);
+  return existentes;
+}
+
+async function salvarRodada(payload) {
+  if (!ENVIO_REAL) {
+    console.log(`  [SIMULAÇÃO] enviaria rodada ${payload.roundNumber}: ${payload.homeTeamKey} x ${payload.awayTeamKey} (home=${!!payload.home}, away=${!!payload.away})`);
+    return { ok: true, simulado: true };
+  }
+  const res = await fetch(`${SITE_URL}/api/save-round`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.ok) throw new Error(`save-round falhou (HTTP ${res.status}): ${JSON.stringify(body)}`);
+  return body;
+}
+
 async function main() {
+  console.log(`→ modo: ${ENVIO_REAL ? "ENVIO REAL (grava no site ao vivo)" : "SIMULAÇÃO (nada é enviado — rode com ENVIO_REAL=1 pra gravar de verdade)"}`);
+  console.log(`→ site alvo: ${SITE_URL}`);
+
   console.log("→ carregando elenco (API oficial do Cartola) ...");
   const roster = await buildRoster();
   console.log(`  ${roster.size} jogadores mapeados`);
@@ -227,25 +222,33 @@ async function main() {
   if (Number.isFinite(limite) && limite > 0) jogadas = jogadas.slice(0, limite);
   console.log(`  ${jogadas.length} partidas finalizadas com scout${limite ? ` (LIMITE_PARTIDAS=${limite})` : ""}`);
 
-  // acumulador: slug -> rodada -> { roundNumber, date, opponent, home, created_goals, conceded_goals }
-  const porTime = new Map();
-  const getAcc = (slug, rodada, opponentSlug, home, date) => {
-    if (!porTime.has(slug)) porTime.set(slug, new Map());
-    const rodadas = porTime.get(slug);
-    if (!rodadas.has(rodada)) {
-      rodadas.set(rodada, { roundNumber: rodada, date, opponent: opponentSlug, home, created_goals: [], conceded_goals: [] });
-    }
-    return rodadas.get(rodada);
-  };
-
   let totalGols = 0, comAssistPossivel = 0, assistCasada = 0;
-  const divergenciasPlacar = []; // jogos onde o placar oficial não bate com os gols achados — quase sempre gol contra (ver cabeçalho)
+  let rodadasEnviadas = 0, rodadasPuladas = 0;
+  const divergenciasPlacar = [];
+
+  // LIMITE_ENVIOS: pra depois do susto do 502 (muitos /api/save-round em
+  // sequência pareceram esgotar algum recurso do servidor pequeno do
+  // Render) — permite mandar em lotes controlados, com pausa entre lotes.
+  const limiteEnvios = Number(process.env.LIMITE_ENVIOS);
+  const temLimiteEnvios = Number.isFinite(limiteEnvios) && limiteEnvios > 0;
 
   for (let i = 0; i < jogadas.length; i++) {
+    if (temLimiteEnvios && rodadasEnviadas >= limiteEnvios) {
+      console.log(`\n(parando aqui — LIMITE_ENVIOS=${limiteEnvios} atingido; rode de novo pra continuar o restante)`);
+      break;
+    }
     const m = jogadas[i];
     const homeSlug = CLUBE_ID[m.sdE_EQUIPE_MANDANTE_ID];
     const awaySlug = CLUBE_ID[m.sdE_EQUIPE_VISITANTE_ID];
     if (!homeSlug || !awaySlug) continue;
+
+    const rodada = Number(m.round);
+    const [existentesHome, existentesAway] = await Promise.all([
+      rodadasExistentesDoTime(homeSlug), rodadasExistentesDoTime(awaySlug),
+    ]);
+    const homeJaExiste = existentesHome.has(String(rodada));
+    const awayJaExiste = existentesAway.has(String(rodada));
+    if (homeJaExiste && awayJaExiste) { rodadasPuladas++; continue; } // já registrado dos dois lados — intocável
 
     let shotDetail, fieldPos;
     try {
@@ -260,10 +263,8 @@ async function main() {
 
     const matchShots = shotDetail.matchShots || [];
     const gols = matchShots.filter((s) => s.goal).sort((a, b) => (a.timePlayInSeconds ?? 0) - (b.timePlayInSeconds ?? 0));
+    if (!gols.length) continue;
 
-    // conferência de placar: gol contra nunca aparece em matchShots (ver
-    // cabeçalho), então uma partida com gol contra sempre vai ter menos gols
-    // aqui do que no placar oficial — é o sinal de "olha aqui, falta 1 manual".
     const placarOficial = (Number(m.goalshome) || 0) + (Number(m.goalsaway) || 0);
     if (placarOficial > 0 && gols.length !== placarOficial) {
       divergenciasPlacar.push({
@@ -271,10 +272,7 @@ async function main() {
         oficial: placarOficial, achados: gols.length,
       });
     }
-    if (!gols.length) continue;
 
-    // ponte de ID pra essa partida + fila de eventos de assistência por
-    // atleta_id (já traduzido), consumida em ordem — ver cabeçalho.
     const bridge = buildIdBridge(matchShots);
     const filaAssistPorAtletaId = new Map();
     for (const ev of fieldPos.data || []) {
@@ -286,8 +284,8 @@ async function main() {
       filaAssistPorAtletaId.get(key).push(ev);
     }
 
-    const rodada = Number(m.round);
     const dataISO = m.date ? m.date.slice(0, 10) : null;
+    const createdHome = [], concededHome = [], createdAway = [], concededAway = [];
 
     for (const s of gols) {
       totalGols++;
@@ -298,7 +296,6 @@ async function main() {
       const timeQueSofreu = timeQueMarcou === homeSlug ? awaySlug : homeSlug;
 
       const shotXY = footstatsToShotXY(s.fieldPositionX, s.fieldPositionY);
-
       let passXY = null;
       if (!isPenalty && s.atleta_id_assistente > 0) {
         comAssistPossivel++;
@@ -309,54 +306,52 @@ async function main() {
 
       const shotPlayer = playerRef(roster, s.atleta_id, timeQueMarcou);
       const assistPlayer = isPenalty ? null : playerRef(roster, s.atleta_id_assistente, timeQueMarcou);
-
-      const flags = {
-        ...(isPenalty ? { is_penalty: true } : {}),
-        ...(isHeader ? { isHeader: true } : {}),
-      };
+      const flags = { ...(isPenalty ? { is_penalty: true } : {}), ...(isHeader ? { isHeader: true } : {}) };
       const golCriado = { pass: passXY, shot: shotXY, assistPlayer, shotPlayer, ...flags };
       const golSofrido = { pass: passXY ? rotate180(passXY) : null, shot: rotate180(shotXY), assistPlayer, shotPlayer, ...flags };
 
-      const homeDoTimeQueMarcou = timeQueMarcou === homeSlug;
-      getAcc(timeQueMarcou, rodada, timeQueSofreu, homeDoTimeQueMarcou, dataISO).created_goals.push(golCriado);
-      getAcc(timeQueSofreu, rodada, timeQueMarcou, !homeDoTimeQueMarcou, dataISO).conceded_goals.push(golSofrido);
+      if (timeQueMarcou === homeSlug) { createdHome.push(golCriado); concededAway.push(golSofrido); }
+      else { createdAway.push(golCriado); concededHome.push(golSofrido); }
+    }
+
+    // payload no MESMO formato que script.js::computeRoundPayload manda pro
+    // /api/save-round — home/away vem null pro lado que já existe, pra
+    // nunca sobrescrever o que já está registrado nesse time.
+    const payload = {
+      roundNumber: rodada, homeTeamKey: homeSlug, awayTeamKey: awaySlug,
+      home: homeJaExiste ? null : { roundNumber: rodada, date: dataISO, opponent: awaySlug, home: true, created_goals: createdHome, conceded_goals: concededHome },
+      away: awayJaExiste ? null : { roundNumber: rodada, date: dataISO, opponent: homeSlug, home: false, created_goals: createdAway, conceded_goals: concededAway },
+    };
+
+    try {
+      await salvarRodada(payload);
+      rodadasEnviadas++;
+      // pausa pequena só pra não bater a API do GitHub rápido demais com os
+      // commits automáticos. A causa REAL do 502 em cadeia era outra
+      // (Auto-Deploy "On Commit" do Render reiniciando o serviço a cada
+      // commit — desligado agora, ver cabeçalho), então isso aqui não
+      // precisa mais ser uma pausa longa.
+      if (ENVIO_REAL) await new Promise((r) => setTimeout(r, 2000));
+    } catch (e) {
+      console.log(`  ! falha ao salvar rodada ${rodada} (${homeSlug} x ${awaySlug}): ${e.message}`);
     }
 
     if ((i + 1) % 20 === 0) console.log(`  ${i + 1}/${jogadas.length} partidas processadas...`);
-    await sleep(150);
   }
 
   const pctAssist = comAssistPossivel ? ((assistCasada / comAssistPossivel) * 100).toFixed(1) : "—";
   console.log(`\n→ ${totalGols} gols processados | assistência com zona casada: ${assistCasada}/${comAssistPossivel} (${pctAssist}%)`);
-
-  // ---- grava, SEM NUNCA sobrescrever rodada já existente ----
-  let preenchidas = 0, puladas = 0;
-  for (const [slug, rodadas] of porTime) {
-    const normalized = NORMALIZE_KEY[slug] || slug;
-    const filePath = path.join(DATA_DIR, `${normalized}.json`);
-    const existing = fs.existsSync(filePath) ? readJSON(filePath) : { rounds: {} };
-    if (!existing.rounds || typeof existing.rounds !== "object") existing.rounds = {};
-
-    for (const [rodadaNum, obj] of rodadas) {
-      const key = String(rodadaNum);
-      if (existing.rounds[key]) {
-        puladas++;
-        continue; // já registrado manualmente (ou por execução anterior) — intocável
-      }
-      existing.rounds[key] = obj;
-      preenchidas++;
-    }
-    fs.writeFileSync(filePath, JSON.stringify(existing, null, 2));
-  }
-
-  console.log(`\n✓ ${preenchidas} rodadas novas preenchidas | ${puladas} já existiam e foram puladas (não sobrescritas)`);
-  console.log("  Revise com 'git diff' antes de commitar.");
+  console.log(`✓ ${rodadasEnviadas} rodada(s) ${ENVIO_REAL ? "enviadas" : "que seriam enviadas"} | ${rodadasPuladas} já existiam nos dois times e foram puladas`);
 
   if (divergenciasPlacar.length) {
-    console.log(`\n⚠ ATENÇÃO — ${divergenciasPlacar.length} jogo(s) onde o placar oficial não bate com os gols montados (quase sempre gol contra, que a FootStats não registra — ver cabeçalho do script). Adicione esse(s) gol(s) manualmente:`);
+    console.log(`\n⚠ ATENÇÃO — ${divergenciasPlacar.length} jogo(s) onde o placar oficial não bate com os gols montados (quase sempre gol contra — a FootStats não registra, ver cabeçalho). Adicione manualmente pelo editor:`);
     for (const d of divergenciasPlacar) {
       console.log(`  · ${d.homeSlug} x ${d.awaySlug} (${d.data}, rodada FootStats ${d.rodada}) — placar oficial ${d.oficial}, harvester montou ${d.achados}`);
     }
+  }
+
+  if (!ENVIO_REAL) {
+    console.log("\nEssa foi uma SIMULAÇÃO — nada foi gravado. Rode de novo com ENVIO_REAL=1 pra gravar de verdade no site ao vivo.");
   }
 }
 
