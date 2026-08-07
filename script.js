@@ -1256,7 +1256,8 @@ function loadImage(src) {
 async function carregarPadroes(teamKey) {
   if (!teamKey) return null;
   try {
-    const res = await fetch(`/data/padroes/${teamKey}.json?t=${Date.now()}`);
+    const fileKey = resolveDataFileKey(teamKey);
+    const res = await fetch(`/data/padroes/${fileKey}.json?t=${Date.now()}`);
     if (!res.ok) return null;
     const d = await res.json();
     if (!d || (!(d.ataca || []).length && !(d.sofre || []).length)) return null;
