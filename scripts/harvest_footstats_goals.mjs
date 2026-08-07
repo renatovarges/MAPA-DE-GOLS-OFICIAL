@@ -274,14 +274,27 @@ async function main() {
     }
 
     const bridge = buildIdBridge(matchShots);
-    const filaAssistPorAtletaId = new Map();
+    // Duas filas por jogador, NUNCA misturadas: idSkill=27 ("Assistências")
+    // marca especificamente a assistência que resultou em GOL; idSkill=28
+    // ("Assistências para finalização") é mais ampla e também aparece pra
+    // assistências que só geraram um chute qualquer, sem relação com o gol
+    // em questão. Achado real (2026-08, caso Reinaldo x Mirassol/Vasco): um
+    // jogador pode ter as duas no mesmo jogo, e juntar tudo numa fila só
+    // fazia o `.shift()` pegar a 28 (errada, ex.: terço defensivo) antes da
+    // 27 (certa, ex.: escanteio no terço ofensivo) sempre que a API
+    // devolvia a 28 primeiro. Preferir 27 e só cair pra 28 quando não
+    // houver 27 pra aquele jogador resolve isso sem perder a robustez do
+    // fallback nos jogos onde só existe a 28.
+    const filaAssistPreferidaPorAtletaId = new Map();
+    const filaAssistFallbackPorAtletaId = new Map();
     for (const ev of fieldPos.data || []) {
       if (ev.idSkill !== 27 && ev.idSkill !== 28) continue;
       const atletaId = bridge.get(ev.idPlayer);
       if (!atletaId) continue;
       const key = String(atletaId);
-      if (!filaAssistPorAtletaId.has(key)) filaAssistPorAtletaId.set(key, []);
-      filaAssistPorAtletaId.get(key).push(ev);
+      const alvo = ev.idSkill === 27 ? filaAssistPreferidaPorAtletaId : filaAssistFallbackPorAtletaId;
+      if (!alvo.has(key)) alvo.set(key, []);
+      alvo.get(key).push(ev);
     }
 
     const dataISO = m.date ? m.date.slice(0, 10) : null;
@@ -299,8 +312,10 @@ async function main() {
       let passXY = null;
       if (!isPenalty && s.atleta_id_assistente > 0) {
         comAssistPossivel++;
-        const fila = filaAssistPorAtletaId.get(String(s.atleta_id_assistente));
-        const ev = fila && fila.length ? fila.shift() : null;
+        const filaPreferida = filaAssistPreferidaPorAtletaId.get(String(s.atleta_id_assistente));
+        const filaFallback = filaAssistFallbackPorAtletaId.get(String(s.atleta_id_assistente));
+        const ev = (filaPreferida && filaPreferida.length ? filaPreferida.shift() : null)
+          || (filaFallback && filaFallback.length ? filaFallback.shift() : null);
         if (ev) { passXY = quadrantCentroid(ev.idQuadrant36); assistCasada++; }
       }
 
