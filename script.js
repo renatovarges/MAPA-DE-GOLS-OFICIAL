@@ -1363,51 +1363,6 @@ function desenharFrases(ctx, layout, xLargura, yTopo) {
   ctx.restore();
 }
 
-function montarLayoutResumoParaCampo(data, larguraDisponivel) {
-  if (!isValidRoundSummary(data)) return null;
-  const medidor = document.createElement('canvas').getContext('2d');
-  const margem = 40;
-  const maxWidth = larguraDisponivel - margem * 2;
-  medidor.font = `600 19px ${FRASES_FONT}`;
-  const itens = data.conclusoes.map((item) => ({
-    titulo: ROUND_SUMMARY_TITLES[item.tipo] || 'Conclus\u00e3o',
-    linhas: quebrarLinhas(medidor, item.frase, maxWidth - 22),
-  }));
-  const alturaTotal = 98 + itens.reduce((total, item) => total + 31 + item.linhas.length * 29 + 14, 0) + 28;
-  return { itens, alturaTotal, margem, meta: roundSummaryMeta(data) };
-}
-
-function desenharResumoParaCampo(ctx, layout, largura, yTopo) {
-  ctx.save();
-  ctx.fillStyle = '#071f18';
-  ctx.fillRect(0, yTopo, largura, layout.alturaTotal);
-  ctx.fillStyle = '#f7d36a';
-  ctx.font = `800 15px ${FRASES_FONT}`;
-  ctx.fillText('LEITURA ESTRAT\u00c9GICA DA RODADA', layout.margem, yTopo + 34);
-  ctx.fillStyle = '#b9d9cd';
-  ctx.font = `500 16px ${FRASES_FONT}`;
-  ctx.fillText(layout.meta, layout.margem, yTopo + 61);
-
-  let y = yTopo + 98;
-  for (const item of layout.itens) {
-    ctx.fillStyle = '#f7d36a';
-    ctx.font = `800 15px ${FRASES_FONT}`;
-    ctx.fillText(item.titulo.toUpperCase(), layout.margem, y);
-    y += 31;
-    ctx.font = `600 19px ${FRASES_FONT}`;
-    for (const linha of item.linhas) {
-      ctx.fillStyle = '#f7d36a';
-      ctx.fillText('-', layout.margem, y);
-      ctx.fillStyle = FRASES_COR_TEXTO;
-      ctx.fillText(linha, layout.margem + 22, y);
-      y += 29;
-    }
-    y += 14;
-  }
-  ctx.restore();
-}
-
-
 async function exportFieldAsPng(pitchEl, overlayEl, scale = 6, teamKeyParaFrases = null) {
   if (!pitchEl || !overlayEl) throw new Error('SVGs do campo não encontrados');
   const padroes = await carregarPadroes(teamKeyParaFrases);
@@ -1416,12 +1371,12 @@ async function exportFieldAsPng(pitchEl, overlayEl, scale = 6, teamKeyParaFrases
   const canvas = document.createElement('canvas');
   const EXPORT_TOP_PADDING = 56; // espaço extra acima do campo para o título
   const alturaFrases = layoutFrases ? layoutFrases.alturaTotal : 0;
-  const layoutResumo = montarLayoutResumoParaCampo(currentRoundSummary, WIDTH);
-  const alturaResumo = layoutResumo ? layoutResumo.alturaTotal : 0;
   canvas.width = WIDTH * scale;
-  canvas.height = (HEIGHT + EXPORT_TOP_PADDING + alturaFrases + alturaResumo) * scale;
+  canvas.height = (HEIGHT + EXPORT_TOP_PADDING + alturaFrases) * scale;
   const ctx = canvas.getContext('2d');
   ctx.scale(scale, scale);
+  ctx.fillStyle = '#155c44';
+  ctx.fillRect(0, 0, WIDTH, EXPORT_TOP_PADDING);
 
   // URLs para exportação com padding superior
   // URLs para exportação com padding superior (CORREÇÃO: padding 0 para manter aspecto 1:1)
@@ -1466,10 +1421,6 @@ async function exportFieldAsPng(pitchEl, overlayEl, scale = 6, teamKeyParaFrases
 
   if (layoutFrases) {
     desenharFrases(ctx, layoutFrases, WIDTH, EXPORT_TOP_PADDING + HEIGHT);
-  }
-
-  if (layoutResumo) {
-    desenharResumoParaCampo(ctx, layoutResumo, WIDTH, EXPORT_TOP_PADDING + HEIGHT + alturaFrases);
   }
 
   return canvas.toDataURL('image/png');
