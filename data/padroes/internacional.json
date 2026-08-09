@@ -1,16 +1,47 @@
 {
   "teamKey": "internacional",
-  "geradoEm": "2026-08-08T09:36:54.353Z",
+  "geradoEm": "2026-08-09T02:05:53.853Z",
   "ataca": [
-    "No Internacional, o lateral-esquerdo é quem mais finaliza — cerca de 2 por jogo.",
-    "O Internacional cria muitas finalizações em jogadas construídas pelo lado esquerdo — cerca de 3 por jogo. Quem mais aparece nessas jogadas é o ponta-direita.",
-    "O Internacional cria muitas finalizações de sobra de bola — cerca de 3 por jogo. Quem mais aparece nessas jogadas é o lateral-esquerdo.",
-    "O Internacional cria muitas finalizações de fora da área — cerca de 6 por jogo. Quem mais aparece nessas jogadas é o volante."
+    "No Internacional, o lateral-esquerdo registra cerca de 2 finalizações por jogo. É uma posição a observar na escalação.",
+    "O Internacional registra cerca de 3 finalizações por jogo após sobras de bola. O lateral-esquerdo é quem mais finaliza nesse tipo de jogada.",
+    "O Internacional registra cerca de 7 finalizações por jogo de fora da área. O volante é quem mais finaliza nesse tipo de jogada.",
+    "No Internacional, passes do meia originam cerca de 3 finalizações por jogo."
+  ],
+  "evidenciasAtaca": [
+    {
+      "chave": "posicao|lateral-esquerdo|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "origem|REBATIDA|lateral-esquerdo",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|fora-da-area|volante",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "assistentePosicao|meia|",
+      "confianca": "padrao-consolidado"
+    }
+  ],
+  "evidenciasSofre": [
+    {
+      "chave": "area|dentro-da-area|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "ladoDaJogada|esquerda|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "posicao|ponta-esquerda|",
+      "confianca": "padrao-consolidado"
+    }
   ],
   "sofre": [
-    "O Internacional sofre muitas finalizações de dentro da área — cerca de 7 por jogo. Fique de olho no atacante de área adversário nesses lances.",
-    "O Internacional sofre muitas finalizações vindas do lado esquerdo da própria defesa — cerca de 4 por jogo. Fique de olho no atacante de área adversário nesses lances.",
-    "O Internacional sofre muitas finalizações de cruzamento — cerca de 2 por jogo. Fique de olho no atacante de área adversário nesses lances.",
-    "O Internacional sofre muitas finalizações do ponta-esquerda adversário — cerca de 2 por jogo."
+    "O Internacional cede cerca de 8 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Internacional cede cerca de 4 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Internacional cede cerca de 2 finalizações por jogo ao ponta-esquerda adversário. É uma posição a observar contra essa defesa."
   ]
 }

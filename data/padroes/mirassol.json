@@ -1,16 +1,47 @@
 {
   "teamKey": "mirassol",
-  "geradoEm": "2026-08-08T09:36:54.353Z",
+  "geradoEm": "2026-08-09T02:05:53.853Z",
   "ataca": [
-    "No Mirassol, o lateral-esquerdo é quem mais dá assistências — cerca de 2 por jogo.",
-    "O Mirassol cria muitas finalizações em jogadas construídas pelo lado direito — cerca de 3 por jogo. Quem mais aparece nessas jogadas é o atacante de área.",
-    "O Mirassol cria muitas finalizações de cruzamento — cerca de 2 por jogo. Quem mais aparece nessas jogadas é o atacante de área.",
-    "O Mirassol cria muitas finalizações de fora da área — cerca de 6 por jogo. Quem mais aparece nessas jogadas é o volante."
+    "No Mirassol, passes do lateral-esquerdo originam cerca de 3 finalizações por jogo.",
+    "O Mirassol registra cerca de 2 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+    "O Mirassol registra cerca de 5 finalizações por jogo de fora da área. O volante é quem mais finaliza nesse tipo de jogada."
+  ],
+  "evidenciasAtaca": [
+    {
+      "chave": "assistentePosicao|lateral-esquerdo|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "origem|CRUZAMENTO|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|fora-da-area|volante",
+      "confianca": "padrao-consolidado"
+    }
+  ],
+  "evidenciasSofre": [
+    {
+      "chave": "origem|REBATIDA|volante",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "ladoDaJogada|direita|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|dentro-da-area|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "assistentePosicao|meia|",
+      "confianca": "padrao-consolidado"
+    }
   ],
   "sofre": [
-    "O Mirassol sofre muitas finalizações de sobra de bola — cerca de 3 por jogo. Fique de olho no volante adversário nesses lances.",
-    "O Mirassol sofre muitas finalizações vindas do lado esquerdo da própria defesa — cerca de 3 por jogo. Fique de olho no meia adversário nesses lances.",
-    "O Mirassol sofre muitas finalizações de dentro da área — cerca de 7 por jogo. Fique de olho no atacante de área adversário nesses lances.",
-    "O Mirassol sofre muitas assistências do meia adversário — cerca de 2 por jogo."
+    "O Mirassol cede cerca de 3 finalizações por jogo após sobras de bola. Atenção: o volante adversário é quem mais finaliza nesses lances.",
+    "O Mirassol cede cerca de 3 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Mirassol cede cerca de 7 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Mirassol cede cerca de 2 finalizações por jogo após passes do meia adversário."
   ]
 }

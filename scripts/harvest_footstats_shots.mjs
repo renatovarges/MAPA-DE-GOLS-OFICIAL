@@ -257,11 +257,11 @@ async function main() {
     const payload = {
       matchId: m.id, homeTeamKey: homeSlug, awayTeamKey: awaySlug,
       home: {
-        matchId: m.id, date: dataISO, opponent: awaySlug, home: true,
+        matchId: m.id, roundNumber: Number(m.round) || null, date: dataISO, opponent: awaySlug, home: true,
         shots_for: finalizacoesHome, shots_against: espelharCedidas(finalizacoesAway),
       },
       away: {
-        matchId: m.id, date: dataISO, opponent: homeSlug, home: false,
+        matchId: m.id, roundNumber: Number(m.round) || null, date: dataISO, opponent: homeSlug, home: false,
         shots_for: finalizacoesAway, shots_against: espelharCedidas(finalizacoesHome),
       },
     };

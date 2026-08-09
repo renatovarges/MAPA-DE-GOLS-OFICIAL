@@ -39,11 +39,13 @@ export function finalizacoesPonderadas(matchesObj, { lado, maxJogos = 40 } = {})
     .slice(0, maxJogos);
 
   const shots = [];
+  let pesoTotalJogos = 0;
   partidas.forEach((p, i) => {
     const peso = pesoDoJogo(i);
+    pesoTotalJogos += peso;
     for (const s of p[lado]) shots.push({ ...s, _peso: peso });
   });
-  return { shots, jogosUsados: partidas.length };
+  return { shots, jogosUsados: partidas.length, pesoTotalJogos };
 }
 
 /** amostra efetiva de Kish: (Σw)²/Σw². Com pesos todos iguais devolve o próprio n. */
@@ -134,6 +136,34 @@ export function agruparPorCategoria(shots, dimensao) {
   }
   return { grupos, pesosTotais };
 }
+/**
+ * Distribuicao de share entre times, incluindo zero quando um time nao teve
+ * nenhuma ocorrencia da categoria. O zero e informacao estatistica: omiti-lo
+ * faria padroes raros parecerem menos distintivos do que realmente sao.
+ */
+export function distribuicoesDeShare(colecoesDeShots) {
+  const sharesPorTime = [];
+  const todasAsChaves = new Set();
+  for (const shots of colecoesDeShots || []) {
+    const shares = new Map();
+    for (const dimensao of DIMENSOES) {
+      const { grupos, pesosTotais } = agruparPorCategoria(shots, dimensao);
+      const total = pesosTotais.reduce((a, b) => a + b, 0);
+      if (!total) continue;
+      for (const [categoria, pesos] of grupos) {
+        const chave = `${dimensao}|${categoria}`;
+        shares.set(chave, pesos.reduce((a, b) => a + b, 0) / total);
+        todasAsChaves.add(chave);
+      }
+    }
+    sharesPorTime.push(shares);
+  }
+  const distribuicoes = new Map();
+  for (const chave of todasAsChaves) {
+    distribuicoes.set(chave, sharesPorTime.map((shares) => shares.get(chave) || 0));
+  }
+  return distribuicoes;
+}
 
 // ---------------------------------------------------------------------------
 // Detecção
@@ -190,6 +220,7 @@ export function posicaoDominante(shotsDaCategoria, { minShare = 0.2, minOcorrenc
 export function detectarPadroesInternos({
   shots,
   jogosUsados,
+  pesoTotalJogos,
   dimensao,
   pisoMinimo = 0.12,
   minOcorrencias = 10,
@@ -212,7 +243,9 @@ export function detectarPadroesInternos({
       dimensao, categoria,
       share, pisoIC: lo, tetoIC: hi,
       ocorrencias: pesos.length,
-      porJogo: jogosUsados ? pesos.length / jogosUsados : null,
+      porJogo: pesoTotalJogos
+        ? pesos.reduce((a, b) => a + b, 0) / pesoTotalJogos
+        : jogosUsados ? pesos.length / jogosUsados : null,
       nEfetivo: nEfetivoTotal,
       jogosUsados,
     };

@@ -1,16 +1,47 @@
 {
   "teamKey": "santos",
-  "geradoEm": "2026-08-08T09:36:54.353Z",
+  "geradoEm": "2026-08-09T02:05:53.853Z",
   "ataca": [
-    "No Santos, o meia é quem mais dá assistências — cerca de 4 por jogo.",
-    "No Santos, o meia é quem mais finaliza — cerca de 5 por jogo.",
-    "O Santos cria muitas finalizações de dentro da área — cerca de 7 por jogo. Quem mais aparece nessas jogadas é o meia.",
-    "O Santos cria muitas finalizações em jogadas construídas pelo lado esquerdo — cerca de 3 por jogo. Quem mais aparece nessas jogadas é o meia."
+    "No Santos, passes do meia originam cerca de 4 finalizações por jogo.",
+    "No Santos, o meia registra cerca de 6 finalizações por jogo. É uma posição a observar na escalação.",
+    "O Santos registra cerca de 8 finalizações por jogo de dentro da área. O meia é quem mais finaliza nesse tipo de jogada."
+  ],
+  "evidenciasAtaca": [
+    {
+      "chave": "assistentePosicao|meia|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "posicao|meia|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|dentro-da-area|meia",
+      "confianca": "padrao-consolidado"
+    }
+  ],
+  "evidenciasSofre": [
+    {
+      "chave": "posicao|ponta-esquerda|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "origem|CRUZAMENTO|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "ladoDaJogada|esquerda|meia",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|dentro-da-area|ponta-esquerda",
+      "confianca": "padrao-consolidado"
+    }
   ],
   "sofre": [
-    "O Santos sofre muitas finalizações do ponta-esquerda adversário — cerca de 2 por jogo.",
-    "O Santos sofre muitas finalizações de cruzamento — cerca de 2 por jogo. Fique de olho no atacante de área adversário nesses lances.",
-    "O Santos sofre muitas finalizações vindas do lado esquerdo da própria defesa — cerca de 4 por jogo. Fique de olho no meia adversário nesses lances.",
-    "O Santos sofre muitas finalizações de dentro da área — cerca de 7 por jogo. Fique de olho no ponta-esquerda adversário nesses lances."
+    "O Santos cede cerca de 3 finalizações por jogo ao ponta-esquerda adversário. É uma posição a observar contra essa defesa.",
+    "O Santos cede cerca de 2 finalizações por jogo após cruzamentos. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Santos cede cerca de 4 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o meia adversário é quem mais finaliza nesses lances.",
+    "O Santos cede cerca de 7 finalizações por jogo de dentro da área. Atenção: o ponta-esquerda adversário é quem mais finaliza nesses lances."
   ]
 }

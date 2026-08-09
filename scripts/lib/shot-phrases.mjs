@@ -37,23 +37,21 @@ const POSICAO_LABEL = {
 };
 
 const ORIGEM_LABEL = {
-  CRUZAMENTO: "cruzamento",
-  ESCANTEIO: "escanteio",
-  FALTA: "bola parada (falta)",
-  LANCAMENTO: "lançamento longo",
-  REBATIDA: "sobra de bola",
+  CRUZAMENTO: "cruzamentos",
+  ESCANTEIO: "escanteios",
+  FALTA: "cobranças de falta",
+  LANCAMENTO: "lançamentos longos",
+  REBATIDA: "sobras de bola",
   // PASSE fica de fora de propósito — ver cabeçalho do arquivo.
 };
 
 const LADO_LABEL = { esquerda: "esquerdo", direita: "direito" };
 
-/** "cerca de 2 por jogo" / "quase 1 por jogo" — número concreto, sem decimal quebrado. */
+/** Número concreto por jogo, inclusive para eventos abaixo de 1/jogo. */
 function frequencia(porJogo) {
-  if (porJogo == null) return null;
-  if (porJogo >= 1.5) return `cerca de ${Math.round(porJogo)} por jogo`;
-  if (porJogo >= 0.8) return "cerca de 1 por jogo";
-  if (porJogo >= 0.45) return "mais ou menos 1 a cada 2 jogos";
-  return "de vez em quando";
+  if (!Number.isFinite(porJogo) || porJogo < 0) return null;
+  const arredondado = porJogo >= 1.5 ? Math.round(porJogo) : Math.round(porJogo * 10) / 10;
+  return `cerca de ${String(arredondado).replace(".", ",")} finalizações por jogo`;
 }
 
 /** clausula final apontando a posição — retorna null (não string vazia) quando não há posição válida, pra `gerarFrase` distinguir "sem posição" de "com posição". */
@@ -61,7 +59,9 @@ function clausulaPosicao(posDom, cede) {
   if (!posDom) return null;
   const label = POSICAO_LABEL[posDom.posicao];
   if (!label) return null;
-  return cede ? ` Fique de olho no ${label} adversário nesses lances.` : ` Quem mais aparece nessas jogadas é o ${label}.`;
+  return cede
+    ? ` Atenção: o ${label} adversário é quem mais finaliza nesses lances.`
+    : ` O ${label} é quem mais finaliza nesse tipo de jogada.`;
 }
 
 /**
@@ -70,17 +70,44 @@ function clausulaPosicao(posDom, cede) {
  * finalização com o pé não informa nada.
  */
 const TETO_TRIVIAL = 0.75;
+export function chaveDoAchado(achado) {
+  if (!achado) return null;
+  return [
+    achado.dimensao,
+    achado.categoria,
+    achado.posicaoDominante?.posicao || "",
+  ].join("|");
+}
+
+export function nivelConfianca(achado) {
+  const jogos = Number(achado?.jogosUsados);
+  if (!Number.isFinite(jogos) || jogos < 1) return "indefinido";
+  if (jogos < 8) return "tendencia-inicial";
+  if (jogos < 15) return "padrao-consistente";
+  return "padrao-consolidado";
+}
+
+function aplicarConfiancaEditorial(frase, achado) {
+  if (nivelConfianca(achado) !== "tendencia-inicial") return frase;
+  const jogos = Number(achado.jogosUsados);
+  return `Com apenas ${jogos} jogos na amostra, ${frase[0].toLowerCase()}${frase.slice(1)}`;
+}
+
 
 /**
  * `lado`: "shots_for" (o que o time CRIA) | "shots_against" (o que CEDE).
  * Retorna null quando não há template — mais seguro que frase genérica errada.
  */
 export function gerarFrase(achado, { time, lado } = {}) {
+  if (!achado || typeof time !== "string" || !time.trim()) return null;
+  if (lado !== "shots_for" && lado !== "shots_against") return null;
   const { dimensao, categoria, porJogo, share, posicaoDominante } = achado;
+  if (!Number.isFinite(share) || share < 0 || share > 1) return null;
   if (share > TETO_TRIVIAL) return null;
 
   const cede = lado === "shots_against";
   const freq = frequencia(porJogo);
+  if (!freq) return null;
 
   // posição é obrigatória (ver cabeçalho) — exceto quando a própria
   // categoria já é uma posição, aí não há o que apontar de novo.
@@ -94,7 +121,7 @@ export function gerarFrase(achado, { time, lado } = {}) {
   const corpo = descrever(dimensao, categoria, { time, cede, freq });
   if (!corpo) return null;
 
-  return corpo + posClausula;
+  return aplicarConfiancaEditorial(corpo + posClausula, achado);
 }
 
 /**
@@ -113,65 +140,63 @@ export function gerarFrase(achado, { time, lado } = {}) {
  * factual, não só de estilo.
  */
 function descrever(dimensao, categoria, { time, cede, freq }) {
-  const f = freq ? ` — ${freq}.` : ".";
-  const finaliza = cede ? "sofre muitas finalizações" : "cria muitas finalizações";
-
+  const acao = cede ? "cede" : "registra";
   switch (dimensao) {
     case "origem": {
       const l = ORIGEM_LABEL[categoria];
       if (!l) return null; // PASSE cai aqui
-      return `O ${time} ${finaliza} de ${l}${f}`;
+      return `O ${time} ${acao} ${freq} após ${l}.`;
     }
     case "posicao": {
       const l = POSICAO_LABEL[categoria];
       if (!l) return null;
       return cede
-        ? `O ${time} ${finaliza} do ${l} adversário${f}`
-        : `No ${time}, o ${l} é quem mais finaliza${f}`;
+        ? `O ${time} cede ${freq} ao ${l} adversário. É uma posição a observar contra essa defesa.`
+        : `No ${time}, o ${l} registra ${freq}. É uma posição a observar na escalação.`;
     }
     case "assistentePosicao": {
       const l = POSICAO_LABEL[categoria];
       if (!l) return null;
       return cede
-        ? `O ${time} sofre muitas assistências do ${l} adversário${f}`
-        : `No ${time}, o ${l} é quem mais dá assistências${f}`;
+        ? `O ${time} cede ${freq} após passes do ${l} adversário.`
+        : `No ${time}, passes do ${l} originam ${freq}.`;
     }
     case "parteDoCorpo":
       // "com o pé" é a esmagadora maioria — só cabeça informa algo.
       if (categoria !== "cabeca") return null;
-      return `O ${time} ${finaliza} de cabeça${f}`;
+      return `O ${time} ${acao} ${freq} de cabeça.`;
     case "area": {
       const local = categoria === "dentro-da-area" ? "de dentro da área" : "de fora da área";
-      return `O ${time} ${finaliza} ${local}${f}`;
+      return `O ${time} ${acao} ${freq} ${local}.`;
     }
     case "contraAtaque":
       if (categoria !== "contra-ataque") return null;
-      return `O ${time} ${finaliza} em contra-ataque${f}`;
+      return `O ${time} ${acao} ${freq} em contra-ataques.`;
     case "ladoDaJogada": {
       const l = LADO_LABEL[categoria];
       if (!l) return null;
       return cede
-        ? `O ${time} ${finaliza} vindas do lado ${l} da própria defesa${f}`
-        : `O ${time} ${finaliza} em jogadas construídas pelo lado ${l}${f}`;
+        ? `O ${time} cede ${freq} em ataques pelo lado ${l} de sua defesa.`
+        : `O ${time} registra ${freq} em jogadas construídas pelo lado ${l}.`;
     }
     case "origem+lado": {
       const [origem, ladoCampo] = categoria.split("|");
       const o = ORIGEM_LABEL[origem];
       const l = LADO_LABEL[ladoCampo];
       if (!o || !l) return null;
-      return `O ${time} ${finaliza} de ${o} pelo lado ${l}${f}`;
+      return `O ${time} ${acao} ${freq} após ${o} pelo lado ${l}.`;
     }
     case "origem+corpo": {
       const [origem, corpo] = categoria.split("|");
       const o = ORIGEM_LABEL[origem];
       if (!o || corpo !== "cabeca") return null;
-      return `O ${time} ${finaliza} de cabeça em jogadas de ${o}${f}`;
+      return `O ${time} ${acao} ${freq} de cabeça após ${o}.`;
     }
     case "lado+corpo": {
       const [ladoCampo, corpo] = categoria.split("|");
       const l = LADO_LABEL[ladoCampo];
       if (!l || corpo !== "cabeca") return null;
-      return `O ${time} ${finaliza} de cabeça em jogadas pelo lado ${l}${f}`;
+      return `O ${time} ${acao} ${freq} de cabeça em jogadas pelo lado ${l}.`;
     }
     default:
       return null;
@@ -188,10 +213,24 @@ function descrever(dimensao, categoria, { time, cede, freq }) {
  * `maxPorDimensao` evita cinco variações do mesmo fato (ex.: "cruzamento",
  * "cruzamento pela direita", "cruzamento de cabeça" na mesma lista).
  */
-export function gerarFrases(achados, { time, lado, max = 5, maxPorDimensao = 1 } = {}) {
+export function gerarFrases(achados, { time, lado, max = 5, maxPorDimensao = 1, maxPorPosicao = 2, chavesAnteriores = [], margemPersistencia = 0.1 } = {}) {
   const usadasPorDimensao = new Map();
+  const usadasPorPosicao = new Map();
   const saida = [];
+  const anteriores = new Set(chavesAnteriores || []);
+
+  function chavePosicao(achado) {
+    if (achado.dimensao === "assistentePosicao") return `criador:${achado.categoria}`;
+    const posicao = achado.dimensao === "posicao"
+      ? achado.categoria
+      : achado.posicaoDominante?.posicao;
+    return posicao ? `finalizador:${posicao}` : null;
+  }
   const ordenados = [...achados].sort((a, b) => {
+    const scoreA = (a.distintividade?.valor ?? 0) + (anteriores.has(chaveDoAchado(a)) ? margemPersistencia : 0);
+    const scoreB = (b.distintividade?.valor ?? 0) + (anteriores.has(chaveDoAchado(b)) ? margemPersistencia : 0);
+    if (Math.abs(scoreA - scoreB) > 1e-9) return scoreB - scoreA;
+
     const da = a.distintividade?.valor ?? 0;
     const db = b.distintividade?.valor ?? 0;
     if (Math.abs(da - db) > 1e-9) return db - da;
@@ -206,12 +245,19 @@ export function gerarFrases(achados, { time, lado, max = 5, maxPorDimensao = 1 }
     return b.pisoIC - a.pisoIC;
   });
   for (const achado of ordenados) {
+    // Estar no extremo inferior torna a AUSENCIA da categoria distintiva.
+    // Como os templates descrevem presenca, promove-la inverteria o achado.
+    if (achado.distintividade?.direcao === "baixo") continue;
     const jaUsadas = usadasPorDimensao.get(achado.dimensao) || 0;
     if (jaUsadas >= maxPorDimensao) continue;
+    const chave = chavePosicao(achado);
+    const repeticoes = chave ? (usadasPorPosicao.get(chave) || 0) : 0;
+    if (chave && repeticoes >= maxPorPosicao) continue;
     const frase = gerarFrase(achado, { time, lado });
     if (!frase) continue;
     usadasPorDimensao.set(achado.dimensao, jaUsadas + 1);
-    saida.push({ achado, frase });
+    if (chave) usadasPorPosicao.set(chave, repeticoes + 1);
+    saida.push({ achado, frase, chave: chaveDoAchado(achado), confianca: nivelConfianca(achado) });
     if (saida.length >= max) break;
   }
   return saida;

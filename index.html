@@ -362,6 +362,19 @@
 
     <!-- LEGENDA AGORA É RENDERIZADA DENTRO DO SVG (SCRIPT.JS) PARA SAIR NO DOWNLOAD -->
   </div>
+  <section id="roundSummary" class="round-summary" hidden aria-labelledby="roundSummaryTitle">
+    <div class="round-summary__header">
+      <div>
+        <p class="round-summary__eyebrow">Leitura estratégica</p>
+        <h2 id="roundSummaryTitle">Visão geral da rodada</h2>
+        <p id="roundSummaryMeta" class="round-summary__meta"></p>
+      </div>
+      <button id="downloadRoundSummary" class="round-summary__download" type="button">Baixar visão geral</button>
+    </div>
+    <div id="roundSummaryCards" class="round-summary__cards"></div>
+  </section>
+
+
 
   <!-- Modal do Editor de Rodadas -->
   <div id="editorModal"

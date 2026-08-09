@@ -1,16 +1,52 @@
 {
   "teamKey": "vitoria",
-  "geradoEm": "2026-08-08T09:36:54.353Z",
+  "geradoEm": "2026-08-09T02:05:53.853Z",
   "ataca": [
-    "No Vitória, o ponta-esquerda é quem mais finaliza — cerca de 3 por jogo.",
-    "O Vitória cria muitas finalizações em jogadas construídas pelo lado direito — cerca de 2 por jogo. Quem mais aparece nessas jogadas é o ponta-esquerda.",
-    "No Vitória, o meia é quem mais dá assistências — cerca de 2 por jogo.",
-    "O Vitória cria muitas finalizações de dentro da área — cerca de 6 por jogo. Quem mais aparece nessas jogadas é o ponta-esquerda."
+    "No Vitória, o ponta-esquerda registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
+    "No Vitória, passes do meia originam cerca de 2 finalizações por jogo.",
+    "O Vitória registra cerca de 7 finalizações por jogo de dentro da área. O ponta-esquerda é quem mais finaliza nesse tipo de jogada.",
+    "O Vitória registra cerca de 2 finalizações por jogo após sobras de bola. O meia é quem mais finaliza nesse tipo de jogada."
+  ],
+  "evidenciasAtaca": [
+    {
+      "chave": "posicao|ponta-esquerda|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "assistentePosicao|meia|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|dentro-da-area|ponta-esquerda",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "origem|REBATIDA|meia",
+      "confianca": "padrao-consolidado"
+    }
+  ],
+  "evidenciasSofre": [
+    {
+      "chave": "ladoDaJogada|direita|ponta-esquerda",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|dentro-da-area|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "posicao|atacante-area|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "origem|REBATIDA|volante",
+      "confianca": "padrao-consolidado"
+    }
   ],
   "sofre": [
-    "O Vitória sofre muitas finalizações vindas do lado direito da própria defesa — cerca de 4 por jogo. Fique de olho no ponta-esquerda adversário nesses lances.",
-    "O Vitória sofre muitas finalizações de dentro da área — cerca de 8 por jogo. Fique de olho no atacante de área adversário nesses lances.",
-    "O Vitória sofre muitas finalizações do atacante de área adversário — cerca de 2 por jogo.",
-    "O Vitória sofre muitas finalizações de sobra de bola — cerca de 3 por jogo. Fique de olho no volante adversário nesses lances."
+    "O Vitória cede cerca de 4 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o ponta-esquerda adversário é quem mais finaliza nesses lances.",
+    "O Vitória cede cerca de 8 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Vitória cede cerca de 2 finalizações por jogo ao atacante de área adversário. É uma posição a observar contra essa defesa.",
+    "O Vitória cede cerca de 3 finalizações por jogo após sobras de bola. Atenção: o volante adversário é quem mais finaliza nesses lances."
   ]
 }

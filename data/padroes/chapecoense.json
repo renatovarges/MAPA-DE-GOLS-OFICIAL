@@ -1,16 +1,47 @@
 {
   "teamKey": "chapecoense",
-  "geradoEm": "2026-08-08T09:36:54.353Z",
+  "geradoEm": "2026-08-09T02:05:53.853Z",
   "ataca": [
-    "O Chapecoense cria muitas finalizações de fora da área — cerca de 6 por jogo. Quem mais aparece nessas jogadas é o volante.",
-    "O Chapecoense cria muitas finalizações de cabeça — cerca de 3 por jogo. Quem mais aparece nessas jogadas é o atacante de área.",
-    "O Chapecoense cria muitas finalizações de cruzamento — cerca de 2 por jogo. Quem mais aparece nessas jogadas é o atacante de área.",
-    "O Chapecoense cria muitas finalizações em jogadas construídas pelo lado esquerdo — cerca de 3 por jogo. Quem mais aparece nessas jogadas é o atacante de área."
+    "O Chapecoense registra cerca de 6 finalizações por jogo de fora da área. O volante é quem mais finaliza nesse tipo de jogada.",
+    "O Chapecoense registra cerca de 2 finalizações por jogo de cabeça. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+    "O Chapecoense registra cerca de 2 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada."
+  ],
+  "evidenciasAtaca": [
+    {
+      "chave": "area|fora-da-area|volante",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "parteDoCorpo|cabeca|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "origem|CRUZAMENTO|atacante-area",
+      "confianca": "padrao-consolidado"
+    }
+  ],
+  "evidenciasSofre": [
+    {
+      "chave": "assistentePosicao|volante|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "posicao|meia|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "ladoDaJogada|direita|meia",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|dentro-da-area|atacante-area",
+      "confianca": "padrao-consolidado"
+    }
   ],
   "sofre": [
-    "O Chapecoense sofre muitas assistências do volante adversário — cerca de 2 por jogo.",
-    "O Chapecoense sofre muitas finalizações vindas do lado esquerdo da própria defesa — cerca de 3 por jogo. Fique de olho no meia adversário nesses lances.",
-    "O Chapecoense sofre muitas finalizações do meia adversário — cerca de 3 por jogo.",
-    "O Chapecoense sofre muitas finalizações de sobra de bola — cerca de 3 por jogo. Fique de olho no meia adversário nesses lances."
+    "O Chapecoense cede cerca de 3 finalizações por jogo após passes do volante adversário.",
+    "O Chapecoense cede cerca de 3 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa.",
+    "O Chapecoense cede cerca de 4 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o meia adversário é quem mais finaliza nesses lances.",
+    "O Chapecoense cede cerca de 9 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances."
   ]
 }

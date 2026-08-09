@@ -1,14 +1,37 @@
 {
   "teamKey": "cruzeiro",
-  "geradoEm": "2026-08-08T09:36:54.353Z",
+  "geradoEm": "2026-08-09T02:05:53.853Z",
   "ataca": [
-    "O Cruzeiro cria muitas finalizações de dentro da área — cerca de 8 por jogo. Quem mais aparece nessas jogadas é o atacante de área.",
-    "No Cruzeiro, o atacante de área é quem mais finaliza — cerca de 3 por jogo.",
-    "No Cruzeiro, o meia é quem mais dá assistências — cerca de 3 por jogo.",
-    "O Cruzeiro cria muitas finalizações em jogadas construídas pelo lado esquerdo — cerca de 3 por jogo. Quem mais aparece nessas jogadas é o atacante de área."
+    "O Cruzeiro registra cerca de 9 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+    "No Cruzeiro, o atacante de área registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
+    "No Cruzeiro, passes do meia originam cerca de 3 finalizações por jogo."
+  ],
+  "evidenciasAtaca": [
+    {
+      "chave": "area|dentro-da-area|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "posicao|atacante-area|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "assistentePosicao|meia|",
+      "confianca": "padrao-consolidado"
+    }
+  ],
+  "evidenciasSofre": [
+    {
+      "chave": "area|dentro-da-area|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "ladoDaJogada|esquerda|meia",
+      "confianca": "padrao-consolidado"
+    }
   ],
   "sofre": [
-    "O Cruzeiro sofre muitas finalizações de dentro da área — cerca de 7 por jogo. Fique de olho no atacante de área adversário nesses lances.",
-    "O Cruzeiro sofre muitas finalizações vindas do lado esquerdo da própria defesa — cerca de 3 por jogo. Fique de olho no meia adversário nesses lances."
+    "O Cruzeiro cede cerca de 6 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Cruzeiro cede cerca de 3 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o meia adversário é quem mais finaliza nesses lances."
   ]
 }

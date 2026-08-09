@@ -541,6 +541,43 @@ class Handler(SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps({'ok': True, 'teamKey': team_key, 'saved_files': [path]}).encode('utf-8'))
 
+        elif self.path == '/api/save-round-summary':
+            length = int(self.headers.get('Content-Length', '0'))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode('utf-8'))
+            except Exception as e:
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_json', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            conclusoes = payload.get('conclusoes')
+            if not isinstance(conclusoes, list):
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_conclusoes'}).encode('utf-8'))
+                return
+
+            path = os.path.join(DATA_DIR, 'resumo-rodada.json')
+            try:
+                with open(path, 'w', encoding='utf-8') as f:
+                    json.dump(payload, f, ensure_ascii=False, indent=2)
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'persist_failed', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            sync_patterns_to_github_async([path], 'resumo-rodada')
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'saved_files': [path]}).encode('utf-8'))
+
         else:
             self.send_response(404)
             self.send_header('Content-Type', 'application/json')
