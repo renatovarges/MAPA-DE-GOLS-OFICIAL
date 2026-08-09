@@ -1243,6 +1243,58 @@
           }
         }
       ]
+    },
+    "22": {
+      "roundNumber": 22,
+      "date": "2026-08-08",
+      "opponent": "gremio",
+      "home": false,
+      "created_goals": [],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 51
+          },
+          "shot": {
+            "x": 5.6279440999999935,
+            "y": 34.04762
+          },
+          "assistPlayer": {
+            "id": "105563",
+            "name": "Carlos Vinícius",
+            "fullName": "Carlos Vinícius Alves Morais",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "130307",
+            "name": "Wallace",
+            "fullName": "Wallace Gomes da Silva Santos",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "gremio"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 22.483654099999995,
+            "y": 47.63562
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "91908",
+            "name": "Pavón",
+            "fullName": "Cristian David Pavón",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          }
+        }
+      ]
     }
   }
 }
