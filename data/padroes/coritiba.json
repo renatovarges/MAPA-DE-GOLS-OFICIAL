@@ -1,6 +1,6 @@
 {
   "teamKey": "coritiba",
-  "geradoEm": "2026-08-09T02:41:33.436Z",
+  "geradoEm": "2026-08-09T09:38:45.349Z",
   "ataca": [
     "No Coritiba, o ponta-esquerda registra cerca de 4 finalizações por jogo. É uma posição a observar na escalação.",
     "O Coritiba registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado direito. O ponta-esquerda é quem mais finaliza nesse tipo de jogada.",
@@ -22,15 +22,15 @@
   ],
   "evidenciasSofre": [
     {
-      "chave": "area|fora-da-area|ponta-direita",
+      "chave": "area|fora-da-area|meia",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "posicao|ponta-esquerda|",
       "confianca": "padrao-consolidado"
     },
     {
       "chave": "ladoDaJogada|direita|atacante-area",
-      "confianca": "padrao-consolidado"
-    },
-    {
-      "chave": "posicao|meia|",
       "confianca": "padrao-consolidado"
     },
     {
@@ -39,9 +39,9 @@
     }
   ],
   "sofre": [
-    "O Coritiba cede cerca de 8 finalizações por jogo de fora da área. Atenção: o ponta-direita adversário é quem mais finaliza nesses lances.",
+    "O Coritiba cede cerca de 8 finalizações por jogo de fora da área. Atenção: o meia adversário é quem mais finaliza nesses lances.",
+    "O Coritiba cede cerca de 3 finalizações por jogo ao ponta-esquerda adversário. É uma posição a observar contra essa defesa.",
     "O Coritiba cede cerca de 4 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
-    "O Coritiba cede cerca de 3 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa.",
     "O Coritiba cede cerca de 3 finalizações por jogo após sobras de bola. Atenção: o meia adversário é quem mais finaliza nesses lances."
   ]
 }
