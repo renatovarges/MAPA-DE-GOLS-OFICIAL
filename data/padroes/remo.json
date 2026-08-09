@@ -1,15 +1,15 @@
 {
   "teamKey": "remo",
-  "geradoEm": "2026-08-09T02:41:33.436Z",
+  "geradoEm": "2026-08-09T09:38:45.349Z",
   "ataca": [
-    "O Remo registra cerca de 3 finalizações por jogo após sobras de bola. O volante é quem mais finaliza nesse tipo de jogada.",
+    "No Remo, o volante registra cerca de 2 finalizações por jogo. É uma posição a observar na escalação.",
     "O Remo registra cerca de 5 finalizações por jogo de fora da área. O volante é quem mais finaliza nesse tipo de jogada.",
-    "No Remo, o ponta-esquerda registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
+    "O Remo registra cerca de 3 finalizações por jogo após sobras de bola. O ponta-esquerda é quem mais finaliza nesse tipo de jogada.",
     "O Remo registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado esquerdo. O ponta-esquerda é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
-      "chave": "origem|REBATIDA|volante",
+      "chave": "posicao|volante|",
       "confianca": "padrao-consolidado"
     },
     {
@@ -17,7 +17,7 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "posicao|ponta-esquerda|",
+      "chave": "origem|REBATIDA|ponta-esquerda",
       "confianca": "padrao-consolidado"
     },
     {
@@ -27,11 +27,15 @@
   ],
   "evidenciasSofre": [
     {
-      "chave": "ladoDaJogada|direita|atacante-area",
+      "chave": "posicao|ponta-direita|",
       "confianca": "padrao-consolidado"
     },
     {
       "chave": "parteDoCorpo|cabeca|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|dentro-da-area|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
@@ -40,8 +44,9 @@
     }
   ],
   "sofre": [
-    "O Remo cede cerca de 4 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Remo cede cerca de 2 finalizações por jogo ao ponta-direita adversário. É uma posição a observar contra essa defesa.",
     "O Remo cede cerca de 3 finalizações por jogo de cabeça. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Remo cede cerca de 8 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
     "O Remo cede cerca de 2 finalizações por jogo após passes do meia adversário."
   ]
 }
