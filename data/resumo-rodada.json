@@ -1,48 +1,55 @@
 {
-  "versao": 1,
-  "rodada": null,
-  "janelaAte": "2026-07-30",
-  "geradoEm": "2026-08-09T02:41:33.436Z",
+  "versao": 2,
+  "rodada": 22,
+  "janelaAte": "2026-08-08",
+  "geradoEm": "2026-08-09T09:38:45.349Z",
   "conclusoes": [
     {
       "tipo": "posicao-ofensiva",
-      "frase": "Pontas pelo lado esquerdo aparecem entre os destaques ofensivos de 5 times. No Coritiba, o ponta-esquerda registra cerca de 4 finalizações por jogo. É uma posição a observar na escalação.",
+      "frase": "Pontas pelo lado esquerdo concentram uma parcela acima do normal das finalizações de Vasco, Grêmio, Vitória e Coritiba. O caso mais forte é o Coritiba, com cerca de 3,8 finalizações por jogo nessa posição. Na prática, vale acompanhar esses jogadores como as principais referências de chute dessas equipes.",
       "times": [
         "vasco",
         "gremio",
         "vitoria",
-        "coritiba",
-        "remo"
+        "coritiba"
+      ]
+    },
+    {
+      "tipo": "destaque-defensivo",
+      "frase": "Corinthians apresenta o melhor controle defensivo da amostra: permite cerca de 9,6 finalizações por jogo. Athletico-PR (10,4 por jogo) e Red Bull Bragantino (11 por jogo) também estão entre as defesas que menos permitem chutes. Na prática, são as equipes que mais reduzem o volume ofensivo dos adversários.",
+      "times": [
+        "corinthians",
+        "athletico-pr",
+        "red-bull-bragantino"
       ]
     },
     {
       "tipo": "alvo-defensivo",
-      "frase": "Meias são a posição adversária que mais se repete entre os alertas defensivos (4 times). O Chapecoense cede cerca de 3 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa.",
+      "frase": "Meias adversários finalizam acima do normal contra Flamengo, Palmeiras e Chapecoense. O alerta é mais forte no Chapecoense, que permite cerca de 3,5 finalizações por jogo a essa posição. Na prática, essa é uma rota clara para observar nos adversários dessas defesas.",
       "times": [
-        "palmeiras",
         "flamengo",
-        "chapecoense",
-        "atletico-mg"
+        "palmeiras",
+        "chapecoense"
       ]
     },
     {
       "tipo": "padrao-ofensivo",
-      "frase": "Entre os ataques, cruzamentos são o padrão que mais se repete (5 times). O Vasco registra cerca de 3 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+      "frase": "Finalizações após cruzamentos aparecem acima do normal nos ataques de Vasco, Bahia, Chapecoense, Atlético-MG e Mirassol. O caso mais forte é o Vasco, com cerca de 3 finalizações por jogo dessa forma. Na prática, essa jogada mostra como essas equipes costumam construir suas chances.",
       "times": [
         "vasco",
+        "bahia",
         "chapecoense",
         "atletico-mg",
-        "bahia",
         "mirassol"
       ]
     },
     {
       "tipo": "fragilidade-recorrente",
-      "frase": "Entre as fragilidades, finalizações de dentro da área são o padrão que mais se repete (4 times). O Botafogo cede cerca de 10 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+      "frase": "Finalizações após cruzamentos aparecem acima do normal contra Grêmio, Santos, Palmeiras e Internacional. O caso mais forte é o Palmeiras, que cede cerca de 2,6 finalizações por jogo dessa forma. Na prática, os adversários encontram nessa jogada uma maneira recorrente de ameaçar essas defesas.",
       "times": [
-        "botafogo",
-        "sao-paulo",
         "gremio",
+        "santos",
+        "palmeiras",
         "internacional"
       ]
     }
