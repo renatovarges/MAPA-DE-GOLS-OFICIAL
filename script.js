@@ -3591,3 +3591,158 @@ function drawCxTitle(overlayEl, groupId = 'cxTitleLeft') {
   g.appendChild(title);
   overlayEl.appendChild(g);
 }
+// ---------------------------------------------------------------------------
+// Visão geral da rodada — resumo agregado, independente dos mapas individuais.
+// ---------------------------------------------------------------------------
+const ROUND_SUMMARY_TEAM_LABELS = {
+  "atletico-mg": "Atlético-MG",
+  "athletico-pr": "Athletico-PR",
+  "red-bull-bragantino": "Red Bull Bragantino",
+  "sao-paulo": "São Paulo",
+  gremio: "Grêmio",
+  vitoria: "Vitória",
+};
+const ROUND_SUMMARY_TITLES = {
+  "posicao-ofensiva": "Destaque ofensivo",
+  "alvo-defensivo": "Posição para observar",
+  "padrao-ofensivo": "Padrão de ataque",
+  "fragilidade-recorrente": "Fragilidade recorrente",
+};
+let currentRoundSummary = null;
+
+function roundSummaryTeamName(team) {
+  return ROUND_SUMMARY_TEAM_LABELS[team] || formatTeamName(team);
+}
+
+function isValidRoundSummary(data) {
+  return !!(data && Array.isArray(data.conclusoes) && data.conclusoes.length &&
+    data.conclusoes.every((item) => item && typeof item.tipo === "string" &&
+      typeof item.frase === "string" && item.frase.trim()));
+}
+
+function roundSummaryMeta(data) {
+  if (data.rodada !== null && data.rodada !== "" && Number.isFinite(Number(data.rodada))) return `Rodada ${Number(data.rodada)}`;
+  if (typeof data.janelaAte === "string" && /^\d{4}-\d{2}-\d{2}$/.test(data.janelaAte)) {
+    const date = new Date(`${data.janelaAte}T12:00:00`);
+    return `Dados atualizados até ${date.toLocaleDateString("pt-BR")}`;
+  }
+  return "Retrato mais recente disponível";
+}
+
+function renderRoundSummary(data) {
+  const section = document.getElementById("roundSummary");
+  const cards = document.getElementById("roundSummaryCards");
+  const meta = document.getElementById("roundSummaryMeta");
+  if (!section || !cards || !meta || !isValidRoundSummary(data)) {
+    if (section) section.hidden = true;
+    currentRoundSummary = null;
+    return;
+  }
+  cards.replaceChildren();
+  for (const item of data.conclusoes) {
+    const card = document.createElement("article");
+    card.className = "round-summary__card";
+    const title = document.createElement("h3");
+    title.textContent = ROUND_SUMMARY_TITLES[item.tipo] || "Conclusão";
+    const phrase = document.createElement("p");
+    phrase.textContent = item.frase;
+    card.append(title, phrase);
+    if (Array.isArray(item.times) && item.times.length) {
+      const teams = document.createElement("div");
+      teams.className = "round-summary__teams";
+      teams.textContent = `Times relacionados: ${item.times.map(roundSummaryTeamName).join(", ")}`;
+      card.appendChild(teams);
+    }
+    cards.appendChild(card);
+  }
+  meta.textContent = roundSummaryMeta(data);
+  currentRoundSummary = data;
+  section.hidden = false;
+}
+
+async function loadRoundSummary() {
+  try {
+    const response = await fetch(`/data/resumo-rodada.json?t=${Date.now()}`);
+    if (!response.ok) return renderRoundSummary(null);
+    renderRoundSummary(await response.json());
+  } catch (_) {
+    renderRoundSummary(null);
+  }
+}
+
+function wrapCanvasText(ctx, text, maxWidth) {
+  const words = String(text).split(/\s+/);
+  const lines = [];
+  let line = "";
+  for (const word of words) {
+    const candidate = line ? `${line} ${word}` : word;
+    if (line && ctx.measureText(candidate).width > maxWidth) {
+      lines.push(line);
+      line = word;
+    } else line = candidate;
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+async function exportRoundSummaryPng(data) {
+  if (!isValidRoundSummary(data)) throw new Error("Resumo da rodada indisponível");
+  if (document.fonts?.ready) await document.fonts.ready;
+  const width = 1200, margin = 72, textWidth = width - margin * 2;
+  const measure = document.createElement("canvas").getContext("2d");
+  measure.font = '26px Inter, "Segoe UI", Arial, sans-serif';
+  const layouts = data.conclusoes.map((item) => {
+    const lines = wrapCanvasText(measure, item.frase, textWidth - 40);
+    const relatedTeams = Array.isArray(item.times) && item.times.length
+      ? `Times relacionados: ${item.times.map(roundSummaryTeamName).join(", ")}`
+      : "";
+    measure.font = '18px Inter, "Segoe UI", Arial, sans-serif';
+    const teamLines = relatedTeams ? wrapCanvasText(measure, relatedTeams, textWidth - 40) : [];
+    measure.font = '26px Inter, "Segoe UI", Arial, sans-serif';
+    return { item, lines, teamLines };
+  });
+  const height = 230 + layouts.reduce((sum, layout) =>
+    sum + 82 + layout.lines.length * 39 + (layout.teamLines.length ? 16 + layout.teamLines.length * 28 : 0), 0) + 50;
+  const scale = 2, canvas = document.createElement("canvas");
+  canvas.width = width * scale; canvas.height = height * scale;
+  const ctx = canvas.getContext("2d"); ctx.scale(scale, scale);
+  const gradient = ctx.createLinearGradient(0, 0, 0, height);
+  gradient.addColorStop(0, "#0d4937"); gradient.addColorStop(1, "#071f18");
+  ctx.fillStyle = gradient; ctx.fillRect(0, 0, width, height);
+  ctx.fillStyle = "#f7d36a"; ctx.font = '800 17px Inter, "Segoe UI", Arial, sans-serif';
+  ctx.fillText("MAPA DE GOLS · LEITURA ESTRATÉGICA", margin, 64);
+  ctx.fillStyle = "#edf9f4"; ctx.font = '800 42px Inter, "Segoe UI", Arial, sans-serif';
+  ctx.fillText("VISÃO GERAL DA RODADA", margin, 116);
+  ctx.fillStyle = "#b9d9cd"; ctx.font = '22px Inter, "Segoe UI", Arial, sans-serif';
+  ctx.fillText(roundSummaryMeta(data), margin, 154);
+  let y = 196;
+  for (const { item, lines, teamLines } of layouts) {
+    const teamsHeight = teamLines.length ? 16 + teamLines.length * 28 : 0;
+    const cardHeight = 62 + lines.length * 39 + teamsHeight;
+    ctx.fillStyle = "rgba(3, 26, 19, .66)"; ctx.beginPath(); ctx.roundRect(margin, y, textWidth, cardHeight, 16); ctx.fill();
+    ctx.fillStyle = "#f7d36a"; ctx.font = '800 17px Inter, "Segoe UI", Arial, sans-serif';
+    ctx.fillText((ROUND_SUMMARY_TITLES[item.tipo] || "Conclusão").toUpperCase(), margin + 22, y + 31);
+    ctx.fillStyle = "#edf9f4"; ctx.font = '26px Inter, "Segoe UI", Arial, sans-serif';
+    if (teamLines.length) {
+      ctx.fillStyle = "#9fcbbd"; ctx.font = '18px Inter, "Segoe UI", Arial, sans-serif';
+      const teamsY = y + 70 + lines.length * 39 + 7;
+      teamLines.forEach((line, index) => ctx.fillText(line, margin + 22, teamsY + index * 28));
+    }
+    lines.forEach((line, index) => ctx.fillText(line, margin + 22, y + 70 + index * 39));
+    y += cardHeight + 18;
+  }
+  return canvas.toDataURL("image/png");
+}
+
+const roundSummaryDownload = document.getElementById("downloadRoundSummary");
+if (roundSummaryDownload) roundSummaryDownload.addEventListener("click", async () => {
+  try {
+    const url = await exportRoundSummaryPng(currentRoundSummary);
+    const link = document.createElement("a");
+    link.href = url; link.download = "visao-geral-da-rodada.png";
+    document.body.appendChild(link); link.click(); link.remove();
+  } catch (error) {
+    alert(error?.message || "Não foi possível exportar a visão geral");
+  }
+});
+loadRoundSummary();

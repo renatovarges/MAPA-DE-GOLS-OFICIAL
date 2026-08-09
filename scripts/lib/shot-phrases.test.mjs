@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { gerarFrase, gerarFrases } from "./shot-phrases.mjs";
+import { chaveDoAchado, gerarFrase, gerarFrases, nivelConfianca } from "./shot-phrases.mjs";
 
 const base = { share: 0.3, pisoIC: 0.22, tetoIC: 0.4, ocorrencias: 30, porJogo: 2, jogosUsados: 15 };
 const achado = (over) => ({ ...base, ...over });
@@ -8,7 +8,7 @@ const posDom = (posicao, over = {}) => ({ posicao, share: 0.5, ocorrencias: 10, 
 
 test("frase de fragilidade descreve o time por identidade, sem comparar com ninguem", () => {
   const f = gerarFrase(achado({ dimensao: "origem", categoria: "CRUZAMENTO", posicaoDominante: posDom("ponta-direita") }), { time: "Vasco", lado: "shots_against" });
-  assert.match(f, /Vasco sofre/);
+  assert.match(f, /Vasco cede/);
   assert.match(f, /cruzamento/);
   assert.doesNotMatch(f, /liga|Brasileirão|média|maioria/i);
 });
@@ -25,7 +25,7 @@ test("quando ha posicao dominante, a frase termina apontando o jogador (cria)", 
     { time: "Vasco", lado: "shots_for" },
   );
   assert.match(f, /atacante de área/);
-  assert.match(f, /Quem mais aparece/);
+  assert.match(f, /é quem mais finaliza/);
 });
 
 test("quando ha posicao dominante, a frase de fragilidade avisa pra vigiar o adversario", () => {
@@ -34,7 +34,7 @@ test("quando ha posicao dominante, a frase de fragilidade avisa pra vigiar o adv
     { time: "Vasco", lado: "shots_against" },
   );
   assert.match(f, /ponta-direita adversário/);
-  assert.match(f, /Fique de olho/);
+  assert.match(f, /Atenção:/);
 });
 
 test("REGRA (Renato, 4a rodada): posição é obrigatória — sem ela, o achado inteiro é descartado (nao sai frase incompleta)", () => {
@@ -44,7 +44,7 @@ test("REGRA (Renato, 4a rodada): posição é obrigatória — sem ela, o achado
 
 test("dimensao posicao ja NOMEIA a posicao no corpo da frase (nao usa clausula extra)", () => {
   const f = gerarFrase(achado({ dimensao: "posicao", categoria: "meia" }), { time: "Vasco", lado: "shots_for" });
-  assert.match(f, /o meia é quem mais finaliza/);
+  assert.equal(f, "No Vasco, o meia registra cerca de 2 finalizações por jogo. É uma posição a observar na escalação.");
 });
 
 test("dimensao area: fora da área gera frase natural igual ao exemplo do Renato, com o substantivo explicito e a posição", () => {
@@ -52,7 +52,7 @@ test("dimensao area: fora da área gera frase natural igual ao exemplo do Renato
     achado({ dimensao: "area", categoria: "fora-da-area", porJogo: 8, posicaoDominante: posDom("meia") }),
     { time: "Vasco", lado: "shots_for" },
   );
-  assert.equal(f, "O Vasco cria muitas finalizações de fora da área — cerca de 8 por jogo. Quem mais aparece nessas jogadas é o meia.");
+  assert.equal(f, "O Vasco registra cerca de 8 finalizações por jogo de fora da área. O meia é quem mais finaliza nesse tipo de jogada.");
 });
 
 test("dimensao ladoDaJogada gera frase de identidade, sem 'mais que a maioria', com o substantivo explicito e a posição", () => {
@@ -60,7 +60,7 @@ test("dimensao ladoDaJogada gera frase de identidade, sem 'mais que a maioria', 
     achado({ dimensao: "ladoDaJogada", categoria: "esquerda", porJogo: 5, posicaoDominante: posDom("lateral-esquerdo") }),
     { time: "Vasco", lado: "shots_for" },
   );
-  assert.equal(f, "O Vasco cria muitas finalizações em jogadas construídas pelo lado esquerdo — cerca de 5 por jogo. Quem mais aparece nessas jogadas é o lateral-esquerdo.");
+  assert.equal(f, "O Vasco registra cerca de 5 finalizações por jogo em jogadas construídas pelo lado esquerdo. O lateral-esquerdo é quem mais finaliza nesse tipo de jogada.");
 });
 
 test("dimensoes que precisam de posicao (nao posicao/assistentePosicao) descartam o achado sem ela", () => {
@@ -77,14 +77,15 @@ test("dimensoes que precisam de posicao (nao posicao/assistentePosicao) descarta
 test("REGRA (Renato, 3a rodada): toda frase nomeia o que esta sendo contado — nunca so a posicao, sem dizer 'o que'", () => {
   const f = gerarFrase(achado({ dimensao: "posicao", categoria: "meia" }), { time: "Palmeiras", lado: "shots_against" });
   assert.match(f, /finalizaç/i, "tem que dizer 'finalizações', nao so 'sofre do meia adversário'");
-  assert.equal(f, "O Palmeiras sofre muitas finalizações do meia adversário — cerca de 2 por jogo.");
+  assert.equal(f, "O Palmeiras cede cerca de 2 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa.");
 });
 
-test("assistentePosicao tambem nomeia 'assistências' explicitamente, nos dois lados", () => {
+test("assistentePosicao descreve passe para finalizacao, sem inventar assistencia de gol", () => {
   const cria = gerarFrase(achado({ dimensao: "assistentePosicao", categoria: "volante" }), { time: "Vasco", lado: "shots_for" });
   const sofre = gerarFrase(achado({ dimensao: "assistentePosicao", categoria: "volante" }), { time: "Vasco", lado: "shots_against" });
-  assert.match(cria, /assistência/i);
-  assert.match(sofre, /assistência/i);
+  assert.match(cria, /passes.*finalizações/i);
+  assert.match(sofre, /finalizações.*passes/i);
+  assert.doesNotMatch(`${cria} ${sofre}`, /assistência/i);
 });
 
 test("finalização de cabeça nunca é chamada de 'gol' (a base conta chute, nao gol)", () => {
@@ -148,4 +149,65 @@ test("gerarFrases: quando um achado (nao-posicao) nao tem posicaoDominante, ele 
   const r = gerarFrases(achados, { time: "Vasco", lado: "shots_against" });
   assert.equal(r.length, 1);
   assert.equal(r[0].achado.dimensao, "contraAtaque");
+});
+
+test("frequencia baixa continua mostrando numero concreto", () => {
+  const f = gerarFrase(achado({ dimensao: "posicao", categoria: "meia", porJogo: 0.34 }), { time: "Vasco", lado: "shots_for" });
+  assert.match(f, /0,3 finalizações por jogo/);
+  assert.doesNotMatch(f, /de vez em quando/);
+});
+
+test("entrada incompleta ou invalida e descartada sem frase enganosa", () => {
+  assert.equal(gerarFrase(null, { time: "Vasco", lado: "shots_for" }), null);
+  assert.equal(gerarFrase(achado({ dimensao: "posicao", categoria: "meia" }), { time: "", lado: "shots_for" }), null);
+  assert.equal(gerarFrase(achado({ dimensao: "posicao", categoria: "meia" }), { time: "Vasco", lado: "lado_novo" }), null);
+  assert.equal(gerarFrase(achado({ dimensao: "posicao", categoria: "meia", porJogo: null }), { time: "Vasco", lado: "shots_for" }), null);
+});
+
+test("extremo baixo nao e promovido por um template que descreve presenca", () => {
+  const achados = [
+    achado({ dimensao: "ladoDaJogada", categoria: "direita", posicaoDominante: posDom("meia"), distintividade: { valor: 0.95, direcao: "baixo", percentil: 0.025 } }),
+    achado({ dimensao: "area", categoria: "fora-da-area", posicaoDominante: posDom("volante"), distintividade: { valor: 0.3, direcao: "alto", percentil: 0.8 } }),
+  ];
+  const r = gerarFrases(achados, { time: "Vasco", lado: "shots_for" });
+  assert.equal(r.length, 1);
+  assert.equal(r[0].achado.dimensao, "area");
+});
+
+test("limita repeticao da mesma posicao finalizadora sem misturar criador", () => {
+  const achados = [
+    achado({ dimensao: "posicao", categoria: "atacante-area", distintividade: { valor: 0.9, direcao: "alto" } }),
+    achado({ dimensao: "area", categoria: "dentro-da-area", posicaoDominante: posDom("atacante-area"), distintividade: { valor: 0.8, direcao: "alto" } }),
+    achado({ dimensao: "origem", categoria: "CRUZAMENTO", posicaoDominante: posDom("atacante-area"), distintividade: { valor: 0.7, direcao: "alto" } }),
+    achado({ dimensao: "parteDoCorpo", categoria: "cabeca", posicaoDominante: posDom("meia"), distintividade: { valor: 0.6, direcao: "alto" } }),
+    achado({ dimensao: "assistentePosicao", categoria: "atacante-area", distintividade: { valor: 0.5, direcao: "alto" } }),
+  ];
+  const r = gerarFrases(achados, { time: "Vasco", lado: "shots_for", max: 5 });
+  assert.equal(r.filter((x) => {
+    const a = x.achado;
+    return a.dimensao !== "assistentePosicao" && (a.dimensao === "posicao" ? a.categoria : a.posicaoDominante?.posicao) === "atacante-area";
+  }).length, 2);
+  assert.ok(r.some((x) => x.achado.dimensao === "assistentePosicao"));
+  assert.ok(r.some((x) => x.achado.posicaoDominante?.posicao === "meia"));
+});
+
+test("amostra inicial recebe ressalva editorial explicita", () => {
+  const a = achado({ dimensao: "posicao", categoria: "meia", jogosUsados: 6 });
+  const frase = gerarFrase(a, { time: "Vasco", lado: "shots_for" });
+  assert.equal(nivelConfianca(a), "tendencia-inicial");
+  assert.match(frase, /^Com apenas 6 jogos na amostra,/);
+});
+
+test("padrao anterior vence concorrente marginal, mas nao um claramente superior", () => {
+  const anterior = achado({ dimensao: "posicao", categoria: "meia", distintividade: { valor: 0.6, direcao: "alto" } });
+  const marginal = achado({ dimensao: "posicao", categoria: "volante", distintividade: { valor: 0.65, direcao: "alto" } });
+  const superior = achado({ dimensao: "posicao", categoria: "ponta-esquerda", distintividade: { valor: 0.8, direcao: "alto" } });
+  const opcoes = { time: "Vasco", lado: "shots_for", max: 1, chavesAnteriores: [chaveDoAchado(anterior)] };
+
+  const manteve = gerarFrases([anterior, marginal], opcoes);
+  assert.equal(manteve[0].achado.categoria, "meia");
+  assert.equal(manteve[0].confianca, "padrao-consolidado");
+
+  const trocou = gerarFrases([anterior, superior], opcoes);
+  assert.equal(trocou[0].achado.categoria, "ponta-esquerda");
 });

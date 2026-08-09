@@ -1,16 +1,52 @@
 {
   "teamKey": "corinthians",
-  "geradoEm": "2026-08-07T17:21:37.881Z",
+  "geradoEm": "2026-08-09T02:05:53.853Z",
   "ataca": [
-    "No Corinthians, o meia é quem mais finaliza — cerca de 3 por jogo.",
-    "O Corinthians cria muitas finalizações de cabeça — cerca de 2 por jogo. Quem mais aparece nessas jogadas é o volante.",
-    "No Corinthians, o meia é quem mais dá assistências — cerca de 3 por jogo.",
-    "O Corinthians cria muitas finalizações de dentro da área — cerca de 6 por jogo. Quem mais aparece nessas jogadas é o atacante de área."
+    "No Corinthians, o meia registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
+    "O Corinthians registra cerca de 2 finalizações por jogo de cabeça. O volante é quem mais finaliza nesse tipo de jogada.",
+    "No Corinthians, passes do meia originam cerca de 3 finalizações por jogo.",
+    "O Corinthians registra cerca de 6 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada."
+  ],
+  "evidenciasAtaca": [
+    {
+      "chave": "posicao|meia|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "parteDoCorpo|cabeca|volante",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "assistentePosicao|meia|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|dentro-da-area|atacante-area",
+      "confianca": "padrao-consolidado"
+    }
+  ],
+  "evidenciasSofre": [
+    {
+      "chave": "origem|REBATIDA|ponta-esquerda",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|fora-da-area|meia",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "posicao|atacante-area|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "assistentePosicao|meia|",
+      "confianca": "padrao-consolidado"
+    }
   ],
   "sofre": [
-    "O Corinthians sofre muitas finalizações de sobra de bola — cerca de 3 por jogo. Fique de olho no ponta-esquerda adversário nesses lances.",
-    "O Corinthians sofre muitas finalizações de fora da área — cerca de 5 por jogo. Fique de olho no meia adversário nesses lances.",
-    "O Corinthians sofre muitas finalizações do atacante de área adversário — cerca de 3 por jogo.",
-    "O Corinthians sofre muitas finalizações vindas do lado esquerdo da própria defesa — cerca de 2 por jogo. Fique de olho no meia adversário nesses lances."
+    "O Corinthians cede cerca de 3 finalizações por jogo após sobras de bola. Atenção: o ponta-esquerda adversário é quem mais finaliza nesses lances.",
+    "O Corinthians cede cerca de 5 finalizações por jogo de fora da área. Atenção: o meia adversário é quem mais finaliza nesses lances.",
+    "O Corinthians cede cerca de 2 finalizações por jogo ao atacante de área adversário. É uma posição a observar contra essa defesa.",
+    "O Corinthians cede cerca de 2 finalizações por jogo após passes do meia adversário."
   ]
 }

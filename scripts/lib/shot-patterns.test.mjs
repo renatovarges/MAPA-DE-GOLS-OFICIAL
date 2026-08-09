@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   pesoDoJogo, finalizacoesPonderadas, amostraEfetiva, intervaloWilson,
-  ladoDoCampo, extrairValor, detectarPadroesInternos, compararComLiga, posicaoDominante,
+  ladoDoCampo, extrairValor, detectarPadroesInternos, compararComLiga, posicaoDominante, distribuicoesDeShare, distintividade,
 } from "./shot-patterns.mjs";
 
 function shot(over = {}) {
@@ -234,4 +234,23 @@ test("detectarPadroesInternos NAO anexa posicaoDominante quando a dimensao ja e 
   const achado = detectarPadroesInternos({ shots, jogosUsados: 15, dimensao: "posicao" })
     .find((a) => a.categoria === "ponta-direita");
   assert.equal(achado.posicaoDominante, undefined);
+});
+
+test("porJogo usa a mesma janela ponderada do padrao", () => {
+  const shots = [
+    ...Array.from({ length: 6 }, () => ({ ...shot({ origem: "ESCANTEIO" }), _peso: 3 })),
+    ...Array.from({ length: 12 }, () => ({ ...shot({ origem: "PASSE" }), _peso: 1 })),
+  ];
+  const achado = detectarPadroesInternos({ shots, jogosUsados: 2, pesoTotalJogos: 4, dimensao: "origem", minOcorrencias: 1, pisoMinimo: 0 })
+    .find((a) => a.categoria === "ESCANTEIO");
+  assert.equal(achado.porJogo, 4.5);
+});
+
+test("distribuicao da liga inclui zero para time sem ocorrencia da categoria", () => {
+  const timeComEscanteio = repetir(2, { origem: "ESCANTEIO" }).concat(repetir(8, { origem: "PASSE" }));
+  const timeSemEscanteio = repetir(10, { origem: "PASSE" });
+  const outroSemEscanteio = repetir(10, { origem: "CRUZAMENTO" });
+  const distribuicoes = distribuicoesDeShare([timeComEscanteio, timeSemEscanteio, outroSemEscanteio]);
+  assert.deepEqual(distribuicoes.get("origem|ESCANTEIO"), [0.2, 0, 0]);
+  assert.equal(distintividade(0.2, distribuicoes.get("origem|ESCANTEIO")).direcao, "alto");
 });

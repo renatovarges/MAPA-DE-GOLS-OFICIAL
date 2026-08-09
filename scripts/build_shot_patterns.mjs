@@ -1,8 +1,10 @@
 import { fetchJsonWithRetry } from "./lib/http.mjs";
-import { finalizacoesPonderadas, detectarPadroesInternos, distintividade, agruparPorCategoria, DIMENSOES } from "./lib/shot-patterns.mjs";
+import { finalizacoesPonderadas, detectarPadroesInternos, distintividade, distribuicoesDeShare, DIMENSOES } from "./lib/shot-patterns.mjs";
 import { gerarFrases } from "./lib/shot-phrases.mjs";
 import { dispatchAlert } from "./lib/alerts.mjs";
+import { gerarResumoRodada } from "./lib/round-summary.mjs";
 
+import { exigirQualidade } from "./lib/quality-gate.mjs";
 /**
  * Monta o retrato de cada time (o que ele CRIA e o que CEDE) a partir de
  * `data/finalizacoes/{time}.json` — ver harvest_footstats_shots.mjs.
@@ -47,15 +49,21 @@ function rotuloTime(slug) {
 }
 
 async function carregar(slug) {
+  return fetchJsonWithRetry(`${SITE_URL}/data/finalizacoes/${slug}.json?t=${Date.now()}`, { retries: 3 });
+}
+
+async function carregarPadraoAnterior(slug) {
   try {
-    return await fetchJsonWithRetry(`${SITE_URL}/data/finalizacoes/${slug}.json?t=${Date.now()}`, { retries: 1 });
+    const response = await fetch(`${SITE_URL}/data/padroes/${slug}.json?t=${Date.now()}`);
+    if (!response.ok) return null;
+    return response.json();
   } catch {
-    return { matches: {} };
+    return null;
   }
 }
 
 /** roda um lado (shots_for | shots_against) pra todos os times. */
-function analisarLado(dadosPorTime, lado) {
+function analisarLado(dadosPorTime, lado, anterioresPorTime = new Map()) {
   const ponderadoPorTime = new Map();
   for (const [slug, dados] of dadosPorTime) {
     ponderadoPorTime.set(slug, finalizacoesPonderadas(dados.matches, { lado }));
@@ -64,33 +72,23 @@ function analisarLado(dadosPorTime, lado) {
   // share de cada (dimensão|categoria) em cada time — base da distintividade,
   // que decide quais padrões ganham as poucas vagas de texto e como a frase
   // é redigida (ver shot-patterns.mjs).
-  const sharesPorChave = new Map();
-  for (const [, { shots }] of ponderadoPorTime) {
-    for (const dimensao of DIMENSOES) {
-      const { grupos, pesosTotais } = agruparPorCategoria(shots, dimensao);
-      const total = pesosTotais.reduce((a, b) => a + b, 0);
-      if (!total) continue;
-      for (const [categoria, pesos] of grupos) {
-        const chave = `${dimensao}|${categoria}`;
-        if (!sharesPorChave.has(chave)) sharesPorChave.set(chave, []);
-        sharesPorChave.get(chave).push(pesos.reduce((a, b) => a + b, 0) / total);
-      }
-    }
-  }
+  const sharesPorChave = distribuicoesDeShare([...ponderadoPorTime.values()].map((item) => item.shots));
 
   const resultado = new Map();
-  for (const [slug, { shots, jogosUsados }] of ponderadoPorTime) {
+  for (const [slug, { shots, jogosUsados, pesoTotalJogos }] of ponderadoPorTime) {
     if (!shots.length) { resultado.set(slug, []); continue; }
 
     const achados = [];
     for (const dimensao of DIMENSOES) {
-      achados.push(...detectarPadroesInternos({ shots, jogosUsados, dimensao, pisoMinimo: PISO_MINIMO }));
+      achados.push(...detectarPadroesInternos({ shots, jogosUsados, pesoTotalJogos, dimensao, pisoMinimo: PISO_MINIMO }));
     }
     for (const a of achados) {
       a.distintividade = distintividade(a.share, sharesPorChave.get(`${a.dimensao}|${a.categoria}`) || []);
     }
 
-    resultado.set(slug, gerarFrases(achados, { time: rotuloTime(slug), lado, max: MAX_FRASES }));
+    const campo = lado === "shots_for" ? "evidenciasAtaca" : "evidenciasSofre";
+    const chavesAnteriores = (anterioresPorTime.get(slug)?.[campo] || []).map((item) => item.chave).filter(Boolean);
+    resultado.set(slug, gerarFrases(achados, { time: rotuloTime(slug), lado, max: MAX_FRASES, chavesAnteriores }));
   }
   return resultado;
 }
@@ -105,12 +103,27 @@ async function salvarPadrao(slug, payload) {
   return body;
 }
 
+async function salvarResumoRodada(payload) {
+  if (!ENVIO_REAL) return { ok: true, simulado: true };
+  const res = await fetch(`${SITE_URL}/api/save-round-summary`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.ok) throw new Error(`save-round-summary falhou (HTTP ${res.status}): ${JSON.stringify(body)}`);
+  return body;
+}
+
 async function main() {
   if (!SAIDA_JSON) console.log(`→ modo: ${ENVIO_REAL ? "ENVIO REAL (grava no site ao vivo)" : "SIMULAÇÃO"}`);
   if (!SAIDA_JSON) console.log(`→ carregando finalizações de ${TIMES.length} times...`);
 
   const dadosPorTime = new Map();
-  await Promise.all(TIMES.map(async (slug) => { dadosPorTime.set(slug, await carregar(slug)); }));
+  const anterioresPorTime = new Map();
+  await Promise.all(TIMES.map(async (slug) => {
+    const [dados, anterior] = await Promise.all([carregar(slug), carregarPadraoAnterior(slug)]);
+    dadosPorTime.set(slug, dados);
+    anterioresPorTime.set(slug, anterior);
+  }));
 
   const comDado = [...dadosPorTime.values()].filter((d) => Object.keys(d.matches || {}).length).length;
   if (!comDado) {
@@ -118,9 +131,32 @@ async function main() {
     return;
   }
 
-  const criadas = analisarLado(dadosPorTime, "shots_for");
-  const cedidas = analisarLado(dadosPorTime, "shots_against");
+  const criadas = analisarLado(dadosPorTime, "shots_for", anterioresPorTime);
+  const cedidas = analisarLado(dadosPorTime, "shots_against", anterioresPorTime);
   const alvos = TIME_ALVO ? [TIME_ALVO] : TIMES;
+
+  const geradoEm = new Date().toISOString();
+  const partidas = [...dadosPorTime.values()].flatMap((d) => Object.values(d.matches || {}));
+  const rodadas = partidas.map((m) => Number(m.roundNumber)).filter(Number.isFinite);
+  const datas = partidas.map((m) => m.date).filter(Boolean).sort();
+  const resumoRodada = gerarResumoRodada({
+    ofensivosPorTime: criadas, defensivosPorTime: cedidas,
+    rodada: rodadas.length ? Math.max(...rodadas) : null,
+    janelaAte: datas.length ? datas[datas.length - 1] : null,
+    geradoEm,
+  });
+  const auditoria = exigirQualidade({
+    timesEsperados: TIMES,
+    ofensivosPorTime: criadas,
+    defensivosPorTime: cedidas,
+    anterioresPorTime,
+    resumoRodada,
+  });
+  if (!SAIDA_JSON) {
+    console.log(`quality gate: ${auditoria.metricas.totalFrases} frases validadas, media ${auditoria.metricas.mediaPorTimeELado.toFixed(2)} por time/lado`);
+    for (const aviso of auditoria.avisos) console.log(`  AVISO: ${aviso}`);
+  }
+
 
   if (SAIDA_JSON) {
     const saida = {};
@@ -130,12 +166,13 @@ async function main() {
         fragilidadeDefensiva: (cedidas.get(slug) || []).map((r) => r.frase),
       };
     }
+    saida.resumoRodada = resumoRodada;
+    saida.auditoria = auditoria;
     console.log(JSON.stringify(saida, null, 2));
     return;
   }
 
   let salvos = 0, falhas = 0;
-  const geradoEm = new Date().toISOString();
   for (const slug of alvos) {
     const ofensivo = criadas.get(slug) || [];
     const defensivo = cedidas.get(slug) || [];
@@ -155,6 +192,14 @@ async function main() {
       await salvarPadrao(slug, {
         teamKey: slug, geradoEm,
         ataca: ofensivo.map((r) => r.frase),
+        evidenciasAtaca: ofensivo.map((r) => ({
+          chave: r.chave,
+          confianca: r.confianca,
+        })),
+        evidenciasSofre: defensivo.map((r) => ({
+          chave: r.chave,
+          confianca: r.confianca,
+        })),
         sofre: defensivo.map((r) => r.frase),
       });
       salvos++;
@@ -166,6 +211,16 @@ async function main() {
 
   if (ENVIO_REAL) console.log(`\n✓ ${salvos} time(s) salvos, ${falhas} falha(s)`);
   else console.log("\nEssa foi uma SIMULAÇÃO — rode com ENVIO_REAL=1 pra gravar de verdade no site ao vivo.");
+
+  console.log("\n=== VISÃO GERAL DA RODADA ===");
+  for (const conclusao of resumoRodada.conclusoes) console.log(`  · ${conclusao.frase}`);
+  try {
+    await salvarResumoRodada(resumoRodada);
+    if (ENVIO_REAL) console.log("  ✓ resumo geral salvo");
+  } catch (e) {
+    falhas++;
+    console.log(`  ! falha ao salvar resumo geral: ${e.message}`);
+  }
 }
 
 main().catch(async (e) => {
