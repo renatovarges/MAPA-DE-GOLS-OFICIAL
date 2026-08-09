@@ -1436,7 +1436,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitch');
         const overlayEl = document.getElementById('overlay');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 2, currentTeamLeft);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 3, currentTeamLeft);
         const a = document.createElement('a');
         const base = slugify(currentTeamLeft || 'campo1');
         a.href = dataUrl;
@@ -1454,7 +1454,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitch2');
         const overlayEl = document.getElementById('overlay2');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 2, currentTeamRight);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 3, currentTeamRight);
         const a = document.createElement('a');
         const base = slugify(currentTeamRight || 'campo2');
         a.href = dataUrl;
@@ -1472,7 +1472,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitchLx');
         const overlayEl = document.getElementById('overlayLx');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 2, currentTeamLeftExtra);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 3, currentTeamLeftExtra);
         const a = document.createElement('a');
         const base = slugify(currentTeamLeftExtra || 'campo1-extra');
         a.href = dataUrl;
@@ -1490,7 +1490,7 @@ function initDownloadButtons() {
       try {
         const pitchEl = document.getElementById('pitchRx');
         const overlayEl = document.getElementById('overlayRx');
-        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 2, currentTeamRightExtra);
+        const dataUrl = await exportFieldAsPng(pitchEl, overlayEl, 3, currentTeamRightExtra);
         const a = document.createElement('a');
         const base = slugify(currentTeamRightExtra || 'campo2-extra');
         a.href = dataUrl;
@@ -3606,9 +3606,10 @@ const ROUND_SUMMARY_TEAM_LABELS = {
 };
 const ROUND_SUMMARY_TITLES = {
   "posicao-ofensiva": "Destaque ofensivo",
-  "alvo-defensivo": "Posição para observar",
-  "padrao-ofensivo": "Padrão de ataque",
-  "fragilidade-recorrente": "Fragilidade recorrente",
+  "destaque-defensivo": "Destaque defensivo",
+  "alvo-defensivo": "Alerta por posição",
+  "padrao-ofensivo": "Jogada ofensiva recorrente",
+  "fragilidade-recorrente": "Fragilidade defensiva",
 };
 let currentRoundSummary = null;
 
@@ -3649,12 +3650,6 @@ function renderRoundSummary(data) {
     const phrase = document.createElement("p");
     phrase.textContent = item.frase;
     card.append(title, phrase);
-    if (Array.isArray(item.times) && item.times.length) {
-      const teams = document.createElement("div");
-      teams.className = "round-summary__teams";
-      teams.textContent = `Times relacionados: ${item.times.map(roundSummaryTeamName).join(", ")}`;
-      card.appendChild(teams);
-    }
     cards.appendChild(card);
   }
   meta.textContent = roundSummaryMeta(data);
@@ -3695,16 +3690,10 @@ async function exportRoundSummaryPng(data) {
   measure.font = '26px Inter, "Segoe UI", Arial, sans-serif';
   const layouts = data.conclusoes.map((item) => {
     const lines = wrapCanvasText(measure, item.frase, textWidth - 40);
-    const relatedTeams = Array.isArray(item.times) && item.times.length
-      ? `Times relacionados: ${item.times.map(roundSummaryTeamName).join(", ")}`
-      : "";
-    measure.font = '18px Inter, "Segoe UI", Arial, sans-serif';
-    const teamLines = relatedTeams ? wrapCanvasText(measure, relatedTeams, textWidth - 40) : [];
-    measure.font = '26px Inter, "Segoe UI", Arial, sans-serif';
-    return { item, lines, teamLines };
+    return { item, lines };
   });
   const height = 230 + layouts.reduce((sum, layout) =>
-    sum + 82 + layout.lines.length * 39 + (layout.teamLines.length ? 16 + layout.teamLines.length * 28 : 0), 0) + 50;
+    sum + 82 + layout.lines.length * 39, 0) + 50;
   const scale = 2, canvas = document.createElement("canvas");
   canvas.width = width * scale; canvas.height = height * scale;
   const ctx = canvas.getContext("2d"); ctx.scale(scale, scale);
@@ -3718,18 +3707,12 @@ async function exportRoundSummaryPng(data) {
   ctx.fillStyle = "#b9d9cd"; ctx.font = '22px Inter, "Segoe UI", Arial, sans-serif';
   ctx.fillText(roundSummaryMeta(data), margin, 154);
   let y = 196;
-  for (const { item, lines, teamLines } of layouts) {
-    const teamsHeight = teamLines.length ? 16 + teamLines.length * 28 : 0;
-    const cardHeight = 62 + lines.length * 39 + teamsHeight;
+  for (const { item, lines } of layouts) {
+    const cardHeight = 62 + lines.length * 39;
     ctx.fillStyle = "rgba(3, 26, 19, .66)"; ctx.beginPath(); ctx.roundRect(margin, y, textWidth, cardHeight, 16); ctx.fill();
     ctx.fillStyle = "#f7d36a"; ctx.font = '800 17px Inter, "Segoe UI", Arial, sans-serif';
     ctx.fillText((ROUND_SUMMARY_TITLES[item.tipo] || "Conclusão").toUpperCase(), margin + 22, y + 31);
     ctx.fillStyle = "#edf9f4"; ctx.font = '26px Inter, "Segoe UI", Arial, sans-serif';
-    if (teamLines.length) {
-      ctx.fillStyle = "#9fcbbd"; ctx.font = '18px Inter, "Segoe UI", Arial, sans-serif';
-      const teamsY = y + 70 + lines.length * 39 + 7;
-      teamLines.forEach((line, index) => ctx.fillText(line, margin + 22, teamsY + index * 28));
-    }
     lines.forEach((line, index) => ctx.fillText(line, margin + 22, y + 70 + index * 39));
     y += cardHeight + 18;
   }

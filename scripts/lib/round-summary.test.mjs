@@ -13,7 +13,7 @@ const item = (dimensao, categoria, frase, over = {}) => ({
 
 test("sem achados devolve resumo vazio e contrato estavel", () => {
   const r = gerarResumoRodada({ ofensivosPorTime: new Map(), defensivosPorTime: new Map(), rodada: 21, geradoEm: "2026-08-08T00:00:00.000Z" });
-  assert.deepEqual(r, { versao: 1, rodada: 21, janelaAte: null, geradoEm: "2026-08-08T00:00:00.000Z", conclusoes: [] });
+  assert.deepEqual(r, { versao: 2, rodada: 21, janelaAte: null, geradoEm: "2026-08-08T00:00:00.000Z", conclusoes: [] });
 });
 
 test("agrega posicao recorrente e preserva a evidencia mais forte", () => {
@@ -23,7 +23,7 @@ test("agrega posicao recorrente e preserva a evidencia mais forte", () => {
     ["bahia", [item("posicao", "volante", "No Bahia, o volante registra cerca de 3 finalizações por jogo.")]],
   ]);
   const r = gerarResumoRodada({ ofensivosPorTime: ofensivos, defensivosPorTime: new Map() });
-  assert.match(r.conclusoes[0].frase, /Meias.*2 times/);
+  assert.match(r.conclusoes[0].frase, /Meias.*Vasco e Santos/);
   assert.match(r.conclusoes[0].frase, /Santos.*6 finalizações/);
 });
 
@@ -48,4 +48,15 @@ test("caso mediano fica no mapa do time, mas nao vira conclusao geral", () => {
   const ofensivos = new Map([["vasco", [item("area", "dentro-da-area", "frase mediana", { distintividade: { valor: 0.2, direcao: "meio" } })]]]);
   const r = gerarResumoRodada({ ofensivosPorTime: ofensivos, defensivosPorTime: new Map() });
   assert.equal(r.conclusoes.length, 0);
+});
+test("destaque defensivo usa quem menos cede finalizacoes", () => {
+  const metricas = new Map([
+    ["palmeiras", { finalizacoesCedidasPorJogo: 8.2, jogosUsados: 8 }],
+    ["flamengo", { finalizacoesCedidasPorJogo: 9.1, jogosUsados: 8 }],
+    ["vasco", { finalizacoesCedidasPorJogo: 11.4, jogosUsados: 8 }],
+  ]);
+  const r = gerarResumoRodada({ ofensivosPorTime: new Map(), defensivosPorTime: new Map(), metricasDefensivasPorTime: metricas });
+  const destaque = r.conclusoes.find((x) => x.tipo === "destaque-defensivo");
+  assert.match(destaque.frase, /Palmeiras.*8,2 finalizações por jogo/);
+  assert.match(destaque.frase, /defesas que menos permitem chutes/);
 });

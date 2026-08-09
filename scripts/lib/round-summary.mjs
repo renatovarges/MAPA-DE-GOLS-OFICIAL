@@ -1,78 +1,14 @@
-const POSICAO_PLURAL = {
-  "lateral-esquerdo": "laterais-esquerdos",
-  "lateral-direito": "laterais-direitos",
-  meia: "meias",
-  volante: "volantes",
-  "ponta-esquerda": "pontas pelo lado esquerdo",
-  "ponta-direita": "pontas pelo lado direito",
-  "atacante-area": "atacantes de área",
-};
-
-function nomePadrao(dimensao, categoria) {
-  if (dimensao === "area") return categoria === "dentro-da-area" ? "finalizações de dentro da área" : "finalizações de fora da área";
-  if (dimensao === "parteDoCorpo" && categoria === "cabeca") return "finalizações de cabeça";
-  if (dimensao === "contraAtaque") return "finalizações em contra-ataques";
-  if (dimensao === "ladoDaJogada") return `jogadas construídas pelo lado ${categoria === "esquerda" ? "esquerdo" : "direito"}`;
-  const origem = { CRUZAMENTO: "cruzamentos", ESCANTEIO: "escanteios", FALTA: "cobranças de falta", LANCAMENTO: "lançamentos longos", REBATIDA: "sobras de bola" };
-  if (dimensao === "origem") return origem[categoria] || null;
-  return null;
-}
-
-function entradas(mapa) {
-  const saida = [];
-  for (const [time, itens] of mapa || []) {
-    for (const item of itens || []) {
-      if (!item?.achado || !item?.frase) continue;
-      if (item.achado.distintividade?.direcao !== "alto") continue;
-      saida.push({ time, ...item });
-    }
-  }
-  return saida;
-}
-
-function melhorGrupo(lista, chaveFn) {
-  const grupos = new Map();
-  for (const item of lista) {
-    const chave = chaveFn(item);
-    if (!chave) continue;
-    if (!grupos.has(chave)) grupos.set(chave, []);
-    grupos.get(chave).push(item);
-  }
-  return [...grupos.entries()].sort((a, b) => {
-    if (a[1].length !== b[1].length) return b[1].length - a[1].length;
-    const media = (xs) => xs.reduce((n, x) => n + (x.achado.distintividade?.valor || 0), 0) / xs.length;
-    return media(b[1]) - media(a[1]);
-  })[0] || null;
-}
-
-function destaque(grupo) {
-  return [...grupo].sort((a, b) => (b.achado.porJogo || 0) - (a.achado.porJogo || 0))[0];
-}
-
-export function gerarResumoRodada({ ofensivosPorTime, defensivosPorTime, rodada = null, janelaAte = null, geradoEm = new Date().toISOString() } = {}) {
-  const ofensivos = entradas(ofensivosPorTime);
-  const defensivos = entradas(defensivosPorTime);
-  const conclusoes = [];
-
-  const posAtaque = melhorGrupo(ofensivos.filter((x) => x.achado.dimensao === "posicao"), (x) => x.achado.categoria);
-  if (posAtaque) {
-    const [posicao, casos] = posAtaque, top = destaque(casos), plural = POSICAO_PLURAL[posicao];
-    if (plural) conclusoes.push({ tipo: "posicao-ofensiva", frase: `${plural[0].toUpperCase() + plural.slice(1)} aparecem entre os destaques ofensivos de ${casos.length} ${casos.length === 1 ? "time" : "times"}. ${top.frase}`, times: casos.map((x) => x.time) });
-  }
-
-  const posDefesa = melhorGrupo(defensivos.filter((x) => x.achado.dimensao === "posicao"), (x) => x.achado.categoria);
-  if (posDefesa) {
-    const [posicao, casos] = posDefesa, top = destaque(casos), plural = POSICAO_PLURAL[posicao];
-    if (plural) conclusoes.push({ tipo: "alvo-defensivo", frase: `${plural[0].toUpperCase() + plural.slice(1)} são a posição adversária que mais se repete entre os alertas defensivos (${casos.length} ${casos.length === 1 ? "time" : "times"}). ${top.frase}`, times: casos.map((x) => x.time) });
-  }
-
-  for (const [tipo, lista, prefixo] of [["padrao-ofensivo", ofensivos, "Entre os ataques"], ["fragilidade-recorrente", defensivos, "Entre as fragilidades"]]) {
-    const grupo = melhorGrupo(lista.filter((x) => nomePadrao(x.achado.dimensao, x.achado.categoria)), (x) => `${x.achado.dimensao}|${x.achado.categoria}`);
-    if (!grupo) continue;
-    const [chave, casos] = grupo, top = destaque(casos), [dimensao, ...resto] = chave.split("|");
-    const nome = nomePadrao(dimensao, resto.join("|"));
-    conclusoes.push({ tipo, frase: `${prefixo}, ${nome} são o padrão que mais se repete (${casos.length} ${casos.length === 1 ? "time" : "times"}). ${top.frase}`, times: casos.map((x) => x.time) });
-  }
-
-  return { versao: 1, rodada, janelaAte, geradoEm, conclusoes };
-}
+const POSICOES={"lateral-esquerdo":"laterais-esquerdos","lateral-direito":"laterais-direitos",meia:"meias",volante:"volantes","ponta-esquerda":"pontas pelo lado esquerdo","ponta-direita":"pontas pelo lado direito","atacante-area":"atacantes de área"};
+const NOMES={"red-bull-bragantino":"Red Bull Bragantino","atletico-mg":"Atlético-MG","athletico-pr":"Athletico-PR","sao-paulo":"São Paulo",gremio:"Grêmio",vitoria:"Vitória"};
+const time=s=>NOMES[s]||String(s).split("-").map(p=>p[0].toUpperCase()+p.slice(1)).join(" ");
+const cap=s=>s?s[0].toUpperCase()+s.slice(1):s;
+const num=n=>n.toLocaleString("pt-BR",{maximumFractionDigits:1});
+function lista(xs){return xs.length<2?(xs[0]||""):xs.length===2?`${xs[0]} e ${xs[1]}`:`${xs.slice(0,-1).join(", ")} e ${xs.at(-1)}`}
+function padrao(d,c){if(d==="area")return c==="dentro-da-area"?"finalizações de dentro da área":"finalizações de fora da área";if(d==="parteDoCorpo"&&c==="cabeca")return"finalizações de cabeça";if(d==="contraAtaque")return"finalizações em contra-ataques";if(d==="ladoDaJogada")return`finalizações em jogadas construídas pelo lado ${c==="esquerda"?"esquerdo":"direito"}`;const o={CRUZAMENTO:"finalizações após cruzamentos",ESCANTEIO:"finalizações após escanteios",FALTA:"finalizações após cobranças de falta",LANCAMENTO:"finalizações após lançamentos longos",REBATIDA:"finalizações após sobras de bola"};return d==="origem"?o[c]||null:null}
+function entradas(m){const r=[];for(const[t,is]of m||[])for(const i of is||[])if(i?.achado&&i?.frase&&i.achado.distintividade?.direcao==="alto")r.push({time:t,...i});return r}
+function grupo(xs,chave){const m=new Map;for(const x of xs){const k=chave(x);if(!k)continue;if(!m.has(k))m.set(k,[]);m.get(k).push(x)}const media=a=>a.reduce((n,x)=>n+(x.achado.distintividade?.valor||0),0)/a.length;return[...m].sort((a,b)=>b[1].length-a[1].length||media(b[1])-media(a[1]))[0]||null}
+const top=xs=>[...xs].sort((a,b)=>(b.achado.porJogo||0)-(a.achado.porJogo||0))[0];
+function posicao(xs,p,defesa){const melhor=top(xs),nomes=lista(xs.map(x=>time(x.time))),valor=num(melhor.achado.porJogo);return defesa?`${cap(POSICOES[p])} adversários finalizam acima do normal contra ${nomes}. O alerta é mais forte no ${time(melhor.time)}, que permite cerca de ${valor} finalizações por jogo a essa posição. Na prática, essa é uma rota clara para observar nos adversários dessas defesas.`:`${cap(POSICOES[p])} concentram uma parcela acima do normal das finalizações de ${nomes}. O caso mais forte é o ${time(melhor.time)}, com cerca de ${valor} finalizações por jogo nessa posição. Na prática, vale acompanhar esses jogadores como as principais referências de chute dessas equipes.`}
+function recorrente(xs,n,defesa){const melhor=top(xs),nomes=lista(xs.map(x=>time(x.time))),valor=num(melhor.achado.porJogo);return defesa?`${cap(n)} aparecem acima do normal contra ${nomes}. O caso mais forte é o ${time(melhor.time)}, que cede cerca de ${valor} finalizações por jogo dessa forma. Na prática, os adversários encontram nessa jogada uma maneira recorrente de ameaçar essas defesas.`:`${cap(n)} aparecem acima do normal nos ataques de ${nomes}. O caso mais forte é o ${time(melhor.time)}, com cerca de ${valor} finalizações por jogo dessa forma. Na prática, essa jogada mostra como essas equipes costumam construir suas chances.`}
+function destaqueDefensivo(m){const e=[...(m||new Map)].filter(([,x])=>Number.isFinite(x?.finalizacoesCedidasPorJogo)&&x.jogosUsados>=5).sort((a,b)=>a[1].finalizacoesCedidasPorJogo-b[1].finalizacoesCedidasPorJogo).slice(0,3);if(e.length<2)return null;const[l,...d]=e,resto=d.map(x=>`${time(x[0])} (${num(x[1].finalizacoesCedidasPorJogo)} por jogo)`);return{tipo:"destaque-defensivo",frase:`${time(l[0])} apresenta o melhor controle defensivo da amostra: permite cerca de ${num(l[1].finalizacoesCedidasPorJogo)} finalizações por jogo. ${lista(resto)} também estão entre as defesas que menos permitem chutes. Na prática, são as equipes que mais reduzem o volume ofensivo dos adversários.`,times:e.map(([t])=>t)}}
+export function gerarResumoRodada({ofensivosPorTime,defensivosPorTime,metricasDefensivasPorTime,rodada=null,janelaAte=null,geradoEm=new Date().toISOString()}={}){const o=entradas(ofensivosPorTime),d=entradas(defensivosPorTime),conclusoes=[];const po=grupo(o.filter(x=>x.achado.dimensao==="posicao"),x=>x.achado.categoria);if(po&&POSICOES[po[0]])conclusoes.push({tipo:"posicao-ofensiva",frase:posicao(po[1],po[0],false),times:po[1].map(x=>x.time)});const dd=destaqueDefensivo(metricasDefensivasPorTime);if(dd)conclusoes.push(dd);const pd=grupo(d.filter(x=>x.achado.dimensao==="posicao"),x=>x.achado.categoria);if(pd&&POSICOES[pd[0]])conclusoes.push({tipo:"alvo-defensivo",frase:posicao(pd[1],pd[0],true),times:pd[1].map(x=>x.time)});for(const[tipo,xs,def]of[["padrao-ofensivo",o,false],["fragilidade-recorrente",d,true]]){const g=grupo(xs.filter(x=>padrao(x.achado.dimensao,x.achado.categoria)),x=>`${x.achado.dimensao}|${x.achado.categoria}`);if(g){const[k,casos]=g,[dim,...cat]=k.split("|");conclusoes.push({tipo,frase:recorrente(casos,padrao(dim,cat.join("|")),def),times:casos.map(x=>x.time)})}}return{versao:2,rodada,janelaAte,geradoEm,conclusoes}}
