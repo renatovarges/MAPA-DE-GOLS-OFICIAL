@@ -113,6 +113,16 @@ async function salvarResumoRodada(payload) {
   return body;
 }
 
+function calcularMetricasDefensivas(dadosPorTime) {
+  const resultado = new Map();
+  for (const [slug, dados] of dadosPorTime) {
+    const { shots, jogosUsados, pesoTotalJogos } = finalizacoesPonderadas(dados.matches, { lado: "shots_against" });
+    if (!pesoTotalJogos) continue;
+    const totalPonderado = shots.reduce((soma, chute) => soma + (Number(chute._peso) || 0), 0);
+    resultado.set(slug, { finalizacoesCedidasPorJogo: totalPonderado / pesoTotalJogos, jogosUsados });
+  }
+  return resultado;
+}
 async function main() {
   if (!SAIDA_JSON) console.log(`→ modo: ${ENVIO_REAL ? "ENVIO REAL (grava no site ao vivo)" : "SIMULAÇÃO"}`);
   if (!SAIDA_JSON) console.log(`→ carregando finalizações de ${TIMES.length} times...`);
@@ -140,7 +150,7 @@ async function main() {
   const rodadas = partidas.map((m) => Number(m.roundNumber)).filter(Number.isFinite);
   const datas = partidas.map((m) => m.date).filter(Boolean).sort();
   const resumoRodada = gerarResumoRodada({
-    ofensivosPorTime: criadas, defensivosPorTime: cedidas,
+    ofensivosPorTime: criadas, defensivosPorTime: cedidas, metricasDefensivasPorTime: calcularMetricasDefensivas(dadosPorTime),
     rodada: rodadas.length ? Math.max(...rodadas) : null,
     janelaAte: datas.length ? datas[datas.length - 1] : null,
     geradoEm,
