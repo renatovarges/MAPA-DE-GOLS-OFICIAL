@@ -1,10 +1,10 @@
 {
   "teamKey": "fluminense",
-  "geradoEm": "2026-08-09T02:41:33.436Z",
+  "geradoEm": "2026-08-09T09:38:45.349Z",
   "ataca": [
     "No Fluminense, o atacante de área registra cerca de 4 finalizações por jogo. É uma posição a observar na escalação.",
-    "O Fluminense registra cerca de 3 finalizações por jogo após sobras de bola. O volante é quem mais finaliza nesse tipo de jogada.",
-    "O Fluminense registra cerca de 9 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada."
+    "O Fluminense registra cerca de 9 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+    "O Fluminense registra cerca de 3 finalizações por jogo após sobras de bola. O volante é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
@@ -12,17 +12,17 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|REBATIDA|volante",
+      "chave": "area|dentro-da-area|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|dentro-da-area|atacante-area",
+      "chave": "origem|REBATIDA|volante",
       "confianca": "padrao-consolidado"
     }
   ],
   "evidenciasSofre": [
     {
-      "chave": "assistentePosicao|meia|",
+      "chave": "ladoDaJogada|direita|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
@@ -34,14 +34,14 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|CRUZAMENTO|atacante-area",
+      "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
-    "O Fluminense cede cerca de 2 finalizações por jogo após passes do meia adversário.",
-    "O Fluminense cede cerca de 5 finalizações por jogo de fora da área. Atenção: o volante adversário é quem mais finaliza nesses lances.",
-    "O Fluminense cede cerca de 2 finalizações por jogo ao atacante de área adversário. É uma posição a observar contra essa defesa.",
-    "O Fluminense cede cerca de 2 finalizações por jogo após cruzamentos. Atenção: o atacante de área adversário é quem mais finaliza nesses lances."
+    "O Fluminense cede cerca de 3 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Fluminense cede cerca de 6 finalizações por jogo de fora da área. Atenção: o volante adversário é quem mais finaliza nesses lances.",
+    "O Fluminense cede cerca de 3 finalizações por jogo ao atacante de área adversário. É uma posição a observar contra essa defesa.",
+    "O Fluminense cede cerca de 2 finalizações por jogo após passes do meia adversário."
   ]
 }
