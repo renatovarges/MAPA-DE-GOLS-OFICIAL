@@ -1,27 +1,27 @@
 {
   "teamKey": "atletico-mg",
-  "geradoEm": "2026-08-09T02:41:33.436Z",
+  "geradoEm": "2026-08-09T09:38:45.349Z",
   "ataca": [
-    "No Atlético-MG, o ponta-direita registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
     "O Atlético-MG registra cerca de 8 finalizações por jogo de dentro da área. O meia é quem mais finaliza nesse tipo de jogada.",
-    "No Atlético-MG, passes do meia originam cerca de 3 finalizações por jogo.",
-    "O Atlético-MG registra cerca de 2 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada."
+    "No Atlético-MG, o ponta-direita registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
+    "O Atlético-MG registra cerca de 2 finalizações por jogo após cruzamentos. O meia é quem mais finaliza nesse tipo de jogada.",
+    "No Atlético-MG, passes do meia originam cerca de 3 finalizações por jogo."
   ],
   "evidenciasAtaca": [
-    {
-      "chave": "posicao|ponta-direita|",
-      "confianca": "padrao-consolidado"
-    },
     {
       "chave": "area|dentro-da-area|meia",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "assistentePosicao|meia|",
+      "chave": "posicao|ponta-direita|",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|CRUZAMENTO|atacante-area",
+      "chave": "origem|CRUZAMENTO|meia",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     }
   ],
@@ -31,7 +31,11 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "posicao|meia|",
+      "chave": "posicao|volante|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "ladoDaJogada|esquerda|meia",
       "confianca": "padrao-consolidado"
     },
     {
@@ -41,7 +45,8 @@
   ],
   "sofre": [
     "O Atlético-MG cede cerca de 7 finalizações por jogo de fora da área. Atenção: o meia adversário é quem mais finaliza nesses lances.",
-    "O Atlético-MG cede cerca de 3 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa.",
+    "O Atlético-MG cede cerca de 2 finalizações por jogo ao volante adversário. É uma posição a observar contra essa defesa.",
+    "O Atlético-MG cede cerca de 4 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o meia adversário é quem mais finaliza nesses lances.",
     "O Atlético-MG cede cerca de 3 finalizações por jogo após passes do meia adversário."
   ]
 }
