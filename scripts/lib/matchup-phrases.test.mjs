@@ -14,7 +14,7 @@ function item(tipo, scout = "finalizacoes") {
 test("convergência explica os dois lados e termina com aplicação", () => {
   const frase = gerarFraseInsight(item(TIPOS_INSIGHT.CONVERGENCIA));
   assert.match(frase.texto, /Bahia produz/);
-  assert.match(frase.texto, /Chapecoense permite/);
+  assert.match(frase.texto, /Chapecoense cede/);
   assert.match(frase.texto, /Na prática/);
 });
 
@@ -39,13 +39,13 @@ test("fragilidade própria não atribui ao atacante um padrão inexistente", () 
 test("nomes internos viram nomes editoriais com acentos", () => {
   const entrada = { ...item(TIPOS_INSIGHT.CONVERGENCIA), atacante: "botafogo", defensor: "vitoria" };
   const frase = gerarFraseInsight(entrada);
-  assert.match(frase.texto, /Vitória permite/);
+  assert.match(frase.texto, /Vitória cede/);
 });
 
 test("participações em gols têm chamada futebolística e não falam em caminho", () => {
   const entrada = { ...item(TIPOS_INSIGHT.FRAGILIDADE_PROPRIA, "participacoes"), chave: "posicao:lateral-direito" };
   const frase = gerarFraseInsight(entrada);
-  assert.equal(frase.chamada, "CEDE PARTICIPAÇÕES EM GOLS DE LATERAIS-DIREITOS AO ADVERSÁRIO");
+  assert.equal(frase.chamada, "CEDE PARTICIPAÇÕES EM GOLS PARA LATERAIS-DIREITOS ADVERSÁRIOS");
   assert.doesNotMatch(frase.titulo + " " + frase.texto, /caminho/i);
 });
 
@@ -56,8 +56,17 @@ test("usa verbos próprios do futebol para gols, finalizações e participaçõe
   assert.match(gols, /Bahia marca gols/);
   assert.match(gols, /Chapecoense sofre/);
   assert.doesNotMatch(gols, /produz gols|registra gols|cede gols/i);
-  assert.match(finalizacoes, /Bahia produz finalizações/);
-  assert.match(finalizacoes, /Chapecoense permite/);
-  assert.match(participacoes, /Bahia soma participações em gols/);
+  assert.match(finalizacoes, /Bahia produz finalizações com seus meias/);
+  assert.match(finalizacoes, /Chapecoense cede finalizações para meias adversários/);
+  assert.match(participacoes, /Bahia soma participações em gols com seus meias/);
   assert.match(participacoes, /Chapecoense cede/);
+});
+
+test("posições são descritas pela perspectiva do próprio time e do adversário", () => {
+  const ponta = { ...item(TIPOS_INSIGHT.CONVERGENCIA, "gols"), chave: "posicao:ponta-esquerda" };
+  const lateral = { ...item(TIPOS_INSIGHT.CONVERGENCIA, "participacoes"), chave: "posicao:lateral-esquerdo" };
+  assert.match(gerarFraseInsight(ponta).texto, /Bahia marca gols com seu ponta esquerda/);
+  assert.match(gerarFraseInsight(ponta).texto, /Chapecoense sofre gols de ponta esquerda/);
+  assert.match(gerarFraseInsight(lateral).texto, /Bahia soma participações em gols com seus laterais-esquerdos/);
+  assert.match(gerarFraseInsight(lateral).texto, /Chapecoense cede participações em gols para laterais-esquerdos adversários/);
 });
