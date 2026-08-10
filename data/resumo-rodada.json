@@ -1,18 +1,159 @@
 {
-  "versao": 2,
-  "rodada": 22,
+  "versao": 3,
+  "tipoLeitura": "pre-jogo",
+  "rodada": 23,
+  "rodadaDados": 22,
   "janelaAte": "2026-08-09",
-  "geradoEm": "2026-08-10T14:01:10.504Z",
+  "geradoEm": "2026-08-10T16:26:00.134Z",
+  "jogos": [
+    {
+      "id": 237794,
+      "rodada": 23,
+      "data": "2026-08-15T18:30:00",
+      "mandante": "athletico-pr",
+      "visitante": "red-bull-bragantino"
+    },
+    {
+      "id": 237682,
+      "rodada": 23,
+      "data": "2026-08-15T21:00:00",
+      "mandante": "sao-paulo",
+      "visitante": "coritiba"
+    },
+    {
+      "id": 237809,
+      "rodada": 23,
+      "data": "2026-08-16T11:00:00",
+      "mandante": "chapecoense",
+      "visitante": "bahia"
+    },
+    {
+      "id": 237755,
+      "rodada": 23,
+      "data": "2026-08-16T16:00:00",
+      "mandante": "atletico-mg",
+      "visitante": "gremio"
+    },
+    {
+      "id": 237859,
+      "rodada": 23,
+      "data": "2026-08-16T16:00:00",
+      "mandante": "vasco",
+      "visitante": "santos"
+    },
+    {
+      "id": 237652,
+      "rodada": 23,
+      "data": "2026-08-16T16:30:00",
+      "mandante": "fluminense",
+      "visitante": "palmeiras"
+    },
+    {
+      "id": 237596,
+      "rodada": 23,
+      "data": "2026-08-16T18:30:00",
+      "mandante": "mirassol",
+      "visitante": "flamengo"
+    },
+    {
+      "id": 237903,
+      "rodada": 23,
+      "data": "2026-08-16T18:30:00",
+      "mandante": "vitoria",
+      "visitante": "botafogo"
+    },
+    {
+      "id": 237730,
+      "rodada": 23,
+      "data": "2026-08-16T19:30:00",
+      "mandante": "corinthians",
+      "visitante": "cruzeiro"
+    },
+    {
+      "id": 237876,
+      "rodada": 23,
+      "data": "2026-08-17T20:00:00",
+      "mandante": "internacional",
+      "visitante": "remo"
+    }
+  ],
   "conclusoes": [
     {
-      "tipo": "posicao-ofensiva",
-      "frase": "Volantes concentram uma parcela acima do normal das finalizações de Bahia, Botafogo, Corinthians e Remo. O caso mais forte é o Botafogo, com cerca de 2,5 finalizações por jogo nessa posição. Na prática, vale acompanhar esses jogadores como as principais referências de chute dessas equipes.",
+      "tipo": "convergencia",
+      "titulo": "Remo pode explorar gols de ponta esquerda contra o Internacional",
+      "frase": "O Remo produz gols de ponta esquerda a uma média de 0,80 por jogo, aparecendo em 6 dos últimos 10 jogos. O Internacional cede esse mesmo caminho a uma média de 0,60 por jogo, aparecendo em 5 dos últimos 10 jogos, enquanto a referência do campeonato é 0,17 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "bahia",
+        "remo",
+        "internacional"
+      ],
+      "scout": "gols",
+      "chave": "posicao:ponta-esquerda"
+    },
+    {
+      "tipo": "convergencia",
+      "titulo": "Botafogo pode explorar gols de fora da área contra o Vitória",
+      "frase": "O Botafogo produz gols de fora da área a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos. O Vitória cede esse mesmo caminho a uma média de 0,50 por jogo, aparecendo em 5 dos últimos 10 jogos, enquanto a referência do campeonato é 0,19 por jogo. Na prática, observe os jogadores com liberdade e volume para chutar de média distância.",
+      "times": [
         "botafogo",
-        "corinthians",
+        "vitoria"
+      ],
+      "scout": "gols",
+      "chave": "area:fora"
+    },
+    {
+      "tipo": "convergencia",
+      "titulo": "Internacional pode explorar finalizações de laterais-esquerdos contra o Remo",
+      "frase": "O Internacional produz finalizações de laterais-esquerdos a uma média de 3,2 por jogo, aparecendo em 9 dos últimos 10 jogos. O Remo cede esse mesmo caminho a uma média de 1,2 por jogo, aparecendo em 9 dos últimos 10 jogos, enquanto a referência do campeonato é 0,9 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "times": [
+        "internacional",
         "remo"
-      ]
+      ],
+      "scout": "finalizacoes",
+      "chave": "posicao:lateral-esquerdo"
+    },
+    {
+      "tipo": "convergencia",
+      "titulo": "Palmeiras pode explorar gols de fora da área contra o Fluminense",
+      "frase": "O Palmeiras produz gols de fora da área a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos. O Fluminense cede esse mesmo caminho a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,19 por jogo. Na prática, observe os jogadores com liberdade e volume para chutar de média distância.",
+      "times": [
+        "palmeiras",
+        "fluminense"
+      ],
+      "scout": "gols",
+      "chave": "area:fora"
+    },
+    {
+      "tipo": "fragilidade-defensiva-propria",
+      "titulo": "São Paulo oferece um caminho que merece atenção",
+      "frase": "O São Paulo cede gols de laterais-direitos a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, acima da referência de 0,03 do campeonato. Esse não é um padrão ofensivo dominante do Coritiba, mas a vulnerabilidade defensiva é forte e recorrente o suficiente para entrar no radar. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "times": [
+        "coritiba",
+        "sao-paulo"
+      ],
+      "scout": "gols",
+      "chave": "posicao:lateral-direito"
+    },
+    {
+      "tipo": "forca-ofensiva-propria",
+      "titulo": "Palmeiras mantém um caminho ofensivo recorrente",
+      "frase": "O Palmeiras registra finalizações de meias a uma média de 7,2 por jogo, aparecendo em 10 dos últimos 10 jogos, acima da referência de 2,4 do campeonato. O Fluminense não apresenta uma fragilidade igualmente forte nesse recorte, mas a recorrência do próprio Palmeiras mantém o padrão relevante. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "times": [
+        "palmeiras",
+        "fluminense"
+      ],
+      "scout": "finalizacoes",
+      "chave": "posicao:meia"
+    },
+    {
+      "tipo": "forca-ofensiva-propria",
+      "titulo": "Santos mantém um caminho ofensivo recorrente",
+      "frase": "O Santos registra finalizações de meias a uma média de 6,4 por jogo, aparecendo em 10 dos últimos 10 jogos, acima da referência de 2,4 do campeonato. O Vasco não apresenta uma fragilidade igualmente forte nesse recorte, mas a recorrência do próprio Santos mantém o padrão relevante. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "times": [
+        "santos",
+        "vasco"
+      ],
+      "scout": "finalizacoes",
+      "chave": "posicao:meia"
     },
     {
       "tipo": "destaque-defensivo",
@@ -21,37 +162,6 @@
         "corinthians",
         "red-bull-bragantino",
         "flamengo"
-      ]
-    },
-    {
-      "tipo": "alvo-defensivo",
-      "frase": "Meias adversários finalizam acima do normal contra Corinthians, Chapecoense, Athletico-PR e Palmeiras. O alerta é mais forte no Chapecoense, que permite cerca de 3,5 finalizações por jogo a essa posição. Na prática, essa é uma rota clara para observar nos adversários dessas defesas.",
-      "times": [
-        "corinthians",
-        "chapecoense",
-        "athletico-pr",
-        "palmeiras"
-      ]
-    },
-    {
-      "tipo": "padrao-ofensivo",
-      "frase": "Finalizações de cabeça aparecem acima do normal nos ataques de São Paulo, Red Bull Bragantino, Bahia, Corinthians e Chapecoense. O caso mais forte é o Red Bull Bragantino, com cerca de 2,9 finalizações por jogo dessa forma. Na prática, essa jogada mostra como essas equipes costumam construir suas chances.",
-      "times": [
-        "sao-paulo",
-        "red-bull-bragantino",
-        "bahia",
-        "corinthians",
-        "chapecoense"
-      ]
-    },
-    {
-      "tipo": "fragilidade-recorrente",
-      "frase": "Finalizações de cabeça aparecem acima do normal contra São Paulo, Athletico-PR, Remo e Grêmio. O caso mais forte é o Grêmio, que cede cerca de 2,8 finalizações por jogo dessa forma. Na prática, os adversários encontram nessa jogada uma maneira recorrente de ameaçar essas defesas.",
-      "times": [
-        "sao-paulo",
-        "athletico-pr",
-        "remo",
-        "gremio"
       ]
     }
   ],
@@ -64,7 +174,8 @@
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-08-10T14:01:10.504Z",
-    "ultimaPartidaEm": "2026-08-09"
+    "atualizadoEm": "2026-08-10T16:26:00.134Z",
+    "ultimaPartidaEm": "2026-08-09",
+    "rodadaLeitura": 23
   }
 }
