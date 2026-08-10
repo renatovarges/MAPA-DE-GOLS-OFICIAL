@@ -30,7 +30,7 @@ function chavesHistoricas(partidas, cutoff) {
 
 function baselinesHistoricos(partidas, cutoff, chaves) {
   const elegiveis = partidas.filter((m) => m.date < cutoff), resultado = new Map();
-  for (const scout of ["finalizacoes", "gols"]) {
+  for (const scout of ["finalizacoes", "gols", "participacoes"]) {
     const totais = new Map();
     for (const partida of elegiveis) {
       const contagens = contagensPartida(partida, "shots_for", scout);
@@ -48,12 +48,23 @@ async function salvar(payload) {
   if (!response.ok || !body.ok) throw new Error("save-round-summary falhou (HTTP " + response.status + "): " + JSON.stringify(body));
 }
 
+async function carregarPartidasFootstats() {
+  const url = API_BASE + "/api/1.0/campeonatos/" + CAMPEONATO_ID + "/partidas";
+  let token = await getFootstatsToken();
+  try {
+    return await fetchJsonWithRetry(url, { headers: { Authorization: "Bearer " + token } });
+  } catch (erro) {
+    if (!String(erro?.message || erro).includes("401")) throw erro;
+    token = await getFootstatsToken({ forceRefresh: true });
+    return fetchJsonWithRetry(url, { headers: { Authorization: "Bearer " + token } });
+  }
+}
+
 async function main() {
   const dadosPorTime = new Map();
   await Promise.all(TIMES.map(async (time) => dadosPorTime.set(time, await fetchJsonWithRetry(SITE_URL + "/data/finalizacoes/" + time + ".json?t=" + Date.now()))));
   const rodadaDados = contagemRodada(dadosPorTime);
-  const token = await getFootstatsToken();
-  const partidasFootstats = await fetchJsonWithRetry(API_BASE + "/api/1.0/campeonatos/" + CAMPEONATO_ID + "/partidas", { headers: { Authorization: "Bearer " + token } });
+  const partidasFootstats = await carregarPartidasFootstats();
   const proxima = proximaRodadaCompleta(partidasFootstats, rodadaDados);
   if (!proxima) throw new Error("nenhuma rodada futura completa encontrada depois da rodada " + rodadaDados);
   const cutoff = proxima.jogos[0].data.slice(0, 10), todas = [], porTime = new Map();
@@ -66,16 +77,16 @@ async function main() {
     const historicoAtacante = (porTime.get(atacante) || []).filter((x) => x.date < cutoff).slice(-10);
     const historicoDefensor = (porTime.get(defensor) || []).filter((x) => x.date < cutoff).slice(-10);
     if (historicoAtacante.length < 5 || historicoDefensor.length < 5) continue;
-    for (const scout of ["finalizacoes", "gols"]) candidatos.push(...gerarCandidatosConfronto({ atacante, defensor, historicoAtacante, historicoDefensor, baselines, scout, chaves }));
+    for (const scout of ["finalizacoes", "gols", "participacoes"]) candidatos.push(...gerarCandidatosConfronto({ atacante, defensor, historicoAtacante, historicoDefensor, baselines, scout, chaves }));
   }
   const conclusoes = selecionarDestaques(candidatos, { max: 8 }).map((item) => {
     const editorial = gerarFraseInsight(item);
-    return { tipo: item.tipo, titulo: editorial.titulo, frase: editorial.texto, times: [item.atacante, item.defensor], scout: item.scout, chave: item.chave };
+    return { tipo: item.tipo, titulo: editorial.titulo, chamada: editorial.chamada, timeDestaque: editorial.timeDestaque, frase: editorial.texto, times: [item.atacante, item.defensor], scout: item.scout, chave: item.chave };
   });
   let resumoAnterior = null;
   try { resumoAnterior = await fetchJsonWithRetry(SITE_URL + "/data/resumo-rodada.json?t=" + Date.now()); } catch {}
   const defensivo = resumoAnterior?.conclusoes?.find((x) => x.tipo === "destaque-defensivo");
-  if (defensivo && conclusoes.length < 8) conclusoes.push(defensivo);
+  if (defensivo && conclusoes.length < 8) conclusoes.push({ ...defensivo, chamada: defensivo.chamada || "CONTROLE DEFENSIVO", timeDestaque: defensivo.timeDestaque || defensivo.times?.[0] });
   if (conclusoes.length < 5) throw new Error("motor gerou apenas " + conclusoes.length + " conclusões para a rodada " + proxima.rodada);
   const agora = new Date().toISOString();
   const payload = { versao: 3, tipoLeitura: "pre-jogo", rodada: proxima.rodada, rodadaDados, janelaAte: todas.map((x) => x.date).filter((x) => x < cutoff).sort().at(-1) || null, geradoEm: agora, jogos: proxima.jogos, conclusoes, statusAtualizacao: { ...(resumoAnterior?.statusAtualizacao || {}), rodada: rodadaDados, rodadaLeitura: proxima.rodada, leituraEstrategicaAtualizada: true, atualizadoEm: agora } };

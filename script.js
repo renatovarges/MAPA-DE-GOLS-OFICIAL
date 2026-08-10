@@ -3621,7 +3621,17 @@ function roundSummaryTeamName(team) {
 }
 
 function roundSummaryText(item) {
-  return item.titulo ? `${item.titulo}. ${item.frase}` : item.frase;
+  return item.frase;
+}
+
+function roundSummaryHeadline(item) {
+  return item.chamada || item.titulo || (ROUND_SUMMARY_TITLES[item.tipo] || "Destaque");
+}
+
+function roundSummaryCrestSrc(team) {
+  const key = normalizeTeamKey(String(team || "").toLowerCase().replace(/-/g, "_"));
+  const file = CREST_MAP[key];
+  return file ? `escudos  série A 2025/${file}` : null;
 }
 
 function isValidRoundSummary(data) {
@@ -3693,11 +3703,27 @@ function renderRoundSummary(data) {
   for (const item of data.conclusoes) {
     const card = document.createElement("article");
     card.className = "round-summary__card";
+    const head = document.createElement("div");
+    head.className = "round-summary__card-head";
+    const crestWrap = document.createElement("div");
+    crestWrap.className = "round-summary__crest";
+    const crestSrc = roundSummaryCrestSrc(item.timeDestaque || item.times?.[0]);
+    if (crestSrc) {
+      const crest = document.createElement("img");
+      crest.src = crestSrc; crest.alt = roundSummaryTeamName(item.timeDestaque || item.times?.[0]);
+      crestWrap.appendChild(crest);
+    }
+    const headings = document.createElement("div");
+    const category = document.createElement("span");
+    category.className = "round-summary__category";
+    category.textContent = ROUND_SUMMARY_TITLES[item.tipo] || "Destaque";
     const title = document.createElement("h3");
-    title.textContent = ROUND_SUMMARY_TITLES[item.tipo] || "Conclusão";
+    title.textContent = roundSummaryHeadline(item);
+    headings.append(category, title);
+    head.append(crestWrap, headings);
     const phrase = document.createElement("p");
     phrase.textContent = roundSummaryText(item);
-    card.append(title, phrase);
+    card.append(head, phrase);
     cards.appendChild(card);
   }
   meta.textContent = roundSummaryMeta(data);
@@ -3730,18 +3756,29 @@ function wrapCanvasText(ctx, text, maxWidth) {
   return lines;
 }
 
+function loadRoundSummaryImage(src) {
+  return new Promise((resolve) => {
+    if (!src) return resolve(null);
+    const img = new Image();
+    img.onload = () => resolve(img); img.onerror = () => resolve(null); img.src = src;
+  });
+}
+
 async function exportRoundSummaryPng(data) {
   if (!isValidRoundSummary(data)) throw new Error("Resumo da rodada indisponível");
   if (document.fonts?.ready) await document.fonts.ready;
   const width = 1200, margin = 72, textWidth = width - margin * 2;
   const measure = document.createElement("canvas").getContext("2d");
-  measure.font = '26px Inter, "Segoe UI", Arial, sans-serif';
-  const layouts = data.conclusoes.map((item) => {
-    const lines = wrapCanvasText(measure, roundSummaryText(item), textWidth - 40);
-    return { item, lines };
-  });
+  const layouts = await Promise.all(data.conclusoes.map(async (item) => {
+    measure.font = '800 24px Inter, "Segoe UI", Arial, sans-serif';
+    const headlineLines = wrapCanvasText(measure, roundSummaryHeadline(item), textWidth - 125);
+    measure.font = '23px Inter, "Segoe UI", Arial, sans-serif';
+    const lines = wrapCanvasText(measure, roundSummaryText(item), textWidth - 44);
+    const crest = await loadRoundSummaryImage(roundSummaryCrestSrc(item.timeDestaque || item.times?.[0]));
+    return { item, headlineLines, lines, crest };
+  }));
   const height = 230 + layouts.reduce((sum, layout) =>
-    sum + 82 + layout.lines.length * 39, 0) + 50;
+    sum + 116 + layout.headlineLines.length * 32 + layout.lines.length * 35, 0) + 50;
   const scale = 2, canvas = document.createElement("canvas");
   canvas.width = width * scale; canvas.height = height * scale;
   const ctx = canvas.getContext("2d"); ctx.scale(scale, scale);
@@ -3755,13 +3792,18 @@ async function exportRoundSummaryPng(data) {
   ctx.fillStyle = "#b9d9cd"; ctx.font = '22px Inter, "Segoe UI", Arial, sans-serif';
   ctx.fillText(roundSummaryMeta(data), margin, 154);
   let y = 196;
-  for (const { item, lines } of layouts) {
-    const cardHeight = 62 + lines.length * 39;
+  for (const { item, headlineLines, lines, crest } of layouts) {
+    const cardHeight = 96 + headlineLines.length * 32 + lines.length * 35;
     ctx.fillStyle = "rgba(3, 26, 19, .66)"; ctx.beginPath(); ctx.roundRect(margin, y, textWidth, cardHeight, 16); ctx.fill();
+    ctx.fillStyle = "#ffffff"; ctx.beginPath(); ctx.arc(margin + 51, y + 55, 31, 0, Math.PI * 2); ctx.fill();
+    if (crest) ctx.drawImage(crest, margin + 27, y + 31, 48, 48);
     ctx.fillStyle = "#f7d36a"; ctx.font = '800 17px Inter, "Segoe UI", Arial, sans-serif';
-    ctx.fillText((ROUND_SUMMARY_TITLES[item.tipo] || "Conclusão").toUpperCase(), margin + 22, y + 31);
+    ctx.fillText((ROUND_SUMMARY_TITLES[item.tipo] || "Destaque").toUpperCase(), margin + 98, y + 31);
+    ctx.fillStyle = "#edf9f4"; ctx.font = '800 24px Inter, "Segoe UI", Arial, sans-serif';
+    headlineLines.forEach((line, index) => ctx.fillText(line, margin + 98, y + 63 + index * 32));
+    const bodyY = y + 83 + headlineLines.length * 32;
     ctx.fillStyle = "#edf9f4"; ctx.font = '26px Inter, "Segoe UI", Arial, sans-serif';
-    lines.forEach((line, index) => ctx.fillText(line, margin + 22, y + 70 + index * 39));
+    lines.forEach((line, index) => ctx.fillText(line, margin + 22, bodyY + index * 35));
     y += cardHeight + 18;
   }
   return canvas.toDataURL("image/png");

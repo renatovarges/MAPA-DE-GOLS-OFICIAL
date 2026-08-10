@@ -117,9 +117,13 @@ header h1{font-size:20px;margin:0}
 .round-summary__download{flex:0 0 auto;background:#f7d36a;color:#17392e;border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer}
 .round-summary__download:hover{filter:brightness(1.05)}
 .round-summary__cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.round-summary__card{padding:16px 17px;border-radius:13px;background:rgba(5,31,23,.62);border:1px solid rgba(255,255,255,.08)}
-.round-summary__card h3{margin:0 0 8px;color:#f7d36a;font-size:13px;letter-spacing:.07em;text-transform:uppercase}
-.round-summary__card p{margin:0;color:#edf9f4;line-height:1.55;font-size:15px}
+.round-summary__card{padding:18px;border-radius:15px;background:linear-gradient(145deg,rgba(5,31,23,.78),rgba(8,48,36,.7));border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 22px rgba(0,0,0,.16)}
+.round-summary__card-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.round-summary__crest{width:58px;height:58px;flex:0 0 58px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 5px 14px rgba(0,0,0,.28)}
+.round-summary__crest img{width:44px;height:44px;object-fit:contain}
+.round-summary__category{display:block;margin-bottom:5px;color:#8fd6be;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.round-summary__card h3{margin:0;color:#f7d36a;font-size:16px;line-height:1.25;letter-spacing:.025em;text-transform:uppercase}
+.round-summary__card p{margin:0;color:#edf9f4;line-height:1.58;font-size:14px;border-top:1px solid rgba(255,255,255,.08);padding-top:13px}
 .round-summary__teams{margin-top:10px;color:#9fcbbd;font-size:12px;line-height:1.4}
 @media(max-width:700px){
   .round-summary{padding:18px;margin-top:22px}

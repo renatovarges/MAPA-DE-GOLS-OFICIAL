@@ -21,7 +21,7 @@ function nomeTime(valor) {
 
 function substantivoEvento(chave, scout) {
   const [dimensao, valor] = String(chave).split(":");
-  const prefixo = scout === "gols" ? "gols" : "finalizações";
+  const prefixo = scout === "gols" ? "gols" : scout === "participacoes" ? "participações em gols" : "finalizações";
   const rotulos = {
     "corpo:cabeca": prefixo + " de cabeça",
     "transicao:contra-ataque": prefixo + " em contra-ataques",
@@ -49,18 +49,29 @@ function orientacao(chave) {
   if (dimensao === "lado") return "observe quem participa com mais frequência das jogadas construídas por esse setor";
   if (chave === "area:fora") return "observe os jogadores com liberdade e volume para chutar de média distância";
   if (chave === "area:dentro") return "observe os jogadores que mais recebem e finalizam dentro da área";
-  return "observe os jogadores mais presentes nesse caminho de ataque";
+  return "observe os jogadores mais presentes nessa característica ofensiva";
 }
 
 function frequencia(perfil, scout) {
-  return numero(perfil.j10.taxa, scout === "gols" ? 2 : 1) + " por jogo, aparecendo em " + perfil.j10.jogosComEvento + " dos últimos " + perfil.j10.jogos + " jogos";
+  return numero(perfil.j10.taxa, scout === "finalizacoes" ? 1 : 2) + " por jogo, aparecendo em " + perfil.j10.jogosComEvento + " dos últimos " + perfil.j10.jogos + " jogos";
+}
+
+function chamadaDoInsight(item, evento) {
+  const texto = evento.toUpperCase();
+  if (item.tipo === TIPOS_INSIGHT.FRAGILIDADE_PROPRIA) {
+    if (item.scout === "gols") return "SOFRE " + texto;
+    if (item.scout === "participacoes") return "CEDE " + texto + " AO ADVERSÁRIO";
+    return "CEDE " + texto;
+  }
+  if (item.scout === "gols") return "MARCA " + texto;
+  return texto;
 }
 
 export function gerarFraseInsight(item) {
   const atacante = nomeTime(item.atacante);
   const defensor = nomeTime(item.defensor);
   const evento = substantivoEvento(item.chave, item.scout);
-  const casas = item.scout === "gols" ? 2 : 1;
+  const casas = item.scout === "finalizacoes" ? 1 : 2;
   const mediaLiga = numero(item.baseline, casas);
   const ataque = frequencia(item.perfilAtaque, item.scout);
   const defesa = frequencia(item.perfilDefesa, item.scout);
@@ -69,21 +80,27 @@ export function gerarFraseInsight(item) {
   if (item.tipo === TIPOS_INSIGHT.CONVERGENCIA) {
     return {
       categoria: "Encaixe favorável",
-      titulo: atacante + " pode explorar " + evento + " contra o " + defensor,
-      texto: "O " + atacante + " produz " + evento + " a uma média de " + ataque + ". O " + defensor + " cede esse mesmo caminho a uma média de " + defesa + ", enquanto a referência do campeonato é " + mediaLiga + " por jogo. " + pratica,
+      timeDestaque: item.atacante,
+      chamada: chamadaDoInsight(item, evento),
+      titulo: atacante + " tem um encaixe favorável contra o " + defensor,
+      texto: "O " + atacante + " registra " + evento + " a uma média de " + ataque + ". O " + defensor + " cede esse mesmo padrão a uma média de " + defesa + ", enquanto a referência do campeonato é " + mediaLiga + " por jogo. " + pratica,
     };
   }
   if (item.tipo === TIPOS_INSIGHT.FORCA_PROPRIA) {
     return {
       categoria: "Força ofensiva própria",
-      titulo: atacante + " mantém um caminho ofensivo recorrente",
+      timeDestaque: item.atacante,
+      chamada: chamadaDoInsight(item, evento),
+      titulo: atacante + " mantém um padrão ofensivo recorrente",
       texto: "O " + atacante + " registra " + evento + " a uma média de " + ataque + ", acima da referência de " + mediaLiga + " do campeonato. O " + defensor + " não apresenta uma fragilidade igualmente forte nesse recorte, mas a recorrência do próprio " + atacante + " mantém o padrão relevante. " + pratica,
     };
   }
   return {
     categoria: "Fragilidade defensiva excepcional",
-    titulo: defensor + " oferece um caminho que merece atenção",
-    texto: "O " + defensor + " cede " + evento + " a uma média de " + defesa + ", acima da referência de " + mediaLiga + " do campeonato. Esse não é um padrão ofensivo dominante do " + atacante + ", mas a vulnerabilidade defensiva é forte e recorrente o suficiente para entrar no radar. " + pratica,
+    timeDestaque: item.defensor,
+    chamada: chamadaDoInsight(item, evento),
+    titulo: defensor + " apresenta uma vulnerabilidade que merece atenção",
+    texto: "O " + defensor + " cede " + evento + " a uma média de " + defesa + ", acima da referência de " + mediaLiga + " do campeonato. Essa não é uma característica ofensiva dominante do " + atacante + ", mas a vulnerabilidade defensiva é forte e recorrente o suficiente para entrar no radar. " + pratica,
   };
 }
 

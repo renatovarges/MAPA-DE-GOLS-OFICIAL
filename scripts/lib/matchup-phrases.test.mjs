@@ -13,7 +13,7 @@ function item(tipo, scout = "finalizacoes") {
 
 test("convergência explica os dois lados e termina com aplicação", () => {
   const frase = gerarFraseInsight(item(TIPOS_INSIGHT.CONVERGENCIA));
-  assert.match(frase.texto, /Bahia produz/);
+  assert.match(frase.texto, /Bahia registra/);
   assert.match(frase.texto, /Chapecoense cede/);
   assert.match(frase.texto, /Na prática/);
 });
@@ -32,7 +32,7 @@ test("força própria declara que não depende da confirmação do adversário",
 
 test("fragilidade própria não atribui ao atacante um padrão inexistente", () => {
   const frase = gerarFraseInsight(item(TIPOS_INSIGHT.FRAGILIDADE_PROPRIA));
-  assert.match(frase.texto, /não é um padrão ofensivo dominante do Bahia/);
+  assert.match(frase.texto, /não é uma característica ofensiva dominante do Bahia/);
   assert.match(frase.texto, /vulnerabilidade defensiva/);
 });
 
@@ -40,4 +40,11 @@ test("nomes internos viram nomes editoriais com acentos", () => {
   const entrada = { ...item(TIPOS_INSIGHT.CONVERGENCIA), atacante: "botafogo", defensor: "vitoria" };
   const frase = gerarFraseInsight(entrada);
   assert.match(frase.texto, /Vitória cede/);
+});
+
+test("participações em gols têm chamada futebolística e não falam em caminho", () => {
+  const entrada = { ...item(TIPOS_INSIGHT.FRAGILIDADE_PROPRIA, "participacoes"), chave: "posicao:lateral-direito" };
+  const frase = gerarFraseInsight(entrada);
+  assert.equal(frase.chamada, "CEDE PARTICIPAÇÕES EM GOLS DE LATERAIS-DIREITOS AO ADVERSÁRIO");
+  assert.doesNotMatch(frase.titulo + " " + frase.texto, /caminho/i);
 });
