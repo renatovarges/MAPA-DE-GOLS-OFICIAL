@@ -3632,7 +3632,46 @@ function roundSummaryMeta(data) {
   return "Retrato mais recente disponível";
 }
 
+function formatUpdateStatusDate(value) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
+}
+
+function renderUpdateStatus(data) {
+  const section = document.getElementById("updateStatus");
+  if (!section || !data) return;
+  const recebido = data.statusAtualizacao;
+  const status = recebido || {
+    estado: "verificando", rodada: data.rodada,
+    leituraEstrategicaAtualizada: Array.isArray(data.conclusoes) && data.conclusoes.length >= 2,
+    atualizadoEm: data.geradoEm,
+  };
+  const pronto = status.estado === "pronto";
+  const parcial = status.estado === "parcial";
+  section.dataset.state = pronto ? "pronto" : parcial ? "parcial" : "verificando";
+  document.getElementById("updateStatusTitle").textContent = pronto
+    ? "Dados prontos para uso"
+    : parcial ? "Rodada em atualização" : "Confirmação detalhada pendente";
+  document.getElementById("updateStatusMessage").textContent = pronto
+    ? "Todos os jogos da rodada foram processados, e as frases dos times e a leitura estratégica foram recalculadas."
+    : parcial
+      ? "Os dados disponíveis já foram processados, mas a rodada ainda não está completa. Aguarde antes de usar a leitura como retrato final."
+      : "A leitura está disponível, mas o detalhamento de cobertura será confirmado na próxima atualização automática.";
+  document.getElementById("updateStatusRound").textContent = status.rodada ? `Rodada ${status.rodada}` : "—";
+  document.getElementById("updateStatusMatches").textContent = Number.isFinite(status.jogosProcessados)
+    ? `${status.jogosProcessados} de ${status.jogosEsperados || 10}` : "A confirmar";
+  document.getElementById("updateStatusTeams").textContent = Number.isFinite(status.timesAtualizados)
+    ? `${status.timesAtualizados} de ${status.timesEsperados || 20}` : "A confirmar";
+  document.getElementById("updateStatusReading").textContent = status.leituraEstrategicaAtualizada ? "Atualizada" : "Pendente";
+  const horario = formatUpdateStatusDate(status.atualizadoEm);
+  document.getElementById("updateStatusTime").textContent = horario ? `Última atualização concluída: ${horario}` : "";
+  section.hidden = false;
+}
+
 function renderRoundSummary(data) {
+  renderUpdateStatus(data);
   const section = document.getElementById("roundSummary");
   const cards = document.getElementById("roundSummaryCards");
   const meta = document.getElementById("roundSummaryMeta");

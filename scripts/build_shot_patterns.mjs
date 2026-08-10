@@ -3,6 +3,7 @@ import { finalizacoesPonderadas, detectarPadroesInternos, distintividade, distri
 import { gerarFrases } from "./lib/shot-phrases.mjs";
 import { dispatchAlert } from "./lib/alerts.mjs";
 import { gerarResumoRodada } from "./lib/round-summary.mjs";
+import { calcularStatusAtualizacao } from "./lib/update-status.mjs";
 
 import { exigirQualidade } from "./lib/quality-gate.mjs";
 /**
@@ -155,6 +156,11 @@ async function main() {
     janelaAte: datas.length ? datas[datas.length - 1] : null,
     geradoEm,
   });
+  resumoRodada.statusAtualizacao = calcularStatusAtualizacao({
+    dadosPorTime, rodada: resumoRodada.rodada, geradoEm, janelaAte: resumoRodada.janelaAte,
+    timesEsperados: TIMES.length, frasesAtualizadas: true,
+    leituraEstrategicaAtualizada: true,
+  });
   const auditoria = exigirQualidade({
     timesEsperados: TIMES,
     ofensivosPorTime: criadas,
@@ -222,6 +228,14 @@ async function main() {
   if (ENVIO_REAL) console.log(`\n✓ ${salvos} time(s) salvos, ${falhas} falha(s)`);
   else console.log("\nEssa foi uma SIMULAÇÃO — rode com ENVIO_REAL=1 pra gravar de verdade no site ao vivo.");
 
+  resumoRodada.statusAtualizacao = calcularStatusAtualizacao({
+    dadosPorTime, rodada: resumoRodada.rodada, geradoEm, janelaAte: resumoRodada.janelaAte,
+    timesEsperados: TIMES.length,
+    frasesAtualizadas: !TIME_ALVO && falhas === 0 && salvos === TIMES.length,
+    leituraEstrategicaAtualizada: falhas === 0 && resumoRodada.conclusoes.length >= 2,
+  });
+  console.log("\n=== STATUS DA ATUALIZAÇÃO ===");
+  console.log(resumoRodada.statusAtualizacao);
   console.log("\n=== VISÃO GERAL DA RODADA ===");
   for (const conclusao of resumoRodada.conclusoes) console.log(`  · ${conclusao.frase}`);
   try {
@@ -231,6 +245,7 @@ async function main() {
     falhas++;
     console.log(`  ! falha ao salvar resumo geral: ${e.message}`);
   }
+  if (ENVIO_REAL && falhas > 0) throw new Error(`${falhas} gravação(ões) falharam; atualização não concluída`);
 }
 
 main().catch(async (e) => {

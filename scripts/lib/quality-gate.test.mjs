@@ -55,3 +55,20 @@ test("quality gate bloqueia mudanca em massa com memoria suficiente", () => {
   assert.equal(r.ok, false);
   assert.ok(r.erros.some((x) => x.includes("mudanca em massa")));
 });
+test("quality gate bloqueia status pronto incoerente", () => {
+  const r = avaliarQualidade({
+    timesEsperados: ["vasco"],
+    ofensivosPorTime: new Map([["vasco", [item()]]]),
+    defensivosPorTime: new Map([["vasco", [item("area|fora-da-area|meia")]]]),
+    resumoRodada: {
+      ...resumo,
+      statusAtualizacao: {
+        estado: "pronto", jogosProcessados: 4, jogosEsperados: 10,
+        timesAtualizados: 8, timesEsperados: 20,
+        frasesAtualizadas: true, leituraEstrategicaAtualizada: true,
+      },
+    },
+  });
+  assert.equal(r.ok, false);
+  assert.ok(r.erros.some((x) => x.includes("rodada incompleta")));
+});
