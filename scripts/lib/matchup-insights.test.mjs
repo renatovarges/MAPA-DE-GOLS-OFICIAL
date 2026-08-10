@@ -1,0 +1,56 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {
+  TIPOS_INSIGHT, eventosDoChute, avaliarForca,
+  gerarCandidatosConfronto, selecionarDestaques,
+} from "./matchup-insights.mjs";
+
+const chute = (over = {}) => ({
+  posicao: "meia", dentroDaArea: false, perna: "PERNA_DIREITA",
+  origem: "CRUZAMENTO", origemZona: { y: 10 }, contraAtaque: false, gol: false, ...over,
+});
+const partida = (shots_for, shots_against = shots_for) => ({ shots_for, shots_against });
+
+test("extrai posição, área, origem e lado sem confundir gol", () => {
+  const eventos = eventosDoChute(chute());
+  assert.ok(eventos.includes("posicao:meia"));
+  assert.ok(eventos.includes("area:fora"));
+  assert.ok(eventos.includes("origem:cruzamento"));
+  assert.ok(eventos.includes("cruzamento:esquerda"));
+});
+
+test("força exige recorrência e confirmação em mais de uma janela", () => {
+  const forte = {
+    j3: { taxa: 2, total: 6, jogosComEvento: 3, jogos: 3 },
+    j5: { taxa: 1.8, total: 9, jogosComEvento: 5, jogos: 5 },
+    j10: { taxa: 1.5, total: 15, jogosComEvento: 8, jogos: 10 },
+  };
+  assert.ok(avaliarForca(forte, 1, "finalizacoes"));
+  assert.equal(avaliarForca({ ...forte, j10: { ...forte.j10, jogosComEvento: 1 } }, 1, "finalizacoes"), null);
+});
+
+test("convergência nasce somente quando ataque e defesa confirmam o mesmo caminho", () => {
+  const forca = Array.from({ length: 10 }, () => partida([chute(), chute()]));
+  const defesa = Array.from({ length: 10 }, () => partida([], [chute(), chute()]));
+  const candidatos = gerarCandidatosConfronto({
+    atacante: "a", defensor: "b", historicoAtacante: forca, historicoDefensor: defesa,
+    scout: "finalizacoes", chaves: ["posicao:meia"],
+    baselines: new Map([["finalizacoes|posicao:meia", 1]]),
+  });
+  assert.equal(candidatos[0].tipo, TIPOS_INSIGHT.CONVERGENCIA);
+});
+
+test("seleção preserva vagas para padrões próprios", () => {
+  const candidatos = [];
+  for (let i = 0; i < 8; i++) candidatos.push({ tipo: TIPOS_INSIGHT.CONVERGENCIA, score: 20 - i, atacante: "c" + i, defensor: "d", scout: "finalizacoes", chave: "k" + i });
+  candidatos.push({ tipo: TIPOS_INSIGHT.FORCA_PROPRIA, score: 5, atacante: "forca", defensor: "d", scout: "gols", chave: "p" });
+  candidatos.push({ tipo: TIPOS_INSIGHT.FRAGILIDADE_PROPRIA, score: 6, atacante: "ataque", defensor: "fragil", scout: "gols", chave: "q" });
+  const selecionados = selecionarDestaques(candidatos);
+  assert.equal(selecionados.filter((x) => x.tipo === TIPOS_INSIGHT.CONVERGENCIA).length, 4);
+  assert.ok(selecionados.some((x) => x.tipo === TIPOS_INSIGHT.FORCA_PROPRIA));
+  assert.ok(selecionados.some((x) => x.tipo === TIPOS_INSIGHT.FRAGILIDADE_PROPRIA));
+});
+test("fragilidade própria só ocupa o painel quando é excepcional", () => {
+  const fraca = { tipo: TIPOS_INSIGHT.FRAGILIDADE_PROPRIA, score: 4.9, atacante: "a", defensor: "b", scout: "finalizacoes", chave: "x" };
+  assert.equal(selecionarDestaques([fraca]).length, 0);
+});
