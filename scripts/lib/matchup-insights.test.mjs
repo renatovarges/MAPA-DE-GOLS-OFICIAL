@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   TIPOS_INSIGHT, eventosDoChute, avaliarForca,
-  gerarCandidatosConfronto, selecionarDestaques,
+  gerarCandidatosConfronto, selecionarDestaques, contagensPartida,
 } from "./matchup-insights.mjs";
 
 const chute = (over = {}) => ({
@@ -46,7 +46,7 @@ test("seleção preserva vagas para padrões próprios", () => {
   candidatos.push({ tipo: TIPOS_INSIGHT.FORCA_PROPRIA, score: 5, atacante: "forca", defensor: "d", scout: "gols", chave: "p" });
   candidatos.push({ tipo: TIPOS_INSIGHT.FRAGILIDADE_PROPRIA, score: 6, atacante: "ataque", defensor: "fragil", scout: "gols", chave: "q" });
   const selecionados = selecionarDestaques(candidatos);
-  assert.equal(selecionados.filter((x) => x.tipo === TIPOS_INSIGHT.CONVERGENCIA).length, 4);
+  assert.equal(selecionados.filter((x) => x.tipo === TIPOS_INSIGHT.CONVERGENCIA).length, 3);
   assert.ok(selecionados.some((x) => x.tipo === TIPOS_INSIGHT.FORCA_PROPRIA));
   assert.ok(selecionados.some((x) => x.tipo === TIPOS_INSIGHT.FRAGILIDADE_PROPRIA));
 });
@@ -64,4 +64,25 @@ test("não repete o mesmo caminho nos dois lados do confronto", () => {
   ]);
   assert.equal(itens.length, 1);
   assert.equal(itens[0].atacante, "bahia");
+});
+
+test("participação em gols soma quem marcou e quem deu assistência no gol", () => {
+  const partida = { shots_for: [
+    { gol: true, posicao: "meia", assistentePosicao: "lateral-direito" },
+    { gol: false, posicao: "meia", assistentePosicao: "lateral-direito" },
+    { gol: true, posicao: "meia", assistentePosicao: "meia" },
+  ] };
+  const contagens = contagensPartida(partida, "shots_for", "participacoes");
+  assert.equal(contagens.get("posicao:meia"), 3);
+  assert.equal(contagens.get("posicao:lateral-direito"), 1);
+});
+
+test("não repete gols e participações idênticos para a mesma posição e confronto", () => {
+  const base = { tipo: TIPOS_INSIGHT.CONVERGENCIA, atacante: "remo", defensor: "internacional", chave: "posicao:ponta-esquerda" };
+  const itens = selecionarDestaques([
+    { ...base, scout: "gols", score: 9 },
+    { ...base, scout: "participacoes", score: 8 },
+  ]);
+  assert.equal(itens.length, 1);
+  assert.equal(itens[0].scout, "gols");
 });

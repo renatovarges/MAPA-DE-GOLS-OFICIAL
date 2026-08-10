@@ -25,6 +25,13 @@ export function eventosDoChute(chute) {
 export function contagensPartida(partida, lado, scout = "finalizacoes") {
   const contagens = new Map();
   for (const chute of partida?.[lado] || []) {
+    if (scout === "participacoes") {
+      if (!chute.gol) continue;
+      for (const posicao of [chute.posicao, chute.assistentePosicao]) {
+        if (posicao) contagens.set("posicao:" + posicao, (contagens.get("posicao:" + posicao) || 0) + 1);
+      }
+      continue;
+    }
     if (scout === "gols" && !chute.gol) continue;
     for (const evento of eventosDoChute(chute)) contagens.set(evento, (contagens.get(evento) || 0) + 1);
   }
@@ -53,11 +60,12 @@ export function perfilEvento(historico, lado, scout, chave) {
 
 export function avaliarForca(perfil, baseline, scout) {
   if (!(baseline > 0) || perfil.j5.jogos < 5) return null;
-  const minimo = scout === "gols" ? 3 : 5;
+  const scoutDeGol = scout === "gols" || scout === "participacoes";
+  const minimo = scoutDeGol ? 3 : 5;
   const ratio = perfil.j10.taxa / baseline;
   const confirmacoes = [perfil.j3, perfil.j5, perfil.j10].filter((janela) => janela.taxa > baseline).length;
   const recorrencia = perfil.j10.jogosComEvento >= 3;
-  const ratioMinimo = scout === "gols" ? 1.45 : 1.25;
+  const ratioMinimo = scoutDeGol ? 1.45 : 1.25;
   if (perfil.j10.total < minimo || ratio < ratioMinimo || confirmacoes < 2 || !recorrencia) return null;
   const aceleracao = perfil.j3.taxa > perfil.j10.taxa * 1.15 ? 0.4 : 0;
   const score = Math.log2(ratio) * 2 + confirmacoes * 0.35 + Math.min(2, perfil.j10.total / minimo) * 0.25 + aceleracao;
@@ -97,10 +105,11 @@ export function selecionarDestaques(candidatos, { max = 8 } = {}) {
     if (saida.length >= max) break;
     if ((usadosTipo.get(item.tipo) || 0) >= (limites.get(item.tipo) || max)) continue;
     if (item.tipo === TIPOS_INSIGHT.FRAGILIDADE_PROPRIA && item.score < 5) continue;
-    if ((usadosScout.get(item.scout) || 0) >= Math.ceil(max / 2)) continue;
+    if ((usadosScout.get(item.scout) || 0) >= Math.ceil(max / 3)) continue;
     if ((usadosTime.get(item.atacante) || 0) >= 2) continue;
     const confronto = [item.atacante, item.defensor].sort().join("x");
-    const assinatura = confronto + "|" + item.scout + "|" + item.chave;
+    const familiaScout = item.scout === "gols" || item.scout === "participacoes" ? "envolvimento-gol" : item.scout;
+    const assinatura = confronto + "|" + familiaScout + "|" + item.chave;
     if (assinaturas.has(assinatura)) continue;
     assinaturas.add(assinatura);
     usadosTipo.set(item.tipo, (usadosTipo.get(item.tipo) || 0) + 1);

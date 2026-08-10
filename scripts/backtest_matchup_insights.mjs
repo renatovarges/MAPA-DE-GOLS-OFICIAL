@@ -2,8 +2,9 @@ import fs from "node:fs";
 import path from "node:path";
 import {
   contagensPartida, eventosDoChute, gerarCandidatosConfronto,
-  selecionarDestaques, rotuloEvento,
+  selecionarDestaques,
 } from "./lib/matchup-insights.mjs";
+import { substantivoEvento } from "./lib/matchup-phrases.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const DATA = path.join(ROOT, "data");
@@ -53,7 +54,7 @@ function chavesHistoricas(partidas, cutoff) {
 function baselinesHistoricos(partidas, cutoff, chaves) {
   const elegiveis = partidas.filter((m) => m.date < cutoff);
   const resultado = new Map();
-  for (const scout of ["finalizacoes", "gols"]) {
+  for (const scout of ["finalizacoes", "gols", "participacoes"]) {
     const totais = new Map();
     for (const partida of elegiveis) {
       const contagens = contagensPartida(partida, "shots_for", scout);
@@ -118,7 +119,7 @@ function main() {
       const historicoAtacante = (porTime.get(atual.team) || []).filter((x) => x.date < cutoff).slice(-10);
       const historicoDefensor = (porTime.get(atual.opponent) || []).filter((x) => x.date < cutoff).slice(-10);
       if (historicoAtacante.length < 5 || historicoDefensor.length < 5) continue;
-      for (const scout of ["finalizacoes", "gols"]) {
+      for (const scout of ["finalizacoes", "gols", "participacoes"]) {
         candidatos.push(...gerarCandidatosConfronto({
           atacante: atual.team, defensor: atual.opponent,
           historicoAtacante, historicoDefensor, baselines, scout, chaves,
@@ -135,11 +136,11 @@ function main() {
   }
 
   const porTipo = Object.fromEntries(["convergencia", "forca-ofensiva-propria", "fragilidade-defensiva-propria"].map((tipo) => [tipo, metricas(selecionados.filter((x) => x.tipo === tipo))]));
-  const porScout = Object.fromEntries(["finalizacoes", "gols"].map((scout) => [scout, metricas(selecionados.filter((x) => x.scout === scout))]));
+  const porScout = Object.fromEntries(["finalizacoes", "gols", "participacoes"].map((scout) => [scout, metricas(selecionados.filter((x) => x.scout === scout))]));
   const geral = metricas(selecionados);
   const exemplos = [...selecionados].sort((a, b) => b.score - a.score).slice(0, 12).map((x) => ({
     rodada: x.rodada, tipo: x.tipo, scout: x.scout, confronto: x.atacante + " x " + x.defensor,
-    padrao: rotuloEvento(x.chave), score: Number(x.score.toFixed(2)),
+    padrao: substantivoEvento(x.chave, x.scout), score: Number(x.score.toFixed(2)),
     previsto: Number(x.baseline.toFixed(2)), realizado: x.real,
   }));
 

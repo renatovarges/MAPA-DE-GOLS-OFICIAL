@@ -46,7 +46,7 @@ function chavesHistoricas(partidas, cutoff) {
 
 function baselinesHistoricos(partidas, cutoff, chaves) {
   const elegiveis = partidas.filter((m) => m.date < cutoff), resultado = new Map();
-  for (const scout of ["finalizacoes", "gols"]) {
+  for (const scout of ["finalizacoes", "gols", "participacoes"]) {
     const totais = new Map();
     for (const partida of elegiveis) {
       const contagens = contagensPartida(partida, "shots_for", scout);
@@ -69,7 +69,7 @@ function main() {
     const historicoAtacante = (porTime.get(atual.team) || []).filter((x) => x.date < cutoff).slice(-10);
     const historicoDefensor = (porTime.get(atual.opponent) || []).filter((x) => x.date < cutoff).slice(-10);
     if (historicoAtacante.length < 5 || historicoDefensor.length < 5) continue;
-    for (const scout of ["finalizacoes", "gols"]) {
+    for (const scout of ["finalizacoes", "gols", "participacoes"]) {
       candidatos.push(...gerarCandidatosConfronto({ atacante: atual.team, defensor: atual.opponent, historicoAtacante, historicoDefensor, baselines, scout, chaves }).map((item) => ({
         ...item, real: contagensPartida(atual, "shots_for", scout).get(item.chave) || 0,
       })));
@@ -82,7 +82,8 @@ function main() {
     const frase = gerarFraseInsight(item);
     console.log("## " + (indice + 1) + ". " + frase.categoria + " — " + frase.titulo + "\n");
     console.log(frase.texto + "\n");
-    console.log("**Auditoria posterior:** ocorreram " + item.real + " " + (item.scout === "gols" ? "gol(ns)" : "finalização(ões)") + " nesse recorte.\n");
+    const unidade = item.scout === "gols" ? "gol(ns)" : item.scout === "participacoes" ? "participação(ões) em gol" : "finalização(ões)";
+    console.log("**Auditoria posterior:** ocorreram " + item.real + " " + unidade + " nesse recorte.\n");
   }
   console.log("---\n");
   console.log("Selecionados: " + destaques.length + " de " + candidatos.length + " candidatos; corte temporal preservado.");
