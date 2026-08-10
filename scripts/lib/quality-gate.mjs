@@ -64,6 +64,15 @@ export function avaliarQualidade({
     }
   }
 
+  const status = resumoRodada?.statusAtualizacao;
+  if (status) {
+    if (!["pronto", "parcial"].includes(status.estado)) erros.push("status geral com estado invalido");
+    if (status.estado === "pronto") {
+      if (status.jogosProcessados < status.jogosEsperados) erros.push("status pronto com rodada incompleta");
+      if (status.timesAtualizados < status.timesEsperados) erros.push("status pronto sem todos os times");
+      if (!status.frasesAtualizadas || !status.leituraEstrategicaAtualizada) erros.push("status pronto com leitura pendente");
+    }
+  }
   const total = itensDoMapa(ofensivosPorTime).length + itensDoMapa(defensivosPorTime).length;
   const media = timesEsperados.length ? total / (timesEsperados.length * 2) : 0;
   if (media < 2.5) avisos.push("media baixa de frases: " + media.toFixed(2) + " por time/lado");

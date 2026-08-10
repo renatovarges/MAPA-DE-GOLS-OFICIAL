@@ -362,6 +362,23 @@
 
     <!-- LEGENDA AGORA É RENDERIZADA DENTRO DO SVG (SCRIPT.JS) PARA SAIR NO DOWNLOAD -->
   </div>
+  <section id="updateStatus" class="update-status" hidden aria-live="polite" aria-labelledby="updateStatusTitle">
+    <div class="update-status__heading">
+      <span id="updateStatusDot" class="update-status__dot" aria-hidden="true"></span>
+      <div>
+        <p class="update-status__eyebrow">Situação dos dados</p>
+        <h2 id="updateStatusTitle">Verificando atualização</h2>
+        <p id="updateStatusMessage" class="update-status__message"></p>
+      </div>
+    </div>
+    <div class="update-status__metrics">
+      <div><strong id="updateStatusRound">—</strong><span>Rodada identificada</span></div>
+      <div><strong id="updateStatusMatches">—</strong><span>Jogos processados</span></div>
+      <div><strong id="updateStatusTeams">—</strong><span>Times atualizados</span></div>
+      <div><strong id="updateStatusReading">—</strong><span>Leitura estratégica</span></div>
+    </div>
+    <p id="updateStatusTime" class="update-status__time"></p>
+  </section>
   <section id="roundSummary" class="round-summary" hidden aria-labelledby="roundSummaryTitle">
     <div class="round-summary__header">
       <div>
@@ -517,6 +534,6 @@
     </div>
    </div>
   </div><!-- fim #app -->
-  <script src="script.js?v=novo-motor-4"></script>
+  <script src="script.js?v=novo-motor-5"></script>
 </body>
 </html>
