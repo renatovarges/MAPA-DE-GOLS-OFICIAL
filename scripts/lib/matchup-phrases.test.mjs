@@ -13,8 +13,8 @@ function item(tipo, scout = "finalizacoes") {
 
 test("convergência explica os dois lados e termina com aplicação", () => {
   const frase = gerarFraseInsight(item(TIPOS_INSIGHT.CONVERGENCIA));
-  assert.match(frase.texto, /Bahia registra/);
-  assert.match(frase.texto, /Chapecoense cede/);
+  assert.match(frase.texto, /Bahia produz/);
+  assert.match(frase.texto, /Chapecoense permite/);
   assert.match(frase.texto, /Na prática/);
 });
 
@@ -27,19 +27,19 @@ test("gols não são descritos como finalizações", () => {
 test("força própria declara que não depende da confirmação do adversário", () => {
   const frase = gerarFraseInsight(item(TIPOS_INSIGHT.FORCA_PROPRIA));
   assert.match(frase.texto, /não apresenta uma fragilidade igualmente forte/);
-  assert.match(frase.texto, /recorrência do próprio Bahia/);
+  assert.match(frase.texto, /repetição desse padrão pelo Bahia/);
 });
 
 test("fragilidade própria não atribui ao atacante um padrão inexistente", () => {
   const frase = gerarFraseInsight(item(TIPOS_INSIGHT.FRAGILIDADE_PROPRIA));
-  assert.match(frase.texto, /não é uma característica ofensiva dominante do Bahia/);
-  assert.match(frase.texto, /vulnerabilidade defensiva/);
+  assert.match(frase.texto, /Bahia não tem essa característica/);
+  assert.match(frase.texto, /vulnerabilidade do adversário/);
 });
 
 test("nomes internos viram nomes editoriais com acentos", () => {
   const entrada = { ...item(TIPOS_INSIGHT.CONVERGENCIA), atacante: "botafogo", defensor: "vitoria" };
   const frase = gerarFraseInsight(entrada);
-  assert.match(frase.texto, /Vitória cede/);
+  assert.match(frase.texto, /Vitória permite/);
 });
 
 test("participações em gols têm chamada futebolística e não falam em caminho", () => {
@@ -47,4 +47,17 @@ test("participações em gols têm chamada futebolística e não falam em caminh
   const frase = gerarFraseInsight(entrada);
   assert.equal(frase.chamada, "CEDE PARTICIPAÇÕES EM GOLS DE LATERAIS-DIREITOS AO ADVERSÁRIO");
   assert.doesNotMatch(frase.titulo + " " + frase.texto, /caminho/i);
+});
+
+test("usa verbos próprios do futebol para gols, finalizações e participações", () => {
+  const gols = gerarFraseInsight(item(TIPOS_INSIGHT.CONVERGENCIA, "gols")).texto;
+  const finalizacoes = gerarFraseInsight(item(TIPOS_INSIGHT.CONVERGENCIA, "finalizacoes")).texto;
+  const participacoes = gerarFraseInsight(item(TIPOS_INSIGHT.CONVERGENCIA, "participacoes")).texto;
+  assert.match(gols, /Bahia marca gols/);
+  assert.match(gols, /Chapecoense sofre/);
+  assert.doesNotMatch(gols, /produz gols|registra gols|cede gols/i);
+  assert.match(finalizacoes, /Bahia produz finalizações/);
+  assert.match(finalizacoes, /Chapecoense permite/);
+  assert.match(participacoes, /Bahia soma participações em gols/);
+  assert.match(participacoes, /Chapecoense cede/);
 });
