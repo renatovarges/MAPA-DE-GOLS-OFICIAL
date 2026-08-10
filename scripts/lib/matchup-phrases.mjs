@@ -13,7 +13,7 @@ function numero(valor, casas = 1) {
 function nomeTime(valor) {
   const especiais = {
     "athletico-pr": "Athletico-PR", "atletico-mg": "Atlético-MG", gremio: "Grêmio",
-    "sao-paulo": "São Paulo", "bragantino": "Bragantino",
+    "sao-paulo": "São Paulo", vitoria: "Vitória", "red-bull-bragantino": "Red Bull Bragantino",
   };
   if (especiais[valor]) return especiais[valor];
   return String(valor).split("-").map((parte) => parte.charAt(0).toUpperCase() + parte.slice(1)).join(" ");

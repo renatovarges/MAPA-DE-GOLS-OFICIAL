@@ -35,3 +35,9 @@ test("fragilidade própria não atribui ao atacante um padrão inexistente", () 
   assert.match(frase.texto, /não é um padrão ofensivo dominante do Bahia/);
   assert.match(frase.texto, /vulnerabilidade defensiva/);
 });
+
+test("nomes internos viram nomes editoriais com acentos", () => {
+  const entrada = { ...item(TIPOS_INSIGHT.CONVERGENCIA), atacante: "botafogo", defensor: "vitoria" };
+  const frase = gerarFraseInsight(entrada);
+  assert.match(frase.texto, /Vitória cede/);
+});
