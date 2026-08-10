@@ -3634,6 +3634,22 @@ function roundSummaryCrestSrc(team) {
   return file ? `escudos  série A 2025/${file}` : null;
 }
 
+// Alguns arquivos circulares possuem mais margem transparente e/ou uma borda
+// branca que se mistura ao fundo do selo. A escala abaixo equaliza apenas o
+// tamanho visual desses escudos; Palmeiras e Sao Paulo ficam inalterados.
+function roundSummaryCrestScale(team) {
+  const key = normalizeTeamKey(String(team || "").toLowerCase().replace(/-/g, "_"));
+  return {
+    bahia: 1.12,
+    chapecoense: 1.1,
+    coritiba: 1.1,
+    gremio: 1.08,
+    internacional: 1.18,
+    mirassol: 1.08,
+    vasco: 1.14,
+  }[key] || 1;
+}
+
 function isValidRoundSummary(data) {
   return !!(data && Array.isArray(data.conclusoes) && data.conclusoes.length &&
     data.conclusoes.every((item) => item && typeof item.tipo === "string" &&
@@ -3707,10 +3723,12 @@ function renderRoundSummary(data) {
     head.className = "round-summary__card-head";
     const crestWrap = document.createElement("div");
     crestWrap.className = "round-summary__crest";
-    const crestSrc = roundSummaryCrestSrc(item.timeDestaque || item.times?.[0]);
+    const crestTeam = item.timeDestaque || item.times?.[0];
+    const crestSrc = roundSummaryCrestSrc(crestTeam);
     if (crestSrc) {
       const crest = document.createElement("img");
-      crest.src = crestSrc; crest.alt = roundSummaryTeamName(item.timeDestaque || item.times?.[0]);
+      crest.src = crestSrc; crest.alt = roundSummaryTeamName(crestTeam);
+      crest.style.setProperty("--round-summary-crest-scale", roundSummaryCrestScale(crestTeam));
       crestWrap.appendChild(crest);
     }
     const headings = document.createElement("div");
@@ -3776,8 +3794,10 @@ async function exportRoundSummaryPng(data) {
     // Mesma fonte usada no desenho + folga lateral: evita que diferenças de
     // renderização da fonte encostem ou ultrapassem a borda direita do cartão.
     const lines = wrapCanvasText(measure, roundSummaryText(item), textWidth - 72);
-    const crest = await loadRoundSummaryImage(roundSummaryCrestSrc(item.timeDestaque || item.times?.[0]));
-    return { item, headlineLines, lines, crest };
+    const crestTeam = item.timeDestaque || item.times?.[0];
+    const crest = await loadRoundSummaryImage(roundSummaryCrestSrc(crestTeam));
+    const crestScale = roundSummaryCrestScale(crestTeam);
+    return { item, headlineLines, lines, crest, crestScale };
   }));
   const height = 230 + layouts.reduce((sum, layout) =>
     sum + 116 + layout.headlineLines.length * 32 + layout.lines.length * 35, 0) + 50;
@@ -3794,11 +3814,14 @@ async function exportRoundSummaryPng(data) {
   ctx.fillStyle = "#b9d9cd"; ctx.font = '22px Inter, "Segoe UI", Arial, sans-serif';
   ctx.fillText(roundSummaryMeta(data), margin, 154);
   let y = 196;
-  for (const { item, headlineLines, lines, crest } of layouts) {
+  for (const { item, headlineLines, lines, crest, crestScale } of layouts) {
     const cardHeight = 96 + headlineLines.length * 32 + lines.length * 35;
     ctx.fillStyle = "rgba(3, 26, 19, .66)"; ctx.beginPath(); ctx.roundRect(margin, y, textWidth, cardHeight, 16); ctx.fill();
     ctx.fillStyle = "#ffffff"; ctx.beginPath(); ctx.arc(margin + 51, y + 55, 31, 0, Math.PI * 2); ctx.fill();
-    if (crest) ctx.drawImage(crest, margin + 27, y + 31, 48, 48);
+    if (crest) {
+      const crestSize = 48 * crestScale;
+      ctx.drawImage(crest, margin + 51 - crestSize / 2, y + 55 - crestSize / 2, crestSize, crestSize);
+    }
     ctx.fillStyle = "#f7d36a"; ctx.font = '800 17px Inter, "Segoe UI", Arial, sans-serif';
     ctx.fillText((ROUND_SUMMARY_TITLES[item.tipo] || "Destaque").toUpperCase(), margin + 98, y + 31);
     ctx.fillStyle = "#edf9f4"; ctx.font = '800 24px Inter, "Segoe UI", Arial, sans-serif';
