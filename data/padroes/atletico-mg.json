@@ -1,23 +1,23 @@
 {
   "teamKey": "atletico-mg",
-  "geradoEm": "2026-08-09T09:38:45.349Z",
+  "geradoEm": "2026-08-10T10:16:46.858Z",
   "ataca": [
-    "O Atlético-MG registra cerca de 8 finalizações por jogo de dentro da área. O meia é quem mais finaliza nesse tipo de jogada.",
     "No Atlético-MG, o ponta-direita registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
     "O Atlético-MG registra cerca de 2 finalizações por jogo após cruzamentos. O meia é quem mais finaliza nesse tipo de jogada.",
+    "O Atlético-MG registra cerca de 8 finalizações por jogo de dentro da área. O meia é quem mais finaliza nesse tipo de jogada.",
     "No Atlético-MG, passes do meia originam cerca de 3 finalizações por jogo."
   ],
   "evidenciasAtaca": [
-    {
-      "chave": "area|dentro-da-area|meia",
-      "confianca": "padrao-consolidado"
-    },
     {
       "chave": "posicao|ponta-direita|",
       "confianca": "padrao-consolidado"
     },
     {
       "chave": "origem|CRUZAMENTO|meia",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|dentro-da-area|meia",
       "confianca": "padrao-consolidado"
     },
     {
