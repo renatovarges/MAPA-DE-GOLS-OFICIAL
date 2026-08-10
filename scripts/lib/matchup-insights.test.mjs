@@ -54,3 +54,14 @@ test("fragilidade própria só ocupa o painel quando é excepcional", () => {
   const fraca = { tipo: TIPOS_INSIGHT.FRAGILIDADE_PROPRIA, score: 4.9, atacante: "a", defensor: "b", scout: "finalizacoes", chave: "x" };
   assert.equal(selecionarDestaques([fraca]).length, 0);
 });
+
+test("não repete o mesmo caminho nos dois lados do confronto", () => {
+  const perfil = { j3: {}, j5: {}, j10: {} };
+  const base = { tipo: TIPOS_INSIGHT.CONVERGENCIA, scout: "finalizacoes", chave: "area:dentro", score: 10, perfilAtaque: perfil, perfilDefesa: perfil };
+  const itens = selecionarDestaques([
+    { ...base, atacante: "bahia", defensor: "vasco" },
+    { ...base, atacante: "vasco", defensor: "bahia", score: 9 },
+  ]);
+  assert.equal(itens.length, 1);
+  assert.equal(itens[0].atacante, "bahia");
+});

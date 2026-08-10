@@ -53,10 +53,10 @@ export function perfilEvento(historico, lado, scout, chave) {
 
 export function avaliarForca(perfil, baseline, scout) {
   if (!(baseline > 0) || perfil.j5.jogos < 5) return null;
-  const minimo = scout === "gols" ? 2 : 5;
+  const minimo = scout === "gols" ? 3 : 5;
   const ratio = perfil.j10.taxa / baseline;
   const confirmacoes = [perfil.j3, perfil.j5, perfil.j10].filter((janela) => janela.taxa > baseline).length;
-  const recorrencia = scout === "gols" ? perfil.j10.jogosComEvento >= 2 : perfil.j10.jogosComEvento >= 3;
+  const recorrencia = perfil.j10.jogosComEvento >= 3;
   const ratioMinimo = scout === "gols" ? 1.45 : 1.25;
   if (perfil.j10.total < minimo || ratio < ratioMinimo || confirmacoes < 2 || !recorrencia) return null;
   const aceleracao = perfil.j3.taxa > perfil.j10.taxa * 1.15 ? 0.4 : 0;
@@ -99,7 +99,8 @@ export function selecionarDestaques(candidatos, { max = 8 } = {}) {
     if (item.tipo === TIPOS_INSIGHT.FRAGILIDADE_PROPRIA && item.score < 5) continue;
     if ((usadosScout.get(item.scout) || 0) >= Math.ceil(max / 2)) continue;
     if ((usadosTime.get(item.atacante) || 0) >= 2) continue;
-    const assinatura = item.atacante + "|" + item.defensor + "|" + item.scout + "|" + item.chave;
+    const confronto = [item.atacante, item.defensor].sort().join("x");
+    const assinatura = confronto + "|" + item.scout + "|" + item.chave;
     if (assinaturas.has(assinatura)) continue;
     assinaturas.add(assinatura);
     usadosTipo.set(item.tipo, (usadosTipo.get(item.tipo) || 0) + 1);
