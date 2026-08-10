@@ -4,7 +4,7 @@
   "rodada": 23,
   "rodadaDados": 22,
   "janelaAte": "2026-08-09",
-  "geradoEm": "2026-08-10T16:26:00.134Z",
+  "geradoEm": "2026-08-10T18:52:47.432Z",
   "jogos": [
     {
       "id": 237794,
@@ -80,8 +80,10 @@
   "conclusoes": [
     {
       "tipo": "convergencia",
-      "titulo": "Remo pode explorar gols de ponta esquerda contra o Internacional",
-      "frase": "O Remo produz gols de ponta esquerda a uma média de 0,80 por jogo, aparecendo em 6 dos últimos 10 jogos. O Internacional cede esse mesmo caminho a uma média de 0,60 por jogo, aparecendo em 5 dos últimos 10 jogos, enquanto a referência do campeonato é 0,17 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "Remo tem um encaixe favorável contra o Internacional",
+      "chamada": "MARCA GOLS COM SEU PONTA ESQUERDA",
+      "timeDestaque": "remo",
+      "frase": "O Remo marca gols com seu ponta esquerda a uma média de 0,80 por jogo, aparecendo em 6 dos últimos 10 jogos. O Internacional sofre gols de ponta esquerda a uma média de 0,60 por jogo, aparecendo em 5 dos últimos 10 jogos, enquanto a referência do campeonato é 0,17 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "remo",
         "internacional"
@@ -91,8 +93,10 @@
     },
     {
       "tipo": "convergencia",
-      "titulo": "Botafogo pode explorar gols de fora da área contra o Vitória",
-      "frase": "O Botafogo produz gols de fora da área a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos. O Vitória cede esse mesmo caminho a uma média de 0,50 por jogo, aparecendo em 5 dos últimos 10 jogos, enquanto a referência do campeonato é 0,19 por jogo. Na prática, observe os jogadores com liberdade e volume para chutar de média distância.",
+      "titulo": "Botafogo tem um encaixe favorável contra o Vitória",
+      "chamada": "MARCA GOLS DE FORA DA ÁREA",
+      "timeDestaque": "botafogo",
+      "frase": "O Botafogo marca gols de fora da área a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos. O Vitória sofre gols de fora da área a uma média de 0,50 por jogo, aparecendo em 5 dos últimos 10 jogos, enquanto a referência do campeonato é 0,19 por jogo. Na prática, observe os jogadores com liberdade e volume para chutar de média distância.",
       "times": [
         "botafogo",
         "vitoria"
@@ -102,30 +106,36 @@
     },
     {
       "tipo": "convergencia",
-      "titulo": "Internacional pode explorar finalizações de laterais-esquerdos contra o Remo",
-      "frase": "O Internacional produz finalizações de laterais-esquerdos a uma média de 3,2 por jogo, aparecendo em 9 dos últimos 10 jogos. O Remo cede esse mesmo caminho a uma média de 1,2 por jogo, aparecendo em 9 dos últimos 10 jogos, enquanto a referência do campeonato é 0,9 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "Internacional tem um encaixe favorável contra o Remo",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEU PONTA DIREITA",
+      "timeDestaque": "internacional",
+      "frase": "O Internacional soma participações em gols com seu ponta direita a uma média de 0,60 por jogo, aparecendo em 3 dos últimos 10 jogos. O Remo cede participações em gols para pontas-direitas adversários a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,17 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "internacional",
         "remo"
       ],
-      "scout": "finalizacoes",
-      "chave": "posicao:lateral-esquerdo"
+      "scout": "participacoes",
+      "chave": "posicao:ponta-direita"
     },
     {
       "tipo": "convergencia",
-      "titulo": "Palmeiras pode explorar gols de fora da área contra o Fluminense",
-      "frase": "O Palmeiras produz gols de fora da área a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos. O Fluminense cede esse mesmo caminho a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,19 por jogo. Na prática, observe os jogadores com liberdade e volume para chutar de média distância.",
+      "titulo": "Internacional tem um encaixe favorável contra o Remo",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS LATERAIS-ESQUERDOS",
+      "timeDestaque": "internacional",
+      "frase": "O Internacional soma participações em gols com seus laterais-esquerdos a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos. O Remo cede participações em gols para laterais-esquerdos adversários a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,18 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "palmeiras",
-        "fluminense"
+        "internacional",
+        "remo"
       ],
-      "scout": "gols",
-      "chave": "area:fora"
+      "scout": "participacoes",
+      "chave": "posicao:lateral-esquerdo"
     },
     {
       "tipo": "fragilidade-defensiva-propria",
-      "titulo": "São Paulo oferece um caminho que merece atenção",
-      "frase": "O São Paulo cede gols de laterais-direitos a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, acima da referência de 0,03 do campeonato. Esse não é um padrão ofensivo dominante do Coritiba, mas a vulnerabilidade defensiva é forte e recorrente o suficiente para entrar no radar. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "São Paulo apresenta uma vulnerabilidade que merece atenção",
+      "chamada": "SOFRE GOLS DE LATERAIS-DIREITOS",
+      "timeDestaque": "sao-paulo",
+      "frase": "O São Paulo sofre gols de laterais-direitos a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, acima da referência de 0,03 do campeonato. O Coritiba não tem essa característica entre suas marcas ofensivas mais fortes, mas a vulnerabilidade do adversário é recorrente e merece atenção. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "coritiba",
         "sao-paulo"
@@ -135,22 +145,26 @@
     },
     {
       "tipo": "forca-ofensiva-propria",
-      "titulo": "Palmeiras mantém um caminho ofensivo recorrente",
-      "frase": "O Palmeiras registra finalizações de meias a uma média de 7,2 por jogo, aparecendo em 10 dos últimos 10 jogos, acima da referência de 2,4 do campeonato. O Fluminense não apresenta uma fragilidade igualmente forte nesse recorte, mas a recorrência do próprio Palmeiras mantém o padrão relevante. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "Palmeiras mantém um padrão ofensivo recorrente",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS MEIAS",
+      "timeDestaque": "palmeiras",
+      "frase": "O Palmeiras soma participações em gols com seus meias a uma média de 1,30 por jogo, aparecendo em 8 dos últimos 10 jogos, acima da referência de 0,39 do campeonato. O Fluminense não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Palmeiras mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "palmeiras",
         "fluminense"
       ],
-      "scout": "finalizacoes",
+      "scout": "participacoes",
       "chave": "posicao:meia"
     },
     {
       "tipo": "forca-ofensiva-propria",
-      "titulo": "Santos mantém um caminho ofensivo recorrente",
-      "frase": "O Santos registra finalizações de meias a uma média de 6,4 por jogo, aparecendo em 10 dos últimos 10 jogos, acima da referência de 2,4 do campeonato. O Vasco não apresenta uma fragilidade igualmente forte nesse recorte, mas a recorrência do próprio Santos mantém o padrão relevante. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "Palmeiras mantém um padrão ofensivo recorrente",
+      "chamada": "FINALIZAÇÕES COM SEUS MEIAS",
+      "timeDestaque": "palmeiras",
+      "frase": "O Palmeiras produz finalizações com seus meias a uma média de 7,2 por jogo, aparecendo em 10 dos últimos 10 jogos, acima da referência de 2,4 do campeonato. O Fluminense não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Palmeiras mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "santos",
-        "vasco"
+        "palmeiras",
+        "fluminense"
       ],
       "scout": "finalizacoes",
       "chave": "posicao:meia"
@@ -162,7 +176,9 @@
         "corinthians",
         "red-bull-bragantino",
         "flamengo"
-      ]
+      ],
+      "chamada": "CONTROLE DEFENSIVO",
+      "timeDestaque": "corinthians"
     }
   ],
   "statusAtualizacao": {
@@ -174,7 +190,7 @@
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-08-10T16:26:00.134Z",
+    "atualizadoEm": "2026-08-10T18:52:47.432Z",
     "ultimaPartidaEm": "2026-08-09",
     "rodadaLeitura": 23
   }
