@@ -1,27 +1,27 @@
 {
   "teamKey": "botafogo",
-  "geradoEm": "2026-08-09T09:38:45.349Z",
+  "geradoEm": "2026-08-10T10:16:46.858Z",
   "ataca": [
-    "O Botafogo registra cerca de 3 finalizações por jogo após sobras de bola. O volante é quem mais finaliza nesse tipo de jogada.",
     "No Botafogo, o volante registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
-    "O Botafogo registra cerca de 8 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada.",
-    "O Botafogo registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado direito. O atacante de área é quem mais finaliza nesse tipo de jogada."
+    "O Botafogo registra cerca de 3 finalizações por jogo após sobras de bola. O volante é quem mais finaliza nesse tipo de jogada.",
+    "O Botafogo registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado direito. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+    "O Botafogo registra cerca de 8 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
-    {
-      "chave": "origem|REBATIDA|volante",
-      "confianca": "padrao-consolidado"
-    },
     {
       "chave": "posicao|volante|",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|dentro-da-area|atacante-area",
+      "chave": "origem|REBATIDA|volante",
       "confianca": "padrao-consolidado"
     },
     {
       "chave": "ladoDaJogada|direita|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|dentro-da-area|atacante-area",
       "confianca": "padrao-consolidado"
     }
   ],
