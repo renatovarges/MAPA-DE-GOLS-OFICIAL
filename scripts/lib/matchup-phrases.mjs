@@ -67,6 +67,18 @@ function chamadaDoInsight(item, evento) {
   return texto;
 }
 
+function verboAtaque(scout) {
+  if (scout === "gols") return "marca";
+  if (scout === "participacoes") return "soma";
+  return "produz";
+}
+
+function verboDefesa(scout) {
+  if (scout === "gols") return "sofre";
+  if (scout === "participacoes") return "cede";
+  return "permite";
+}
+
 export function gerarFraseInsight(item) {
   const atacante = nomeTime(item.atacante);
   const defensor = nomeTime(item.defensor);
@@ -76,6 +88,9 @@ export function gerarFraseInsight(item) {
   const ataque = frequencia(item.perfilAtaque, item.scout);
   const defesa = frequencia(item.perfilDefesa, item.scout);
   const pratica = "Na prática, " + orientacao(item.chave) + ".";
+  const acaoAtaque = verboAtaque(item.scout);
+  const acaoDefesa = verboDefesa(item.scout);
+  const eventoDefesa = item.scout === "participacoes" ? evento + " aos adversários" : evento;
 
   if (item.tipo === TIPOS_INSIGHT.CONVERGENCIA) {
     return {
@@ -83,7 +98,7 @@ export function gerarFraseInsight(item) {
       timeDestaque: item.atacante,
       chamada: chamadaDoInsight(item, evento),
       titulo: atacante + " tem um encaixe favorável contra o " + defensor,
-      texto: "O " + atacante + " registra " + evento + " a uma média de " + ataque + ". O " + defensor + " cede esse mesmo padrão a uma média de " + defesa + ", enquanto a referência do campeonato é " + mediaLiga + " por jogo. " + pratica,
+      texto: "O " + atacante + " " + acaoAtaque + " " + evento + " a uma média de " + ataque + ". O " + defensor + " " + acaoDefesa + " " + eventoDefesa + " a uma média de " + defesa + ", enquanto a referência do campeonato é " + mediaLiga + " por jogo. " + pratica,
     };
   }
   if (item.tipo === TIPOS_INSIGHT.FORCA_PROPRIA) {
@@ -92,7 +107,7 @@ export function gerarFraseInsight(item) {
       timeDestaque: item.atacante,
       chamada: chamadaDoInsight(item, evento),
       titulo: atacante + " mantém um padrão ofensivo recorrente",
-      texto: "O " + atacante + " registra " + evento + " a uma média de " + ataque + ", acima da referência de " + mediaLiga + " do campeonato. O " + defensor + " não apresenta uma fragilidade igualmente forte nesse recorte, mas a recorrência do próprio " + atacante + " mantém o padrão relevante. " + pratica,
+      texto: "O " + atacante + " " + acaoAtaque + " " + evento + " a uma média de " + ataque + ", acima da referência de " + mediaLiga + " do campeonato. O " + defensor + " não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo " + atacante + " mantém o alerta. " + pratica,
     };
   }
   return {
@@ -100,7 +115,7 @@ export function gerarFraseInsight(item) {
     timeDestaque: item.defensor,
     chamada: chamadaDoInsight(item, evento),
     titulo: defensor + " apresenta uma vulnerabilidade que merece atenção",
-    texto: "O " + defensor + " cede " + evento + " a uma média de " + defesa + ", acima da referência de " + mediaLiga + " do campeonato. Essa não é uma característica ofensiva dominante do " + atacante + ", mas a vulnerabilidade defensiva é forte e recorrente o suficiente para entrar no radar. " + pratica,
+    texto: "O " + defensor + " " + acaoDefesa + " " + eventoDefesa + " a uma média de " + defesa + ", acima da referência de " + mediaLiga + " do campeonato. O " + atacante + " não tem essa característica entre suas marcas ofensivas mais fortes, mas a vulnerabilidade do adversário é recorrente e merece atenção. " + pratica,
   };
 }
 
