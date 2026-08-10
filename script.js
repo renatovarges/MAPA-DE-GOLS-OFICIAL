@@ -3773,7 +3773,9 @@ async function exportRoundSummaryPng(data) {
     measure.font = '800 24px Inter, "Segoe UI", Arial, sans-serif';
     const headlineLines = wrapCanvasText(measure, roundSummaryHeadline(item), textWidth - 125);
     measure.font = '23px Inter, "Segoe UI", Arial, sans-serif';
-    const lines = wrapCanvasText(measure, roundSummaryText(item), textWidth - 44);
+    // Mesma fonte usada no desenho + folga lateral: evita que diferenças de
+    // renderização da fonte encostem ou ultrapassem a borda direita do cartão.
+    const lines = wrapCanvasText(measure, roundSummaryText(item), textWidth - 72);
     const crest = await loadRoundSummaryImage(roundSummaryCrestSrc(item.timeDestaque || item.times?.[0]));
     return { item, headlineLines, lines, crest };
   }));
@@ -3802,7 +3804,7 @@ async function exportRoundSummaryPng(data) {
     ctx.fillStyle = "#edf9f4"; ctx.font = '800 24px Inter, "Segoe UI", Arial, sans-serif';
     headlineLines.forEach((line, index) => ctx.fillText(line, margin + 98, y + 63 + index * 32));
     const bodyY = y + 83 + headlineLines.length * 32;
-    ctx.fillStyle = "#edf9f4"; ctx.font = '26px Inter, "Segoe UI", Arial, sans-serif';
+    ctx.fillStyle = "#edf9f4"; ctx.font = '23px Inter, "Segoe UI", Arial, sans-serif';
     lines.forEach((line, index) => ctx.fillText(line, margin + 22, bodyY + index * 35));
     y += cardHeight + 18;
   }
