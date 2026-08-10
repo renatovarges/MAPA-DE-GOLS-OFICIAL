@@ -3605,6 +3605,9 @@ const ROUND_SUMMARY_TEAM_LABELS = {
   vitoria: "Vitória",
 };
 const ROUND_SUMMARY_TITLES = {
+  "convergencia": "Encaixe favorável",
+  "forca-ofensiva-propria": "Força ofensiva própria",
+  "fragilidade-defensiva-propria": "Fragilidade defensiva excepcional",
   "posicao-ofensiva": "Destaque ofensivo",
   "destaque-defensivo": "Destaque defensivo",
   "alvo-defensivo": "Alerta por posição",
@@ -3617,6 +3620,10 @@ function roundSummaryTeamName(team) {
   return ROUND_SUMMARY_TEAM_LABELS[team] || formatTeamName(team);
 }
 
+function roundSummaryText(item) {
+  return item.titulo ? `${item.titulo}. ${item.frase}` : item.frase;
+}
+
 function isValidRoundSummary(data) {
   return !!(data && Array.isArray(data.conclusoes) && data.conclusoes.length &&
     data.conclusoes.every((item) => item && typeof item.tipo === "string" &&
@@ -3624,7 +3631,9 @@ function isValidRoundSummary(data) {
 }
 
 function roundSummaryMeta(data) {
-  if (data.rodada !== null && data.rodada !== "" && Number.isFinite(Number(data.rodada))) return `Rodada ${Number(data.rodada)}`;
+  if (data.rodada !== null && data.rodada !== "" && Number.isFinite(Number(data.rodada))) {
+    return data.tipoLeitura === "pre-jogo" ? `Prévia da rodada ${Number(data.rodada)} · dados até a rodada ${Number(data.rodadaDados)}` : `Rodada ${Number(data.rodada)}`;
+  }
   if (typeof data.janelaAte === "string" && /^\d{4}-\d{2}-\d{2}$/.test(data.janelaAte)) {
     const date = new Date(`${data.janelaAte}T12:00:00`);
     return `Dados atualizados até ${date.toLocaleDateString("pt-BR")}`;
@@ -3687,7 +3696,7 @@ function renderRoundSummary(data) {
     const title = document.createElement("h3");
     title.textContent = ROUND_SUMMARY_TITLES[item.tipo] || "Conclusão";
     const phrase = document.createElement("p");
-    phrase.textContent = item.frase;
+    phrase.textContent = roundSummaryText(item);
     card.append(title, phrase);
     cards.appendChild(card);
   }
@@ -3728,7 +3737,7 @@ async function exportRoundSummaryPng(data) {
   const measure = document.createElement("canvas").getContext("2d");
   measure.font = '26px Inter, "Segoe UI", Arial, sans-serif';
   const layouts = data.conclusoes.map((item) => {
-    const lines = wrapCanvasText(measure, item.frase, textWidth - 40);
+    const lines = wrapCanvasText(measure, roundSummaryText(item), textWidth - 40);
     return { item, lines };
   });
   const height = 230 + layouts.reduce((sum, layout) =>

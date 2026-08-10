@@ -72,3 +72,11 @@ jobs:
         # não precisa de login na FootStats — só lê data/finalizacoes/ do
         # próprio site (já atualizado pelo passo anterior) e grava o retrato
         run: node scripts/build_shot_patterns.mjs
+
+      - name: Gerar leitura estratégica da próxima rodada
+        env:
+          FOOTSTATS_EMAIL: ${{ secrets.FOOTSTATS_EMAIL }}
+          FOOTSTATS_PASSWORD: ${{ secrets.FOOTSTATS_PASSWORD }}
+          ENVIO_REAL: "1"
+        # Só publica quando há 10 jogos futuros e os 20 times são reconhecidos.
+        run: node scripts/build_matchup_summary.mjs
