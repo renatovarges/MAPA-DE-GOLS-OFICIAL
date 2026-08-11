@@ -1,11 +1,10 @@
 {
   "teamKey": "gremio",
-  "geradoEm": "2026-08-10T14:01:10.504Z",
+  "geradoEm": "2026-08-11T10:00:04.179Z",
   "ataca": [
     "O Grêmio registra cerca de 3 finalizações por jogo após sobras de bola. O atacante de área é quem mais finaliza nesse tipo de jogada.",
     "No Grêmio, o ponta-esquerda registra cerca de 2 finalizações por jogo. É uma posição a observar na escalação.",
-    "O Grêmio registra cerca de 5 finalizações por jogo de fora da área. O ponta-esquerda é quem mais finaliza nesse tipo de jogada.",
-    "O Grêmio registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado direito. O atacante de área é quem mais finaliza nesse tipo de jogada."
+    "O Grêmio registra cerca de 6 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
@@ -17,11 +16,7 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|fora-da-area|ponta-esquerda",
-      "confianca": "padrao-consolidado"
-    },
-    {
-      "chave": "ladoDaJogada|direita|atacante-area",
+      "chave": "area|dentro-da-area|atacante-area",
       "confianca": "padrao-consolidado"
     }
   ],
