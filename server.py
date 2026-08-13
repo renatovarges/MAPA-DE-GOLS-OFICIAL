@@ -293,6 +293,46 @@ def sync_patterns_to_github_async(file_paths, team_key):
     t.start()
 
 
+def sync_desarmes_to_github_async(file_paths, match_id, home_key, away_key):
+    """Igual a sync_shots_to_github_async, mas para o dataset de desarmes/perda de posse (data/desarmes/)."""
+    def _sync():
+        msg = f'data: desarmes partida {match_id} ({home_key} x {away_key})'
+        for path in file_paths:
+            github_commit_file(path, msg)
+    t = threading.Thread(target=_sync, daemon=True)
+    t.start()
+
+
+def sync_perfis_jogadores_to_github_async(file_paths):
+    """Sync do banco de jogadores notáveis (data/perfis-jogadores.json) — arquivo único, sobrescrito por completo a cada rodada de harvest."""
+    def _sync():
+        msg = 'data: perfis-jogadores (banco de notáveis)'
+        for path in file_paths:
+            github_commit_file(path, msg)
+    t = threading.Thread(target=_sync, daemon=True)
+    t.start()
+
+
+def sync_id_bridge_to_github_async(file_paths):
+    """Sync da ponte idPlayer->atleta_id (data/id-bridge-footstats.json) — arquivo único, sobrescrito por completo."""
+    def _sync():
+        msg = 'data: id-bridge-footstats (ponte de jogador)'
+        for path in file_paths:
+            github_commit_file(path, msg)
+    t = threading.Thread(target=_sync, daemon=True)
+    t.start()
+
+
+def sync_proximo_confronto_to_github_async(file_paths):
+    """Sync do mando do próximo confronto por time (data/proximo-confronto.json) — arquivo único, sobrescrito por completo."""
+    def _sync():
+        msg = 'data: proximo-confronto (mando por time)'
+        for path in file_paths:
+            github_commit_file(path, msg)
+    t = threading.Thread(target=_sync, daemon=True)
+    t.start()
+
+
 class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
@@ -577,6 +617,209 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps({'ok': True, 'saved_files': [path]}).encode('utf-8'))
+
+        elif self.path == '/api/save-desarmes':
+            # Dataset do Mapa de Desarmes e Perda de Posse: guarda, por
+            # partida e por time, cada evento de desarme/interceptação/
+            # perda de posse já com quadrante e jogador resolvidos — ver
+            # scripts/harvest_footstats_desarmes.mjs. Mesmo padrão do
+            # /api/save-shots (idempotente por matchId, sempre sobrescreve).
+            length = int(self.headers.get('Content-Length', '0'))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode('utf-8'))
+            except Exception as e:
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_json', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            match_id = payload.get('matchId')
+            home_key = payload.get('homeTeamKey')
+            away_key = payload.get('awayTeamKey')
+            home_obj = payload.get('home')
+            away_obj = payload.get('away')
+
+            desarmes_dir = os.path.join(DATA_DIR, 'desarmes')
+            os.makedirs(desarmes_dir, exist_ok=True)
+            saved_paths = []
+
+            def upsert_team_match_desarmes(team_key, match_obj):
+                normalized_key = normalize_team_key(team_key)
+                path = os.path.join(desarmes_dir, f'{normalized_key}.json')
+                if os.path.exists(path):
+                    try:
+                        with open(path, 'r', encoding='utf-8') as f:
+                            data = json.load(f)
+                    except Exception:
+                        data = {}
+                else:
+                    data = {}
+                matches = data.get('matches')
+                if not isinstance(matches, dict):
+                    matches = {}
+                matches[str(match_id)] = match_obj
+                data['matches'] = matches
+                with open(path, 'w', encoding='utf-8') as f:
+                    json.dump(data, f, ensure_ascii=False, indent=2)
+                saved_paths.append(path)
+
+            try:
+                if home_key and home_obj:
+                    upsert_team_match_desarmes(home_key, home_obj)
+                if away_key and away_obj:
+                    upsert_team_match_desarmes(away_key, away_obj)
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'persist_failed', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            try:
+                print(f"[save-desarmes] match={match_id} home={home_key} away={away_key} saved={saved_paths}")
+            except Exception:
+                pass
+
+            if saved_paths:
+                sync_desarmes_to_github_async(saved_paths, match_id, home_key, away_key)
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'matchId': match_id, 'saved_files': saved_paths}).encode('utf-8'))
+
+        elif self.path == '/api/save-perfis-jogadores':
+            # Banco de jogadores notáveis (top 25% por posição em taxa de
+            # desarme/interceptação e de perda de posse) — ver
+            # scripts/build-player-profiles.mjs. Arquivo único, sempre
+            # sobrescrito por completo (não é por partida).
+            length = int(self.headers.get('Content-Length', '0'))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode('utf-8'))
+            except Exception as e:
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_json', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            if not isinstance(payload, list):
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_payload_esperava_lista'}).encode('utf-8'))
+                return
+
+            path = os.path.join(DATA_DIR, 'perfis-jogadores.json')
+            try:
+                with open(path, 'w', encoding='utf-8') as f:
+                    json.dump(payload, f, ensure_ascii=False, indent=2)
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'persist_failed', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            print(f"[save-perfis-jogadores] {len(payload)} jogadores salvos")
+            sync_perfis_jogadores_to_github_async([path])
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'total': len(payload), 'saved_files': [path]}).encode('utf-8'))
+
+        elif self.path == '/api/save-proximo-confronto':
+            # Mando do próximo confronto de cada time — insumo do filtro
+            # "rodada atual" na aba Líderes. Ver
+            # scripts/build_proximo_confronto.mjs. Arquivo único (objeto
+            # {teamKey: {mando, adversario, data, rodada}}), sempre
+            # sobrescrito por completo.
+            length = int(self.headers.get('Content-Length', '0'))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode('utf-8'))
+            except Exception as e:
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_json', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            if not isinstance(payload, dict):
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_payload_esperava_objeto'}).encode('utf-8'))
+                return
+
+            path = os.path.join(DATA_DIR, 'proximo-confronto.json')
+            try:
+                with open(path, 'w', encoding='utf-8') as f:
+                    json.dump(payload, f, ensure_ascii=False, indent=2)
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'persist_failed', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            print(f"[save-proximo-confronto] {len(payload)} times salvos")
+            sync_proximo_confronto_to_github_async([path])
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'total': len(payload), 'saved_files': [path]}).encode('utf-8'))
+
+        elif self.path == '/api/save-id-bridge':
+            # Ponte idPlayer(FootStats)->atleta_id(Cartola), usada pelo
+            # harvester de desarmes pra resolver quem fez cada evento. Vive
+            # em data/ (não scripts/) pra ser servida como arquivo estático
+            # e sincronizada com o GitHub igual aos outros datasets — o
+            # GitHub Actions roda com checkout novo a cada execução, sem
+            # disco persistente, então gravar isso só localmente faria a
+            # ponte reiniciar vazia todo dia. Arquivo único, sobrescrito
+            # por completo.
+            length = int(self.headers.get('Content-Length', '0'))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode('utf-8'))
+            except Exception as e:
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_json', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            if not isinstance(payload, dict):
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_payload_esperava_objeto'}).encode('utf-8'))
+                return
+
+            path = os.path.join(DATA_DIR, 'id-bridge-footstats.json')
+            try:
+                with open(path, 'w', encoding='utf-8') as f:
+                    json.dump(payload, f, ensure_ascii=False, indent=2)
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'persist_failed', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            print(f"[save-id-bridge] {len(payload)} jogadores salvos")
+            sync_id_bridge_to_github_async([path])
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'total': len(payload), 'saved_files': [path]}).encode('utf-8'))
 
         else:
             self.send_response(404)

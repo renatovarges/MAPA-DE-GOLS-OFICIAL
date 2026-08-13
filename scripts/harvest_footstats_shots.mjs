@@ -151,6 +151,32 @@ function construirFilasDeAssistencia(fieldPosData, bridge) {
 }
 
 /**
+ * Categoria do resultado do chute — descoberta em 2026-08-13: o campo
+ * `imgShots` que a FootStats devolve é o mesmo ícone que ELES usam pra
+ * desenhar o resultado no site deles, então já vem pré-classificado.
+ * Testado contra 219 chutes reais de 8 partidas, bate certinho com goal/
+ * blocked: "ball2"=gol (sempre goal=true), "bloqueada"=bloqueio (sempre
+ * blocked=true), "trave"=bateu na trave, "errada"=foi pra fora,
+ * "finalizacao.png" (sem sufixo)=defendida pelo goleiro (chute no alvo,
+ * não bloqueado, não foi gol). Isso substitui a limitação antiga anotada
+ * aqui ("não dá pra afirmar gol vs. pra fora com confiança") — aquela
+ * tentativa era calibrar a trajetória exata via goalPositionX/Y; esse
+ * campo é uma classificação direta da própria FootStats, mais confiável.
+ */
+function resultadoDoChute(s) {
+  const img = String(s.imgShots || "");
+  if (img.includes("ball2")) return "gol";
+  if (img.includes("bloqueada")) return "bloqueada";
+  if (img.includes("trave")) return "trave";
+  if (img.includes("errada")) return "fora";
+  if (img.includes("finalizacao.png")) return "defendida";
+  // fallback defensivo, caso a FootStats troque o nome do ícone algum dia
+  if (s.goal) return "gol";
+  if (s.blocked) return "bloqueada";
+  return "fora";
+}
+
+/**
  * monta os registros de finalização de UM time (o que ele CRIOU).
  * `filas` é mutado ao longo da chamada (cada zona é consumida uma vez) —
  * por isso as duas chamadas (home/away) recebem filas recém-construídas.
@@ -185,6 +211,7 @@ function construirFinalizacoes(matchShots, timeSlug, filas) {
       metros: s.meters ?? null,
       bloqueada: !!s.blocked,
       gol: !!s.goal,
+      resultado: resultadoDoChute(s),
       penalti: s.originOfShot === "PENALTI",
       assistenteId: s.atleta_id_assistente > 0 ? String(s.atleta_id_assistente) : null,
       assistentePosicao: s.atleta_id_assistente > 0 ? posicaoGranular(s.atleta_id_assistente) : null,
