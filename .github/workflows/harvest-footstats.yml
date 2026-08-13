@@ -80,3 +80,42 @@ jobs:
           ENVIO_REAL: "1"
         # Só publica quando há 10 jogos futuros e os 20 times são reconhecidos.
         run: node scripts/build_matchup_summary.mjs
+
+      - name: Rodar harvester de desarmes e perda de posse (Mapa de Desarmes)
+        env:
+          FOOTSTATS_EMAIL: ${{ secrets.FOOTSTATS_EMAIL }}
+          FOOTSTATS_PASSWORD: ${{ secrets.FOOTSTATS_PASSWORD }}
+          ENVIO_REAL: "1"
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          ALERT_EMAIL_FROM: ${{ secrets.ALERT_EMAIL_FROM }}
+          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
+          CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
+        # reaproveita o token já cacheado pelo login do primeiro passo (mesmo job)
+        run: node scripts/harvest_footstats_desarmes.mjs
+
+      - name: Recalcular banco de jogadores notáveis (desarmadores/perdedores de posse em destaque)
+        env:
+          ENVIO_REAL: "1"
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          ALERT_EMAIL_FROM: ${{ secrets.ALERT_EMAIL_FROM }}
+          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
+          CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
+        # não precisa de login na FootStats — só lê data/desarmes/ do próprio
+        # site (já atualizado pelo passo anterior) e grava o banco de novo.
+        # Roda sempre nesta ordem (depois do harvester de desarmes) pra já
+        # refletir a rodada recém-processada, conforme pedido do Renato.
+        run: node scripts/build_player_profiles.mjs
+
+      - name: Descobrir mando do próximo confronto de cada time (filtro "rodada atual" da aba Líderes)
+        env:
+          FOOTSTATS_EMAIL: ${{ secrets.FOOTSTATS_EMAIL }}
+          FOOTSTATS_PASSWORD: ${{ secrets.FOOTSTATS_PASSWORD }}
+          ENVIO_REAL: "1"
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          ALERT_EMAIL_FROM: ${{ secrets.ALERT_EMAIL_FROM }}
+          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
+          CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
+        run: node scripts/build_proximo_confronto.mjs

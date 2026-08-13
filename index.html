@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mapa de Finalizações – Últimos 3 Jogos</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="desarmes.css?v=1" />
 </head>
 
 <body>
@@ -50,6 +51,13 @@
   </div>
 
   <div id="app" style="display:none">
+    <nav id="siteTabs" class="site-tabs">
+      <button type="button" class="site-tab active" data-view="gols">Mapa de Gols</button>
+      <button type="button" class="site-tab" data-view="desarmes">Desarmes</button>
+      <button type="button" class="site-tab" data-view="lideres">Líderes</button>
+      <button type="button" class="site-tab" data-view="finalizacoes">Finalizações</button>
+    </nav>
+    <div id="viewGols">
     <header class="app-header" style="display:flex;flex-direction:column;gap:8px;align-items:flex-start">
       <div class="brand"
         style="display:flex;gap:12px;align-items:center;justify-content:flex-start;width:100%;position:relative">
@@ -361,6 +369,11 @@
     </div>
 
     <!-- LEGENDA AGORA É RENDERIZADA DENTRO DO SVG (SCRIPT.JS) PARA SAIR NO DOWNLOAD -->
+    </div><!-- fim viewGols -->
+
+    <div id="viewDesarmes" style="display:none"></div>
+    <div id="viewLideres" style="display:none"></div>
+    <div id="viewFinalizacoes" style="display:none"></div>
   </div>
   <section id="updateStatus" class="update-status" hidden aria-live="polite" aria-labelledby="updateStatusTitle">
     <div class="update-status__heading">
@@ -535,5 +548,6 @@
    </div>
   </div><!-- fim #app -->
   <script src="script.js?v=novo-motor-5"></script>
+  <script src="desarmes.js?v=1"></script>
 </body>
 </html>
