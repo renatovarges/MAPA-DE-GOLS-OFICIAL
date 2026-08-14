@@ -32,11 +32,17 @@ import { dispatchAlert } from "./lib/alerts.mjs";
  *     dentro/fora da área, metros, se foi bloqueada, se foi gol
  *   - jogador que assistiu (quando houve) + posição granular dele também
  *
- * O que NÃO dá pra afirmar com confiança ainda: "finalização a gol" (chute
- * no alvo vs. pra fora) — a FootStats devolve goalPositionX/Y (onde a bola
- * cruzaria a linha do gol), mas sem saber o referencial exato da trave não
- * dá pra calibrar isso sem arriscar erro. Por ora fica de fora; `blocked` e
- * `goal` já dão um proxy razoável de qualidade da chance.
+ * POSIÇÃO — mesmo fix de 2026-08-14 do harvester de desarmes: a identidade
+ * de quem chuta/assiste já vem EXATA direto de matchShots (atleta_id dual-
+ * chaveado, sem ambiguidade nenhuma) — o buraco aqui é só de POSIÇÃO
+ * quando posicoes-granulares.json não conhece o atleta (mesma causa:
+ * aquele arquivo não tem zagueiro, e não distingue lado de lateral). Pra
+ * zagueiro/goleiro/volante/meia, cai pro código genérico da escalação
+ * (ZAG/GOL/VOL/MEI). Pra lateral, reaproveita `data/lado-inferido.json`
+ * (mesmo arquivo que o harvester de desarmes já mantém — tendência de
+ * lado não muda dependendo se é chute ou desarme, é o mesmo jogador).
+ * Atacante fica de fora, mesmo motivo do harvester de desarmes (ATA é
+ * ambíguo entre atacante-área/ponta-esquerda/ponta-direita).
  *
  * Cada partida é IDEMPOTENTE por matchId — sempre sobrescreve, sem trava de
  * "nunca sobrescrever" (diferente do registro de gol): é dado 100% derivado
@@ -86,6 +92,89 @@ const posicoes = JSON.parse(fs.readFileSync(path.join(__dirname, "posicoes-granu
 function posicaoGranular(atletaId) {
   if (!atletaId) return null;
   return posicoes[String(atletaId)] || null;
+}
+
+const LATERAL_MIN_AMOSTRA = 5;
+
+function semAcento(s) {
+  return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+}
+
+/** carrega o elenco atual do Cartola uma vez (não por partida) pra casar nome->atleta_id — mesma técnica do harvester de desarmes. */
+async function carregarCartolaAtletas() {
+  const res = await fetch("https://api.cartola.globo.com/atletas/mercado");
+  const data = await res.json();
+  const atletas = data.atletas || [];
+  const porNome = new Map();
+  const porUltimoNome = new Map();
+  for (const a of atletas) {
+    for (const campo of [a.apelido, a.nome]) {
+      if (!campo) continue;
+      const norm = semAcento(campo);
+      if (!porNome.has(norm)) porNome.set(norm, a);
+      const palavras = norm.split(/\s+/).filter(Boolean);
+      const ultima = palavras[palavras.length - 1];
+      if (!ultima) continue;
+      if (!porUltimoNome.has(ultima)) porUltimoNome.set(ultima, []);
+      porUltimoNome.get(ultima).push(a);
+    }
+  }
+  return { porNome, porUltimoNome };
+}
+
+function encontrarAtletaPorNome(cartola, nomeJogador, clubeIdEsperado) {
+  const norm = semAcento(nomeJogador);
+  if (!norm) return null;
+  const exato = cartola.porNome.get(norm);
+  if (exato) return exato;
+  for (const [chave, atleta] of cartola.porNome) {
+    if (chave.length < 4) continue;
+    if (norm.includes(chave) || chave.includes(norm)) {
+      if (!clubeIdEsperado || atleta.clube_id === clubeIdEsperado) return atleta;
+    }
+  }
+  const palavras = norm.split(/\s+/).filter(Boolean);
+  const ultima = palavras[palavras.length - 1];
+  const candidatos = cartola.porUltimoNome.get(ultima) || [];
+  if (candidatos.length === 1) return candidatos[0];
+  if (candidatos.length > 1 && clubeIdEsperado) {
+    const doTime = candidatos.filter((a) => a.clube_id === clubeIdEsperado);
+    if (doTime.length === 1) return doTime[0];
+  }
+  return null;
+}
+
+/**
+ * ZAG/GOL/VOL/MEI da escalação -> posição direta; LAT -> resolvido via
+ * data/lado-inferido.json (mantido pelo harvester de desarmes, reaproveitado
+ * aqui). Indexado por atleta_id (Cartola), já que é isso que
+ * posicaoGranular() usa. ATA fica de fora de propósito (3 rótulos
+ * possíveis, ambíguo demais).
+ */
+function buildPosicaoFallbackPorAtleta(esc, cartola, ladoInferido, homeEquipeId, awayEquipeId) {
+  const CODIGO_DIRETO = { ZAG: "zagueiro", GOL: "goleiro", VOL: "volante", MEI: "meia" };
+  const fallback = new Map();
+  const grupos = [
+    [esc?.titular?.mandante, homeEquipeId], [esc?.reserva?.mandante, homeEquipeId],
+    [esc?.titular?.visitante, awayEquipeId], [esc?.reserva?.visitante, awayEquipeId],
+  ];
+  for (const [lista, equipeId] of grupos) {
+    for (const j of lista || []) {
+      if (!j.idJogador) continue;
+      let label = CODIGO_DIRETO[j.posicao];
+      if (!label && j.posicao === "LAT") {
+        const acc = ladoInferido[j.idJogador];
+        if (acc && acc.n >= LATERAL_MIN_AMOSTRA) {
+          const media = acc.somaRow / acc.n;
+          label = media <= 3.5 ? "lateral-esquerdo" : "lateral-direito";
+        }
+      }
+      if (!label) continue;
+      const atleta = encontrarAtletaPorNome(cartola, j.nomeJogador, equipeId);
+      if (atleta) fallback.set(String(atleta.atleta_id), label);
+    }
+  }
+  return fallback;
 }
 
 async function authedGet(url, token) {
@@ -181,7 +270,7 @@ function resultadoDoChute(s) {
  * `filas` é mutado ao longo da chamada (cada zona é consumida uma vez) —
  * por isso as duas chamadas (home/away) recebem filas recém-construídas.
  */
-function construirFinalizacoes(matchShots, timeSlug, filas) {
+function construirFinalizacoes(matchShots, timeSlug, filas, posicaoFallback) {
   const registros = [];
   for (const s of matchShots) {
     const timeDoChute = CLUBE_ID[s.equipe_id];
@@ -201,7 +290,7 @@ function construirFinalizacoes(matchShots, timeSlug, filas) {
 
     registros.push({
       jogadorId: String(s.atleta_id),
-      posicao: posicaoGranular(s.atleta_id),
+      posicao: posicaoGranular(s.atleta_id) || posicaoFallback.get(String(s.atleta_id)) || null,
       zona: footstatsToShotXY(s.fieldPositionX, s.fieldPositionY),
       origemZona,
       origem: s.originOfShot || null,
@@ -214,7 +303,9 @@ function construirFinalizacoes(matchShots, timeSlug, filas) {
       resultado: resultadoDoChute(s),
       penalti: s.originOfShot === "PENALTI",
       assistenteId: s.atleta_id_assistente > 0 ? String(s.atleta_id_assistente) : null,
-      assistentePosicao: s.atleta_id_assistente > 0 ? posicaoGranular(s.atleta_id_assistente) : null,
+      assistentePosicao: s.atleta_id_assistente > 0
+        ? (posicaoGranular(s.atleta_id_assistente) || posicaoFallback.get(String(s.atleta_id_assistente)) || null)
+        : null,
     });
   }
   return registros;
@@ -240,6 +331,14 @@ async function main() {
   console.log(`→ site alvo: ${SITE_URL}`);
 
   const token = await getFootstatsToken();
+  const cartola = await carregarCartolaAtletas();
+  console.log(`→ elenco do Cartola carregado: ${cartola.porNome.size} nomes conhecidos`);
+  let ladoInferido = {};
+  try {
+    ladoInferido = await fetchJsonWithRetry(`${SITE_URL}/data/lado-inferido.json?t=${Date.now()}`);
+  } catch { /* ainda não existe — normal */ }
+  console.log(`→ tendência de lado carregada: ${Object.keys(ladoInferido).length} jogadores (mantida pelo harvester de desarmes)`);
+
   console.log(`→ listando partidas do campeonato ${CAMPEONATO_ID} ...`);
   const partidas = await authedGet(`${API_BASE}/api/1.0/campeonatos/${CAMPEONATO_ID}/partidas`, token);
   let jogadas = partidas.filter((m) => m.hasscout && m.finished);
@@ -260,11 +359,15 @@ async function main() {
     ]);
     if (existentesHome.has(String(m.id)) && existentesAway.has(String(m.id))) { puladas++; continue; }
 
-    let shotDetail, fieldPos;
+    const homeEquipeId = m.sdE_EQUIPE_MANDANTE_ID;
+    const awayEquipeId = m.sdE_EQUIPE_VISITANTE_ID;
+
+    let shotDetail, fieldPos, placar;
     try {
-      [shotDetail, fieldPos] = await Promise.all([
+      [shotDetail, fieldPos, placar] = await Promise.all([
         authedGet(`${API_BASE}/api/1.0/partidas/${CAMPEONATO_ID}/finalizacao-detalhada/${m.id}/partida`, token),
         authedGet(`${API_BASE}/api/1.0/partidas/${m.id}/fieldPositionByMatch`, token),
+        authedGet(`${API_BASE}/api/2.0/partidas/${m.id}/placar`, token),
       ]);
     } catch (e) {
       console.log(`  ! partida ${m.id} (${homeSlug} x ${awaySlug}): ${e.message}`);
@@ -274,11 +377,22 @@ async function main() {
     const matchShots = shotDetail.matchShots || [];
     if (!matchShots.length) continue;
 
+    let posicaoFallback = new Map();
+    const homeIdTeam = placar.home?.idTeam, awayIdTeam = placar.away?.idTeam;
+    if (homeIdTeam && awayIdTeam) {
+      try {
+        const esc = await authedGet(`${API_BASE}/api/2.0/partidas/${m.id}/championship/${CAMPEONATO_ID}/teamHome/${homeIdTeam}/teamAway/${awayIdTeam}/escalacao`, token);
+        posicaoFallback = buildPosicaoFallbackPorAtleta(esc, cartola, ladoInferido, homeEquipeId, awayEquipeId);
+      } catch (e) {
+        console.log(`  ! escalação indisponível pra partida ${m.id}: ${e.message} (segue só com posicoes-granulares.json)`);
+      }
+    }
+
     // filas recém-construídas pra cada lado: construirFinalizacoes consome
     // as zonas conforme casa, então cada chamada precisa da sua própria.
     const bridge = buildIdBridge(matchShots);
-    const finalizacoesHome = construirFinalizacoes(matchShots, homeSlug, construirFilasDeAssistencia(fieldPos.data, bridge));
-    const finalizacoesAway = construirFinalizacoes(matchShots, awaySlug, construirFilasDeAssistencia(fieldPos.data, bridge));
+    const finalizacoesHome = construirFinalizacoes(matchShots, homeSlug, construirFilasDeAssistencia(fieldPos.data, bridge), posicaoFallback);
+    const finalizacoesAway = construirFinalizacoes(matchShots, awaySlug, construirFilasDeAssistencia(fieldPos.data, bridge), posicaoFallback);
     const dataISO = m.date ? m.date.slice(0, 10) : null;
 
     const payload = {
