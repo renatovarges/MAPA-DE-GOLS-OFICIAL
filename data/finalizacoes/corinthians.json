@@ -6623,10 +6623,57 @@
     },
     "237604": {
       "matchId": 237604,
+      "roundNumber": 14,
       "date": "2026-05-03",
       "opponent": "mirassol",
       "home": false,
       "shots_for": [
+        {
+          "jogadorId": "92440",
+          "posicao": "zagueiro",
+          "zona": {
+            "x": 68.8,
+            "y": 50.67
+          },
+          "origemZona": {
+            "x": 58.33,
+            "y": 17
+          },
+          "origem": "LANCAMENTO",
+          "perna": "PERNA_DIREITA",
+          "contraAtaque": false,
+          "dentroDaArea": false,
+          "metros": 30,
+          "bloqueada": true,
+          "gol": false,
+          "resultado": "bloqueada",
+          "penalti": false,
+          "assistenteId": "105531",
+          "assistentePosicao": "lateral-esquerdo"
+        },
+        {
+          "jogadorId": "117910",
+          "posicao": "meia",
+          "zona": {
+            "x": 85.86,
+            "y": 30.03
+          },
+          "origemZona": {
+            "x": 91.67,
+            "y": 5.67
+          },
+          "origem": "CRUZAMENTO",
+          "perna": "CABECA",
+          "contraAtaque": false,
+          "dentroDaArea": true,
+          "metros": 10,
+          "bloqueada": false,
+          "gol": false,
+          "resultado": "fora",
+          "penalti": false,
+          "assistenteId": "105531",
+          "assistentePosicao": "lateral-esquerdo"
+        },
         {
           "jogadorId": "104036",
           "posicao": "meia",
@@ -6645,6 +6692,7 @@
           "metros": 30,
           "bloqueada": true,
           "gol": false,
+          "resultado": "bloqueada",
           "penalti": false,
           "assistenteId": "117910",
           "assistentePosicao": "meia"
@@ -6667,6 +6715,7 @@
           "metros": 25,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": "117910",
           "assistentePosicao": "meia"
@@ -6689,6 +6738,7 @@
           "metros": 10,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": "96652",
           "assistentePosicao": "volante"
@@ -6711,6 +6761,7 @@
           "metros": 10,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": "118844",
           "assistentePosicao": "ponta-direita"
@@ -6733,6 +6784,7 @@
           "metros": 25,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": "118844",
           "assistentePosicao": "ponta-direita"
@@ -6755,6 +6807,7 @@
           "metros": 25,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": "95556",
           "assistentePosicao": "volante"
@@ -6777,6 +6830,7 @@
           "metros": 10,
           "bloqueada": false,
           "gol": false,
+          "resultado": "trave",
           "penalti": false,
           "assistenteId": "81720",
           "assistentePosicao": "atacante-area"
@@ -6799,53 +6853,10 @@
           "metros": 5,
           "bloqueada": false,
           "gol": false,
+          "resultado": "trave",
           "penalti": false,
           "assistenteId": "81720",
           "assistentePosicao": "atacante-area"
-        },
-        {
-          "jogadorId": "117910",
-          "posicao": "meia",
-          "zona": {
-            "x": 85.86,
-            "y": 30.03
-          },
-          "origemZona": {
-            "x": 58.33,
-            "y": 17
-          },
-          "origem": "CRUZAMENTO",
-          "perna": "CABECA",
-          "contraAtaque": false,
-          "dentroDaArea": true,
-          "metros": 10,
-          "bloqueada": false,
-          "gol": false,
-          "penalti": false,
-          "assistenteId": "105531",
-          "assistentePosicao": "lateral-esquerdo"
-        },
-        {
-          "jogadorId": "92440",
-          "posicao": null,
-          "zona": {
-            "x": 68.8,
-            "y": 50.67
-          },
-          "origemZona": {
-            "x": 91.67,
-            "y": 5.67
-          },
-          "origem": "LANCAMENTO",
-          "perna": "PERNA_DIREITA",
-          "contraAtaque": false,
-          "dentroDaArea": false,
-          "metros": 30,
-          "bloqueada": true,
-          "gol": false,
-          "penalti": false,
-          "assistenteId": "105531",
-          "assistentePosicao": "lateral-esquerdo"
         },
         {
           "jogadorId": "141995",
@@ -6865,91 +6876,13 @@
           "metros": 25,
           "bloqueada": false,
           "gol": true,
+          "resultado": "gol",
           "penalti": false,
           "assistenteId": "104036",
           "assistentePosicao": "meia"
         }
       ],
       "shots_against": [
-        {
-          "jogadorId": "97321",
-          "posicao": "ponta-esquerda",
-          "zona": {
-            "x": 19.85,
-            "y": 44.14
-          },
-          "origemZona": {
-            "x": 37.67,
-            "y": 51
-          },
-          "origem": "PASSE",
-          "perna": "PERNA_DIREITA",
-          "contraAtaque": false,
-          "dentroDaArea": false,
-          "metros": 25,
-          "bloqueada": false,
-          "gol": false,
-          "penalti": false,
-          "assistenteId": "104204",
-          "assistentePosicao": "atacante-area"
-        },
-        {
-          "jogadorId": "97321",
-          "posicao": "ponta-esquerda",
-          "zona": {
-            "x": 22.61,
-            "y": 42.59
-          },
-          "origemZona": null,
-          "origem": "REBATIDA",
-          "perna": "PERNA_DIREITA",
-          "contraAtaque": false,
-          "dentroDaArea": false,
-          "metros": 25,
-          "bloqueada": false,
-          "gol": false,
-          "penalti": false,
-          "assistenteId": null,
-          "assistentePosicao": null
-        },
-        {
-          "jogadorId": "90917",
-          "posicao": "ponta-direita",
-          "zona": {
-            "x": 11.66,
-            "y": 33.65
-          },
-          "origemZona": null,
-          "origem": "PENALTI",
-          "perna": "PERNA_DIREITA",
-          "contraAtaque": false,
-          "dentroDaArea": true,
-          "metros": 10,
-          "bloqueada": false,
-          "gol": true,
-          "penalti": true,
-          "assistenteId": null,
-          "assistentePosicao": null
-        },
-        {
-          "jogadorId": "97520",
-          "posicao": "meia",
-          "zona": {
-            "x": 17.66,
-            "y": 39.24
-          },
-          "origemZona": null,
-          "origem": "REBATIDA",
-          "perna": "PERNA_ESQUERDA",
-          "contraAtaque": false,
-          "dentroDaArea": false,
-          "metros": 20,
-          "bloqueada": true,
-          "gol": false,
-          "penalti": false,
-          "assistenteId": null,
-          "assistentePosicao": null
-        },
         {
           "jogadorId": "104204",
           "posicao": "atacante-area",
@@ -6968,9 +6901,33 @@
           "metros": 10,
           "bloqueada": false,
           "gol": true,
+          "resultado": "gol",
           "penalti": false,
           "assistenteId": "90917",
           "assistentePosicao": "ponta-direita"
+        },
+        {
+          "jogadorId": "97321",
+          "posicao": "ponta-esquerda",
+          "zona": {
+            "x": 19.85,
+            "y": 44.14
+          },
+          "origemZona": {
+            "x": 37.67,
+            "y": 51
+          },
+          "origem": "PASSE",
+          "perna": "PERNA_DIREITA",
+          "contraAtaque": false,
+          "dentroDaArea": false,
+          "metros": 25,
+          "bloqueada": false,
+          "gol": false,
+          "resultado": "trave",
+          "penalti": false,
+          "assistenteId": "104204",
+          "assistentePosicao": "atacante-area"
         },
         {
           "jogadorId": "104204",
@@ -6990,6 +6947,7 @@
           "metros": 10,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": "86410",
           "assistentePosicao": "lateral-esquerdo"
@@ -7012,18 +6970,183 @@
           "metros": 30,
           "bloqueada": false,
           "gol": false,
+          "resultado": "trave",
           "penalti": false,
           "assistenteId": "97520",
           "assistentePosicao": "meia"
+        },
+        {
+          "jogadorId": "97520",
+          "posicao": "meia",
+          "zona": {
+            "x": 17.66,
+            "y": 39.24
+          },
+          "origemZona": null,
+          "origem": "REBATIDA",
+          "perna": "PERNA_ESQUERDA",
+          "contraAtaque": false,
+          "dentroDaArea": false,
+          "metros": 20,
+          "bloqueada": true,
+          "gol": false,
+          "resultado": "bloqueada",
+          "penalti": false,
+          "assistenteId": null,
+          "assistentePosicao": null
+        },
+        {
+          "jogadorId": "97321",
+          "posicao": "ponta-esquerda",
+          "zona": {
+            "x": 22.61,
+            "y": 42.59
+          },
+          "origemZona": null,
+          "origem": "REBATIDA",
+          "perna": "PERNA_DIREITA",
+          "contraAtaque": false,
+          "dentroDaArea": false,
+          "metros": 25,
+          "bloqueada": false,
+          "gol": false,
+          "resultado": "trave",
+          "penalti": false,
+          "assistenteId": null,
+          "assistentePosicao": null
+        },
+        {
+          "jogadorId": "90917",
+          "posicao": "ponta-direita",
+          "zona": {
+            "x": 11.66,
+            "y": 33.65
+          },
+          "origemZona": null,
+          "origem": "PENALTI",
+          "perna": "PERNA_DIREITA",
+          "contraAtaque": false,
+          "dentroDaArea": true,
+          "metros": 10,
+          "bloqueada": false,
+          "gol": true,
+          "resultado": "gol",
+          "penalti": true,
+          "assistenteId": null,
+          "assistentePosicao": null
         }
       ]
     },
     "237735": {
       "matchId": 237735,
+      "roundNumber": 15,
       "date": "2026-05-10",
       "opponent": "sao-paulo",
       "home": true,
       "shots_for": [
+        {
+          "jogadorId": "100652",
+          "posicao": "atacante-area",
+          "zona": {
+            "x": 83.91,
+            "y": 22.33
+          },
+          "origemZona": {
+            "x": 75,
+            "y": 5.67
+          },
+          "origem": "CRUZAMENTO",
+          "perna": "CABECA",
+          "contraAtaque": false,
+          "dentroDaArea": true,
+          "metros": 15,
+          "bloqueada": false,
+          "gol": false,
+          "resultado": "fora",
+          "penalti": false,
+          "assistenteId": "81720",
+          "assistentePosicao": "atacante-area"
+        },
+        {
+          "jogadorId": "117632",
+          "posicao": "meia",
+          "zona": {
+            "x": 77.82,
+            "y": 33.08
+          },
+          "origemZona": null,
+          "origem": "REBATIDA",
+          "perna": "PERNA_DIREITA",
+          "contraAtaque": false,
+          "dentroDaArea": false,
+          "metros": 20,
+          "bloqueada": true,
+          "gol": false,
+          "resultado": "bloqueada",
+          "penalti": false,
+          "assistenteId": null,
+          "assistentePosicao": null
+        },
+        {
+          "jogadorId": "117632",
+          "posicao": "meia",
+          "zona": {
+            "x": 81.63,
+            "y": 23.36
+          },
+          "origemZona": null,
+          "origem": "REBATIDA",
+          "perna": "PERNA_DIREITA",
+          "contraAtaque": false,
+          "dentroDaArea": true,
+          "metros": 15,
+          "bloqueada": false,
+          "gol": false,
+          "resultado": "fora",
+          "penalti": false,
+          "assistenteId": null,
+          "assistentePosicao": null
+        },
+        {
+          "jogadorId": "105531",
+          "posicao": "lateral-esquerdo",
+          "zona": {
+            "x": 73.63,
+            "y": 11.41
+          },
+          "origemZona": null,
+          "origem": "REBATIDA",
+          "perna": "PERNA_ESQUERDA",
+          "contraAtaque": false,
+          "dentroDaArea": false,
+          "metros": 25,
+          "bloqueada": false,
+          "gol": false,
+          "resultado": "fora",
+          "penalti": false,
+          "assistenteId": null,
+          "assistentePosicao": null
+        },
+        {
+          "jogadorId": "100652",
+          "posicao": "atacante-area",
+          "zona": {
+            "x": 84.48,
+            "y": 21.47
+          },
+          "origemZona": null,
+          "origem": "REBATIDA",
+          "perna": "PERNA_ESQUERDA",
+          "contraAtaque": false,
+          "dentroDaArea": true,
+          "metros": 10,
+          "bloqueada": false,
+          "gol": false,
+          "resultado": "fora",
+          "penalti": false,
+          "assistenteId": null,
+          "assistentePosicao": null
+        },
         {
           "jogadorId": "100652",
           "posicao": "atacante-area",
@@ -7042,6 +7165,7 @@
           "metros": 15,
           "bloqueada": false,
           "gol": false,
+          "resultado": "trave",
           "penalti": false,
           "assistenteId": "117632",
           "assistentePosicao": "meia"
@@ -7064,6 +7188,7 @@
           "metros": 20,
           "bloqueada": false,
           "gol": true,
+          "resultado": "gol",
           "penalti": false,
           "assistenteId": "117632",
           "assistentePosicao": "meia"
@@ -7086,6 +7211,7 @@
           "metros": 5,
           "bloqueada": false,
           "gol": true,
+          "resultado": "gol",
           "penalti": false,
           "assistenteId": "117632",
           "assistentePosicao": "meia"
@@ -7108,6 +7234,7 @@
           "metros": 15,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": "105531",
           "assistentePosicao": "lateral-esquerdo"
@@ -7130,6 +7257,7 @@
           "metros": 15,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": "100652",
           "assistentePosicao": "atacante-area"
@@ -7152,6 +7280,7 @@
           "metros": 10,
           "bloqueada": false,
           "gol": false,
+          "resultado": "trave",
           "penalti": false,
           "assistenteId": "100652",
           "assistentePosicao": "atacante-area"
@@ -7174,6 +7303,7 @@
           "metros": 10,
           "bloqueada": false,
           "gol": false,
+          "resultado": "trave",
           "penalti": false,
           "assistenteId": "117910",
           "assistentePosicao": "meia"
@@ -7196,107 +7326,10 @@
           "metros": 25,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": "95556",
           "assistentePosicao": "volante"
-        },
-        {
-          "jogadorId": "100652",
-          "posicao": "atacante-area",
-          "zona": {
-            "x": 83.91,
-            "y": 22.33
-          },
-          "origemZona": {
-            "x": 75,
-            "y": 5.67
-          },
-          "origem": "CRUZAMENTO",
-          "perna": "CABECA",
-          "contraAtaque": false,
-          "dentroDaArea": true,
-          "metros": 15,
-          "bloqueada": false,
-          "gol": false,
-          "penalti": false,
-          "assistenteId": "81720",
-          "assistentePosicao": "atacante-area"
-        },
-        {
-          "jogadorId": "117632",
-          "posicao": "meia",
-          "zona": {
-            "x": 77.82,
-            "y": 33.08
-          },
-          "origemZona": null,
-          "origem": "REBATIDA",
-          "perna": "PERNA_DIREITA",
-          "contraAtaque": false,
-          "dentroDaArea": false,
-          "metros": 20,
-          "bloqueada": true,
-          "gol": false,
-          "penalti": false,
-          "assistenteId": null,
-          "assistentePosicao": null
-        },
-        {
-          "jogadorId": "117632",
-          "posicao": "meia",
-          "zona": {
-            "x": 81.63,
-            "y": 23.36
-          },
-          "origemZona": null,
-          "origem": "REBATIDA",
-          "perna": "PERNA_DIREITA",
-          "contraAtaque": false,
-          "dentroDaArea": true,
-          "metros": 15,
-          "bloqueada": false,
-          "gol": false,
-          "penalti": false,
-          "assistenteId": null,
-          "assistentePosicao": null
-        },
-        {
-          "jogadorId": "105531",
-          "posicao": "lateral-esquerdo",
-          "zona": {
-            "x": 73.63,
-            "y": 11.41
-          },
-          "origemZona": null,
-          "origem": "REBATIDA",
-          "perna": "PERNA_ESQUERDA",
-          "contraAtaque": false,
-          "dentroDaArea": false,
-          "metros": 25,
-          "bloqueada": false,
-          "gol": false,
-          "penalti": false,
-          "assistenteId": null,
-          "assistentePosicao": null
-        },
-        {
-          "jogadorId": "100652",
-          "posicao": "atacante-area",
-          "zona": {
-            "x": 84.48,
-            "y": 21.47
-          },
-          "origemZona": null,
-          "origem": "REBATIDA",
-          "perna": "PERNA_ESQUERDA",
-          "contraAtaque": false,
-          "dentroDaArea": true,
-          "metros": 10,
-          "bloqueada": false,
-          "gol": false,
-          "penalti": false,
-          "assistenteId": null,
-          "assistentePosicao": null
         },
         {
           "jogadorId": "95556",
@@ -7316,9 +7349,10 @@
           "metros": 10,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": "78248",
-          "assistentePosicao": null
+          "assistentePosicao": "zagueiro"
         },
         {
           "jogadorId": "101727",
@@ -7338,6 +7372,7 @@
           "metros": 10,
           "bloqueada": false,
           "gol": true,
+          "resultado": "gol",
           "penalti": false,
           "assistenteId": "77485",
           "assistentePosicao": "volante"
@@ -7345,23 +7380,27 @@
       ],
       "shots_against": [
         {
-          "jogadorId": "104758",
-          "posicao": "lateral-esquerdo",
+          "jogadorId": "131617",
+          "posicao": "atacante-area",
           "zona": {
-            "x": 24.39,
-            "y": 40.32
+            "x": 21.44,
+            "y": 30.77
           },
-          "origemZona": null,
-          "origem": "REBATIDA",
+          "origemZona": {
+            "x": 37.67,
+            "y": 28.33
+          },
+          "origem": "PASSE",
           "perna": "PERNA_ESQUERDA",
           "contraAtaque": false,
           "dentroDaArea": false,
-          "metros": 30,
-          "bloqueada": true,
+          "metros": 25,
+          "bloqueada": false,
           "gol": false,
+          "resultado": "trave",
           "penalti": false,
-          "assistenteId": null,
-          "assistentePosicao": null
+          "assistenteId": "95799",
+          "assistentePosicao": "ponta-direita"
         },
         {
           "jogadorId": "101290",
@@ -7371,8 +7410,8 @@
             "y": 46.68
           },
           "origemZona": {
-            "x": 37.67,
-            "y": 28.33
+            "x": 21,
+            "y": 39.67
           },
           "origem": "LANCAMENTO",
           "perna": "PERNA_DIREITA",
@@ -7381,75 +7420,10 @@
           "metros": 20,
           "bloqueada": false,
           "gol": false,
+          "resultado": "trave",
           "penalti": false,
           "assistenteId": "95799",
           "assistentePosicao": "ponta-direita"
-        },
-        {
-          "jogadorId": "131617",
-          "posicao": "atacante-area",
-          "zona": {
-            "x": 21.44,
-            "y": 30.77
-          },
-          "origemZona": {
-            "x": 21,
-            "y": 39.67
-          },
-          "origem": "PASSE",
-          "perna": "PERNA_ESQUERDA",
-          "contraAtaque": false,
-          "dentroDaArea": false,
-          "metros": 25,
-          "bloqueada": false,
-          "gol": false,
-          "penalti": false,
-          "assistenteId": "95799",
-          "assistentePosicao": "ponta-direita"
-        },
-        {
-          "jogadorId": "89840",
-          "posicao": "atacante-area",
-          "zona": {
-            "x": 14.01,
-            "y": 18.99
-          },
-          "origemZona": {
-            "x": 4.33,
-            "y": 28.33
-          },
-          "origem": "PASSE",
-          "perna": "PERNA_DIREITA",
-          "contraAtaque": false,
-          "dentroDaArea": true,
-          "metros": 15,
-          "bloqueada": false,
-          "gol": false,
-          "penalti": false,
-          "assistenteId": "107873",
-          "assistentePosicao": "meia"
-        },
-        {
-          "jogadorId": "80287",
-          "posicao": "atacante-area",
-          "zona": {
-            "x": 8.1,
-            "y": 34.55
-          },
-          "origemZona": {
-            "x": 37.67,
-            "y": 5.67
-          },
-          "origem": "PASSE",
-          "perna": "PERNA_DIREITA",
-          "contraAtaque": false,
-          "dentroDaArea": true,
-          "metros": 10,
-          "bloqueada": false,
-          "gol": true,
-          "penalti": false,
-          "assistenteId": "107873",
-          "assistentePosicao": "meia"
         },
         {
           "jogadorId": "104758",
@@ -7469,9 +7443,76 @@
           "metros": 30,
           "bloqueada": false,
           "gol": false,
+          "resultado": "trave",
           "penalti": false,
           "assistenteId": "85403",
           "assistentePosicao": "volante"
+        },
+        {
+          "jogadorId": "80287",
+          "posicao": "atacante-area",
+          "zona": {
+            "x": 8.1,
+            "y": 34.55
+          },
+          "origemZona": {
+            "x": 4.33,
+            "y": 28.33
+          },
+          "origem": "PASSE",
+          "perna": "PERNA_DIREITA",
+          "contraAtaque": false,
+          "dentroDaArea": true,
+          "metros": 10,
+          "bloqueada": false,
+          "gol": true,
+          "resultado": "gol",
+          "penalti": false,
+          "assistenteId": "107873",
+          "assistentePosicao": "meia"
+        },
+        {
+          "jogadorId": "89840",
+          "posicao": "atacante-area",
+          "zona": {
+            "x": 14.01,
+            "y": 18.99
+          },
+          "origemZona": {
+            "x": 37.67,
+            "y": 5.67
+          },
+          "origem": "PASSE",
+          "perna": "PERNA_DIREITA",
+          "contraAtaque": false,
+          "dentroDaArea": true,
+          "metros": 15,
+          "bloqueada": false,
+          "gol": false,
+          "resultado": "fora",
+          "penalti": false,
+          "assistenteId": "107873",
+          "assistentePosicao": "meia"
+        },
+        {
+          "jogadorId": "104758",
+          "posicao": "lateral-esquerdo",
+          "zona": {
+            "x": 24.39,
+            "y": 40.32
+          },
+          "origemZona": null,
+          "origem": "REBATIDA",
+          "perna": "PERNA_ESQUERDA",
+          "contraAtaque": false,
+          "dentroDaArea": false,
+          "metros": 30,
+          "bloqueada": true,
+          "gol": false,
+          "resultado": "bloqueada",
+          "penalti": false,
+          "assistenteId": null,
+          "assistentePosicao": null
         }
       ]
     },
