@@ -65,17 +65,31 @@ import { dispatchAlert } from "./lib/alerts.mjs";
  * posição confiável, o evento é DESCARTADO por completo — nunca um
  * achado incompleto.
  *
- * ZAGUEIRO — segundo ponto cego, descoberto em 2026-08-14: mesmo com a
- * ponte resolvendo o jogador certinho, `posicoes-granulares.json` (533
- * jogadores, construído pro Mapa de Gols) não tem NENHUMA entrada de
- * zagueiro — só lateral/ponta/meia/volante/atacante, porque zagueiro
- * quase nunca finaliza/assiste, então nunca precisou entrar naquele
- * arquivo. Pra goleiro e zagueiro (posições sem "lado" — não faz sentido
- * granular esquerda/direita), a posição cai pro código genérico que a
- * própria escalação já devolve (GOL/ZAG) em vez de descartar. Pra
- * lateral/meia/volante/atacante (onde o lado importa de verdade),
- * continua exigindo posicoes-granulares.json — sem isso, descarta, como
- * sempre foi.
+ * ZAGUEIRO/GOLEIRO/VOLANTE/MEIA — pontos cegos descobertos em 2026-08-14:
+ * mesmo com a ponte resolvendo o jogador certinho, `posicoes-granulares.
+ * json` (533 jogadores, construído pro Mapa de Gols) não tem NENHUMA
+ * entrada de zagueiro — só lateral/ponta/meia/volante/atacante, porque
+ * zagueiro quase nunca finaliza/assiste. Checando os valores possíveis
+ * desse arquivo, "volante" e "meia" NUNCA têm variante de lado (só
+ * "lateral-esquerdo/direito" e "ponta-esquerda/direita" têm) — ou seja,
+ * pra goleiro/zagueiro/volante/meia, o código genérico que a própria
+ * escalação já devolve (GOL/ZAG/VOL/MEI) é tão bom quanto o granular,
+ * sem nenhum risco. Usado direto como fallback.
+ *
+ * LATERAL — mesmo achado, mas aqui o lado importa de verdade e a
+ * escalação só diz "LAT" (sem dizer qual). Resolvido inferindo o lado
+ * pela TENDÊNCIA de quadrante do próprio jogador (linha 1-6 da grade
+ * 6x6, no referencial de ataque dele — já confirmado antes, ao validar o
+ * espelhamento do campinho, que linha baixa = próprio-esquerda e linha
+ * alta = próprio-direita). Acumulado de forma persistente em
+ * `data/lado-inferido.json` (mesmo padrão do id-bridge), com amostra
+ * mínima antes de confiar (ver LATERAL_MIN_AMOSTRA) — jogador com poucos
+ * eventos ainda fica sem posição até acumular o suficiente.
+ *
+ * ATACANTE (ATA): ficou de fora de propósito — a escalação não distingue
+ * "atacante-área" de "ponta-esquerda/direita" (são 3 rótulos possíveis
+ * pro mesmo código ATA), e adivinhar errado aqui atrapalha mais do que
+ * ajuda. Continua exigindo posicoes-granulares.json pra esse caso.
  *
  * Cada partida é IDEMPOTENTE por matchId (sempre sobrescreve).
  *
@@ -96,6 +110,9 @@ const CLUBE_ID = {
   293: "athletico-pr", 294: "coritiba", 315: "chapecoense", 364: "remo", 2305: "mirassol",
 };
 const NORMALIZE_KEY = { athletico_pr: "athletico-pr", atletico_mg: "atletico-mg", sao_paulo: "sao-paulo", red_bull_bragantino: "red-bull-bragantino" };
+
+/** amostra mínima de eventos antes de confiar na tendência de lado inferida (ver nota LATERAL no topo). */
+const LATERAL_MIN_AMOSTRA = 5;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const posicoes = JSON.parse(fs.readFileSync(path.join(__dirname, "posicoes-granulares.json"), "utf8"));
@@ -127,6 +144,23 @@ async function saveBridge(bridge) {
   });
   const body = await res.json().catch(() => ({}));
   if (!res.ok || !body.ok) throw new Error(`save-id-bridge falhou (HTTP ${res.status}): ${JSON.stringify(body)}`);
+}
+
+/** tendência de lado por jogador ({idJogador: {somaRow, n}}) — mesmo padrão persistente do bridge. */
+async function loadLadoInferido() {
+  try {
+    return await fetchJsonWithRetry(`${SITE_URL}/data/lado-inferido.json?t=${Date.now()}`);
+  } catch {
+    return {};
+  }
+}
+async function saveLadoInferido(ladoInferido) {
+  if (!ENVIO_REAL) return;
+  const res = await fetch(`${SITE_URL}/api/save-lado-inferido`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(ladoInferido),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.ok) throw new Error(`save-lado-inferido falhou (HTTP ${res.status}): ${JSON.stringify(body)}`);
 }
 
 function mergeBridgeFromShots(bridge, matchShots) {
@@ -209,26 +243,57 @@ function mergeBridgeFromEscalacao(bridge, cartola, esc, homeEquipeId, awayEquipe
 }
 
 /**
- * ZAG/GOL da escalação, indexado por idJogador — usado só como fallback
- * quando posicoes-granulares.json não conhece o atleta (ver nota no topo
- * do arquivo). Lateral/meia/volante/atacante nunca usam esse fallback:
- * pra essas posições o lado importa e continua exigindo o arquivo
- * granular, senão descarta — regra do Renato inalterada.
+ * ZAG/GOL/VOL/MEI da escalação, indexado por idJogador — fallback direto
+ * quando posicoes-granulares.json não conhece o atleta, porque nenhuma
+ * dessas 4 posições tem variante de lado em posicoes-granulares.json (só
+ * lateral/ponta têm — ver nota no topo do arquivo). LAT entra à parte
+ * (retornado em `lateralIds`, resolvido por inferência de tendência de
+ * campo — ver acumularTendenciaLateral/ladoInferidoLabel). ATA fica de
+ * fora de propósito (3 rótulos possíveis, ambíguo demais).
  */
 function buildPosicaoFallback(esc) {
-  const fallback = new Map();
-  const CODIGO_PARA_LABEL = { ZAG: "zagueiro", GOL: "goleiro" };
+  const CODIGO_DIRETO = { ZAG: "zagueiro", GOL: "goleiro", VOL: "volante", MEI: "meia" };
+  const direto = new Map();
+  const lateralIds = new Set();
   const grupos = [esc?.titular?.mandante, esc?.reserva?.mandante, esc?.titular?.visitante, esc?.reserva?.visitante];
   for (const lista of grupos) {
     for (const j of lista || []) {
-      const label = CODIGO_PARA_LABEL[j.posicao];
-      if (label && j.idJogador) fallback.set(j.idJogador, label);
+      if (!j.idJogador) continue;
+      const label = CODIGO_DIRETO[j.posicao];
+      if (label) direto.set(j.idJogador, label);
+      else if (j.posicao === "LAT") lateralIds.add(j.idJogador);
     }
   }
-  return fallback;
+  return { direto, lateralIds };
 }
 
-function construirEventosPorTime(events, idTeamToEquipe, bridge, posicaoFallback) {
+/** linha 1-6 do quadrante (referencial de ataque do próprio jogador) — 1=próprio-esquerda, 6=próprio-direita. */
+function quadranteRow(q) {
+  if (!Number.isInteger(q) || q < 1 || q > 36) return null;
+  return ((q - 1) % 6) + 1;
+}
+
+/** acumula, pra jogador marcado como LAT nesta partida, a tendência de linha — persistido em ladoInferido. */
+function acumularTendenciaLateral(ladoInferido, events, lateralIds) {
+  for (const ev of events) {
+    if (ev.idSkill !== 5 && ev.idSkill !== 24 && ev.idSkill !== 12) continue;
+    if (!lateralIds.has(ev.idPlayer)) continue;
+    const row = quadranteRow(ev.idQuadrant36);
+    if (row == null) continue;
+    if (!ladoInferido[ev.idPlayer]) ladoInferido[ev.idPlayer] = { somaRow: 0, n: 0 };
+    ladoInferido[ev.idPlayer].somaRow += row;
+    ladoInferido[ev.idPlayer].n += 1;
+  }
+}
+
+function ladoInferidoLabel(ladoInferido, idJogador) {
+  const acc = ladoInferido[idJogador];
+  if (!acc || acc.n < LATERAL_MIN_AMOSTRA) return null;
+  const media = acc.somaRow / acc.n;
+  return media <= 3.5 ? "lateral-esquerdo" : "lateral-direito";
+}
+
+function construirEventosPorTime(events, idTeamToEquipe, bridge, posicaoDireta, ladoInferido) {
   const porTime = new Map();
   for (const ev of events) {
     if (ev.idSkill !== 5 && ev.idSkill !== 24 && ev.idSkill !== 12) continue;
@@ -240,7 +305,7 @@ function construirEventosPorTime(events, idTeamToEquipe, bridge, posicaoFallback
     const atletaId = bridge[ev.idPlayer];
     if (!atletaId) continue;
 
-    const posicao = posicaoGranular(atletaId) || posicaoFallback.get(ev.idPlayer) || null;
+    const posicao = posicaoGranular(atletaId) || posicaoDireta.get(ev.idPlayer) || ladoInferidoLabel(ladoInferido, ev.idPlayer) || null;
     if (!posicao) continue;
 
     if (!porTime.has(equipeId)) porTime.set(equipeId, { recuperacoes: [], perdas: [] });
@@ -297,6 +362,8 @@ async function main() {
   const token = await getFootstatsToken();
   const bridge = await loadBridge();
   console.log(`→ bridge idPlayer->atleta_id carregada: ${Object.keys(bridge).length} jogadores conhecidos`);
+  const ladoInferido = await loadLadoInferido();
+  console.log(`→ tendência de lado carregada: ${Object.keys(ladoInferido).length} jogadores com amostra (≥${LATERAL_MIN_AMOSTRA} = confiável)`);
   const cartola = await carregarCartolaAtletas();
   console.log(`→ elenco do Cartola carregado: ${cartola.porNome.size} nomes conhecidos (pra casar com a escalação)`);
 
@@ -349,18 +416,19 @@ async function main() {
     if (awayIdTeam) idTeamToEquipe.set(awayIdTeam, awayEquipeId);
 
     bridgeNovos += mergeBridgeFromShots(bridge, matchShots);
-    let posicaoFallback = new Map();
+    let posicaoDireta = new Map(), lateralIds = new Set();
     if (homeIdTeam && awayIdTeam) {
       try {
         const esc = await authedGet(`${API_BASE}/api/2.0/partidas/${m.id}/championship/${CAMPEONATO_ID}/teamHome/${homeIdTeam}/teamAway/${awayIdTeam}/escalacao`, token);
         bridgeNovos += mergeBridgeFromEscalacao(bridge, cartola, esc, homeEquipeId, awayEquipeId);
-        posicaoFallback = buildPosicaoFallback(esc);
+        ({ direto: posicaoDireta, lateralIds } = buildPosicaoFallback(esc));
+        acumularTendenciaLateral(ladoInferido, events, lateralIds);
       } catch (e) {
         console.log(`  ! escalação indisponível pra partida ${m.id}: ${e.message} (segue só com a ponte de chutes)`);
       }
     }
 
-    const porTime = construirEventosPorTime(events, idTeamToEquipe, bridge, posicaoFallback);
+    const porTime = construirEventosPorTime(events, idTeamToEquipe, bridge, posicaoDireta, ladoInferido);
     const homeBucket = porTime.get(homeEquipeId) || { recuperacoes: [], perdas: [] };
     const awayBucket = porTime.get(awayEquipeId) || { recuperacoes: [], perdas: [] };
     const dataISO = m.date ? m.date.slice(0, 10) : null;
@@ -383,7 +451,10 @@ async function main() {
   }
 
   await saveBridge(bridge);
+  await saveLadoInferido(ladoInferido);
+  const confiaveis = Object.values(ladoInferido).filter((a) => a.n >= LATERAL_MIN_AMOSTRA).length;
   console.log(`\n→ bridge ${ENVIO_REAL ? "atualizada" : "que seria atualizada"}: +${bridgeNovos} jogador(es) novo(s), total agora ${Object.keys(bridge).length}`);
+  console.log(`→ tendência de lado ${ENVIO_REAL ? "atualizada" : "que seria atualizada"}: ${Object.keys(ladoInferido).length} jogadores com amostra, ${confiaveis} já confiáveis (≥${LATERAL_MIN_AMOSTRA})`);
   console.log(`✓ ${enviadas} partida(s) ${ENVIO_REAL ? "enviadas" : "que seriam enviadas"} | ${puladas} já existiam nos dois times e foram puladas`);
   if (!ENVIO_REAL) {
     console.log("\nEssa foi uma SIMULAÇÃO — rode com ENVIO_REAL=1 pra gravar de verdade no site ao vivo.");
