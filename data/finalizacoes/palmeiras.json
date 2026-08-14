@@ -4297,6 +4297,7 @@
     },
     "237671": {
       "matchId": 237671,
+      "roundNumber": 8,
       "date": "2026-03-21",
       "opponent": "sao-paulo",
       "home": false,
@@ -4316,6 +4317,7 @@
           "metros": 10,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": null,
           "assistentePosicao": null
@@ -4338,6 +4340,7 @@
           "metros": 25,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": "89274",
           "assistentePosicao": "meia"
@@ -4357,6 +4360,7 @@
           "metros": 30,
           "bloqueada": false,
           "gol": false,
+          "resultado": "trave",
           "penalti": false,
           "assistenteId": "84674",
           "assistentePosicao": "volante"
@@ -4379,13 +4383,14 @@
           "metros": 20,
           "bloqueada": false,
           "gol": true,
+          "resultado": "gol",
           "penalti": false,
           "assistenteId": "113103",
           "assistentePosicao": "atacante-area"
         },
         {
           "jogadorId": "97653",
-          "posicao": null,
+          "posicao": "zagueiro",
           "zona": {
             "x": 67.68,
             "y": 28.33
@@ -4401,6 +4406,7 @@
           "metros": 35,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": "93790",
           "assistentePosicao": "volante"
@@ -4423,6 +4429,7 @@
           "metros": 20,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": "105647",
           "assistentePosicao": "meia"
@@ -4444,6 +4451,7 @@
           "metros": 25,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": null,
           "assistentePosicao": null
@@ -4463,6 +4471,7 @@
           "metros": 25,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": null,
           "assistentePosicao": null
@@ -4485,6 +4494,7 @@
           "metros": 10,
           "bloqueada": false,
           "gol": false,
+          "resultado": "fora",
           "penalti": false,
           "assistenteId": "101290",
           "assistentePosicao": "atacante-area"
@@ -4507,6 +4517,7 @@
           "metros": 10,
           "bloqueada": false,
           "gol": false,
+          "resultado": "trave",
           "penalti": false,
           "assistenteId": "82775",
           "assistentePosicao": "lateral-direito"
