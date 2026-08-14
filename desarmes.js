@@ -720,8 +720,28 @@
   // ---------------------------------------------------------------------
 
   const DSM_CATEGORIAS_CHUTE = [
-    ['gol', 'Gol'], ['fora', 'Pra fora'], ['trave', 'Na trave'],
+    ['gol', 'Virou gol'], ['fora', 'Pra fora'], ['trave', 'Na trave'],
     ['bloqueada', 'Bloqueada'], ['defendida', 'Defendida'],
+  ];
+
+  /**
+   * "Virou gol" (categoria "gol") já significa especificamente o chute que
+   * resultou em gol — confirmado com dado real (todo chute com imgShots=
+   * ball2.png tinha goal:true, 22/22 numa amostra de 219). Não é "chute a
+   * gol" no sentido amplo (que incluiria "defendida" também, já que ambos
+   * foram no alvo) — por isso o rótulo evita a palavra ambígua "Gol"
+   * sozinha (pedido do Renato, 2026-08-14).
+   */
+
+  /** posição granular -> balde genérico da escalação, pro filtro de posição do Mapa de Finalizações. */
+  const DSM_POSICAO_PARA_BALDE = {
+    zagueiro: 'ZAG', volante: 'VOL', meia: 'MEI',
+    'lateral-esquerdo': 'LAT-ESQ', 'lateral-direito': 'LAT-DIR',
+    'atacante-area': 'ATA', 'ponta-esquerda': 'ATA', 'ponta-direita': 'ATA',
+  };
+  const DSM_BALDES_POSICAO = [
+    ['ATA', 'Atacante'], ['MEI', 'Meia'], ['VOL', 'Volante'],
+    ['ZAG', 'Zagueiro'], ['LAT-ESQ', 'Lateral esq.'], ['LAT-DIR', 'Lateral dir.'],
   ];
 
   /**
@@ -766,7 +786,7 @@
     return promise;
   }
 
-  async function dsmGetTeamShotsData(teamKey, { homeFilter = null, count = 5, categorias = null } = {}) {
+  async function dsmGetTeamShotsData(teamKey, { homeFilter = null, count = 5, categorias = null, posicoes = null } = {}) {
     let matches = await dsmGetTeamShotsMatches(teamKey);
     if (homeFilter != null) {
       const wantHome = Boolean(homeFilter);
@@ -782,6 +802,10 @@
     if (categorias) {
       created = created.filter(ev => categorias.has(dsmResultadoOuFallback(ev)));
       conceded = conceded.filter(ev => categorias.has(dsmResultadoOuFallback(ev)));
+    }
+    if (posicoes) {
+      created = created.filter(ev => posicoes.has(DSM_POSICAO_PARA_BALDE[ev.posicao]));
+      conceded = conceded.filter(ev => posicoes.has(DSM_POSICAO_PARA_BALDE[ev.posicao]));
     }
     return { created, conceded, gamesUsed: selected.length };
   }
@@ -895,6 +919,9 @@
     const categorias = new Set(
       Array.from(document.querySelectorAll('#dsmFznCategorias input[type=checkbox]:checked')).map(c => c.value)
     );
+    const posicoes = new Set(
+      Array.from(document.querySelectorAll('#dsmFznPosicoes input[type=checkbox]:checked')).map(c => c.value)
+    );
 
     if (!teamA || !teamB || teamA === teamB) {
       if (emptyEl) {
@@ -905,8 +932,11 @@
       if (confB) confB.style.display = 'none';
       return;
     }
-    if (!categorias.size) {
-      if (emptyEl) { emptyEl.style.display = ''; emptyEl.textContent = 'Marque pelo menos uma categoria de finalização.'; }
+    if (!categorias.size || !posicoes.size) {
+      if (emptyEl) {
+        emptyEl.style.display = '';
+        emptyEl.textContent = !categorias.size ? 'Marque pelo menos uma categoria de finalização.' : 'Marque pelo menos uma posição.';
+      }
       if (confA) confA.style.display = 'none';
       if (confB) confB.style.display = 'none';
       return;
@@ -920,8 +950,8 @@
     const homeFilterB = (mando === 'mando') ? false : null;
 
     const [dataA, dataB, playersMap] = await Promise.all([
-      dsmGetTeamShotsData(teamA, { homeFilter: homeFilterA, count, categorias }),
-      dsmGetTeamShotsData(teamB, { homeFilter: homeFilterB, count, categorias }),
+      dsmGetTeamShotsData(teamA, { homeFilter: homeFilterA, count, categorias, posicoes }),
+      dsmGetTeamShotsData(teamB, { homeFilter: homeFilterB, count, categorias, posicoes }),
       dsmGetPlayersById(),
     ]);
 
@@ -958,6 +988,10 @@
           Categoria da finalização
           <div class="dsm-checkbox-panel" id="dsmFznCategorias"></div>
         </div>
+        <div class="dsm-control-item" style="min-width:260px">
+          Posição
+          <div class="dsm-checkbox-panel" id="dsmFznPosicoes"></div>
+        </div>
       </div>
       <div id="dsmFznEmptyState" class="dsm-empty">Escolha os dois times acima pra ver o mapa.</div>
       <div id="dsmFznConfrontoA" class="dsm-confronto" style="display:none"></div>
@@ -980,6 +1014,15 @@
       catPanel.appendChild(lab);
     });
     catPanel.addEventListener('change', (e) => { if (e.target.matches('input[type=checkbox]')) dsmRefreshFinalizacoes(); });
+
+    const posPanel = document.getElementById('dsmFznPosicoes');
+    DSM_BALDES_POSICAO.forEach(([key, label]) => {
+      const lab = document.createElement('label');
+      lab.className = 'dsm-checkbox-item';
+      lab.innerHTML = `<input type="checkbox" value="${key}" checked /> ${label}`;
+      posPanel.appendChild(lab);
+    });
+    posPanel.addEventListener('change', (e) => { if (e.target.matches('input[type=checkbox]')) dsmRefreshFinalizacoes(); });
 
     ['dsmFznTeamASelect', 'dsmFznTeamBSelect', 'dsmFznWindowCountInput', 'dsmFznMandoSelect'].forEach(id => {
       document.getElementById(id).addEventListener('change', dsmRefreshFinalizacoes);
