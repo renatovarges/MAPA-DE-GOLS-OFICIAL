@@ -357,7 +357,11 @@ async function main() {
     const [existentesHome, existentesAway] = await Promise.all([
       matchesExistentesDoTime(homeSlug), matchesExistentesDoTime(awaySlug),
     ]);
-    if (existentesHome.has(String(m.id)) && existentesAway.has(String(m.id))) { puladas++; continue; }
+    // FORCE_REPROCESS=1 ignora o "já existe" e reprocessa tudo de novo —
+    // mesmo mecanismo do harvester de desarmes, usado pra backfill quando
+    // a lógica de resolução de posição muda (ex: 2026-08-14).
+    const forcar = process.env.FORCE_REPROCESS === "1";
+    if (!forcar && existentesHome.has(String(m.id)) && existentesAway.has(String(m.id))) { puladas++; continue; }
 
     const homeEquipeId = m.sdE_EQUIPE_MANDANTE_ID;
     const awayEquipeId = m.sdE_EQUIPE_VISITANTE_ID;
