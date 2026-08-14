@@ -24,19 +24,58 @@ import { dispatchAlert } from "./lib/alerts.mjs";
  * contando só skillCorrect===true. Perda de posse = idSkill 12 (não vem
  * subdividida por causa — limitação aceita pelo Renato).
  *
- * PONTE DE JOGADOR: o endpoint de escalação da FootStats devolve
- * titular/reserva SEMPRE VAZIOS pra temporada 2026 do Brasileirão
- * (confirmado batendo a chamada exata que o site oficial da FootStats usa,
- * com token de sessão logada de verdade — não é bug nosso). Por isso a
- * ponte idPlayer→atleta_id usa `finalizacao-detalhada` (cobre quem
- * finaliza/assiste), ACUMULADA de forma persistente em
- * `data/id-bridge-footstats.json` (via GET/POST no site, igual aos outros
- * datasets — não em disco local, porque o GitHub Actions roda com
- * checkout novo a cada execução) — cresce partida a partida.
+ * PONTE DE JOGADOR (reescrita em 2026-08-14): o endpoint de escalação da
+ * FootStats, que uma investigação anterior (2026-08-11) tinha marcado como
+ * "sempre devolve titular/reserva vazios", **voltou a funcionar** — a
+ * FootStats deve ter corrigido do lado deles. Re-testado com 11 partidas
+ * espalhadas pela temporada inteira (não só 3): 11/11 com escalação
+ * completa (11 titulares dos dois lados, zagueiro incluído com posicao
+ * "ZAG"). Confirmado também que o `idJogador` da escalação é o MESMO
+ * espaço de ID do `idPlayer` em fieldPositionByMatch (jogador de teste
+ * tinha 73 eventos reais, incluindo interceptação).
+ *
+ * A escalação não traz atleta_id (Cartola) diretamente — só nomeJogador —
+ * então a ponte idJogador→atleta_id agora tem DUAS fontes, nessa ordem de
+ * confiança:
+ *   1. `finalizacao-detalhada` (matchShots): dá atleta_id EXATO, sem
+ *      ambiguidade, mas só cobre quem finaliza ou assiste.
+ *   2. escalação + casamento de NOME contra a API do Cartola
+ *      (api.cartola.globo.com/atletas/mercado): cobre TODO MUNDO que
+ *      jogou (titular+reserva dos dois times), incluindo zagueiro puro —
+ *      o ponto cego que a fonte 1 sozinha nunca resolvia. Testado em uma
+ *      partida real: 44/46 jogadores casaram por nome (95.7%; os 2 que
+ *      não casaram não pareciam nem estar no elenco atual do Cartola).
+ *      Casamento tenta, nessa ordem: nome exato (apelido ou nome
+ *      completo) → substring (apelido curto tipo "Alonso" dentro de
+ *      "Júnior Alonso") → último sobrenome, desempatado pelo clube_id
+ *      quando ambíguo.
+ *
+ * idEquipe da escalação já vem no MESMO espaço de idTeam usado em
+ * fieldPositionByMatch (confirmado: idEquipe=1009 bateu com o idTeam que
+ * eu mesmo passei como parâmetro) — então o mapeamento idTeam→equipe_id
+ * (Cartola) agora é direto (via /placar + o equipe_id que já vem na
+ * própria partida), sem precisar mais cruzar por jogador que finalizou
+ * (o que falhava justamente quando um time não tinha nenhum chute).
+ *
+ * Ponte ACUMULADA de forma persistente em `data/id-bridge-footstats.json`
+ * (via GET/POST no site, igual aos outros datasets — não em disco local,
+ * porque o GitHub Actions roda com checkout novo a cada execução).
  *
  * Regra de conteúdo (Renato): sem jogador resolvido via bridge OU sem
- * posição granular confiável em posicoes-granulares.json, o evento é
- * DESCARTADO por completo — nunca um achado incompleto.
+ * posição confiável, o evento é DESCARTADO por completo — nunca um
+ * achado incompleto.
+ *
+ * ZAGUEIRO — segundo ponto cego, descoberto em 2026-08-14: mesmo com a
+ * ponte resolvendo o jogador certinho, `posicoes-granulares.json` (533
+ * jogadores, construído pro Mapa de Gols) não tem NENHUMA entrada de
+ * zagueiro — só lateral/ponta/meia/volante/atacante, porque zagueiro
+ * quase nunca finaliza/assiste, então nunca precisou entrar naquele
+ * arquivo. Pra goleiro e zagueiro (posições sem "lado" — não faz sentido
+ * granular esquerda/direita), a posição cai pro código genérico que a
+ * própria escalação já devolve (GOL/ZAG) em vez de descartar. Pra
+ * lateral/meia/volante/atacante (onde o lado importa de verdade),
+ * continua exigindo posicoes-granulares.json — sem isso, descarta, como
+ * sempre foi.
  *
  * Cada partida é IDEMPOTENTE por matchId (sempre sobrescreve).
  *
@@ -99,22 +138,97 @@ function mergeBridgeFromShots(bridge, matchShots) {
   return novos;
 }
 
-/** idTeam (fieldPositionByMatch) é espaço de ID diferente de equipe_id (matchShots/CLUBE_ID) — resolve cruzando por idPlayer. */
-function buildIdTeamBridge(matchShots, events) {
-  const shotPlayerToEquipe = new Map();
-  for (const s of matchShots) {
-    if (s.idPlayer && s.equipe_id) shotPlayerToEquipe.set(s.idPlayer, s.equipe_id);
-  }
-  const idTeamToEquipe = new Map();
-  for (const ev of events) {
-    if (idTeamToEquipe.has(ev.idTeam)) continue;
-    const eq = shotPlayerToEquipe.get(ev.idPlayer);
-    if (eq) idTeamToEquipe.set(ev.idTeam, eq);
-  }
-  return idTeamToEquipe;
+function semAcento(s) {
+  return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
 }
 
-function construirEventosPorTime(events, idTeamToEquipe, bridge) {
+/** carrega o elenco atual do Cartola uma vez (não por partida) pra casar nome->atleta_id. */
+async function carregarCartolaAtletas() {
+  const res = await fetch("https://api.cartola.globo.com/atletas/mercado");
+  const data = await res.json();
+  const atletas = data.atletas || [];
+  const porNome = new Map();
+  const porUltimoNome = new Map();
+  for (const a of atletas) {
+    for (const campo of [a.apelido, a.nome]) {
+      if (!campo) continue;
+      const norm = semAcento(campo);
+      if (!porNome.has(norm)) porNome.set(norm, a);
+      const palavras = norm.split(/\s+/).filter(Boolean);
+      const ultima = palavras[palavras.length - 1];
+      if (!ultima) continue;
+      if (!porUltimoNome.has(ultima)) porUltimoNome.set(ultima, []);
+      porUltimoNome.get(ultima).push(a);
+    }
+  }
+  return { porNome, porUltimoNome };
+}
+
+/**
+ * nomeJogador (escalação, FootStats) -> atleta_id (Cartola). Testado numa
+ * partida real: exato pega a maioria, substring/último-nome pegam o resto
+ * (apelido curto tipo "Alonso" pra "Júnior Alonso") — 95.7% de acerto.
+ */
+function encontrarAtletaPorNome(cartola, nomeJogador, clubeIdEsperado) {
+  const norm = semAcento(nomeJogador);
+  if (!norm) return null;
+  const exato = cartola.porNome.get(norm);
+  if (exato) return exato;
+  for (const [chave, atleta] of cartola.porNome) {
+    if (chave.length < 4) continue;
+    if (norm.includes(chave) || chave.includes(norm)) {
+      if (!clubeIdEsperado || atleta.clube_id === clubeIdEsperado) return atleta;
+    }
+  }
+  const palavras = norm.split(/\s+/).filter(Boolean);
+  const ultima = palavras[palavras.length - 1];
+  const candidatos = cartola.porUltimoNome.get(ultima) || [];
+  if (candidatos.length === 1) return candidatos[0];
+  if (candidatos.length > 1 && clubeIdEsperado) {
+    const doTime = candidatos.filter((a) => a.clube_id === clubeIdEsperado);
+    if (doTime.length === 1) return doTime[0];
+  }
+  return null;
+}
+
+/** cobre todo mundo que jogou (titular+reserva, os dois times) — inclusive quem nunca finaliza/assiste. */
+function mergeBridgeFromEscalacao(bridge, cartola, esc, homeEquipeId, awayEquipeId) {
+  let novos = 0;
+  const grupos = [
+    [esc.titular?.mandante, homeEquipeId], [esc.reserva?.mandante, homeEquipeId],
+    [esc.titular?.visitante, awayEquipeId], [esc.reserva?.visitante, awayEquipeId],
+  ];
+  for (const [lista, equipeId] of grupos) {
+    for (const j of lista || []) {
+      if (!j.idJogador || bridge[j.idJogador]) continue;
+      const atleta = encontrarAtletaPorNome(cartola, j.nomeJogador, equipeId);
+      if (atleta) { bridge[j.idJogador] = atleta.atleta_id; novos++; }
+    }
+  }
+  return novos;
+}
+
+/**
+ * ZAG/GOL da escalação, indexado por idJogador — usado só como fallback
+ * quando posicoes-granulares.json não conhece o atleta (ver nota no topo
+ * do arquivo). Lateral/meia/volante/atacante nunca usam esse fallback:
+ * pra essas posições o lado importa e continua exigindo o arquivo
+ * granular, senão descarta — regra do Renato inalterada.
+ */
+function buildPosicaoFallback(esc) {
+  const fallback = new Map();
+  const CODIGO_PARA_LABEL = { ZAG: "zagueiro", GOL: "goleiro" };
+  const grupos = [esc?.titular?.mandante, esc?.reserva?.mandante, esc?.titular?.visitante, esc?.reserva?.visitante];
+  for (const lista of grupos) {
+    for (const j of lista || []) {
+      const label = CODIGO_PARA_LABEL[j.posicao];
+      if (label && j.idJogador) fallback.set(j.idJogador, label);
+    }
+  }
+  return fallback;
+}
+
+function construirEventosPorTime(events, idTeamToEquipe, bridge, posicaoFallback) {
   const porTime = new Map();
   for (const ev of events) {
     if (ev.idSkill !== 5 && ev.idSkill !== 24 && ev.idSkill !== 12) continue;
@@ -126,7 +240,7 @@ function construirEventosPorTime(events, idTeamToEquipe, bridge) {
     const atletaId = bridge[ev.idPlayer];
     if (!atletaId) continue;
 
-    const posicao = posicaoGranular(atletaId);
+    const posicao = posicaoGranular(atletaId) || posicaoFallback.get(ev.idPlayer) || null;
     if (!posicao) continue;
 
     if (!porTime.has(equipeId)) porTime.set(equipeId, { recuperacoes: [], perdas: [] });
@@ -183,6 +297,8 @@ async function main() {
   const token = await getFootstatsToken();
   const bridge = await loadBridge();
   console.log(`→ bridge idPlayer->atleta_id carregada: ${Object.keys(bridge).length} jogadores conhecidos`);
+  const cartola = await carregarCartolaAtletas();
+  console.log(`→ elenco do Cartola carregado: ${cartola.porNome.size} nomes conhecidos (pra casar com a escalação)`);
 
   console.log(`→ listando partidas do campeonato ${CAMPEONATO_ID} ...`);
   const partidas = await authedGet(`${API_BASE}/api/1.0/campeonatos/${CAMPEONATO_ID}/partidas`, token);
@@ -202,13 +318,21 @@ async function main() {
     const [existentesHome, existentesAway] = await Promise.all([
       matchesExistentesDoTime(homeSlug), matchesExistentesDoTime(awaySlug),
     ]);
-    if (existentesHome.has(String(m.id)) && existentesAway.has(String(m.id))) { puladas++; continue; }
+    // FORCE_REPROCESS=1 ignora o "já existe" e reprocessa tudo de novo —
+    // usado pra backfill quando a lógica de resolução de jogador muda
+    // (ex: 2026-08-14, quando a ponte passou a cobrir zagueiro).
+    const forcar = process.env.FORCE_REPROCESS === "1";
+    if (!forcar && existentesHome.has(String(m.id)) && existentesAway.has(String(m.id))) { puladas++; continue; }
 
-    let shotDetail, fieldPos;
+    const homeEquipeId = m.sdE_EQUIPE_MANDANTE_ID;
+    const awayEquipeId = m.sdE_EQUIPE_VISITANTE_ID;
+
+    let shotDetail, fieldPos, placar;
     try {
-      [shotDetail, fieldPos] = await Promise.all([
+      [shotDetail, fieldPos, placar] = await Promise.all([
         authedGet(`${API_BASE}/api/1.0/partidas/${CAMPEONATO_ID}/finalizacao-detalhada/${m.id}/partida`, token),
         authedGet(`${API_BASE}/api/1.0/partidas/${m.id}/fieldPositionByMatch`, token),
+        authedGet(`${API_BASE}/api/2.0/partidas/${m.id}/placar`, token),
       ]);
     } catch (e) {
       console.log(`  ! partida ${m.id} (${homeSlug} x ${awaySlug}): ${e.message}`);
@@ -217,14 +341,26 @@ async function main() {
     }
     const matchShots = shotDetail.matchShots || [];
     const events = fieldPos.data || fieldPos || [];
-    if (!events.length || !matchShots.length) continue;
+    if (!events.length) continue;
+
+    const homeIdTeam = placar.home?.idTeam, awayIdTeam = placar.away?.idTeam;
+    const idTeamToEquipe = new Map();
+    if (homeIdTeam) idTeamToEquipe.set(homeIdTeam, homeEquipeId);
+    if (awayIdTeam) idTeamToEquipe.set(awayIdTeam, awayEquipeId);
 
     bridgeNovos += mergeBridgeFromShots(bridge, matchShots);
-    const idTeamToEquipe = buildIdTeamBridge(matchShots, events);
-    const porTime = construirEventosPorTime(events, idTeamToEquipe, bridge);
+    let posicaoFallback = new Map();
+    if (homeIdTeam && awayIdTeam) {
+      try {
+        const esc = await authedGet(`${API_BASE}/api/2.0/partidas/${m.id}/championship/${CAMPEONATO_ID}/teamHome/${homeIdTeam}/teamAway/${awayIdTeam}/escalacao`, token);
+        bridgeNovos += mergeBridgeFromEscalacao(bridge, cartola, esc, homeEquipeId, awayEquipeId);
+        posicaoFallback = buildPosicaoFallback(esc);
+      } catch (e) {
+        console.log(`  ! escalação indisponível pra partida ${m.id}: ${e.message} (segue só com a ponte de chutes)`);
+      }
+    }
 
-    const homeEquipeId = m.sdE_EQUIPE_MANDANTE_ID;
-    const awayEquipeId = m.sdE_EQUIPE_VISITANTE_ID;
+    const porTime = construirEventosPorTime(events, idTeamToEquipe, bridge, posicaoFallback);
     const homeBucket = porTime.get(homeEquipeId) || { recuperacoes: [], perdas: [] };
     const awayBucket = porTime.get(awayEquipeId) || { recuperacoes: [], perdas: [] };
     const dataISO = m.date ? m.date.slice(0, 10) : null;
