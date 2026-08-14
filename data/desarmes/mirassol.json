@@ -124,6 +124,12 @@
       "home": false,
       "recuperacoes": [
         {
+          "jogadorId": "115986",
+          "posicao": "volante",
+          "quadrante": 12,
+          "fundamento": "desarme"
+        },
+        {
           "jogadorId": "97321",
           "posicao": "ponta-esquerda",
           "quadrante": 12,
@@ -142,10 +148,28 @@
           "fundamento": "desarme"
         },
         {
+          "jogadorId": "101908",
+          "posicao": "zagueiro",
+          "quadrante": 1,
+          "fundamento": "desarme"
+        },
+        {
           "jogadorId": "78850",
           "posicao": "lateral-esquerdo",
           "quadrante": 8,
           "fundamento": "desarme"
+        },
+        {
+          "jogadorId": "101908",
+          "posicao": "zagueiro",
+          "quadrante": 7,
+          "fundamento": "interceptacao"
+        },
+        {
+          "jogadorId": "101908",
+          "posicao": "zagueiro",
+          "quadrante": 7,
+          "fundamento": "interceptacao"
         },
         {
           "jogadorId": "98384",
@@ -158,9 +182,20 @@
           "posicao": "ponta-esquerda",
           "quadrante": 25,
           "fundamento": "interceptacao"
+        },
+        {
+          "jogadorId": "101908",
+          "posicao": "zagueiro",
+          "quadrante": 1,
+          "fundamento": "interceptacao"
         }
       ],
       "perdas": [
+        {
+          "jogadorId": "115986",
+          "posicao": "volante",
+          "quadrante": 7
+        },
         {
           "jogadorId": "90917",
           "posicao": "ponta-direita",
@@ -195,6 +230,11 @@
           "jogadorId": "78850",
           "posicao": "lateral-esquerdo",
           "quadrante": 1
+        },
+        {
+          "jogadorId": "97460",
+          "posicao": "zagueiro",
+          "quadrante": 24
         },
         {
           "jogadorId": "97321",
@@ -287,6 +327,11 @@
           "quadrante": 29
         },
         {
+          "jogadorId": "101908",
+          "posicao": "zagueiro",
+          "quadrante": 21
+        },
+        {
           "jogadorId": "108713",
           "posicao": "ponta-esquerda",
           "quadrante": 23
@@ -309,6 +354,12 @@
       "opponent": "cruzeiro",
       "home": true,
       "recuperacoes": [
+        {
+          "jogadorId": "97460",
+          "posicao": "zagueiro",
+          "quadrante": 20,
+          "fundamento": "desarme"
+        },
         {
           "jogadorId": "98384",
           "posicao": "ponta-direita",
@@ -349,6 +400,12 @@
           "jogadorId": "87742",
           "posicao": "volante",
           "quadrante": 13,
+          "fundamento": "interceptacao"
+        },
+        {
+          "jogadorId": "101908",
+          "posicao": "zagueiro",
+          "quadrante": 8,
           "fundamento": "interceptacao"
         },
         {
