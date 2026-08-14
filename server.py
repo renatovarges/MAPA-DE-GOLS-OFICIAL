@@ -323,6 +323,16 @@ def sync_id_bridge_to_github_async(file_paths):
     t.start()
 
 
+def sync_lado_inferido_to_github_async(file_paths):
+    """Sync da tendência de lado por jogador (data/lado-inferido.json) — arquivo único, sobrescrito por completo."""
+    def _sync():
+        msg = 'data: lado-inferido (tendência de lateral)'
+        for path in file_paths:
+            github_commit_file(path, msg)
+    t = threading.Thread(target=_sync, daemon=True)
+    t.start()
+
+
 def sync_proximo_confronto_to_github_async(file_paths):
     """Sync do mando do próximo confronto por time (data/proximo-confronto.json) — arquivo único, sobrescrito por completo."""
     def _sync():
@@ -815,6 +825,50 @@ class Handler(SimpleHTTPRequestHandler):
 
             print(f"[save-id-bridge] {len(payload)} jogadores salvos")
             sync_id_bridge_to_github_async([path])
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'total': len(payload), 'saved_files': [path]}).encode('utf-8'))
+
+        elif self.path == '/api/save-lado-inferido':
+            # Tendência de lado (esquerdo/direito) por jogador marcado como
+            # "LAT" na escalação — a FootStats não distingue lateral-
+            # esquerdo de lateral-direito nesse campo. Acumulado a partir
+            # da posição média em campo (ver harvest_footstats_desarmes.mjs).
+            # Mesmo padrão do id-bridge: arquivo único, sobrescrito por
+            # completo, sincronizado com o GitHub.
+            length = int(self.headers.get('Content-Length', '0'))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode('utf-8'))
+            except Exception as e:
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_json', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            if not isinstance(payload, dict):
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_payload_esperava_objeto'}).encode('utf-8'))
+                return
+
+            path = os.path.join(DATA_DIR, 'lado-inferido.json')
+            try:
+                with open(path, 'w', encoding='utf-8') as f:
+                    json.dump(payload, f, ensure_ascii=False, indent=2)
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'persist_failed', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            print(f"[save-lado-inferido] {len(payload)} jogadores salvos")
+            sync_lado_inferido_to_github_async([path])
 
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
