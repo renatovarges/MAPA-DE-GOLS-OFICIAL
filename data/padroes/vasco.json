@@ -1,11 +1,11 @@
 {
   "teamKey": "vasco",
-  "geradoEm": "2026-08-15T09:25:17.990Z",
+  "geradoEm": "2026-08-16T09:26:36.974Z",
   "ataca": [
     "O Vasco registra cerca de 5 finalizações por jogo em jogadas construídas pelo lado esquerdo. O ponta-esquerda é quem mais finaliza nesse tipo de jogada.",
     "O Vasco registra cerca de 8 finalizações por jogo de fora da área. O meia é quem mais finaliza nesse tipo de jogada.",
-    "O Vasco registra cerca de 3 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada.",
-    "No Vasco, o ponta-esquerda registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação."
+    "No Vasco, o ponta-esquerda registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
+    "O Vasco registra cerca de 3 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
@@ -17,11 +17,11 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|CRUZAMENTO|atacante-area",
+      "chave": "posicao|ponta-esquerda|",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "posicao|ponta-esquerda|",
+      "chave": "origem|CRUZAMENTO|atacante-area",
       "confianca": "padrao-consolidado"
     }
   ],
