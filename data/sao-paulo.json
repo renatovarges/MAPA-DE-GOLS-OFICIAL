@@ -1295,6 +1295,69 @@
           }
         }
       ]
+    },
+    "23": {
+      "roundNumber": 23,
+      "date": "2026-08-15",
+      "opponent": "coritiba",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 28.333333333333336
+          },
+          "shot": {
+            "x": 71.58032,
+            "y": 28.21962
+          },
+          "assistPlayer": {
+            "id": "108946",
+            "name": "Victor Sá",
+            "fullName": "João Victor Santos Sá",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "shotPlayer": {
+            "id": "113359",
+            "name": "Pablo Maia",
+            "fullName": "Pablo Gonçalves Maia Fortunato",
+            "position": "Meia",
+            "side": null,
+            "team": "sao-paulo"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 21,
+            "y": 5.666666666666671
+          },
+          "shot": {
+            "x": 5.437484099999992,
+            "y": 41.174440000000004
+          },
+          "assistPlayer": {
+            "id": "93988",
+            "name": "Breno Lopes",
+            "fullName": "Breno Henrique Vasconcelos Lopes",
+            "position": "Atacante",
+            "side": null,
+            "team": "coritiba"
+          },
+          "shotPlayer": {
+            "id": "109127",
+            "name": "Tiago Cóser",
+            "fullName": "Tiago Cóser",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "coritiba"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
