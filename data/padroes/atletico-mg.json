@@ -1,19 +1,19 @@
 {
   "teamKey": "atletico-mg",
-  "geradoEm": "2026-08-16T09:26:36.974Z",
+  "geradoEm": "2026-08-17T09:40:41.165Z",
   "ataca": [
-    "No Atlético-MG, o ponta-direita registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
     "O Atlético-MG registra cerca de 8 finalizações por jogo de dentro da área. O meia é quem mais finaliza nesse tipo de jogada.",
-    "O Atlético-MG registra cerca de 2 finalizações por jogo após cruzamentos. O meia é quem mais finaliza nesse tipo de jogada.",
+    "No Atlético-MG, o ponta-direita registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
+    "O Atlético-MG registra cerca de 3 finalizações por jogo após cruzamentos. O meia é quem mais finaliza nesse tipo de jogada.",
     "O Atlético-MG registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado esquerdo. O ponta-direita é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
-      "chave": "posicao|ponta-direita|",
+      "chave": "area|dentro-da-area|meia",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|dentro-da-area|meia",
+      "chave": "posicao|ponta-direita|",
       "confianca": "padrao-consolidado"
     },
     {
@@ -39,7 +39,7 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "assistentePosicao|meia|",
+      "chave": "origem|REBATIDA|volante",
       "confianca": "padrao-consolidado"
     }
   ],
@@ -47,6 +47,6 @@
     "O Atlético-MG cede cerca de 7 finalizações por jogo de fora da área. Atenção: o meia adversário é quem mais finaliza nesses lances.",
     "O Atlético-MG cede cerca de 2 finalizações por jogo ao volante adversário. É uma posição a observar contra essa defesa.",
     "O Atlético-MG cede cerca de 4 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o meia adversário é quem mais finaliza nesses lances.",
-    "O Atlético-MG cede cerca de 3 finalizações por jogo após passes do meia adversário."
+    "O Atlético-MG cede cerca de 2 finalizações por jogo após sobras de bola. Atenção: o volante adversário é quem mais finaliza nesses lances."
   ]
 }
