@@ -1605,6 +1605,138 @@
           }
         }
       ]
+    },
+    "23": {
+      "roundNumber": 23,
+      "date": "2026-08-16",
+      "opponent": "bahia",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 75,
+            "y": 17
+          },
+          "shot": {
+            "x": 86.6485629,
+            "y": 40.137499999999996
+          },
+          "assistPlayer": {
+            "id": "68938",
+            "name": "Giovanni Augusto",
+            "fullName": "Giovanni Augusto Oliveira Cardoso",
+            "position": "Meia",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "shotPlayer": {
+            "id": "95332",
+            "name": "Marcinho",
+            "fullName": "Márcio Antônio de Sousa Júnior",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          }
+        },
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 62.33333333333333
+          },
+          "shot": {
+            "x": 84.74396290000001,
+            "y": 20.443499999999997
+          },
+          "assistPlayer": {
+            "id": "87747",
+            "name": "Yago Felipe",
+            "fullName": "Yago Felipe da Costa Rocha",
+            "position": "Meia",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "shotPlayer": {
+            "id": "68938",
+            "name": "Giovanni Augusto",
+            "fullName": "Giovanni Augusto Oliveira Cardoso",
+            "position": "Meia",
+            "side": null,
+            "team": "chapecoense"
+          }
+        },
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 51
+          },
+          "shot": {
+            "x": 91.11008840000001,
+            "y": 32.30376
+          },
+          "assistPlayer": {
+            "id": "68938",
+            "name": "Giovanni Augusto",
+            "fullName": "Giovanni Augusto Oliveira Cardoso",
+            "position": "Meia",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "shotPlayer": {
+            "id": "122121",
+            "name": "Túlio Eduardo",
+            "fullName": "Túlio Eduardo Silva de Oliveira",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.65885999999999,
+            "y": 33.646
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "114208",
+            "name": "Alejo Véliz",
+            "fullName": "Alejo Véliz",
+            "position": "Atacante",
+            "side": null,
+            "team": "bahia"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 21,
+            "y": 28.33333333333333
+          },
+          "shot": {
+            "x": 18.57922409999999,
+            "y": 25.866440000000004
+          },
+          "assistPlayer": {
+            "id": "98517",
+            "name": "Jean Lucas",
+            "fullName": "Jean Lucas de Souza Oliveira",
+            "position": "Meia",
+            "side": null,
+            "team": "bahia"
+          },
+          "shotPlayer": {
+            "id": "104783",
+            "name": "Acevedo",
+            "fullName": "Nicolás Brian Acevedo Tabárez",
+            "position": "Meia",
+            "side": null,
+            "team": "bahia"
+          }
+        }
+      ]
     }
   }
 }
