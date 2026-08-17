@@ -3,8 +3,8 @@
   "tipoLeitura": "pre-jogo",
   "rodada": 24,
   "rodadaDados": 22,
-  "janelaAte": "2026-08-15",
-  "geradoEm": "2026-08-16T09:26:41.611Z",
+  "janelaAte": "2026-08-16",
+  "geradoEm": "2026-08-17T09:40:44.658Z",
   "jogos": [
     {
       "id": 237666,
@@ -80,10 +80,36 @@
   "conclusoes": [
     {
       "tipo": "convergencia",
+      "titulo": "Santos tem um encaixe favorável contra o Mirassol",
+      "chamada": "MARCA GOLS COM SEUS MEIAS",
+      "timeDestaque": "santos",
+      "frase": "O Santos marca gols com seus meias a uma média de 0,90 por jogo, aparecendo em 6 dos últimos 10 jogos. O Mirassol sofre gols de meias a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,22 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "times": [
+        "santos",
+        "mirassol"
+      ],
+      "scout": "gols",
+      "chave": "posicao:meia"
+    },
+    {
+      "tipo": "convergencia",
+      "titulo": "Atlético-MG tem um encaixe favorável contra o Internacional",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEU PONTA DIREITA",
+      "timeDestaque": "atletico-mg",
+      "frase": "O Atlético-MG soma participações em gols com seu ponta direita a uma média de 0,60 por jogo, aparecendo em 5 dos últimos 10 jogos. O Internacional cede participações em gols para pontas-direitas adversários a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,17 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "times": [
+        "atletico-mg",
+        "internacional"
+      ],
+      "scout": "participacoes",
+      "chave": "posicao:ponta-direita"
+    },
+    {
+      "tipo": "convergencia",
       "titulo": "Red Bull Bragantino tem um encaixe favorável contra o Grêmio",
       "chamada": "FINALIZAÇÕES EM CRUZAMENTOS VINDOS DA ESQUERDA",
       "timeDestaque": "red-bull-bragantino",
-      "frase": "O Red Bull Bragantino produz finalizações em cruzamentos vindos da esquerda a uma média de 1,4 por jogo, aparecendo em 8 dos últimos 10 jogos. O Grêmio cede finalizações em cruzamentos vindos da esquerda a uma média de 1,7 por jogo, aparecendo em 7 dos últimos 10 jogos, enquanto a referência do campeonato é 0,8 por jogo. Na prática, observe os jogadores mais envolvidos nas bolas aéreas e na conclusão de cruzamentos.",
+      "frase": "O Red Bull Bragantino produz finalizações em cruzamentos vindos da esquerda a uma média de 1,4 por jogo, aparecendo em 8 dos últimos 10 jogos. O Grêmio cede finalizações em cruzamentos vindos da esquerda a uma média de 1,9 por jogo, aparecendo em 7 dos últimos 10 jogos, enquanto a referência do campeonato é 0,8 por jogo. Na prática, observe os jogadores mais envolvidos nas bolas aéreas e na conclusão de cruzamentos.",
       "times": [
         "red-bull-bragantino",
         "gremio"
@@ -105,30 +131,17 @@
       "chave": "posicao:lateral-esquerdo"
     },
     {
-      "tipo": "convergencia",
-      "titulo": "Remo tem um encaixe favorável contra o Fluminense",
-      "chamada": "FINALIZAÇÕES EM CONTRA-ATAQUES",
-      "timeDestaque": "remo",
-      "frase": "O Remo produz finalizações em contra-ataques a uma média de 0,8 por jogo, aparecendo em 3 dos últimos 10 jogos. O Fluminense cede finalizações em contra-ataques a uma média de 1,3 por jogo, aparecendo em 8 dos últimos 10 jogos, enquanto a referência do campeonato é 0,4 por jogo. Na prática, observe os jogadores mais presentes nessa característica ofensiva.",
+      "tipo": "forca-ofensiva-propria",
+      "titulo": "Mirassol mantém um padrão ofensivo recorrente",
+      "chamada": "MARCA GOLS APÓS ESCANTEIOS",
+      "timeDestaque": "mirassol",
+      "frase": "O Mirassol marca gols após escanteios a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos, acima da referência de 0,07 do campeonato. O Santos não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Mirassol mantém o alerta. Na prática, observe os jogadores mais presentes nessa característica ofensiva.",
       "times": [
-        "remo",
-        "fluminense"
+        "mirassol",
+        "santos"
       ],
-      "scout": "finalizacoes",
-      "chave": "transicao:contra-ataque"
-    },
-    {
-      "tipo": "convergencia",
-      "titulo": "Atlético-MG tem um encaixe favorável contra o Internacional",
-      "chamada": "FINALIZAÇÕES EM CRUZAMENTOS VINDOS DA ESQUERDA",
-      "timeDestaque": "atletico-mg",
-      "frase": "O Atlético-MG produz finalizações em cruzamentos vindos da esquerda a uma média de 1,3 por jogo, aparecendo em 5 dos últimos 10 jogos. O Internacional cede finalizações em cruzamentos vindos da esquerda a uma média de 1,9 por jogo, aparecendo em 9 dos últimos 10 jogos, enquanto a referência do campeonato é 0,8 por jogo. Na prática, observe os jogadores mais envolvidos nas bolas aéreas e na conclusão de cruzamentos.",
-      "times": [
-        "atletico-mg",
-        "internacional"
-      ],
-      "scout": "finalizacoes",
-      "chave": "cruzamento:esquerda"
+      "scout": "gols",
+      "chave": "origem:escanteio"
     },
     {
       "tipo": "fragilidade-defensiva-propria",
@@ -144,32 +157,6 @@
       "chave": "transicao:contra-ataque"
     },
     {
-      "tipo": "fragilidade-defensiva-propria",
-      "titulo": "Santos apresenta uma vulnerabilidade que merece atenção",
-      "chamada": "SOFRE GOLS EM CRUZAMENTOS VINDOS DA ESQUERDA",
-      "timeDestaque": "santos",
-      "frase": "O Santos sofre gols em cruzamentos vindos da esquerda a uma média de 0,60 por jogo, aparecendo em 5 dos últimos 10 jogos, acima da referência de 0,10 do campeonato. O Mirassol não tem essa característica entre suas marcas ofensivas mais fortes, mas a vulnerabilidade do adversário é recorrente e merece atenção. Na prática, observe os jogadores mais envolvidos nas bolas aéreas e na conclusão de cruzamentos.",
-      "times": [
-        "mirassol",
-        "santos"
-      ],
-      "scout": "gols",
-      "chave": "cruzamento:esquerda"
-    },
-    {
-      "tipo": "forca-ofensiva-propria",
-      "titulo": "Remo mantém um padrão ofensivo recorrente",
-      "chamada": "MARCA GOLS COM SEU PONTA ESQUERDA",
-      "timeDestaque": "remo",
-      "frase": "O Remo marca gols com seu ponta esquerda a uma média de 0,80 por jogo, aparecendo em 6 dos últimos 10 jogos, acima da referência de 0,17 do campeonato. O Fluminense não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Remo mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
-      "times": [
-        "remo",
-        "fluminense"
-      ],
-      "scout": "gols",
-      "chave": "posicao:ponta-esquerda"
-    },
-    {
       "tipo": "forca-ofensiva-propria",
       "titulo": "Coritiba mantém um padrão ofensivo recorrente",
       "chamada": "PARTICIPAÇÕES EM GOLS COM SEU PONTA ESQUERDA",
@@ -181,19 +168,30 @@
       ],
       "scout": "participacoes",
       "chave": "posicao:ponta-esquerda"
+    },
+    {
+      "tipo": "destaque-defensivo",
+      "frase": "Corinthians apresenta o melhor controle defensivo da amostra: permite cerca de 9,7 finalizações por jogo. São Paulo (11,4 por jogo) e Red Bull Bragantino (11,4 por jogo) também estão entre as defesas que menos permitem chutes. Na prática, são as equipes que mais reduzem o volume ofensivo dos adversários.",
+      "times": [
+        "corinthians",
+        "sao-paulo",
+        "red-bull-bragantino"
+      ],
+      "chamada": "CONTROLE DEFENSIVO",
+      "timeDestaque": "corinthians"
     }
   ],
   "statusAtualizacao": {
     "estado": "parcial",
     "rodada": 22,
-    "jogosProcessados": 3,
+    "jogosProcessados": 9,
     "jogosEsperados": 10,
-    "timesAtualizados": 6,
+    "timesAtualizados": 18,
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-08-16T09:26:41.611Z",
-    "ultimaPartidaEm": "2026-08-15",
+    "atualizadoEm": "2026-08-17T09:40:44.658Z",
+    "ultimaPartidaEm": "2026-08-16",
     "rodadaLeitura": 24
   }
 }
