@@ -1163,6 +1163,75 @@
         }
       ],
       "conceded_goals": []
+    },
+    "23": {
+      "roundNumber": 23,
+      "date": "2026-08-16",
+      "opponent": "cruzeiro",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 89.274054,
+            "y": 25.215639999999997
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "78248",
+            "name": "Gustavo Henrique",
+            "fullName": "Gustavo Henrique Vernes",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "corinthians"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 5.754599999999996,
+            "y": 25.790760000000006
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "92811",
+            "name": "Bruno Rodrigues",
+            "fullName": "Bruno Rafael Rodrigues do Nascimento",
+            "position": "Atacante",
+            "side": null,
+            "team": "cruzeiro"
+          }
+        },
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
+          },
+          "shot": {
+            "x": 9.849489999999989,
+            "y": 33.78876
+          },
+          "assistPlayer": {
+            "id": "123795",
+            "name": "Lucho Rodríguez",
+            "fullName": "Luciano Rodríguez Rosales",
+            "position": "Atacante",
+            "side": null,
+            "team": "cruzeiro"
+          },
+          "shotPlayer": {
+            "id": "93478",
+            "name": "Wanderson",
+            "fullName": "Wanderson Maciel Sousa Campos",
+            "position": "Atacante",
+            "side": null,
+            "team": "cruzeiro"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
