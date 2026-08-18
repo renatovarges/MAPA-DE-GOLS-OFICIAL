@@ -2,9 +2,9 @@
   "versao": 3,
   "tipoLeitura": "pre-jogo",
   "rodada": 24,
-  "rodadaDados": 22,
-  "janelaAte": "2026-08-16",
-  "geradoEm": "2026-08-17T09:40:44.658Z",
+  "rodadaDados": 23,
+  "janelaAte": "2026-08-17",
+  "geradoEm": "2026-08-18T09:32:39.559Z",
   "jogos": [
     {
       "id": 237666,
@@ -81,14 +81,14 @@
     {
       "tipo": "convergencia",
       "titulo": "Santos tem um encaixe favorável contra o Mirassol",
-      "chamada": "MARCA GOLS COM SEUS MEIAS",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS MEIAS",
       "timeDestaque": "santos",
-      "frase": "O Santos marca gols com seus meias a uma média de 0,90 por jogo, aparecendo em 6 dos últimos 10 jogos. O Mirassol sofre gols de meias a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,22 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "frase": "O Santos soma participações em gols com seus meias a uma média de 1,30 por jogo, aparecendo em 8 dos últimos 10 jogos. O Mirassol cede participações em gols para meias adversários a uma média de 0,90 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,40 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "santos",
         "mirassol"
       ],
-      "scout": "gols",
+      "scout": "participacoes",
       "chave": "posicao:meia"
     },
     {
@@ -158,15 +158,15 @@
     },
     {
       "tipo": "forca-ofensiva-propria",
-      "titulo": "Coritiba mantém um padrão ofensivo recorrente",
-      "chamada": "PARTICIPAÇÕES EM GOLS COM SEU PONTA ESQUERDA",
-      "timeDestaque": "coritiba",
-      "frase": "O Coritiba soma participações em gols com seu ponta esquerda a uma média de 1,10 por jogo, aparecendo em 6 dos últimos 10 jogos, acima da referência de 0,28 do campeonato. O Corinthians não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Coritiba mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "Remo mantém um padrão ofensivo recorrente",
+      "chamada": "MARCA GOLS COM SEU PONTA ESQUERDA",
+      "timeDestaque": "remo",
+      "frase": "O Remo marca gols com seu ponta esquerda a uma média de 0,80 por jogo, aparecendo em 6 dos últimos 10 jogos, acima da referência de 0,17 do campeonato. O Fluminense não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Remo mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "coritiba",
-        "corinthians"
+        "remo",
+        "fluminense"
       ],
-      "scout": "participacoes",
+      "scout": "gols",
       "chave": "posicao:ponta-esquerda"
     },
     {
@@ -182,16 +182,16 @@
     }
   ],
   "statusAtualizacao": {
-    "estado": "parcial",
-    "rodada": 22,
-    "jogosProcessados": 9,
+    "estado": "pronto",
+    "rodada": 23,
+    "jogosProcessados": 10,
     "jogosEsperados": 10,
-    "timesAtualizados": 18,
+    "timesAtualizados": 20,
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-08-17T09:40:44.658Z",
-    "ultimaPartidaEm": "2026-08-16",
+    "atualizadoEm": "2026-08-18T09:32:39.559Z",
+    "ultimaPartidaEm": "2026-08-17",
     "rodadaLeitura": 24
   }
 }
