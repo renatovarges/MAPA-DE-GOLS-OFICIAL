@@ -1,6 +1,6 @@
 {
   "teamKey": "remo",
-  "geradoEm": "2026-08-17T09:40:41.165Z",
+  "geradoEm": "2026-08-18T09:32:35.123Z",
   "ataca": [
     "No Remo, o volante registra cerca de 2 finalizações por jogo. É uma posição a observar na escalação.",
     "O Remo registra cerca de 5 finalizações por jogo de fora da área. O volante é quem mais finaliza nesse tipo de jogada.",
@@ -31,11 +31,11 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "parteDoCorpo|cabeca|atacante-area",
+      "chave": "area|dentro-da-area|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|dentro-da-area|atacante-area",
+      "chave": "origem|CRUZAMENTO|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
@@ -45,8 +45,8 @@
   ],
   "sofre": [
     "O Remo cede cerca de 2 finalizações por jogo ao ponta-direita adversário. É uma posição a observar contra essa defesa.",
-    "O Remo cede cerca de 3 finalizações por jogo de cabeça. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
     "O Remo cede cerca de 8 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
-    "O Remo cede cerca de 2 finalizações por jogo após passes do meia adversário."
+    "O Remo cede cerca de 2 finalizações por jogo após cruzamentos. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Remo cede cerca de 3 finalizações por jogo após passes do meia adversário."
   ]
 }
