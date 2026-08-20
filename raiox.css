@@ -112,7 +112,7 @@
 /* transform exato (ancorado no centro do CARD, não do par) vem inline por posto, calculado em JS. */
 .rx-posto{position:absolute;z-index:1}
 .rx-posto:hover{z-index:5}
-.rx-posto-label{text-align:center;font-size:24px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.85);margin-bottom:14px;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.rx-posto-label{text-align:center;font-size:27px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.85);margin-bottom:16px;text-shadow:0 1px 4px rgba(0,0,0,.6)}
 
 /* ---- card premium do jogador — ÚNICO (produção + cedido empilhados dentro
    do mesmo card, não mais uma caixa lateral) -- achado real (2026-08-19, 3a
@@ -247,36 +247,47 @@
    pra aproveitar melhor o espaço, visual premium parecido com o pódio do
    campinho geral. ---- */
 .rx-resumo{
-  background:var(--rx-card-bg);color:var(--rx-card-ink);border-radius:22px;
-  width:380px;box-sizing:border-box;border:6px solid transparent;
-  display:flex;flex-direction:column;align-items:center;padding:22px 18px 24px;
+  background:var(--rx-card-bg);color:var(--rx-card-ink);border-radius:25px;
+  width:450px;box-sizing:border-box;border:7px solid transparent;
+  display:flex;flex-direction:column;align-items:center;padding:26px 22px 28px;
   /* SEM box-shadow de propósito: mesmo bug do html2canvas já resolvido no
      pódio do campinho geral (2026-08-20) -- qualquer box-shadow aqui virava
      um esmaecimento acinzentado sobre metade do card na exportação, não
      reproduz no navegador normal. Esqueci de aplicar a mesma correção
      quando criei esse card resumo -- achado real de novo, mesmo padrão. */
 }
-.rx-resumo-destaque{border-color:#ffd24d;box-shadow:0 0 0 5px rgba(255,210,77,.3),0 10px 26px rgba(0,0,0,.4)}
+/* SEM box-shadow de propósito, mesmo motivo do .rx-resumo acima (2026-08-20:
+   Renato reportou "borrado, sombreado" do lado direito do campinho -- era
+   esse box-shadow do destaque, mesmo bug de novo). Borda dourada mais grossa
+   compensa a perda da sombra. */
+.rx-resumo-destaque{border-color:#ffd24d;border-width:9px}
 .rx-resumo-foto{
-  width:120px;height:120px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#cfcabb;
-  display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;color:#8a8370;
+  width:142px;height:142px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#cfcabb;
+  display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#8a8370;
 }
 .rx-resumo-foto img{width:100%;height:100%;object-fit:cover}
-.rx-resumo-nome{font-size:28px;font-weight:800;text-align:center;margin-top:13px;line-height:1.15}
-.rx-duvida-tag-resumo{display:block;font-size:16px;font-weight:700;color:#a35b00;text-transform:uppercase;letter-spacing:.03em;margin-top:2px}
-.rx-resumo-estrela{color:var(--rx-gol-gold);font-size:17px;text-align:center;font-weight:800;letter-spacing:.03em;margin-top:5px}
-.rx-resumo-bloco{width:100%;margin-top:16px;border-radius:18px;overflow:hidden}
-.rx-resumo-bloco-label{font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;text-align:center;padding:8px 4px}
+.rx-resumo-nome{font-size:33px;font-weight:800;text-align:center;margin-top:15px;line-height:1.15}
+.rx-duvida-tag-resumo{display:block;font-size:18px;font-weight:700;color:#a35b00;text-transform:uppercase;letter-spacing:.03em;margin-top:3px}
+.rx-resumo-estrela{color:var(--rx-gol-gold);font-size:20px;text-align:center;font-weight:800;letter-spacing:.03em;margin-top:6px}
+.rx-resumo-bloco{width:100%;margin-top:19px;border-radius:21px;overflow:hidden}
+.rx-resumo-bloco-label{font-size:18px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;text-align:center;padding:10px 4px}
 .rx-resumo-produz .rx-resumo-bloco-label{background:rgba(31,157,85,.2);color:var(--rx-good)}
-.rx-resumo-cede .rx-resumo-bloco-label{background:rgba(214,69,69,.22);color:#a52d2d}
+/* Container do bloco CEDIDO fica sempre num azul petróleo neutro (nunca
+   vermelho de fundo); só o NÚMERO em si muda de cor por valor -- vermelho
+   quando zero (rival nunca cedeu nada ali, sinal ruim pro nosso jogador),
+   verde quando > 0 (oportunidade real). Pedido exato do Renato
+   (2026-08-20, 4a intervenção): "azul petróleo na parte dos cedidos, mas
+   verde onde tem dados acima de zero e vermelho no que for zero". */
+.rx-resumo-cede .rx-resumo-bloco-label{background:rgba(58,90,107,.2);color:#3a5a6b}
 .rx-resumo-numeros{display:flex}
-.rx-resumo-numeros>div{flex:1;text-align:center;padding:12px 4px}
+.rx-resumo-numeros>div{flex:1;text-align:center;padding:14px 4px}
 .rx-resumo-produz .rx-resumo-numeros{background:rgba(31,157,85,.09)}
-.rx-resumo-cede .rx-resumo-numeros{background:rgba(214,69,69,.09)}
-.rx-resumo-num{display:block;font-size:42px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
+.rx-resumo-cede .rx-resumo-numeros{background:rgba(58,90,107,.09)}
+.rx-resumo-num{display:block;font-size:50px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
 .rx-resumo-produz .rx-resumo-num{color:var(--rx-good)}
-.rx-resumo-cede .rx-resumo-num{color:#a52d2d}
-.rx-resumo-lbl{display:block;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#7a7a70;margin-top:3px}
+.rx-resumo-cede .rx-resumo-num{color:#c23a3a}
+.rx-resumo-cede .rx-resumo-num-positivo{color:var(--rx-good)}
+.rx-resumo-lbl{display:block;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#7a7a70;margin-top:4px}
 
 .rx-posto-clicavel{cursor:zoom-in}
 .rx-card-modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:24px}
