@@ -343,6 +343,26 @@ def sync_proximo_confronto_to_github_async(file_paths):
     t.start()
 
 
+def sync_raio_x_to_github_async(file_paths, match_id, home_key, away_key):
+    """Igual a sync_desarmes_to_github_async, mas para o dataset da aba Raio X Ofensivo (data/raio-x/)."""
+    def _sync():
+        msg = f'data: raio-x partida {match_id} ({home_key} x {away_key})'
+        for path in file_paths:
+            github_commit_file(path, msg)
+    t = threading.Thread(target=_sync, daemon=True)
+    t.start()
+
+
+def sync_provaveis_to_github_async(file_paths):
+    """Sync da escalação provável + desfalques (data/provaveis.json) — arquivo único, sobrescrito por completo."""
+    def _sync():
+        msg = 'data: provaveis (escalacao + desfalques)'
+        for path in file_paths:
+            github_commit_file(path, msg)
+    t = threading.Thread(target=_sync, daemon=True)
+    t.start()
+
+
 class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
@@ -874,6 +894,120 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps({'ok': True, 'total': len(payload), 'saved_files': [path]}).encode('utf-8'))
+
+        elif self.path == '/api/save-raio-x':
+            # Dataset da aba Raio X Ofensivo: por partida e por time, produção
+            # ofensiva (gol/assistência/finalização/xG/xA/grande-chance) dos
+            # jogadores que tiveram algum sinal — ver scripts/harvest_raio_x.mjs.
+            # Mesmo padrão idempotente por matchId do /api/save-desarmes.
+            length = int(self.headers.get('Content-Length', '0'))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode('utf-8'))
+            except Exception as e:
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_json', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            match_id = payload.get('matchId')
+            home_key = payload.get('homeTeamKey')
+            away_key = payload.get('awayTeamKey')
+            home_obj = payload.get('home')
+            away_obj = payload.get('away')
+
+            raio_x_dir = os.path.join(DATA_DIR, 'raio-x')
+            os.makedirs(raio_x_dir, exist_ok=True)
+            saved_paths = []
+
+            def upsert_team_match_raio_x(team_key, match_obj):
+                normalized_key = normalize_team_key(team_key)
+                path = os.path.join(raio_x_dir, f'{normalized_key}.json')
+                if os.path.exists(path):
+                    try:
+                        with open(path, 'r', encoding='utf-8') as f:
+                            data = json.load(f)
+                    except Exception:
+                        data = {}
+                else:
+                    data = {}
+                matches = data.get('matches')
+                if not isinstance(matches, dict):
+                    matches = {}
+                matches[str(match_id)] = match_obj
+                data['matches'] = matches
+                with open(path, 'w', encoding='utf-8') as f:
+                    json.dump(data, f, ensure_ascii=False, indent=2)
+                saved_paths.append(path)
+
+            try:
+                if home_key and home_obj:
+                    upsert_team_match_raio_x(home_key, home_obj)
+                if away_key and away_obj:
+                    upsert_team_match_raio_x(away_key, away_obj)
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'persist_failed', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            try:
+                print(f"[save-raio-x] match={match_id} home={home_key} away={away_key} saved={saved_paths}")
+            except Exception:
+                pass
+
+            if saved_paths:
+                sync_raio_x_to_github_async(saved_paths, match_id, home_key, away_key)
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'matchId': match_id, 'saved_files': saved_paths}).encode('utf-8'))
+
+        elif self.path == '/api/save-provaveis':
+            # Escalação provável por time (provaveisdocartola.com.br, ver
+            # scripts/harvest_pdc.mjs) + desfalques — insumo da aba Raio X
+            # Ofensivo pra resolver o titular de um balde na "brecha sem
+            # dono". Arquivo único (objeto {fonte, geradoEm, rodadaInfo,
+            # teams}), sempre sobrescrito por completo.
+            length = int(self.headers.get('Content-Length', '0'))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode('utf-8'))
+            except Exception as e:
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_json', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            if not isinstance(payload, dict) or not isinstance(payload.get('teams'), dict):
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_payload_esperava_objeto_com_teams'}).encode('utf-8'))
+                return
+
+            path = os.path.join(DATA_DIR, 'provaveis.json')
+            try:
+                with open(path, 'w', encoding='utf-8') as f:
+                    json.dump(payload, f, ensure_ascii=False, indent=2)
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'persist_failed', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            print(f"[save-provaveis] {len(payload['teams'])} times salvos (rodada {payload.get('rodadaInfo')})")
+            sync_provaveis_to_github_async([path])
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'total': len(payload['teams']), 'saved_files': [path]}).encode('utf-8'))
 
         else:
             self.send_response(404)
