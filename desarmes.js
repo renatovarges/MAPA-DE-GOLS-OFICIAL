@@ -1038,12 +1038,14 @@
   let __dsmInited = false;
   let __dsmLideresInited = false;
   let __dsmFinalizacoesInited = false;
+  let __dsmRaioXInited = false;
 
   function dsmSwitchView(view) {
     const viewGols = document.getElementById('viewGols');
     const viewDesarmes = document.getElementById('viewDesarmes');
     const viewLideres = document.getElementById('viewLideres');
     const viewFinalizacoes = document.getElementById('viewFinalizacoes');
+    const viewRaioX = document.getElementById('viewRaioX');
     const updateStatus = document.getElementById('updateStatus');
     const roundSummary = document.getElementById('roundSummary');
 
@@ -1051,6 +1053,7 @@
     if (viewDesarmes) viewDesarmes.style.display = view === 'desarmes' ? '' : 'none';
     if (viewLideres) viewLideres.style.display = view === 'lideres' ? '' : 'none';
     if (viewFinalizacoes) viewFinalizacoes.style.display = view === 'finalizacoes' ? '' : 'none';
+    if (viewRaioX) viewRaioX.style.display = view === 'raiox' ? '' : 'none';
     if (updateStatus) updateStatus.style.display = view === 'gols' ? '' : 'none';
     if (roundSummary) roundSummary.style.display = view === 'gols' ? '' : 'none';
 
@@ -1061,6 +1064,7 @@
     if (view === 'desarmes' && !__dsmInited) { dsmBuildDesarmesView(); __dsmInited = true; }
     if (view === 'lideres' && !__dsmLideresInited) { dsmBuildLideresView(); __dsmLideresInited = true; }
     if (view === 'finalizacoes' && !__dsmFinalizacoesInited) { dsmBuildFinalizacoesView(); __dsmFinalizacoesInited = true; }
+    if (view === 'raiox' && !__dsmRaioXInited && window.rxBuildRaioXView) { window.rxBuildRaioXView(); __dsmRaioXInited = true; }
 
     window.scrollTo(0, 0);
   }

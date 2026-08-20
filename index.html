@@ -7,6 +7,7 @@
   <title>Mapa de Finalizações – Últimos 3 Jogos</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="desarmes.css?v=1" />
+  <link rel="stylesheet" href="raiox.css?v=1" />
 </head>
 
 <body>
@@ -56,6 +57,7 @@
       <button type="button" class="site-tab" data-view="desarmes">Desarmes</button>
       <button type="button" class="site-tab" data-view="lideres">Líderes</button>
       <button type="button" class="site-tab" data-view="finalizacoes">Finalizações</button>
+      <button type="button" class="site-tab" data-view="raiox">Raio X Ofensivo</button>
     </nav>
     <div id="viewGols">
     <header class="app-header" style="display:flex;flex-direction:column;gap:8px;align-items:flex-start">
@@ -374,6 +376,7 @@
     <div id="viewDesarmes" style="display:none"></div>
     <div id="viewLideres" style="display:none"></div>
     <div id="viewFinalizacoes" style="display:none"></div>
+    <div id="viewRaioX" style="display:none"></div>
   </div>
   <section id="updateStatus" class="update-status" hidden aria-live="polite" aria-labelledby="updateStatusTitle">
     <div class="update-status__heading">
@@ -549,5 +552,7 @@
   </div><!-- fim #app -->
   <script src="script.js?v=novo-motor-5"></script>
   <script src="desarmes.js?v=1"></script>
+  <script src="vendor/html2canvas.min.js"></script>
+  <script src="raiox.js?v=1"></script>
 </body>
 </html>
