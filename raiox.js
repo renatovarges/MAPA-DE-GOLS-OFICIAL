@@ -448,7 +448,11 @@
     if (__rxPosicoesGranularesCache) return __rxPosicoesGranularesCache;
     __rxPosicoesGranularesCache = (async () => {
       try {
-        const res = await fetch(`data/posicoes-granulares.json?t=${Date.now()}`, { cache: 'no-store' });
+        // Fica em scripts/, não em data/ -- data/ é disco persistente no
+        // Render, só ganha arquivo NOVO via POST em runtime (harvester),
+        // nunca via deploy de código. Esse arquivo é estático (não muda por
+        // harvest), então serve direto do que o deploy normal já entrega.
+        const res = await fetch(`scripts/posicoes-granulares.json?t=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) throw new Error('falha no fetch');
         return await res.json();
       } catch (err) {
@@ -464,7 +468,9 @@
     if (__rxFotosIdsCache) return __rxFotosIdsCache;
     __rxFotosIdsCache = (async () => {
       try {
-        const res = await fetch(`data/fotos-jogadores.json?t=${Date.now()}`, { cache: 'no-store' });
+        // Mesma razão do posicoes-granulares.json acima: estático, fica em
+        // scripts/ pra não cair no buraco do disco persistente de data/.
+        const res = await fetch(`scripts/fotos-jogadores.json?t=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) throw new Error('falha no fetch');
         const data = await res.json();
         return new Set((data.ids || []).map(String));
