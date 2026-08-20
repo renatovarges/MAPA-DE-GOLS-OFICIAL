@@ -702,7 +702,7 @@
   // lista de tamanho variável), então dá pra desacoplar a altura do campo
   // de novo e ajustar só pelo que o card realmente precisa.
   const RX_PITCH_W = 2200;
-  const RX_PITCH_H = 4400;
+  const RX_PITCH_H = 2600;
   const RX_CARD_W = 380;
   const RX_MARGIN_X = RX_CARD_W / 2 + 70;
   const RX_MARGIN_Y = 220;
@@ -772,16 +772,54 @@
   // usado pra montar o card completo (rxCardUnificado) sob demanda quando
   // o modal abre, já que o campinho em si só desenha o resumo agora.
   let __rxModalRegistro = [];
-  function rxRenderPosto(posto, fotosIds, janelaLabel) {
+  // Altura aproximada do card resumo + rótulo + folga mínima de segurança
+  // -- usada só pela resolução de colisão abaixo (empurra pra baixo, não
+  // pra afastar na hora de calcular a altura fixa do campo).
+  const RX_CARD_H_SEGURA = 650;
+
+  /**
+   * Calcula left/top de cada posto a partir da posição REAL (x/y) do
+   * jogador, e resolve colisões residuais empurrando pra baixo quem cair
+   * perto demais de outro posto que já ocupa a mesma faixa horizontal --
+   * achado real (2026-08-20): alguns pares de formações reais (ex.:
+   * Johan Carbonero x Alexandro Bernabéi, Internacional) ficam mais
+   * próximos verticalmente do que o normal, e aumentar a altura do campo
+   * INTEIRO só pra cobrir esses casos raros deixava o campinho
+   * "extremamente comprido" pros times que não têm esse problema. Um
+   * empurrão CIRÚRGICO só nos pares que realmente colidem resolve sem
+   * inflar a altura geral.
+   */
+  function rxCalcularPosicoes(todosPostos) {
+    const posicoes = todosPostos.map((posto) => {
+      const jog = posto.jogador;
+      const xPct = typeof jog.x === 'number' ? jog.x : 50;
+      const yPct = typeof jog.y === 'number' ? jog.y : 50;
+      return {
+        posto,
+        left: RX_MARGIN_X + (xPct / 100) * RX_PITCH_W,
+        top: RX_MARGIN_Y + (yPct / 100) * RX_PITCH_H,
+      };
+    });
+    posicoes.sort((a, b) => a.top - b.top);
+    for (let i = 1; i < posicoes.length; i++) {
+      for (let j = 0; j < i; j++) {
+        const a = posicoes[j], b = posicoes[i];
+        const sobreporHorizontal = Math.abs(a.left - b.left) < RX_CARD_W;
+        if (sobreporHorizontal && b.top - a.top < RX_CARD_H_SEGURA) {
+          b.top = a.top + RX_CARD_H_SEGURA;
+        }
+      }
+    }
+    return posicoes;
+  }
+
+  function rxRenderPosto(posicao, fotosIds, janelaLabel) {
+    const { posto, left, top } = posicao;
     const jog = posto.jogador;
     const destaque = (jog.gol || 0) >= RX_DESTAQUE_GOL_MINIMO;
     const modalId = __rxModalRegistro.length;
     __rxModalRegistro.push({ jogador: jog, cede: posto.cede, janelaLabel, destaque, fotosIds });
     const cardHtml = rxCardResumo(jog, fotosIds, destaque, posto.cede);
-    const xPct = typeof jog.x === 'number' ? jog.x : 50;
-    const yPct = typeof jog.y === 'number' ? jog.y : 50;
-    const left = RX_MARGIN_X + (xPct / 100) * RX_PITCH_W;
-    const top = RX_MARGIN_Y + (yPct / 100) * RX_PITCH_H;
     // card único, centralizado de verdade na posição real (translate -50%
     // nos dois eixos) -- sem caixa lateral pra desalinhar o conjunto.
     return `<div class="rx-posto" data-rx-modal-id="${modalId}" style="left:${left}px;top:${top}px;transform:translate(-50%,-50%)">
@@ -811,10 +849,15 @@
       if (wrapVazio) wrapVazio.style.height = 'auto';
       return;
     }
-    html += `<div class="rx-pitch-canvas" style="width:${RX_CANVAS_W}px;height:${RX_CANVAS_H}px">`;
+    const posicoes = rxCalcularPosicoes(todosPostos);
+    // Altura do canvas segue a ALTURA FIXA do campo normalmente, mas cresce
+    // se algum empurrão de colisão (rxCalcularPosicoes) precisou passar
+    // desse limite -- caso raro, só acontece pros pares apertados.
+    const canvasH = Math.max(RX_CANVAS_H, Math.max(...posicoes.map((p) => p.top)) + RX_MARGIN_Y + RX_CARD_H_SEGURA / 2);
+    html += `<div class="rx-pitch-canvas" style="width:${RX_CANVAS_W}px;height:${canvasH}px">`;
     html += `<div class="rx-pitch-gramado" style="left:${RX_MARGIN_X}px;top:${RX_MARGIN_Y}px;width:${RX_PITCH_W}px;height:${RX_PITCH_H}px">${rxPitchMarkingsSvg()}</div>`;
-    todosPostos.forEach((posto) => {
-      html += rxRenderPosto(posto, fotosIds, janelaLabel);
+    posicoes.forEach((posicao) => {
+      html += rxRenderPosto(posicao, fotosIds, janelaLabel);
     });
     html += '</div>';
     container.innerHTML = html;
