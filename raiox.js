@@ -218,35 +218,19 @@
   }
 
   /**
-   * Âncora fixa (x/y) usada só quando a posição de origem conflita com o
-   * slot tático do PDC daquele jogo -- sem isso, o card ficaria na posição
-   * REAL da formação (ex.: ala direita), mas com o rótulo da posição de
-   * origem (ex.: "Ponta Esquerda"), uma contradição visual clara. ZAG fica
-   * de fora de propósito: dois zagueiros com a MESMA âncora colidiriam, e
-   * esse conflito é raro pra zagueiro/lateral (a posição de origem quase
-   * nunca diverge do slot tático pra defensor).
+   * Posição de exibição no campinho de confronto NÃO usa mais o x/y REAL do
+   * PDC daquele jogo -- mudança de rota (2026-08-20, 4a intervenção): a
+   * posição real variava demais entre partidas (lateral empurrado até o
+   * meio-campo, zagueiro largo lendo como lateral, altura do campinho
+   * mudando MUITO de confronto pra confronto) e o campinho ficava "torto" e
+   * imprevisível. Pedido explícito do Renato: "jogadores de cada posição na
+   * sua respectiva posição, respeitando os limites do campinho". Agora cada
+   * balde tem uma ÂNCORA FIXA (ver RX_ANCORA_CONFRONTO, mesma filosofia já
+   * comprovada no campinho GERAL da rodada, que nunca teve esse problema).
    */
-  const RX_ANCORA_CANONICA = {
-    'PONTA-ESQ': { x: 18, y: 20 }, 'CENTROAVANTE': { x: 50, y: 10 }, 'PONTA-DIR': { x: 82, y: 20 },
-    'MEI': { x: 50, y: 42 },
-  };
-
-  /**
-   * `p.x`/`p.y` são a posição REAL do jogador no campinho dos prováveis
-   * (percentual, já na mesma orientação em pé que usamos aqui: defesa perto
-   * de y~70-90, ataque perto de y~10-25) -- guardado desde sempre em
-   * data/provaveis.json, só não estava sendo usado. É a fonte de verdade
-   * pra "jogador no lugar certo do campo" (pedido explícito do Renato,
-   * 2026-08-19, depois de rejeitar o layout em linhas/colunas). SÓ não é
-   * confiável quando a posição de origem diverge do slot tático daquele
-   * jogo (`ancora` força uma posição fixa nesse caso -- ver
-   * RX_ANCORA_CANONICA).
-   */
-  function rxJogadorComConquista(p, conquistaPorJogador, balde, ancora) {
+  function rxJogadorComConquista(p, conquistaPorJogador, balde) {
     const conquista = conquistaPorJogador.get(String(p.id));
-    const x = ancora ? ancora.x : p.x;
-    const y = ancora ? ancora.y : p.y;
-    const base = { jogadorId: String(p.id), balde, duvida: p.sit === 'duvida', x, y };
+    const base = { jogadorId: String(p.id), balde, duvida: p.sit === 'duvida' };
     return conquista
       ? Object.assign({}, conquista, base, { nome: conquista.nome || p.nome })
       : Object.assign(base, { nome: p.nome, gol: 0, assistencia: 0, finalizacoes: 0, xg: 0, xa: 0, grandeChanceCriada: 0 });
@@ -269,13 +253,9 @@
     const presencasA = rxContarPresencas(partidasA);
     const cedeB = rxCedeNarradoPorBalde(partidasB);
 
-    // 1a passada: resolve balde/conflito de cada jogador sem decidir a
-    // âncora ainda -- precisa ver o GRUPO inteiro antes de decidir, senão a
-    // decisão fica dependente da ordem de iteração (achado real,
-    // 2026-08-20: Fernandinho, ponta-esquerda de origem escalado como ATA-R
-    // essa rodada, ia parar EXATAMENTE em cima do Alesson, que é
-    // ponta-esquerda de origem E está escalado como ATA-L de verdade --
-    // dois jogadores no mesmo balde de ataque, sobrepostos).
+    // 1a passada: junta origem (acervo) e slot tático REAL daquele jogo pra
+    // cada jogador. `alinhado` = os dois concordam (ou não há origem
+    // cadastrada) -- ninguém "roubou" o posto de outro.
     const candidatos = [];
     for (const p of (teamAProvaveis && teamAProvaveis.players) || []) {
       if (p.isCoach) continue;
@@ -286,27 +266,30 @@
       // específico) só entra como fallback pra quem não está no acervo.
       const info = infoCanonico || infoSlot;
       if (!info) continue;
-      // conflito real (origem != slot tático daquele jogo, ex.: Vitinho
-      // ponta-esquerda de origem, escalado como MEI-R nessa rodada) -- não
-      // dá pra confiar no x/y do PDC aqui, ele reflete o slot tático, não a
-      // posição de origem que estamos usando pro rótulo/balde.
-      const conflito = infoCanonico && (!infoSlot || infoSlot.balde !== infoCanonico.balde);
-      candidatos.push({ p, info, conflito });
+      const alinhado = !infoCanonico || !infoSlot || infoCanonico.balde === infoSlot.balde;
+      candidatos.push({ p, info, infoSlot, alinhado });
     }
-    // 2a passada: só usa a âncora fixa quando o balde de ATAQUE tem
-    // exatamente 1 jogador nele -- havendo 2+ (caso raro, mas real), todos
-    // caem de volta pra posição REAL do PDC nesse balde específico, pra não
-    // sobrepor. Aceita, nesse caso raro, um rótulo levemente conflitante em
-    // troca de nunca quebrar o layout com dois cards empilhados.
-    const contagemAtaquePorBalde = new Map();
-    for (const { info } of candidatos) {
-      if (info.grupo === 'ataque') contagemAtaquePorBalde.set(info.balde, (contagemAtaquePorBalde.get(info.balde) || 0) + 1);
-    }
+    // 2a passada: cada balde de ataque/lateral tem 1 titular fixo no
+    // campinho (ZAG suporta 2 -- back four; MEI é ranqueado à parte, sem
+    // limite aqui). Se a posição de ORIGEM colocar 2+ jogadores no mesmo
+    // balde (achado real, 2026-08-20: um ponta de origem escalado no
+    // meio-campo essa rodada colide com o ponta real da vez, ex.
+    // Vitinho x Johan Carbonero, Internacional) -- processa quem está
+    // REALMENTE jogando ali hoje primeiro (alinhado=true), garantindo que
+    // ele fique com o posto natural. Quem perde a disputa simplesmente
+    // fica de fora dessa exibição -- pedido do Renato (2026-08-20):
+    // reclassificar o perdedor pro slot tático real (ex.: "Vitinho" virar
+    // "Meia") ficava estranho pra quem conhece o jogador. Melhor não
+    // mostrar do que mostrar num rótulo genérico que não é a cara dele.
+    candidatos.sort((a, b) => (b.alinhado ? 1 : 0) - (a.alinhado ? 1 : 0));
+    const capacidade = (balde) => (balde === 'ZAG' ? 2 : balde === 'MEI' ? Infinity : 1);
+    const ocupantes = new Map();
     const postosAtaque = [], postosDefesa = [], candidatosMeio = [];
-    for (const { p, info, conflito } of candidatos) {
-      const semDuplicataNoBalde = info.grupo !== 'ataque' || contagemAtaquePorBalde.get(info.balde) === 1;
-      const ancora = conflito && semDuplicataNoBalde ? RX_ANCORA_CANONICA[info.balde] : null;
-      const jogador = rxJogadorComConquista(p, conquistaA, info.balde, ancora);
+    for (const c of candidatos) {
+      const info = c.info;
+      if ((ocupantes.get(info.balde) || 0) >= capacidade(info.balde)) continue;
+      ocupantes.set(info.balde, (ocupantes.get(info.balde) || 0) + 1);
+      const jogador = rxJogadorComConquista(c.p, conquistaA, info.balde);
       if (info.grupo === 'ataque') postosAtaque.push({ balde: info.balde, jogador });
       else if (info.grupo === 'defesa') postosDefesa.push({ balde: info.balde, jogador });
       else candidatosMeio.push(jogador);
@@ -318,10 +301,22 @@
       .map((jogador) => ({ balde: 'MEI', jogador }));
 
     const anexarCede = (postos) => postos.map((posto) => Object.assign({}, posto, { cede: cedeB.get(posto.balde) || null }));
+    // Posto sem NADA a mostrar (zero conquistado E zero cedido nos 4
+    // números) não aparece no campinho -- pedido explícito do Renato
+    // (2026-08-20): um card inteiro em branco não ajuda em nada, só
+    // ocupa espaço. Mesmo critério que o campinho GERAL da rodada já usa
+    // (rxClassificarCandidatoRodada).
+    const semDadoAlgum = (posto) => {
+      const j = posto.jogador, c = posto.cede;
+      return (j.gol || 0) + (j.assistencia || 0) + ((c && c.gol) || 0) + ((c && c.assistencia) || 0) === 0;
+    };
+    const filtrarZerados = (postos) => postos.filter((posto) => !semDadoAlgum(posto));
 
     return {
       partidasUsadasA: partidasA.length, partidasUsadasB: partidasB.length,
-      postosAtaque: anexarCede(postosAtaque), postosMeio: anexarCede(postosMeio), postosDefesa: anexarCede(postosDefesa),
+      postosAtaque: filtrarZerados(anexarCede(postosAtaque)),
+      postosMeio: filtrarZerados(anexarCede(postosMeio)),
+      postosDefesa: filtrarZerados(anexarCede(postosDefesa)),
     };
   }
 
@@ -608,6 +603,47 @@
   }
 
   /**
+   * Card RESUMO -- o que aparece no campinho (tela e download), tanto o
+   * confronto individual quanto (futuramente) outras telas. Só o essencial
+   * pra bater o olho: Gol+Assistência conquistados e cedidos, nada de
+   * finalização/xG/xA/grande chance nem a lista granular de quem marcou
+   * contra -- isso tudo fica RESTRITO ao card completo (rxCardUnificado),
+   * que só aparece no modal ao clicar. Pedido do Renato (2026-08-20):
+   * "o campinho no site... eu preciso que ele seja de um tamanho um pouco
+   * mais natural... o modelo de download individual não ter os detalhes
+   * do card que eu clico no site". Foto pequena de propósito (só pra
+   * reconhecer o jogador, não protagonista).
+   */
+  function rxCardResumo(c, fotosIds, isDestaque, cede) {
+    const cedeGol = (cede && cede.gol) || 0;
+    const cedeAssist = (cede && cede.assistencia) || 0;
+    // Cedido alto é OPORTUNIDADE pro nosso jogador, não notícia ruim -- por
+    // isso vira verde (classe condicional por valor), nunca vermelho. Ver
+    // .rx-resumo-num-positivo/.rx-resumo-cede em raiox.css.
+    const classeCede = (v) => 'rx-resumo-num' + (v > 0 ? ' rx-resumo-num-positivo' : '');
+    return `
+      <div class="rx-resumo${isDestaque ? ' rx-resumo-destaque' : ''}">
+        <div class="rx-resumo-foto">${rxFoto(c.jogadorId, c.nome, fotosIds)}</div>
+        <div class="rx-resumo-nome">${c.nome || '—'}${c.duvida ? ' <span class="rx-duvida-tag-resumo">dúvida</span>' : ''}</div>
+        ${isDestaque ? '<div class="rx-resumo-estrela">★ DESTAQUE DA RODADA</div>' : ''}
+        <div class="rx-resumo-bloco rx-resumo-produz">
+          <div class="rx-resumo-bloco-label">Conquistou</div>
+          <div class="rx-resumo-numeros">
+            <div><span class="rx-resumo-num">${c.gol || 0}</span><span class="rx-resumo-lbl">Gol</span></div>
+            <div><span class="rx-resumo-num">${c.assistencia || 0}</span><span class="rx-resumo-lbl">Assist.</span></div>
+          </div>
+        </div>
+        <div class="rx-resumo-bloco rx-resumo-cede">
+          <div class="rx-resumo-bloco-label">Rival cedeu</div>
+          <div class="rx-resumo-numeros">
+            <div><span class="${classeCede(cedeGol)}">${cedeGol}</span><span class="rx-resumo-lbl">Gol</span></div>
+            <div><span class="${classeCede(cedeAssist)}">${cedeAssist}</span><span class="rx-resumo-lbl">Assist.</span></div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  /**
    * Um posto = rótulo da posição + UM card único (produção + cedido
    * empilhados dentro do mesmo card, ver rxCardUnificado) centralizado na
    * posição real x/y. Achado real (2026-08-19, 3a intervenção): tentar
@@ -651,10 +687,28 @@
   // (105/68) deixaria a altura curta demais pra caber os cards sem colidir
   // (testado: Fernandinho x Japa, Internacional x Atlético-MG). Altura
   // maior que a largura proporcional é intencional aqui.
-  const RX_PITCH_W = 6400;
-  const RX_PITCH_H = 11800;
-  const RX_CARD_W = 760;
+  // 2a intervenção (2026-08-20): o card virou um RESUMO pequeno
+  // (rxCardResumo -- só Gol+Assist, o card completo agora é só do modal),
+  // então o campinho inteiro encolhe MUITO em relação ao card gigante de
+  // antes (760px/altura imprevisível) -- não precisa mais da altura
+  // desacoplada gigante pra evitar colisão.
+  // 3a intervenção (2026-08-20): a altura seguindo a proporção real de
+  // campo (105/68) forçava a escala de tela a encolher demais pra caber na
+  // ALTURA disponível (que é sempre menor que a largura numa tela normal),
+  // mesmo com o card resumo já pequeno -- achado real: card renderizando a
+  // 36x51px na tela, ilegível de verdade (não era ilusão de ótica dessa
+  // vez). O card resumo agora tem altura FIXA e previsível (~460px, sem
+  // lista de tamanho variável), então dá pra desacoplar a altura do campo
+  // de novo e ajustar só pelo que o card realmente precisa.
+  const RX_PITCH_W = 2200;
+  const RX_PITCH_H = 2600;
+  const RX_CARD_W = 450;
   const RX_MARGIN_X = RX_CARD_W / 2 + 70;
+  // 340 (era 220, 2026-08-20): rótulo do posto mais ao topo (ex.:
+  // "CENTROAVANTE") estava encostando na linha do campinho -- o bloco
+  // rótulo+card é centralizado (translate -50%,-50%), então metade da sua
+  // altura precisa caber ACIMA da linha do gramado pros postos perto de
+  // y=0.
   const RX_MARGIN_Y = 340;
   const RX_CANVAS_W = RX_PITCH_W + RX_MARGIN_X * 2;
   const RX_CANVAS_H = RX_PITCH_H + RX_MARGIN_Y * 2;
@@ -717,17 +771,129 @@
   // recorte, "bem acima da média". Um jogador pode não ser o 1º do balde
   // dele (balde concorrido) e ainda assim acender a estrela, e vice-versa.
   const RX_DESTAQUE_GOL_MINIMO = 3;
-  function rxRenderPosto(posto, fotosIds, janelaLabel) {
+  // Registro dos dados COMPLETOS de cada posto (jogador+cede+janelaLabel),
+  // indexado por um id sequencial gravado no DOM (data-rx-modal-id) --
+  // usado pra montar o card completo (rxCardUnificado) sob demanda quando
+  // o modal abre, já que o campinho em si só desenha o resumo agora.
+  let __rxModalRegistro = [];
+  // Altura aproximada só do CARD (sem rótulo) -- usada pra "encolher" o
+  // range de mapeamento do x/y real (ver rxCalcularPosicoes) e garantir por
+  // CONSTRUÇÃO que o card nunca ultrapassa a linha do campinho, mesmo pra
+  // jogador em posição real bem extrema (y perto de 0% ou 100%). Achado
+  // real (2026-08-20, Renato): "cards saindo do campinho... tem uma outra
+  // área verde em volta que você usou como se estivesse no campinho" -- o
+  // fundo do canvas é do mesmo verde do gramado, então qualquer card que
+  // encoste na linha branca lê como "saiu de campo", mesmo estando dentro
+  // da margem técnica reservada.
+  const RX_CARD_H = 600;
+  // Altura aproximada do card + rótulo + folga mínima de segurança -- usada
+  // só como rede de segurança residual (empurra pra baixo, não pra
+  // afastar), já que a posição de cada balde agora é fixa por âncora
+  // (RX_ANCORA_CONFRONTO, já verificada pra não colidir entre si). Valor
+  // amarrado ao card de verdade (RX_CARD_H=600) + rótulo + respiro, não um
+  // número arbitrário grande -- um valor inflado demais fazia esse
+  // empurrão disparar sem necessidade em pares que já tinham folga visual
+  // de sobra (achado real, 2026-08-20).
+  const RX_CARD_H_SEGURA = 660;
+
+  /**
+   * Âncora fixa (x/y %) por balde -- cada posição tem uma REGIÃO definida
+   * do campinho, não a coordenada real do PDC daquele jogo (mesma
+   * filosofia já comprovada no campinho GERAL da rodada, RX_R_COORDS, que
+   * nunca teve problema de posição "torta"). ZAG entra com 2 slots lado a
+   * lado (não empilhados) porque uma linha de 4 real quase sempre tem 2
+   * zagueiros titulares -- ler como uma zaga de verdade, não uma pilha.
+   */
+  // Cada par de âncoras foi verificado pra ficar longe o bastante em X
+  // (>=27%, folga sobre o mínimo de 25.7% = RX_CARD_W/(RX_PITCH_W-RX_CARD_W))
+  // OU em Y (>=33% do range, folga sobre RX_CARD_H_SEGURA) -- achado real
+  // (2026-08-20): um par "quase no limite" (MEI a 36% de ZAG, precisa de
+  // 38%) fazia o empurrão de colisão disparar sem necessidade e os dois
+  // zagueiros saíam de uma linha reta lado a lado pra um zigue-zague torto.
+  // Mexer numa âncora aqui exige reconferir a distância pros vizinhos.
+  const RX_ANCORA_CONFRONTO = {
+    'CENTROAVANTE': [{ x: 50, y: 8 }],
+    'PONTA-ESQ': [{ x: 14, y: 22 }],
+    'PONTA-DIR': [{ x: 86, y: 22 }],
+    'MEI': [{ x: 50, y: 48 }],
+    'LAT-ESQ': [{ x: 4, y: 80 }],
+    'ZAG': [{ x: 35, y: 88 }, { x: 65, y: 88 }],
+    'LAT-DIR': [{ x: 96, y: 80 }],
+  };
+
+  /**
+   * Calcula left/top de cada posto a partir da âncora fixa do balde dele
+   * (RX_ANCORA_CONFRONTO) -- mudança de rota (2026-08-20, 4a intervenção):
+   * usar a posição REAL do PDC deixava o campinho "torto" e imprevisível
+   * (lateral lá no meio-campo, zagueiro largo, altura variando muito de
+   * confronto pra confronto). Com âncora fixa, a posição de cada jogador é
+   * sempre previsível e o layout final é praticamente sempre o mesmo.
+   *
+   * rxMontarConfronto já garante 1 titular por balde (2 pra ZAG) antes de
+   * chegar aqui -- conflito de origem (ex.: um ponta de origem escalado no
+   * meio-campo essa rodada) é resolvido lá, dando o posto pra quem
+   * realmente joga ali hoje e recolocando o outro no PRÓPRIO slot real (ou
+   * descartando, no caso raríssimo de nem isso ter vaga). O `extras`
+   * abaixo é só uma rede de segurança defensiva -- não deveria disparar na
+   * prática; testado (2026-08-20) que tentar encaixar um excedente perto
+   * da posição natural dele acabava pousando no meio do campo, lendo como
+   * outra posição -- por isso, se algum dia disparar, cai numa fileira
+   * reservada no fundo em vez de tentar ser "esperto".
+   */
+  function rxCalcularPosicoes(todosPostos) {
+    const leftMin = RX_MARGIN_X + RX_CARD_W / 2;
+    const leftMax = RX_MARGIN_X + RX_PITCH_W - RX_CARD_W / 2;
+    const topMin = RX_MARGIN_Y + RX_CARD_H / 2;
+    const topMax = RX_MARGIN_Y + RX_PITCH_H - RX_CARD_H / 2;
+    const mapear = (xPct, yPct) => ({
+      left: leftMin + (xPct / 100) * (leftMax - leftMin),
+      top: topMin + (yPct / 100) * (topMax - topMin),
+    });
+    const porBalde = new Map();
+    for (const posto of todosPostos) {
+      if (!porBalde.has(posto.balde)) porBalde.set(posto.balde, []);
+      porBalde.get(posto.balde).push(posto);
+    }
+    const posicoes = [];
+    const extras = [];
+    for (const [balde, postos] of porBalde) {
+      const slots = RX_ANCORA_CONFRONTO[balde] || [{ x: 50, y: 50 }];
+      postos.forEach((posto, i) => {
+        if (i < slots.length) posicoes.push(Object.assign({ posto }, mapear(slots[i].x, slots[i].y)));
+        else extras.push(posto);
+      });
+    }
+    extras.forEach((posto, i) => {
+      // Espaçamento >=32% entre extras -- folga real sobre o mínimo de
+      // 25.7% (RX_CARD_W/(RX_PITCH_W-RX_CARD_W)), mesma lição da âncora
+      // principal: espaçamento "quase no limite" dispara o empurrão de
+      // colisão sem necessidade e desalinha a fileira.
+      const xPct = Math.min(94, Math.max(6, 12 + i * 32));
+      posicoes.push(Object.assign({ posto }, mapear(xPct, 95)));
+    });
+    posicoes.sort((a, b) => a.top - b.top);
+    for (let i = 1; i < posicoes.length; i++) {
+      for (let j = 0; j < i; j++) {
+        const a = posicoes[j], b = posicoes[i];
+        const sobreporHorizontal = Math.abs(a.left - b.left) < RX_CARD_W;
+        if (sobreporHorizontal && b.top - a.top < RX_CARD_H_SEGURA) {
+          b.top = a.top + RX_CARD_H_SEGURA;
+        }
+      }
+    }
+    return posicoes;
+  }
+
+  function rxRenderPosto(posicao, fotosIds, janelaLabel) {
+    const { posto, left, top } = posicao;
     const jog = posto.jogador;
     const destaque = (jog.gol || 0) >= RX_DESTAQUE_GOL_MINIMO;
-    const cardHtml = rxCardUnificado(jog, fotosIds, destaque, posto.cede, janelaLabel);
-    const xPct = typeof jog.x === 'number' ? jog.x : 50;
-    const yPct = typeof jog.y === 'number' ? jog.y : 50;
-    const left = RX_MARGIN_X + (xPct / 100) * RX_PITCH_W;
-    const top = RX_MARGIN_Y + (yPct / 100) * RX_PITCH_H;
+    const modalId = __rxModalRegistro.length;
+    __rxModalRegistro.push({ jogador: jog, cede: posto.cede, janelaLabel, destaque, fotosIds });
+    const cardHtml = rxCardResumo(jog, fotosIds, destaque, posto.cede);
     // card único, centralizado de verdade na posição real (translate -50%
     // nos dois eixos) -- sem caixa lateral pra desalinhar o conjunto.
-    return `<div class="rx-posto" style="left:${left}px;top:${top}px;transform:translate(-50%,-50%)">
+    return `<div class="rx-posto" data-rx-modal-id="${modalId}" style="left:${left}px;top:${top}px;transform:translate(-50%,-50%)">
       <div class="rx-posto-label">${LABEL_BALDE[posto.balde] || posto.balde}</div>
       ${cardHtml}
     </div>`;
@@ -736,6 +902,7 @@
   function rxRenderCampinho(containerId, teamKey, rivalKey, resultado, fotosIds, mandoA) {
     const container = document.getElementById(containerId);
     if (!container) return;
+    __rxModalRegistro = [];
     const todosPostos = [...resultado.postosAtaque, ...resultado.postosMeio, ...resultado.postosDefesa];
     const janelaLabel = `(últimos ${resultado.partidasUsadasB} jogo${resultado.partidasUsadasB === 1 ? '' : 's'}${mandoA === 'casa' ? ' fora' : mandoA === 'fora' ? ' em casa' : ''})`;
     let html = `
@@ -753,10 +920,20 @@
       if (wrapVazio) wrapVazio.style.height = 'auto';
       return;
     }
-    html += `<div class="rx-pitch-canvas" style="width:${RX_CANVAS_W}px;height:${RX_CANVAS_H}px">`;
-    html += `<div class="rx-pitch-gramado" style="left:${RX_MARGIN_X}px;top:${RX_MARGIN_Y}px;width:${RX_PITCH_W}px;height:${RX_PITCH_H}px">${rxPitchMarkingsSvg()}</div>`;
-    todosPostos.forEach((posto) => {
-      html += rxRenderPosto(posto, fotosIds, janelaLabel);
+    const posicoes = rxCalcularPosicoes(todosPostos);
+    // O GRAMADO em si (não só o canvas) precisa crescer junto quando o
+    // empurrão de colisão (rxCalcularPosicoes) manda algum card pra baixo
+    // do limite -- senão o card nudged renderiza fora do retângulo
+    // desenhado, no verde "solto" do canvas, lendo como "saiu do campo"
+    // (achado real, 2026-08-20). Caso raro (só pares apertados), o gramado
+    // normal já cobre a formação inteira sem precisar disso.
+    const menorBaseCard = Math.max(...posicoes.map((p) => p.top)) + RX_CARD_H / 2;
+    const gramadoH = Math.max(RX_PITCH_H, menorBaseCard - RX_MARGIN_Y + 40);
+    const canvasH = RX_MARGIN_Y + gramadoH + RX_MARGIN_Y;
+    html += `<div class="rx-pitch-canvas" style="width:${RX_CANVAS_W}px;height:${canvasH}px">`;
+    html += `<div class="rx-pitch-gramado" style="left:${RX_MARGIN_X}px;top:${RX_MARGIN_Y}px;width:${RX_PITCH_W}px;height:${gramadoH}px">${rxPitchMarkingsSvg()}</div>`;
+    posicoes.forEach((posicao) => {
+      html += rxRenderPosto(posicao, fotosIds, janelaLabel);
     });
     html += '</div>';
     container.innerHTML = html;
@@ -767,48 +944,70 @@
       el.classList.add('rx-posto-clicavel');
       el.addEventListener('click', () => rxAbrirModalCard(el));
     });
-    rxAplicarEscalaTela();
+    rxAplicarEscalaTela('rxPitchScaleWrap', 'rxPitchAtivo', false);
   }
 
   /**
    * O campinho é construído gigante de propósito (resolução de exportação),
    * mas exibido na tela do site precisa caber numa janela normal -- pedido
-   * do Renato (2026-08-20): "está aparecendo com um zoom gigantesco". O DOM
-   * interno (#rxPitchAtivo) continua no tamanho nativo; só a APARÊNCIA
-   * encolhe via transform:scale (calculado aqui), então o download (que
-   * desliga esse transform antes de capturar, ver rxBaixarImagemDe) sai
-   * sempre em resolução cheia.
+   * do Renato (2026-08-20, 2a intervenção): "só metade dele aparece no meu
+   * monitor" -- a 1a versão só encolhia pela LARGURA, deixando a altura
+   * (que segue a mesma escala) maior que a tela disponível. Agora encolhe
+   * pra caber nos DOIS eixos ao mesmo tempo (como uma foto se ajustando
+   * numa moldura, nunca maior que o espaço em nenhum dos dois sentidos).
+   * Genérica (recebe wrapId/elId) pra servir tanto o confronto individual
+   * quanto o campinho geral da rodada -- mesma lógica, pedido explícito.
+   * O DOM interno continua no tamanho nativo; só a APARÊNCIA encolhe via
+   * transform:scale, então o download (que desliga esse transform antes de
+   * capturar, ver rxBaixarImagemDe) sai sempre em resolução cheia.
    */
-  function rxAplicarEscalaTela() {
-    const wrap = document.getElementById('rxPitchScaleWrap');
-    const el = document.getElementById('rxPitchAtivo');
+  function rxAplicarEscalaTela(wrapId, elId, respeitarAltura) {
+    const wrap = document.getElementById(wrapId);
+    const el = document.getElementById(elId);
     if (!wrap || !el || el.style.display === 'none' || !el.children.length) return;
     // margin:0 auto (CSS) + transform-origin:center não se comportam de
     // forma previsível quando o elemento é MUITO mais largo que o
-    // contêiner (aqui é ~7x mais largo) -- achado real (2026-08-20): o
-    // campinho renderizava inteiro fora da tela. transform-origin:top left
-    // + margem esquerda calculada manualmente é explícito, sem depender de
-    // como o navegador resolve auto-centering nesse caso extremo.
+    // contêiner -- achado real (2026-08-20): o campinho renderizava
+    // inteiro fora da tela. transform-origin:top left + margem esquerda
+    // calculada manualmente é explícito, sem depender de como o navegador
+    // resolve auto-centering nesse caso extremo.
     el.style.margin = '0';
     el.style.transform = 'none';
     const naturalW = el.offsetWidth;
     const naturalH = el.offsetHeight;
     if (!naturalW || !naturalH) return;
-    const alvo = Math.min(wrap.clientWidth || naturalW, 920);
-    const escala = Math.min(1, alvo / naturalW);
+    const larguraDisponivel = wrap.clientWidth || naturalW;
+    let escala = Math.min(1, larguraDisponivel / naturalW);
+    // No confronto individual, respeitar a ALTURA disponível força o card
+    // pequeno demais pra ler (achado real, 2026-08-20: 74x102px numa tela
+    // 1920x1080) -- a formação usa posição REAL do jogador em 3 faixas
+    // (ataque/meio/defesa), então não dá pra comprimir a altura sem
+    // sobrepor. "Card legível" venceu "zero rolagem" aqui: ajusta só pela
+    // LARGURA, aceita rolar um pouco na vertical. O campinho geral (mais
+    // compacto/canônico) continua ajustando nos dois eixos normalmente.
+    if (respeitarAltura) {
+      const topoWrap = wrap.getBoundingClientRect().top;
+      const alturaDisponivel = Math.max(320, window.innerHeight - topoWrap - 24);
+      escala = Math.min(escala, alturaDisponivel / naturalH);
+    }
     const larguraEscalada = naturalW * escala;
-    const margemEsquerda = Math.max(0, (wrap.clientWidth - larguraEscalada) / 2);
+    const margemEsquerda = Math.max(0, (larguraDisponivel - larguraEscalada) / 2);
     el.style.transformOrigin = 'top left';
     el.style.transform = `scale(${escala})`;
     el.style.marginLeft = `${Math.round(margemEsquerda)}px`;
     wrap.style.height = `${Math.round(naturalH * escala)}px`;
   }
-  window.addEventListener('resize', () => rxAplicarEscalaTela());
+  window.addEventListener('resize', () => {
+    rxAplicarEscalaTela('rxPitchScaleWrap', 'rxPitchAtivo', false);
+    rxAplicarEscalaTela('rxPitchRodadaScaleWrap', 'rxPitchRodada', true);
+  });
 
-  /** Modal de card ampliado (clique em qualquer posto do confronto individual). */
+  /** Modal de card ampliado (clique em qualquer posto do confronto individual) -- monta o card COMPLETO (rxCardUnificado) sob demanda a partir do registro, já que o campinho em si só desenha o resumo. */
   function rxAbrirModalCard(postoEl) {
-    const cardEl = postoEl.querySelector('.rx-card');
-    if (!cardEl) return;
+    const modalId = postoEl.getAttribute('data-rx-modal-id');
+    const dados = __rxModalRegistro[modalId];
+    if (!dados) return;
+    const cardHtmlCompleto = rxCardUnificado(dados.jogador, dados.fotosIds, dados.destaque, dados.cede, dados.janelaLabel);
     let modal = document.getElementById('rxCardModal');
     if (!modal) {
       modal = document.createElement('div');
@@ -825,7 +1024,7 @@
       modal.querySelector('.rx-card-modal-close').addEventListener('click', rxFecharModalCard);
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') rxFecharModalCard(); });
     }
-    modal.querySelector('.rx-card-modal-content').innerHTML = cardEl.outerHTML;
+    modal.querySelector('.rx-card-modal-content').innerHTML = cardHtmlCompleto;
     modal.classList.add('rx-card-modal-aberto');
   }
   function rxFecharModalCard() {
@@ -859,7 +1058,14 @@
     const teamA = document.getElementById('rxTeamASelect').value;
     const teamB = document.getElementById('rxTeamBSelect').value;
     const ultimosN = Math.max(1, Number(document.getElementById('rxWindowCountInput').value) || 5);
-    const mandoA = document.getElementById('rxMandoSelect').value || null;
+    // Filtro de mando simplificado (2026-08-20, pedido do Renato): só 2
+    // opções -- mando ATUAL (o real do próximo confronto de A, automático)
+    // ou TODOS OS JOGOS (ignora mando). O dropdown de 3 opções antigo
+    // ("não filtrar"/casa/fora manuais) deixava escolher combinações sem
+    // sentido (ex.: forçar "fora" quando o real é casa).
+    const respeitarMando = document.getElementById('rxRespeitarMandoInput').checked;
+    const proximoConfronto = respeitarMando ? await rxGetProximoConfronto() : null;
+    const mandoA = respeitarMando ? (proximoConfronto[teamA]?.mando || null) : null;
     const emptyEl = document.getElementById('rxEmptyState');
     const pitchAtivo = document.getElementById('rxPitchAtivo');
     const toggleBar = document.getElementById('rxToggleLado');
@@ -977,12 +1183,9 @@
           <label class="rx-control-item">Últimos jogos
             <input id="rxWindowCountInput" type="number" min="1" max="38" value="5" />
           </label>
-          <label class="rx-control-item">Mando de A no confronto
-            <select id="rxMandoSelect">
-              <option value="" selected>Não filtrar</option>
-              <option value="casa">A joga em casa</option>
-              <option value="fora">A joga fora</option>
-            </select>
+          <label class="rx-control-item" style="flex-direction:row;align-items:center;gap:8px">
+            <input id="rxRespeitarMandoInput" type="checkbox" checked style="width:16px;height:16px" />
+            Mando atual (desmarque p/ todos os jogos)
           </label>
         </div>
         <div class="rx-credito">Escalação provável: provaveisdocartola.com.br</div>
@@ -1010,23 +1213,9 @@
     a.value = 'santos';
     b.value = 'mirassol';
 
-    ['rxTeamBSelect', 'rxWindowCountInput', 'rxMandoSelect'].forEach((id) => {
+    ['rxTeamASelect', 'rxTeamBSelect', 'rxWindowCountInput', 'rxRespeitarMandoInput'].forEach((id) => {
       document.getElementById(id).addEventListener('change', rxRefresh);
     });
-    // Time A troca também pré-seleciona o mando REAL dele na próxima rodada
-    // (não mais "não filtrar" por padrão, misturando casa/fora -- achado
-    // real, 2026-08-19). Usuário ainda pode trocar manualmente depois.
-    a.addEventListener('change', rxAplicarMandoPadrao);
-    rxAplicarMandoPadrao();
-  }
-
-  async function rxAplicarMandoPadrao() {
-    const teamA = document.getElementById('rxTeamASelect').value;
-    const proximoConfronto = await rxGetProximoConfronto();
-    const mandoReal = proximoConfronto[teamA]?.mando;
-    if (mandoReal === 'casa' || mandoReal === 'fora') {
-      document.getElementById('rxMandoSelect').value = mandoReal;
-    }
     rxRefresh();
   }
 
@@ -1099,15 +1288,18 @@
       <div id="rxDownloadRowRodada" class="rx-download-row">
         <button id="rxDownloadBtnRodada" type="button" class="rx-download-btn">⤓ Baixar imagem</button>
       </div>
-      <div id="rxPitchRodada" class="rx-pitch">
-        <div class="rx-pitch-head"><span class="rx-team-name">Campinho geral da rodada</span></div>
-        <div class="rx-pitch-sub">melhores oportunidades ofensivas da rodada, por posição</div>
-        <div class="rx-pitch-canvas" style="width:${RX_R_CANVAS_W}px;height:${RX_R_CANVAS_H}px">
-          <div class="rx-pitch-gramado" style="left:${RX_R_MARGIN_X}px;top:${RX_R_MARGIN_Y}px;width:${RX_R_PITCH_W}px;height:${RX_R_PITCH_H}px">${rxPitchMarkingsSvg()}</div>
-          ${postosHtml}
+      <div id="rxPitchRodadaScaleWrap" class="rx-pitch-scale-wrap">
+        <div id="rxPitchRodada" class="rx-pitch">
+          <div class="rx-pitch-head"><span class="rx-team-name">Campinho geral da rodada</span></div>
+          <div class="rx-pitch-sub">melhores oportunidades ofensivas da rodada, por posição</div>
+          <div class="rx-pitch-canvas" style="width:${RX_R_CANVAS_W}px;height:${RX_R_CANVAS_H}px">
+            <div class="rx-pitch-gramado" style="left:${RX_R_MARGIN_X}px;top:${RX_R_MARGIN_Y}px;width:${RX_R_PITCH_W}px;height:${RX_R_PITCH_H}px">${rxPitchMarkingsSvg()}</div>
+            ${postosHtml}
+          </div>
         </div>
       </div>
     `;
+    rxAplicarEscalaTela('rxPitchRodadaScaleWrap', 'rxPitchRodada', true);
     document.getElementById('rxRodadaWindowInput').addEventListener('change', (e) => {
       const n = Math.max(1, Number(e.target.value) || 5);
       rxRenderRodada(n, respeitarMando);
