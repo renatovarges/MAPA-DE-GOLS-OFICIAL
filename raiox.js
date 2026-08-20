@@ -608,6 +608,43 @@
   }
 
   /**
+   * Card RESUMO -- o que aparece no campinho (tela e download), tanto o
+   * confronto individual quanto (futuramente) outras telas. Só o essencial
+   * pra bater o olho: Gol+Assistência conquistados e cedidos, nada de
+   * finalização/xG/xA/grande chance nem a lista granular de quem marcou
+   * contra -- isso tudo fica RESTRITO ao card completo (rxCardUnificado),
+   * que só aparece no modal ao clicar. Pedido do Renato (2026-08-20):
+   * "o campinho no site... eu preciso que ele seja de um tamanho um pouco
+   * mais natural... o modelo de download individual não ter os detalhes
+   * do card que eu clico no site". Foto pequena de propósito (só pra
+   * reconhecer o jogador, não protagonista).
+   */
+  function rxCardResumo(c, fotosIds, isDestaque, cede) {
+    const cedeGol = (cede && cede.gol) || 0;
+    const cedeAssist = (cede && cede.assistencia) || 0;
+    return `
+      <div class="rx-resumo${isDestaque ? ' rx-resumo-destaque' : ''}">
+        <div class="rx-resumo-foto">${rxFoto(c.jogadorId, c.nome, fotosIds)}</div>
+        <div class="rx-resumo-nome">${c.nome || '—'}${c.duvida ? ' <span class="rx-duvida-tag-resumo">dúvida</span>' : ''}</div>
+        ${isDestaque ? '<div class="rx-resumo-estrela">★ DESTAQUE DA RODADA</div>' : ''}
+        <div class="rx-resumo-bloco rx-resumo-produz">
+          <div class="rx-resumo-bloco-label">Produz</div>
+          <div class="rx-resumo-numeros">
+            <div><span class="rx-resumo-num">${c.gol || 0}</span><span class="rx-resumo-lbl">Gol</span></div>
+            <div><span class="rx-resumo-num">${c.assistencia || 0}</span><span class="rx-resumo-lbl">Assist.</span></div>
+          </div>
+        </div>
+        <div class="rx-resumo-bloco rx-resumo-cede">
+          <div class="rx-resumo-bloco-label">Rival cede</div>
+          <div class="rx-resumo-numeros">
+            <div><span class="rx-resumo-num">${cedeGol}</span><span class="rx-resumo-lbl">Gol</span></div>
+            <div><span class="rx-resumo-num">${cedeAssist}</span><span class="rx-resumo-lbl">Assist.</span></div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  /**
    * Um posto = rótulo da posição + UM card único (produção + cedido
    * empilhados dentro do mesmo card, ver rxCardUnificado) centralizado na
    * posição real x/y. Achado real (2026-08-19, 3a intervenção): tentar
@@ -651,11 +688,16 @@
   // (105/68) deixaria a altura curta demais pra caber os cards sem colidir
   // (testado: Fernandinho x Japa, Internacional x Atlético-MG). Altura
   // maior que a largura proporcional é intencional aqui.
-  const RX_PITCH_W = 6400;
-  const RX_PITCH_H = 11800;
-  const RX_CARD_W = 760;
+  // 2a intervenção (2026-08-20): o card virou um RESUMO pequeno
+  // (rxCardResumo -- só Gol+Assist, o card completo agora é só do modal),
+  // então o campinho inteiro encolhe MUITO em relação ao card gigante de
+  // antes (760px/altura imprevisível) -- não precisa mais da altura
+  // desacoplada gigante pra evitar colisão.
+  const RX_PITCH_W = 2600;
+  const RX_PITCH_H = Math.round(RX_PITCH_W * (105 / 68));
+  const RX_CARD_W = 320;
   const RX_MARGIN_X = RX_CARD_W / 2 + 70;
-  const RX_MARGIN_Y = 340;
+  const RX_MARGIN_Y = 220;
   const RX_CANVAS_W = RX_PITCH_W + RX_MARGIN_X * 2;
   const RX_CANVAS_H = RX_PITCH_H + RX_MARGIN_Y * 2;
 
@@ -717,17 +759,24 @@
   // recorte, "bem acima da média". Um jogador pode não ser o 1º do balde
   // dele (balde concorrido) e ainda assim acender a estrela, e vice-versa.
   const RX_DESTAQUE_GOL_MINIMO = 3;
+  // Registro dos dados COMPLETOS de cada posto (jogador+cede+janelaLabel),
+  // indexado por um id sequencial gravado no DOM (data-rx-modal-id) --
+  // usado pra montar o card completo (rxCardUnificado) sob demanda quando
+  // o modal abre, já que o campinho em si só desenha o resumo agora.
+  let __rxModalRegistro = [];
   function rxRenderPosto(posto, fotosIds, janelaLabel) {
     const jog = posto.jogador;
     const destaque = (jog.gol || 0) >= RX_DESTAQUE_GOL_MINIMO;
-    const cardHtml = rxCardUnificado(jog, fotosIds, destaque, posto.cede, janelaLabel);
+    const modalId = __rxModalRegistro.length;
+    __rxModalRegistro.push({ jogador: jog, cede: posto.cede, janelaLabel, destaque, fotosIds });
+    const cardHtml = rxCardResumo(jog, fotosIds, destaque, posto.cede);
     const xPct = typeof jog.x === 'number' ? jog.x : 50;
     const yPct = typeof jog.y === 'number' ? jog.y : 50;
     const left = RX_MARGIN_X + (xPct / 100) * RX_PITCH_W;
     const top = RX_MARGIN_Y + (yPct / 100) * RX_PITCH_H;
     // card único, centralizado de verdade na posição real (translate -50%
     // nos dois eixos) -- sem caixa lateral pra desalinhar o conjunto.
-    return `<div class="rx-posto" style="left:${left}px;top:${top}px;transform:translate(-50%,-50%)">
+    return `<div class="rx-posto" data-rx-modal-id="${modalId}" style="left:${left}px;top:${top}px;transform:translate(-50%,-50%)">
       <div class="rx-posto-label">${LABEL_BALDE[posto.balde] || posto.balde}</div>
       ${cardHtml}
     </div>`;
@@ -736,6 +785,7 @@
   function rxRenderCampinho(containerId, teamKey, rivalKey, resultado, fotosIds, mandoA) {
     const container = document.getElementById(containerId);
     if (!container) return;
+    __rxModalRegistro = [];
     const todosPostos = [...resultado.postosAtaque, ...resultado.postosMeio, ...resultado.postosDefesa];
     const janelaLabel = `(últimos ${resultado.partidasUsadasB} jogo${resultado.partidasUsadasB === 1 ? '' : 's'}${mandoA === 'casa' ? ' fora' : mandoA === 'fora' ? ' em casa' : ''})`;
     let html = `
@@ -767,48 +817,60 @@
       el.classList.add('rx-posto-clicavel');
       el.addEventListener('click', () => rxAbrirModalCard(el));
     });
-    rxAplicarEscalaTela();
+    rxAplicarEscalaTela('rxPitchScaleWrap', 'rxPitchAtivo');
   }
 
   /**
    * O campinho é construído gigante de propósito (resolução de exportação),
    * mas exibido na tela do site precisa caber numa janela normal -- pedido
-   * do Renato (2026-08-20): "está aparecendo com um zoom gigantesco". O DOM
-   * interno (#rxPitchAtivo) continua no tamanho nativo; só a APARÊNCIA
-   * encolhe via transform:scale (calculado aqui), então o download (que
-   * desliga esse transform antes de capturar, ver rxBaixarImagemDe) sai
-   * sempre em resolução cheia.
+   * do Renato (2026-08-20, 2a intervenção): "só metade dele aparece no meu
+   * monitor" -- a 1a versão só encolhia pela LARGURA, deixando a altura
+   * (que segue a mesma escala) maior que a tela disponível. Agora encolhe
+   * pra caber nos DOIS eixos ao mesmo tempo (como uma foto se ajustando
+   * numa moldura, nunca maior que o espaço em nenhum dos dois sentidos).
+   * Genérica (recebe wrapId/elId) pra servir tanto o confronto individual
+   * quanto o campinho geral da rodada -- mesma lógica, pedido explícito.
+   * O DOM interno continua no tamanho nativo; só a APARÊNCIA encolhe via
+   * transform:scale, então o download (que desliga esse transform antes de
+   * capturar, ver rxBaixarImagemDe) sai sempre em resolução cheia.
    */
-  function rxAplicarEscalaTela() {
-    const wrap = document.getElementById('rxPitchScaleWrap');
-    const el = document.getElementById('rxPitchAtivo');
+  function rxAplicarEscalaTela(wrapId, elId) {
+    const wrap = document.getElementById(wrapId);
+    const el = document.getElementById(elId);
     if (!wrap || !el || el.style.display === 'none' || !el.children.length) return;
     // margin:0 auto (CSS) + transform-origin:center não se comportam de
     // forma previsível quando o elemento é MUITO mais largo que o
-    // contêiner (aqui é ~7x mais largo) -- achado real (2026-08-20): o
-    // campinho renderizava inteiro fora da tela. transform-origin:top left
-    // + margem esquerda calculada manualmente é explícito, sem depender de
-    // como o navegador resolve auto-centering nesse caso extremo.
+    // contêiner -- achado real (2026-08-20): o campinho renderizava
+    // inteiro fora da tela. transform-origin:top left + margem esquerda
+    // calculada manualmente é explícito, sem depender de como o navegador
+    // resolve auto-centering nesse caso extremo.
     el.style.margin = '0';
     el.style.transform = 'none';
     const naturalW = el.offsetWidth;
     const naturalH = el.offsetHeight;
     if (!naturalW || !naturalH) return;
-    const alvo = Math.min(wrap.clientWidth || naturalW, 920);
-    const escala = Math.min(1, alvo / naturalW);
+    const larguraDisponivel = wrap.clientWidth || naturalW;
+    const topoWrap = wrap.getBoundingClientRect().top;
+    const alturaDisponivel = Math.max(320, window.innerHeight - topoWrap - 24);
+    const escala = Math.min(1, larguraDisponivel / naturalW, alturaDisponivel / naturalH);
     const larguraEscalada = naturalW * escala;
-    const margemEsquerda = Math.max(0, (wrap.clientWidth - larguraEscalada) / 2);
+    const margemEsquerda = Math.max(0, (larguraDisponivel - larguraEscalada) / 2);
     el.style.transformOrigin = 'top left';
     el.style.transform = `scale(${escala})`;
     el.style.marginLeft = `${Math.round(margemEsquerda)}px`;
     wrap.style.height = `${Math.round(naturalH * escala)}px`;
   }
-  window.addEventListener('resize', () => rxAplicarEscalaTela());
+  window.addEventListener('resize', () => {
+    rxAplicarEscalaTela('rxPitchScaleWrap', 'rxPitchAtivo');
+    rxAplicarEscalaTela('rxPitchRodadaScaleWrap', 'rxPitchRodada');
+  });
 
-  /** Modal de card ampliado (clique em qualquer posto do confronto individual). */
+  /** Modal de card ampliado (clique em qualquer posto do confronto individual) -- monta o card COMPLETO (rxCardUnificado) sob demanda a partir do registro, já que o campinho em si só desenha o resumo. */
   function rxAbrirModalCard(postoEl) {
-    const cardEl = postoEl.querySelector('.rx-card');
-    if (!cardEl) return;
+    const modalId = postoEl.getAttribute('data-rx-modal-id');
+    const dados = __rxModalRegistro[modalId];
+    if (!dados) return;
+    const cardHtmlCompleto = rxCardUnificado(dados.jogador, dados.fotosIds, dados.destaque, dados.cede, dados.janelaLabel);
     let modal = document.getElementById('rxCardModal');
     if (!modal) {
       modal = document.createElement('div');
@@ -825,7 +887,7 @@
       modal.querySelector('.rx-card-modal-close').addEventListener('click', rxFecharModalCard);
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') rxFecharModalCard(); });
     }
-    modal.querySelector('.rx-card-modal-content').innerHTML = cardEl.outerHTML;
+    modal.querySelector('.rx-card-modal-content').innerHTML = cardHtmlCompleto;
     modal.classList.add('rx-card-modal-aberto');
   }
   function rxFecharModalCard() {
@@ -859,7 +921,14 @@
     const teamA = document.getElementById('rxTeamASelect').value;
     const teamB = document.getElementById('rxTeamBSelect').value;
     const ultimosN = Math.max(1, Number(document.getElementById('rxWindowCountInput').value) || 5);
-    const mandoA = document.getElementById('rxMandoSelect').value || null;
+    // Filtro de mando simplificado (2026-08-20, pedido do Renato): só 2
+    // opções -- mando ATUAL (o real do próximo confronto de A, automático)
+    // ou TODOS OS JOGOS (ignora mando). O dropdown de 3 opções antigo
+    // ("não filtrar"/casa/fora manuais) deixava escolher combinações sem
+    // sentido (ex.: forçar "fora" quando o real é casa).
+    const respeitarMando = document.getElementById('rxRespeitarMandoInput').checked;
+    const proximoConfronto = respeitarMando ? await rxGetProximoConfronto() : null;
+    const mandoA = respeitarMando ? (proximoConfronto[teamA]?.mando || null) : null;
     const emptyEl = document.getElementById('rxEmptyState');
     const pitchAtivo = document.getElementById('rxPitchAtivo');
     const toggleBar = document.getElementById('rxToggleLado');
@@ -977,12 +1046,9 @@
           <label class="rx-control-item">Últimos jogos
             <input id="rxWindowCountInput" type="number" min="1" max="38" value="5" />
           </label>
-          <label class="rx-control-item">Mando de A no confronto
-            <select id="rxMandoSelect">
-              <option value="" selected>Não filtrar</option>
-              <option value="casa">A joga em casa</option>
-              <option value="fora">A joga fora</option>
-            </select>
+          <label class="rx-control-item" style="flex-direction:row;align-items:center;gap:8px">
+            <input id="rxRespeitarMandoInput" type="checkbox" checked style="width:16px;height:16px" />
+            Mando atual (desmarque p/ todos os jogos)
           </label>
         </div>
         <div class="rx-credito">Escalação provável: provaveisdocartola.com.br</div>
@@ -1010,23 +1076,9 @@
     a.value = 'santos';
     b.value = 'mirassol';
 
-    ['rxTeamBSelect', 'rxWindowCountInput', 'rxMandoSelect'].forEach((id) => {
+    ['rxTeamASelect', 'rxTeamBSelect', 'rxWindowCountInput', 'rxRespeitarMandoInput'].forEach((id) => {
       document.getElementById(id).addEventListener('change', rxRefresh);
     });
-    // Time A troca também pré-seleciona o mando REAL dele na próxima rodada
-    // (não mais "não filtrar" por padrão, misturando casa/fora -- achado
-    // real, 2026-08-19). Usuário ainda pode trocar manualmente depois.
-    a.addEventListener('change', rxAplicarMandoPadrao);
-    rxAplicarMandoPadrao();
-  }
-
-  async function rxAplicarMandoPadrao() {
-    const teamA = document.getElementById('rxTeamASelect').value;
-    const proximoConfronto = await rxGetProximoConfronto();
-    const mandoReal = proximoConfronto[teamA]?.mando;
-    if (mandoReal === 'casa' || mandoReal === 'fora') {
-      document.getElementById('rxMandoSelect').value = mandoReal;
-    }
     rxRefresh();
   }
 
@@ -1099,15 +1151,18 @@
       <div id="rxDownloadRowRodada" class="rx-download-row">
         <button id="rxDownloadBtnRodada" type="button" class="rx-download-btn">⤓ Baixar imagem</button>
       </div>
-      <div id="rxPitchRodada" class="rx-pitch">
-        <div class="rx-pitch-head"><span class="rx-team-name">Campinho geral da rodada</span></div>
-        <div class="rx-pitch-sub">melhores oportunidades ofensivas da rodada, por posição</div>
-        <div class="rx-pitch-canvas" style="width:${RX_R_CANVAS_W}px;height:${RX_R_CANVAS_H}px">
-          <div class="rx-pitch-gramado" style="left:${RX_R_MARGIN_X}px;top:${RX_R_MARGIN_Y}px;width:${RX_R_PITCH_W}px;height:${RX_R_PITCH_H}px">${rxPitchMarkingsSvg()}</div>
-          ${postosHtml}
+      <div id="rxPitchRodadaScaleWrap" class="rx-pitch-scale-wrap">
+        <div id="rxPitchRodada" class="rx-pitch">
+          <div class="rx-pitch-head"><span class="rx-team-name">Campinho geral da rodada</span></div>
+          <div class="rx-pitch-sub">melhores oportunidades ofensivas da rodada, por posição</div>
+          <div class="rx-pitch-canvas" style="width:${RX_R_CANVAS_W}px;height:${RX_R_CANVAS_H}px">
+            <div class="rx-pitch-gramado" style="left:${RX_R_MARGIN_X}px;top:${RX_R_MARGIN_Y}px;width:${RX_R_PITCH_W}px;height:${RX_R_PITCH_H}px">${rxPitchMarkingsSvg()}</div>
+            ${postosHtml}
+          </div>
         </div>
       </div>
     `;
+    rxAplicarEscalaTela('rxPitchRodadaScaleWrap', 'rxPitchRodada');
     document.getElementById('rxRodadaWindowInput').addEventListener('change', (e) => {
       const n = Math.max(1, Number(e.target.value) || 5);
       rxRenderRodada(n, respeitarMando);

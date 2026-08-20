@@ -239,6 +239,40 @@
    dar zoom, ver os detalhes daquele card". Mostra o card no tamanho
    natural (já grande/legível por si só), só que centralizado numa
    janela própria em vez de espremido no campinho encolhido da tela. ---- */
+/* ---- card RESUMO (2026-08-20, redesign) -- o que aparece no campinho de
+   confronto individual (tela e download). Só Gol+Assist conquistados e
+   cedidos, foto pequena (não protagonista) -- todo o detalhe granular
+   (finalização/xG/xA/G.chance, lista de quem marcou contra) fica
+   RESTRITO ao card completo, que só aparece no modal ao clicar. Vertical
+   pra aproveitar melhor o espaço, visual premium parecido com o pódio do
+   campinho geral. ---- */
+.rx-resumo{
+  background:var(--rx-card-bg);color:var(--rx-card-ink);border-radius:20px;
+  width:320px;box-sizing:border-box;box-shadow:0 10px 26px rgba(0,0,0,.4);border:5px solid transparent;
+  display:flex;flex-direction:column;align-items:center;padding:20px 16px 22px;
+}
+.rx-resumo-destaque{border-color:#ffd24d;box-shadow:0 0 0 5px rgba(255,210,77,.3),0 10px 26px rgba(0,0,0,.4)}
+.rx-resumo-foto{
+  width:104px;height:104px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#cfcabb;
+  display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:#8a8370;
+}
+.rx-resumo-foto img{width:100%;height:100%;object-fit:cover}
+.rx-resumo-nome{font-size:24px;font-weight:800;text-align:center;margin-top:12px;line-height:1.15}
+.rx-duvida-tag-resumo{display:block;font-size:14px;font-weight:700;color:#a35b00;text-transform:uppercase;letter-spacing:.03em;margin-top:2px}
+.rx-resumo-estrela{color:var(--rx-gol-gold);font-size:15px;text-align:center;font-weight:800;letter-spacing:.03em;margin-top:4px}
+.rx-resumo-bloco{width:100%;margin-top:14px;border-radius:16px;overflow:hidden}
+.rx-resumo-bloco-label{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;text-align:center;padding:7px 4px}
+.rx-resumo-produz .rx-resumo-bloco-label{background:rgba(31,157,85,.2);color:var(--rx-good)}
+.rx-resumo-cede .rx-resumo-bloco-label{background:rgba(214,69,69,.22);color:#a52d2d}
+.rx-resumo-numeros{display:flex}
+.rx-resumo-numeros>div{flex:1;text-align:center;padding:10px 4px}
+.rx-resumo-produz .rx-resumo-numeros{background:rgba(31,157,85,.09)}
+.rx-resumo-cede .rx-resumo-numeros{background:rgba(214,69,69,.09)}
+.rx-resumo-num{display:block;font-size:36px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
+.rx-resumo-produz .rx-resumo-num{color:var(--rx-good)}
+.rx-resumo-cede .rx-resumo-num{color:#a52d2d}
+.rx-resumo-lbl{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#7a7a70;margin-top:3px}
+
 .rx-posto-clicavel{cursor:zoom-in}
 .rx-card-modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:24px}
 .rx-card-modal.rx-card-modal-aberto{display:flex}
