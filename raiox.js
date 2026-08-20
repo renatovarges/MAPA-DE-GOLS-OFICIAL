@@ -269,7 +269,14 @@
     const presencasA = rxContarPresencas(partidasA);
     const cedeB = rxCedeNarradoPorBalde(partidasB);
 
-    const postosAtaque = [], postosDefesa = [], candidatosMeio = [];
+    // 1a passada: resolve balde/conflito de cada jogador sem decidir a
+    // âncora ainda -- precisa ver o GRUPO inteiro antes de decidir, senão a
+    // decisão fica dependente da ordem de iteração (achado real,
+    // 2026-08-20: Fernandinho, ponta-esquerda de origem escalado como ATA-R
+    // essa rodada, ia parar EXATAMENTE em cima do Alesson, que é
+    // ponta-esquerda de origem E está escalado como ATA-L de verdade --
+    // dois jogadores no mesmo balde de ataque, sobrepostos).
+    const candidatos = [];
     for (const p of (teamAProvaveis && teamAProvaveis.players) || []) {
       if (p.isCoach) continue;
       const labelCanonico = posicoesGranulares && posicoesGranulares[String(p.id)];
@@ -284,7 +291,21 @@
       // dá pra confiar no x/y do PDC aqui, ele reflete o slot tático, não a
       // posição de origem que estamos usando pro rótulo/balde.
       const conflito = infoCanonico && (!infoSlot || infoSlot.balde !== infoCanonico.balde);
-      const ancora = conflito ? RX_ANCORA_CANONICA[info.balde] : null;
+      candidatos.push({ p, info, conflito });
+    }
+    // 2a passada: só usa a âncora fixa quando o balde de ATAQUE tem
+    // exatamente 1 jogador nele -- havendo 2+ (caso raro, mas real), todos
+    // caem de volta pra posição REAL do PDC nesse balde específico, pra não
+    // sobrepor. Aceita, nesse caso raro, um rótulo levemente conflitante em
+    // troca de nunca quebrar o layout com dois cards empilhados.
+    const contagemAtaquePorBalde = new Map();
+    for (const { info } of candidatos) {
+      if (info.grupo === 'ataque') contagemAtaquePorBalde.set(info.balde, (contagemAtaquePorBalde.get(info.balde) || 0) + 1);
+    }
+    const postosAtaque = [], postosDefesa = [], candidatosMeio = [];
+    for (const { p, info, conflito } of candidatos) {
+      const semDuplicataNoBalde = info.grupo !== 'ataque' || contagemAtaquePorBalde.get(info.balde) === 1;
+      const ancora = conflito && semDuplicataNoBalde ? RX_ANCORA_CANONICA[info.balde] : null;
       const jogador = rxJogadorComConquista(p, conquistaA, info.balde, ancora);
       if (info.grupo === 'ataque') postosAtaque.push({ balde: info.balde, jogador });
       else if (info.grupo === 'defesa') postosDefesa.push({ balde: info.balde, jogador });
@@ -448,7 +469,11 @@
     if (__rxPosicoesGranularesCache) return __rxPosicoesGranularesCache;
     __rxPosicoesGranularesCache = (async () => {
       try {
-        const res = await fetch(`data/posicoes-granulares.json?t=${Date.now()}`, { cache: 'no-store' });
+        // Fica em scripts/, não em data/ -- data/ é disco persistente no
+        // Render, só ganha arquivo NOVO via POST em runtime (harvester),
+        // nunca via deploy de código. Esse arquivo é estático (não muda por
+        // harvest), então serve direto do que o deploy normal já entrega.
+        const res = await fetch(`scripts/posicoes-granulares.json?t=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) throw new Error('falha no fetch');
         return await res.json();
       } catch (err) {
@@ -464,7 +489,9 @@
     if (__rxFotosIdsCache) return __rxFotosIdsCache;
     __rxFotosIdsCache = (async () => {
       try {
-        const res = await fetch(`data/fotos-jogadores.json?t=${Date.now()}`, { cache: 'no-store' });
+        // Mesma razão do posicoes-granulares.json acima: estático, fica em
+        // scripts/ pra não cair no buraco do disco persistente de data/.
+        const res = await fetch(`scripts/fotos-jogadores.json?t=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) throw new Error('falha no fetch');
         const data = await res.json();
         return new Set((data.ids || []).map(String));
@@ -534,7 +561,16 @@
         <div class="rx-cede-topo-label">Cedido pelo rival ${janelaLabel}</div>
         <div class="rx-cede-vazio-txt">Sem gol ou assistência sofridos nessa posição no recorte.</div>`;
     } else {
-      const eventosHtml = cede.eventos.map((ev) => `
+      // Cap na granulação: sem isso a altura do card fica imprevisível (uma
+      // posição bem "vazada" pelo rival podia ter 6+ eventos, estourando
+      // muito além do card comum e colidindo com o posto vizinho no
+      // campinho -- achado real, 2026-08-20). Os TOTAIS lá em cima
+      // continuam somando tudo, sempre; aqui é só a lista granular que
+      // mostra os mais relevantes (mais gol+assistência primeiro).
+      const RX_CEDE_EVENTOS_MAX = 4;
+      const eventosOrdenados = [...cede.eventos].sort((a, b) => (b.gol + b.assistencia) - (a.gol + a.assistencia));
+      const eventosTruncados = eventosOrdenados.length - RX_CEDE_EVENTOS_MAX;
+      const eventosHtml = eventosOrdenados.slice(0, RX_CEDE_EVENTOS_MAX).map((ev) => `
         <div class="rx-cede-evento">
           <img class="rx-cede-evento-escudo" src="${rxEscudoUrl(ev.timeAdversario)}" alt="${rxTeamName(ev.timeAdversario)}" />
           <div class="rx-cede-evento-foto">${rxFoto(ev.jogadorId, ev.nome, fotosIds)}</div>
@@ -553,7 +589,7 @@
           <div><span class="rx-cede-num">${cede.gol}</span><span class="rx-cede-num-lbl">Gol${cede.gol === 1 ? '' : 's'}</span></div>
           <div><span class="rx-cede-num">${cede.assistencia}</span><span class="rx-cede-num-lbl">Assist.</span></div>
         </div>
-        <div class="rx-cede-granular">${eventosHtml}</div>`;
+        <div class="rx-cede-granular">${eventosHtml}${eventosTruncados > 0 ? `<div class="rx-cede-evento-mais">+${eventosTruncados} outro${eventosTruncados > 1 ? 's' : ''} evento${eventosTruncados > 1 ? 's' : ''} nos totais acima</div>` : ''}</div>`;
     }
 
     return `
@@ -597,11 +633,29 @@
   // fonte bem maiores, pitch cresce proporcionalmente mais que o
   // necessário (folga extra, não só o mínimo calculado) pra não precisar
   // de uma 7a rodada só de tamanho.
-  const RX_PITCH_W = 4200;
-  const RX_PITCH_H = Math.round(RX_PITCH_W * (105 / 68));
-  const RX_CARD_W = 480;
+  // Card 480->760 + fontes acompanhando (pedido do Renato, 2026-08-20:
+  // "não adianta aumentar o card e não aumentar as fontes"). Pitch cresce
+  // um pouco menos que proporcionalmente ao card (4200->5200, não 6650) --
+  // aqui as posições vêm de x/y REAL dos prováveis (formação de verdade,
+  // não âncora canônica como no campinho geral), então não dá pra comprimir
+  // o espaço vazio como fizemos lá; o gargalo é só legibilidade, resolvido
+  // pelo card+fonte maiores. Testado por colisão real de bounding rect
+  // antes de fechar (ver histórico: braças de segurança já foram tateadas
+  // por 6 rodadas de tentativa/erro pra esse mesmo campinho).
+  // Altura DESACOPLADA da largura (2026-08-20, achado real): o card ficou
+  // bem mais alto (até ~2300px, mesmo com o cap de 4 eventos na
+  // granulação do cedido) e as posições aqui são x/y REAIS dos prováveis
+  // (formação de verdade), não âncora fixa -- então o vão vertical entre
+  // ataque e meio-campo pode ser só ~15-20% da altura em formações reais,
+  // pouco pra um card desse tamanho. Seguir a proporção real de campo
+  // (105/68) deixaria a altura curta demais pra caber os cards sem colidir
+  // (testado: Fernandinho x Japa, Internacional x Atlético-MG). Altura
+  // maior que a largura proporcional é intencional aqui.
+  const RX_PITCH_W = 6400;
+  const RX_PITCH_H = 11800;
+  const RX_CARD_W = 760;
   const RX_MARGIN_X = RX_CARD_W / 2 + 70;
-  const RX_MARGIN_Y = 260;
+  const RX_MARGIN_Y = 340;
   const RX_CANVAS_W = RX_PITCH_W + RX_MARGIN_X * 2;
   const RX_CANVAS_H = RX_PITCH_H + RX_MARGIN_Y * 2;
 
@@ -694,6 +748,9 @@
     if (!todosPostos.length) {
       html += '<div class="rx-empty">Sem prováveis carregados pra esse time ainda (ou nenhuma posição bateu com o dado disponível).</div>';
       container.innerHTML = html;
+      container.style.transform = 'none';
+      const wrapVazio = document.getElementById('rxPitchScaleWrap');
+      if (wrapVazio) wrapVazio.style.height = 'auto';
       return;
     }
     html += `<div class="rx-pitch-canvas" style="width:${RX_CANVAS_W}px;height:${RX_CANVAS_H}px">`;
@@ -703,6 +760,77 @@
     });
     html += '</div>';
     container.innerHTML = html;
+    // clique em qualquer card do confronto individual abre ele grande, em
+    // resolução natural, num modal -- pedido do Renato (2026-08-20), só pra
+    // essa tela (não pro pódio do campinho geral).
+    container.querySelectorAll('.rx-posto').forEach((el) => {
+      el.classList.add('rx-posto-clicavel');
+      el.addEventListener('click', () => rxAbrirModalCard(el));
+    });
+    rxAplicarEscalaTela();
+  }
+
+  /**
+   * O campinho é construído gigante de propósito (resolução de exportação),
+   * mas exibido na tela do site precisa caber numa janela normal -- pedido
+   * do Renato (2026-08-20): "está aparecendo com um zoom gigantesco". O DOM
+   * interno (#rxPitchAtivo) continua no tamanho nativo; só a APARÊNCIA
+   * encolhe via transform:scale (calculado aqui), então o download (que
+   * desliga esse transform antes de capturar, ver rxBaixarImagemDe) sai
+   * sempre em resolução cheia.
+   */
+  function rxAplicarEscalaTela() {
+    const wrap = document.getElementById('rxPitchScaleWrap');
+    const el = document.getElementById('rxPitchAtivo');
+    if (!wrap || !el || el.style.display === 'none' || !el.children.length) return;
+    // margin:0 auto (CSS) + transform-origin:center não se comportam de
+    // forma previsível quando o elemento é MUITO mais largo que o
+    // contêiner (aqui é ~7x mais largo) -- achado real (2026-08-20): o
+    // campinho renderizava inteiro fora da tela. transform-origin:top left
+    // + margem esquerda calculada manualmente é explícito, sem depender de
+    // como o navegador resolve auto-centering nesse caso extremo.
+    el.style.margin = '0';
+    el.style.transform = 'none';
+    const naturalW = el.offsetWidth;
+    const naturalH = el.offsetHeight;
+    if (!naturalW || !naturalH) return;
+    const alvo = Math.min(wrap.clientWidth || naturalW, 920);
+    const escala = Math.min(1, alvo / naturalW);
+    const larguraEscalada = naturalW * escala;
+    const margemEsquerda = Math.max(0, (wrap.clientWidth - larguraEscalada) / 2);
+    el.style.transformOrigin = 'top left';
+    el.style.transform = `scale(${escala})`;
+    el.style.marginLeft = `${Math.round(margemEsquerda)}px`;
+    wrap.style.height = `${Math.round(naturalH * escala)}px`;
+  }
+  window.addEventListener('resize', () => rxAplicarEscalaTela());
+
+  /** Modal de card ampliado (clique em qualquer posto do confronto individual). */
+  function rxAbrirModalCard(postoEl) {
+    const cardEl = postoEl.querySelector('.rx-card');
+    if (!cardEl) return;
+    let modal = document.getElementById('rxCardModal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'rxCardModal';
+      modal.className = 'rx-card-modal';
+      modal.innerHTML = `
+        <div class="rx-card-modal-backdrop"></div>
+        <div class="rx-card-modal-inner">
+          <button type="button" class="rx-card-modal-close" aria-label="Fechar">✕</button>
+          <div class="rx-card-modal-content"></div>
+        </div>`;
+      document.body.appendChild(modal);
+      modal.querySelector('.rx-card-modal-backdrop').addEventListener('click', rxFecharModalCard);
+      modal.querySelector('.rx-card-modal-close').addEventListener('click', rxFecharModalCard);
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') rxFecharModalCard(); });
+    }
+    modal.querySelector('.rx-card-modal-content').innerHTML = cardEl.outerHTML;
+    modal.classList.add('rx-card-modal-aberto');
+  }
+  function rxFecharModalCard() {
+    const modal = document.getElementById('rxCardModal');
+    if (modal) modal.classList.remove('rx-card-modal-aberto');
   }
 
   // -----------------------------------------------------------------------
@@ -788,6 +916,13 @@
     const textoOriginal = btn.textContent;
     btn.disabled = true;
     btn.textContent = 'Gerando imagem...';
+    // O campinho de confronto individual é exibido na tela ENCOLHIDO (ver
+    // rxAplicarEscalaTela) pra caber numa janela normal -- mas o download
+    // sempre precisa da resolução cheia, então desliga o transform antes de
+    // capturar e religa depois (a exportação em si nunca deve ficar
+    // pequena, só a visualização na tela).
+    const escalaOriginal = pitchEl.style.transform;
+    if (escalaOriginal) pitchEl.style.transform = 'none';
     try {
       // O elemento em si já é gigante em px reais (campinho construído em
       // milhares de px de largura), então scale alto aqui estoura o limite
@@ -806,6 +941,7 @@
     } catch (err) {
       alert('Falha ao gerar a imagem: ' + (err && err.message ? err.message : 'desconhecida'));
     } finally {
+      if (escalaOriginal) pitchEl.style.transform = escalaOriginal;
       btn.disabled = false;
       btn.textContent = textoOriginal;
     }
@@ -855,7 +991,9 @@
         <div id="rxDownloadRow" class="rx-download-row" style="display:none">
           <button id="rxDownloadBtn" type="button" class="rx-download-btn">⤓ Baixar imagem</button>
         </div>
-        <div id="rxPitchAtivo" class="rx-pitch" style="display:none"></div>
+        <div id="rxPitchScaleWrap" class="rx-pitch-scale-wrap">
+          <div id="rxPitchAtivo" class="rx-pitch" style="display:none"></div>
+        </div>
       </div>
       <div id="rxSubRodada" style="display:none"></div>
     `;
