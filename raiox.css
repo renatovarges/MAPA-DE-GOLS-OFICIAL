@@ -64,6 +64,16 @@
 .rx-download-btn:hover{filter:brightness(1.08)}
 .rx-download-btn:disabled{opacity:.6;cursor:wait}
 
+/* Envelope que ENCOLHE visualmente o campinho gigante (feito pra exportar
+   em resolução alta) pra caber numa tela normal -- pedido do Renato
+   (2026-08-20): "o campinho tá aparecendo com um zoom gigantesco no site".
+   O DOM interno (#rxPitchAtivo) continua no tamanho real/nativo; só a
+   aparência visual encolhe via transform:scale, calculado em JS
+   (rxAplicarEscalaTela). O download desliga esse scale antes de capturar
+   (ver rxBaixarImagemDe), então o arquivo baixado sai sempre em resolução
+   cheia, independente do zoom aplicado na tela. */
+.rx-pitch-scale-wrap{width:100%;overflow:hidden}
+
 /* ---- campinho em pé (retrato) — peça grande pra exportar, não largura de página ---- */
 /* SEM overflow-x:auto de propósito: um scroll ANINHADO some de screenshots
    de página inteira (achado real, 2026-08-19 -- metade dos jogadores
@@ -102,7 +112,7 @@
 /* transform exato (ancorado no centro do CARD, não do par) vem inline por posto, calculado em JS. */
 .rx-posto{position:absolute;z-index:1}
 .rx-posto:hover{z-index:5}
-.rx-posto-label{text-align:center;font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.85);margin-bottom:10px;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.rx-posto-label{text-align:center;font-size:24px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.85);margin-bottom:14px;text-shadow:0 1px 4px rgba(0,0,0,.6)}
 
 /* ---- card premium do jogador — ÚNICO (produção + cedido empilhados dentro
    do mesmo card, não mais uma caixa lateral) -- achado real (2026-08-19, 3a
@@ -111,32 +121,32 @@
    card só, centralizado de verdade, sem perder o peso visual do cedido
    (ele continua tendo a própria seção escura/números grandes por dentro). */
 .rx-card{
-  background:var(--rx-card-bg);color:var(--rx-card-ink);border-radius:20px;overflow:hidden;
-  width:480px;box-shadow:0 14px 38px rgba(0,0,0,.48);border:5px solid transparent;
+  background:var(--rx-card-bg);color:var(--rx-card-ink);border-radius:26px;overflow:hidden;
+  width:760px;box-shadow:0 18px 46px rgba(0,0,0,.48);border:7px solid transparent;
 }
-.rx-card.rx-destaque{border-color:#ffd24d;box-shadow:0 0 0 6px rgba(255,210,77,.3),0 14px 36px rgba(0,0,0,.48)}
+.rx-card.rx-destaque{border-color:#ffd24d;box-shadow:0 0 0 8px rgba(255,210,77,.3),0 18px 44px rgba(0,0,0,.48)}
 .rx-card-foto{
   width:100%;aspect-ratio:1/1;background:#cfcabb center/cover no-repeat;
-  display:flex;align-items:center;justify-content:center;font-size:60px;font-weight:800;color:#8a8370;
+  display:flex;align-items:center;justify-content:center;font-size:92px;font-weight:800;color:#8a8370;
 }
 .rx-card-foto img{width:100%;height:100%;object-fit:cover}
-.rx-card-nome{font-size:27px;font-weight:800;text-align:center;padding:15px 12px 6px;line-height:1.15;min-height:52px;display:flex;align-items:center;justify-content:center}
-.rx-duvida-tag{display:block;font-size:15px;font-weight:700;color:#a35b00;text-transform:uppercase;letter-spacing:.04em}
-.rx-card-estrela{color:var(--rx-gol-gold);font-size:20px;text-align:center;font-weight:800;letter-spacing:.04em;padding-bottom:10px;margin-top:-8px}
+.rx-card-nome{font-size:42px;font-weight:800;text-align:center;padding:22px 16px 8px;line-height:1.15;min-height:76px;display:flex;align-items:center;justify-content:center}
+.rx-duvida-tag{display:block;font-size:22px;font-weight:700;color:#a35b00;text-transform:uppercase;letter-spacing:.04em}
+.rx-card-estrela{color:var(--rx-gol-gold);font-size:30px;text-align:center;font-weight:800;letter-spacing:.04em;padding-bottom:14px;margin-top:-10px}
 
-/* GOL/ASSIST em destaque -- pedido explícito do Renato repetido duas vezes
-   (2026-08-19, 5a e 6a rodadas): "ainda estão tímidos, pequenos". Pílula de
-   fundo colorida atrás do número (não só a cor do texto) pra dar o mesmo
-   tipo de impacto que o número grande do cedido já tinha. */
-.rx-card-goloassist{display:flex;gap:12px;padding:18px 18px 12px}
-.rx-card-goloassist>div{flex:1;text-align:center;padding:14px 4px;border-radius:14px;background:rgba(31,157,85,.14);display:flex;flex-direction:column;align-items:center}
-.rx-goloassist-num{font-size:64px;font-weight:900;color:var(--rx-good);line-height:1;font-variant-numeric:tabular-nums}
-.rx-goloassist-lbl{font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#3d6b4d;margin-top:3px}
+/* GOL/ASSIST em destaque -- pedido explícito do Renato repetido diversas
+   vezes: "ainda estão tímidos, pequenos". Pílula de fundo colorida atrás
+   do número (não só a cor do texto) pra dar o mesmo tipo de impacto que o
+   número grande do cedido já tinha. */
+.rx-card-goloassist{display:flex;gap:18px;padding:26px 26px 18px}
+.rx-card-goloassist>div{flex:1;text-align:center;padding:20px 6px;border-radius:20px;background:rgba(31,157,85,.14);display:flex;flex-direction:column;align-items:center}
+.rx-goloassist-num{font-size:96px;font-weight:900;color:var(--rx-good);line-height:1;font-variant-numeric:tabular-nums}
+.rx-goloassist-lbl{font-size:22px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#3d6b4d;margin-top:5px}
 
-.rx-card-block-title{background:var(--rx-block-bg);color:#fff;font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;text-align:center;padding:8px 4px}
-.rx-card-stats{padding:10px 20px 18px;font-size:19px}
-.rx-card-stat-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0}
-.rx-card-stat-row span:first-child{color:#5a5a5a;font-size:16px;text-transform:uppercase;letter-spacing:.02em}
+.rx-card-block-title{background:var(--rx-block-bg);color:#fff;font-size:23px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;text-align:center;padding:12px 6px}
+.rx-card-stats{padding:15px 30px 26px;font-size:28px}
+.rx-card-stat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0}
+.rx-card-stat-row span:first-child{color:#5a5a5a;font-size:23px;text-transform:uppercase;letter-spacing:.02em}
 .rx-card-stat-row span:last-child{font-weight:800;font-variant-numeric:tabular-nums}
 .rx-pill{border-radius:20px;padding:2px 12px}
 .rx-pill-good{background:rgba(31,157,85,.18);color:var(--rx-good)}
@@ -146,37 +156,38 @@
    só que sem quebrar o alinhamento do conjunto na posição real. ---- */
 .rx-cede-secao{
   background:linear-gradient(180deg,#241a08,#1a1206);
-  border-top:3px solid rgba(255,180,60,.35);
+  border-top:4px solid rgba(255,180,60,.35);
 }
 .rx-cede-topo-label{
-  background:rgba(255,180,60,.14);color:#ffcf7a;font-size:17px;font-weight:800;text-transform:uppercase;
-  letter-spacing:.06em;text-align:center;padding:13px 14px;
+  background:rgba(255,180,60,.14);color:#ffcf7a;font-size:25px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.06em;text-align:center;padding:19px 20px;
 }
-.rx-cede-topo-numeros{display:flex;justify-content:center;gap:18px;padding:18px 16px 20px}
+.rx-cede-topo-numeros{display:flex;justify-content:center;gap:26px;padding:26px 24px 30px}
 .rx-cede-topo-numeros>div{
   display:flex;flex-direction:column;align-items:center;flex:1;
-  background:rgba(255,80,80,.14);border-radius:16px;padding:12px 6px;border:1px solid rgba(255,120,120,.25);
+  background:rgba(255,80,80,.14);border-radius:22px;padding:18px 8px;border:1px solid rgba(255,120,120,.25);
 }
-.rx-cede-num{font-size:72px;font-weight:900;color:#ff6b6b;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 2px 10px rgba(255,60,60,.3)}
-.rx-cede-num-lbl{font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#ffcf7a;margin-top:5px}
+.rx-cede-num{font-size:104px;font-weight:900;color:#ff6b6b;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 2px 10px rgba(255,60,60,.3)}
+.rx-cede-num-lbl{font-size:23px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#ffcf7a;margin-top:7px}
 
-.rx-cede-vazio{padding:26px 16px}
-.rx-cede-vazio-txt{color:#b3b3a8;font-size:17px;text-align:center;padding-top:7px}
+.rx-cede-vazio{padding:38px 24px}
+.rx-cede-vazio-txt{color:#b3b3a8;font-size:25px;text-align:center;padding-top:10px}
 
 /* granulação: "quase ilegível" (Renato, 2026-08-19) -- salto grande aqui de propósito, não incremento. */
-.rx-cede-granular{border-top:1px dashed rgba(255,180,60,.25);padding:14px 14px 16px;display:flex;flex-direction:column;gap:14px}
-.rx-cede-evento{display:flex;align-items:center;gap:13px;background:rgba(0,0,0,.24);border-radius:12px;padding:12px 14px}
-.rx-cede-evento-escudo{width:32px;height:32px;object-fit:contain;flex-shrink:0}
+.rx-cede-granular{border-top:1px dashed rgba(255,180,60,.25);padding:20px 20px 24px;display:flex;flex-direction:column;gap:20px}
+.rx-cede-evento{display:flex;align-items:center;gap:19px;background:rgba(0,0,0,.24);border-radius:16px;padding:18px 20px}
+.rx-cede-evento-escudo{width:46px;height:46px;object-fit:contain;flex-shrink:0}
 .rx-cede-evento-foto{
-  width:56px;height:56px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#4a4a42;
-  display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:#d8d8cf;
+  width:80px;height:80px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#4a4a42;
+  display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:#d8d8cf;
 }
 .rx-cede-evento-foto img{width:100%;height:100%;object-fit:cover}
 .rx-cede-evento-info{min-width:0}
-.rx-cede-evento-nome{font-size:18px;font-weight:800;color:#f2ede0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rx-cede-evento-time{font-weight:400;color:#b0b0a5;font-size:15px}
-.rx-cede-evento-scouts{display:flex;flex-wrap:wrap;gap:9px;margin-top:6px;font-size:15px;color:#cfcfc4}
+.rx-cede-evento-nome{font-size:26px;font-weight:800;color:#f2ede0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rx-cede-evento-time{font-weight:400;color:#b0b0a5;font-size:22px}
+.rx-cede-evento-scouts{display:flex;flex-wrap:wrap;gap:13px;margin-top:9px;font-size:21px;color:#cfcfc4}
 .rx-cede-evento-scouts .rx-pill-gol{background:rgba(255,107,107,.22);color:#ffb3b3;font-weight:800;padding:2px 10px;border-radius:10px}
+.rx-cede-evento-mais{text-align:center;color:#b3b3a8;font-size:16px;padding-top:4px;font-style:italic}
 
 /* ---- campinho GERAL DA RODADA — pódio (1º/2º/3º) empilhado por posto ----
    Modelo A aprovado pelo Renato (2026-08-19): "disparado o melhor". Cards
@@ -222,3 +233,21 @@
 .rx-podio-bad span:first-child{color:#c23a3a}
 .rx-podio-num-lbl{font-size:21px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#8a8370}
 .rx-podio-vazio{padding:32px;text-align:center;color:var(--rx-ink-dim);font-size:24px;background:rgba(0,0,0,.18);border-radius:16px;width:1100px}
+
+/* ---- modal de card ampliado (clique em qualquer posto do confronto
+   individual, só essa tela) -- pedido do Renato (2026-08-20): "eu poder
+   dar zoom, ver os detalhes daquele card". Mostra o card no tamanho
+   natural (já grande/legível por si só), só que centralizado numa
+   janela própria em vez de espremido no campinho encolhido da tela. ---- */
+.rx-posto-clicavel{cursor:zoom-in}
+.rx-card-modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:24px}
+.rx-card-modal.rx-card-modal-aberto{display:flex}
+.rx-card-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.78)}
+.rx-card-modal-inner{position:relative;max-width:92vw;max-height:92vh;overflow:auto;border-radius:26px}
+.rx-card-modal-close{
+  position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:50%;
+  background:var(--gold,#ffd24d);color:#3a2e00;border:none;font-size:20px;font-weight:800;
+  cursor:pointer;z-index:2;box-shadow:0 4px 14px rgba(0,0,0,.4);
+}
+.rx-card-modal-content{display:flex}
+.rx-card-modal-content .rx-card{margin:0 auto}
