@@ -693,9 +693,17 @@
   // então o campinho inteiro encolhe MUITO em relação ao card gigante de
   // antes (760px/altura imprevisível) -- não precisa mais da altura
   // desacoplada gigante pra evitar colisão.
-  const RX_PITCH_W = 2600;
-  const RX_PITCH_H = Math.round(RX_PITCH_W * (105 / 68));
-  const RX_CARD_W = 320;
+  // 3a intervenção (2026-08-20): a altura seguindo a proporção real de
+  // campo (105/68) forçava a escala de tela a encolher demais pra caber na
+  // ALTURA disponível (que é sempre menor que a largura numa tela normal),
+  // mesmo com o card resumo já pequeno -- achado real: card renderizando a
+  // 36x51px na tela, ilegível de verdade (não era ilusão de ótica dessa
+  // vez). O card resumo agora tem altura FIXA e previsível (~460px, sem
+  // lista de tamanho variável), então dá pra desacoplar a altura do campo
+  // de novo e ajustar só pelo que o card realmente precisa.
+  const RX_PITCH_W = 2200;
+  const RX_PITCH_H = 4400;
+  const RX_CARD_W = 380;
   const RX_MARGIN_X = RX_CARD_W / 2 + 70;
   const RX_MARGIN_Y = 220;
   const RX_CANVAS_W = RX_PITCH_W + RX_MARGIN_X * 2;
@@ -817,7 +825,7 @@
       el.classList.add('rx-posto-clicavel');
       el.addEventListener('click', () => rxAbrirModalCard(el));
     });
-    rxAplicarEscalaTela('rxPitchScaleWrap', 'rxPitchAtivo');
+    rxAplicarEscalaTela('rxPitchScaleWrap', 'rxPitchAtivo', false);
   }
 
   /**
@@ -834,7 +842,7 @@
    * transform:scale, então o download (que desliga esse transform antes de
    * capturar, ver rxBaixarImagemDe) sai sempre em resolução cheia.
    */
-  function rxAplicarEscalaTela(wrapId, elId) {
+  function rxAplicarEscalaTela(wrapId, elId, respeitarAltura) {
     const wrap = document.getElementById(wrapId);
     const el = document.getElementById(elId);
     if (!wrap || !el || el.style.display === 'none' || !el.children.length) return;
@@ -850,9 +858,19 @@
     const naturalH = el.offsetHeight;
     if (!naturalW || !naturalH) return;
     const larguraDisponivel = wrap.clientWidth || naturalW;
-    const topoWrap = wrap.getBoundingClientRect().top;
-    const alturaDisponivel = Math.max(320, window.innerHeight - topoWrap - 24);
-    const escala = Math.min(1, larguraDisponivel / naturalW, alturaDisponivel / naturalH);
+    let escala = Math.min(1, larguraDisponivel / naturalW);
+    // No confronto individual, respeitar a ALTURA disponível força o card
+    // pequeno demais pra ler (achado real, 2026-08-20: 74x102px numa tela
+    // 1920x1080) -- a formação usa posição REAL do jogador em 3 faixas
+    // (ataque/meio/defesa), então não dá pra comprimir a altura sem
+    // sobrepor. "Card legível" venceu "zero rolagem" aqui: ajusta só pela
+    // LARGURA, aceita rolar um pouco na vertical. O campinho geral (mais
+    // compacto/canônico) continua ajustando nos dois eixos normalmente.
+    if (respeitarAltura) {
+      const topoWrap = wrap.getBoundingClientRect().top;
+      const alturaDisponivel = Math.max(320, window.innerHeight - topoWrap - 24);
+      escala = Math.min(escala, alturaDisponivel / naturalH);
+    }
     const larguraEscalada = naturalW * escala;
     const margemEsquerda = Math.max(0, (larguraDisponivel - larguraEscalada) / 2);
     el.style.transformOrigin = 'top left';
@@ -861,8 +879,8 @@
     wrap.style.height = `${Math.round(naturalH * escala)}px`;
   }
   window.addEventListener('resize', () => {
-    rxAplicarEscalaTela('rxPitchScaleWrap', 'rxPitchAtivo');
-    rxAplicarEscalaTela('rxPitchRodadaScaleWrap', 'rxPitchRodada');
+    rxAplicarEscalaTela('rxPitchScaleWrap', 'rxPitchAtivo', false);
+    rxAplicarEscalaTela('rxPitchRodadaScaleWrap', 'rxPitchRodada', true);
   });
 
   /** Modal de card ampliado (clique em qualquer posto do confronto individual) -- monta o card COMPLETO (rxCardUnificado) sob demanda a partir do registro, já que o campinho em si só desenha o resumo. */
@@ -1162,7 +1180,7 @@
         </div>
       </div>
     `;
-    rxAplicarEscalaTela('rxPitchRodadaScaleWrap', 'rxPitchRodada');
+    rxAplicarEscalaTela('rxPitchRodadaScaleWrap', 'rxPitchRodada', true);
     document.getElementById('rxRodadaWindowInput').addEventListener('change', (e) => {
       const n = Math.max(1, Number(e.target.value) || 5);
       rxRenderRodada(n, respeitarMando);
