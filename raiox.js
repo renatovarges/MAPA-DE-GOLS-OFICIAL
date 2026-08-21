@@ -72,6 +72,7 @@
   const MAX_MEIO = 1;
   const ORDEM_DEFESA = { 'LAT-ESQ': 0, 'ZAG': 1, 'LAT-DIR': 2 };
   const ORDEM_ATAQUE = { 'PONTA-ESQ': 0, 'CENTROAVANTE': 1, 'PONTA-DIR': 2 };
+  const ORDEM_MEIO = { 'MEI': 0, 'VOL': 1 };
 
   // -----------------------------------------------------------------------
   // Motor de cálculo.
@@ -108,16 +109,6 @@
     return porJogador;
   }
 
-  function rxContarPresencas(partidasFiltradas) {
-    const porJogador = new Map();
-    for (const m of partidasFiltradas) {
-      for (const id of m.presentes || []) {
-        porJogador.set(id, (porJogador.get(id) || 0) + 1);
-      }
-    }
-    return porJogador;
-  }
-
   /**
    * Cedido narrado: por balde, os TOTAIS (gol/assistência em destaque, mais
    * os outros scouts) somados na janela filtrada, MAIS a lista de eventos
@@ -149,35 +140,15 @@
     return porBalde;
   }
 
+  // Critério EXATO confirmado pelo Renato (2026-08-21) pra decidir quem
+  // representa um balde quando 2+ jogadores do mesmo time disputam a mesma
+  // posição de origem: mais scouts ofensivos conquistados na janela
+  // filtrada, nessa ordem. Empate exato nos 3 -> os dois entram.
   const RX_CRITERIOS_DESEMPATE = ["gol", "assistencia", "finalizacoes"];
 
-  /**
-   * Ranqueia pela PRODUÇÃO TOTAL na janela (gol->assistência->finalização),
-   * não mais por média/jogo com corte de 50%. Achado real (2026-08-19,
-   * questionado pelo Renato): o corte de presença original fazia um titular
-   * de verdade (2 gols reais, só não bateu 3 de 5 jogos por rotação/lesão)
-   * perder pra reservas com ZERO produção, porque não-elegível virava
-   * -Infinity em TODOS os critérios -- pior que qualquer sinal real, por
-   * menor que fosse. "Amostra curta" agora é só informativo (mostrado no
-   * card), nunca derruba quem realmente produziu.
-   */
-  function rxOrdenarPorDesempate(candidatos, presencas, totalJogosJanela) {
-    const minimoPresenca = Math.min(2, totalJogosJanela) || 1;
-    const withMeta = candidatos.map((c) => {
-      const jogosPresente = presencas.get(c.jogadorId) || 0;
-      const elegivel = jogosPresente >= minimoPresenca;
-      return Object.assign({}, c, { jogosPresente, elegivel });
-    });
-    withMeta.sort((a, b) => {
-      for (const criterio of RX_CRITERIOS_DESEMPATE) {
-        const diff = (b[criterio] || 0) - (a[criterio] || 0);
-        if (diff !== 0) return diff;
-      }
-      // empate real na produção -- desempata por quem jogou mais (mais confiável), nunca zera quem produziu.
-      if (a.jogosPresente !== b.jogosPresente) return b.jogosPresente - a.jogosPresente;
-      return 0;
-    });
-    return withMeta;
+  /** true se dois jogadores empataram em TODOS os critérios de desempate. */
+  function rxMesmaProducao(a, b) {
+    return RX_CRITERIOS_DESEMPATE.every((crit) => (a[crit] || 0) === (b[crit] || 0));
   }
 
   /** slot dos prováveis -> {grupo: ataque/meio/defesa, balde: onde bater o cedido}. */
@@ -187,7 +158,13 @@
     if (s.startsWith("GOL")) return null;
     if (s.startsWith("ZAG")) return { grupo: 'defesa', balde: 'ZAG' };
     if (s.startsWith("LAT")) return { grupo: 'defesa', balde: s.endsWith("R") || s.includes("DIR") ? "LAT-DIR" : "LAT-ESQ" };
-    if (s.startsWith("VOL") || s.startsWith("MEI")) return { grupo: 'meio', balde: 'MEI' };
+    // Volante e meia viram baldes DIFERENTES (2026-08-21, pedido do
+    // Renato): antes competiam pelo mesmo posto único, e um volante
+    // marcador podia "esconder" um meia de criação de verdade (achado
+    // real: Oliva, volante, tirou o Neymar do posto só por ter scout
+    // levemente melhor na janela -- os dois são coisas bem diferentes).
+    if (s.startsWith("VOL")) return { grupo: 'meio', balde: 'VOL' };
+    if (s.startsWith("MEI")) return { grupo: 'meio', balde: 'MEI' };
     if (s.startsWith("ATA")) {
       if (s.endsWith("L")) return { grupo: 'ataque', balde: 'PONTA-ESQ' };
       if (s.endsWith("R")) return { grupo: 'ataque', balde: 'PONTA-DIR' };
@@ -208,7 +185,7 @@
       zagueiro: { grupo: 'defesa', balde: 'ZAG' },
       'lateral-esquerdo': { grupo: 'defesa', balde: 'LAT-ESQ' },
       'lateral-direito': { grupo: 'defesa', balde: 'LAT-DIR' },
-      volante: { grupo: 'meio', balde: 'MEI' },
+      volante: { grupo: 'meio', balde: 'VOL' },
       meia: { grupo: 'meio', balde: 'MEI' },
       'atacante-area': { grupo: 'ataque', balde: 'CENTROAVANTE' },
       'ponta-esquerda': { grupo: 'ataque', balde: 'PONTA-ESQ' },
@@ -237,12 +214,16 @@
   }
 
   /**
-   * Monta os POSTOS da formação real: ataque e defesa vêm 1:1 do slot exato
-   * dos prováveis (cada ATA-L/ATA-C/ATA-R/LAT-L/ZAG/LAT-R já é uma pessoa
-   * distinta, sem disputa); meio-campo (meia+volante juntos) é ranqueado
-   * pelos scouts ofensivos e cortado no topo 1-2 -- pedido do Renato depois
-   * de ver que "3 meias sempre" lotava demais quando a formação tinha mais
-   * gente ali do que valia mostrar.
+   * Monta os POSTOS da formação real, um balde por vez. Cada jogador entra
+   * pela posição de ORIGEM dele (acervo); slot tático do PDC daquele jogo
+   * só serve de fallback pra quem não está no acervo, e pro cálculo do
+   * CEDIDO (ver baldeCede abaixo). Quando 2+ jogadores do time caem no
+   * MESMO balde de origem (ex.: Vitor Roque x Flaco López, os dois
+   * "atacante-área" no Palmeiras) -- critério EXATO confirmado pelo Renato
+   * (2026-08-21): entra quem tem mais scouts ofensivos conquistados na
+   * janela filtrada, na ordem 1) gol, 2) assistência, 3) finalização;
+   * empate exato nos 3 critérios -> os dois entram. ZAG sempre comporta 2
+   * (back four, não é disputa de identidade, os dois são titulares reais).
    */
   function rxMontarConfronto(matchesA, matchesB, { mandoA = null, ultimosN = 5, teamAProvaveis = null, maxMeio = MAX_MEIO, posicoesGranulares = null } = {}) {
     const mandoB = mandoA === "casa" ? "fora" : mandoA === "fora" ? "casa" : null;
@@ -250,45 +231,17 @@
     const partidasB = rxFiltrarPartidas(matchesB, { mando: mandoB, ultimosN });
 
     const conquistaA = rxAgregarConquista(partidasA);
-    const presencasA = rxContarPresencas(partidasA);
     const cedeB = rxCedeNarradoPorBalde(partidasB);
 
-    // 1a passada: junta origem (acervo) e slot tático REAL daquele jogo pra
-    // cada jogador. `alinhado` = os dois concordam (ou não há origem
-    // cadastrada) -- ninguém "roubou" o posto de outro.
     const candidatos = [];
     for (const p of (teamAProvaveis && teamAProvaveis.players) || []) {
       if (p.isCoach) continue;
       const labelCanonico = posicoesGranulares && posicoesGranulares[String(p.id)];
       const infoSlot = rxInfoDoSlot(p.slot);
       const infoCanonico = labelCanonico && rxInfoDaPosicaoCanonica(labelCanonico);
-      // posição de origem tem prioridade; slot do PDC (tático, daquele jogo
-      // específico) só entra como fallback pra quem não está no acervo.
       const info = infoCanonico || infoSlot;
       if (!info) continue;
-      const alinhado = !infoCanonico || !infoSlot || infoCanonico.balde === infoSlot.balde;
-      candidatos.push({ p, info, infoSlot, alinhado });
-    }
-    // 2a passada: cada balde de ataque/lateral tem 1 titular NATURAL no
-    // campinho (ZAG já sai com 2 -- back four). Se a posição de ORIGEM
-    // colocar 2+ jogadores no mesmo balde (ex.: Vitor Roque x Flaco López,
-    // Palmeiras, os dois "atacante-área" de origem, só um deles é o
-    // centroavante real da escalação da vez) -- ninguém é descartado: quem
-    // está REALMENTE jogando ali hoje (alinhado=true) fica com o posto
-    // natural, o outro cai pra fileira reservada do rxCalcularPosicoes
-    // (mesmo card, mesmo rótulo de origem, só numa posição extra no
-    // campinho). Duas abordagens já tentadas e rejeitadas: reclassificar o
-    // perdedor pro slot tático real (ex.: "Vitinho" virando "Meia" --
-    // achado real, 2026-08-20, ficou estranho) e simplesmente descartar o
-    // perdedor (achado real, 2026-08-20: escondia produção real, ex. Flaco
-    // López com gol no recorte sumindo do campinho). Mostrar sempre, com o
-    // rótulo certo, é o único critério que não perde informação nem
-    // confunde quem conhece o jogador.
-    candidatos.sort((a, b) => (b.alinhado ? 1 : 0) - (a.alinhado ? 1 : 0));
-    const postosAtaque = [], postosDefesa = [], candidatosMeio = [];
-    for (const c of candidatos) {
-      const info = c.info;
-      const jogador = rxJogadorComConquista(c.p, conquistaA, info.balde);
+      const jogador = rxJogadorComConquista(p, conquistaA, info.balde);
       // baldeCede: balde usado SÓ pra buscar o cedido do rival -- sempre o
       // slot tático REAL daquele jogo (não a origem). Achado real
       // (2026-08-20): Carbonero, ponta-direita de origem mas escalado
@@ -297,16 +250,40 @@
       // que o Atlético-MG cede no lado ESQUERDO, onde ele realmente ia
       // jogar. O rótulo/posição no campinho continua sendo a origem
       // (identidade do jogador); só o cedido precisa ser do lado real.
-      const baldeCede = c.infoSlot ? c.infoSlot.balde : info.balde;
-      if (info.grupo === 'ataque') postosAtaque.push({ balde: info.balde, baldeCede, jogador });
-      else if (info.grupo === 'defesa') postosDefesa.push({ balde: info.balde, baldeCede, jogador });
-      else candidatosMeio.push(jogador);
+      const baldeCede = infoSlot ? infoSlot.balde : info.balde;
+      candidatos.push({ balde: info.balde, baldeCede, grupo: info.grupo, jogador });
     }
+
+    // Agrupa por balde, ranqueia por produção, corta na capacidade (1 por
+    // balde, 2 pra ZAG) -- exceto no campinho GERAL da rodada
+    // (maxMeio=Infinity), onde ninguém é cortado aqui: cada candidato de
+    // cada time precisa competir no ranking NACIONAL entre todos os times.
+    const porBalde = new Map();
+    for (const c of candidatos) {
+      if (!porBalde.has(c.balde)) porBalde.set(c.balde, []);
+      porBalde.get(c.balde).push(c);
+    }
+    const selecionados = [];
+    for (const [balde, grupo] of porBalde) {
+      grupo.sort((a, b) => {
+        for (const crit of RX_CRITERIOS_DESEMPATE) {
+          const diff = (b.jogador[crit] || 0) - (a.jogador[crit] || 0);
+          if (diff !== 0) return diff;
+        }
+        return 0;
+      });
+      const capacidade = maxMeio === Infinity ? Infinity : (balde === 'ZAG' ? 2 : 1);
+      let corte = Math.min(capacidade, grupo.length);
+      while (corte < grupo.length && rxMesmaProducao(grupo[corte - 1].jogador, grupo[corte].jogador)) corte++;
+      selecionados.push(...grupo.slice(0, corte));
+    }
+
+    const postosAtaque = selecionados.filter((c) => c.grupo === 'ataque').map((c) => ({ balde: c.balde, baldeCede: c.baldeCede, jogador: c.jogador }));
+    const postosDefesa = selecionados.filter((c) => c.grupo === 'defesa').map((c) => ({ balde: c.balde, baldeCede: c.baldeCede, jogador: c.jogador }));
+    const postosMeio = selecionados.filter((c) => c.grupo === 'meio').map((c) => ({ balde: c.balde, baldeCede: c.baldeCede, jogador: c.jogador }));
     postosAtaque.sort((a, b) => (ORDEM_ATAQUE[a.balde] ?? 9) - (ORDEM_ATAQUE[b.balde] ?? 9));
     postosDefesa.sort((a, b) => (ORDEM_DEFESA[a.balde] ?? 9) - (ORDEM_DEFESA[b.balde] ?? 9));
-    const postosMeio = rxOrdenarPorDesempate(candidatosMeio, presencasA, partidasA.length)
-      .slice(0, maxMeio)
-      .map((jogador) => ({ balde: 'MEI', baldeCede: 'MEI', jogador }));
+    postosMeio.sort((a, b) => (ORDEM_MEIO[a.balde] ?? 9) - (ORDEM_MEIO[b.balde] ?? 9));
 
     const anexarCede = (postos) => postos.map((posto) => Object.assign({}, posto, { cede: cedeB.get(posto.baldeCede || posto.balde) || null }));
     // Posto sem NADA a mostrar (zero conquistado E zero cedido nos 4
@@ -744,10 +721,10 @@
   // juntos, só aumentar o card sozinho não reduz o vão vazio no meio.
   const RX_R_COORDS = {
     'PONTA-ESQ': { x: 15, y: 23 }, 'CENTROAVANTE': { x: 50, y: 18 }, 'PONTA-DIR': { x: 85, y: 23 },
-    'MEI': { x: 50, y: 50 },
+    'MEI': { x: 35, y: 48 }, 'VOL': { x: 65, y: 48 },
     'LAT-ESQ': { x: 15, y: 72 }, 'ZAG': { x: 50, y: 80 }, 'LAT-DIR': { x: 85, y: 72 },
   };
-  const RX_R_ORDEM_BALDES = ['PONTA-ESQ', 'CENTROAVANTE', 'PONTA-DIR', 'MEI', 'LAT-ESQ', 'ZAG', 'LAT-DIR'];
+  const RX_R_ORDEM_BALDES = ['PONTA-ESQ', 'CENTROAVANTE', 'PONTA-DIR', 'MEI', 'VOL', 'LAT-ESQ', 'ZAG', 'LAT-DIR'];
   // Card 850->1000 (4a intervenção, 2026-08-19): "puxe mais a altura,
   // acompanhe com fonte" fez o nome do jogador truncar com "..." -- o
   // card não cresceu em LARGURA junto com a fonte/foto/medalha maiores,
@@ -818,18 +795,20 @@
    * lado (não empilhados) porque uma linha de 4 real quase sempre tem 2
    * zagueiros titulares -- ler como uma zaga de verdade, não uma pilha.
    */
-  // Cada par de âncoras foi verificado pra ficar longe o bastante em X
-  // (>=27%, folga sobre o mínimo de 25.7% = RX_CARD_W/(RX_PITCH_W-RX_CARD_W))
-  // OU em Y (>=33% do range, folga sobre RX_CARD_H_SEGURA) -- achado real
-  // (2026-08-20): um par "quase no limite" (MEI a 36% de ZAG, precisa de
-  // 38%) fazia o empurrão de colisão disparar sem necessidade e os dois
-  // zagueiros saíam de uma linha reta lado a lado pra um zigue-zague torto.
-  // Mexer numa âncora aqui exige reconferir a distância pros vizinhos.
+  // Cada par de âncoras foi verificado por SCRIPT (não de cabeça -- achado
+  // real, 2026-08-20 e 2026-08-21: conta de cabeça errou 2x) pra ficar
+  // longe o bastante em X (>=25.7% = RX_CARD_W/(RX_PITCH_W-RX_CARD_W)) OU
+  // em Y (>=33% do range = RX_CARD_H_SEGURA/(RX_PITCH_H-RX_CARD_H)).
+  // Volante ganhou balde próprio (2026-08-21, separado de Meia) -- os dois
+  // ficam lado a lado na faixa do meio-campo, mesmo tratamento visual da
+  // zaga. Mexer numa âncora aqui exige reconferir a distância pros
+  // vizinhos (script em scripts/_check_anchors.py referencia essa lógica).
   const RX_ANCORA_CONFRONTO = {
     'CENTROAVANTE': [{ x: 50, y: 8 }],
     'PONTA-ESQ': [{ x: 14, y: 22 }],
     'PONTA-DIR': [{ x: 86, y: 22 }],
-    'MEI': [{ x: 50, y: 48 }],
+    'MEI': [{ x: 35, y: 55 }],
+    'VOL': [{ x: 65, y: 55 }],
     'LAT-ESQ': [{ x: 4, y: 80 }],
     'ZAG': [{ x: 35, y: 88 }, { x: 65, y: 88 }],
     'LAT-DIR': [{ x: 96, y: 80 }],
