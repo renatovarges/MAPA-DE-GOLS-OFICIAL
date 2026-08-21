@@ -290,17 +290,26 @@
       if ((ocupantes.get(info.balde) || 0) >= capacidade(info.balde)) continue;
       ocupantes.set(info.balde, (ocupantes.get(info.balde) || 0) + 1);
       const jogador = rxJogadorComConquista(c.p, conquistaA, info.balde);
-      if (info.grupo === 'ataque') postosAtaque.push({ balde: info.balde, jogador });
-      else if (info.grupo === 'defesa') postosDefesa.push({ balde: info.balde, jogador });
+      // baldeCede: balde usado SÓ pra buscar o cedido do rival -- sempre o
+      // slot tático REAL daquele jogo (não a origem). Achado real
+      // (2026-08-20): Carbonero, ponta-direita de origem mas escalado
+      // ATA-L (esquerda) contra o Atlético-MG, aparecia com "rival cedeu
+      // 0/0" -- porque a busca checava o lado DIREITO (origem dele), só
+      // que o Atlético-MG cede no lado ESQUERDO, onde ele realmente ia
+      // jogar. O rótulo/posição no campinho continua sendo a origem
+      // (identidade do jogador); só o cedido precisa ser do lado real.
+      const baldeCede = c.infoSlot ? c.infoSlot.balde : info.balde;
+      if (info.grupo === 'ataque') postosAtaque.push({ balde: info.balde, baldeCede, jogador });
+      else if (info.grupo === 'defesa') postosDefesa.push({ balde: info.balde, baldeCede, jogador });
       else candidatosMeio.push(jogador);
     }
     postosAtaque.sort((a, b) => (ORDEM_ATAQUE[a.balde] ?? 9) - (ORDEM_ATAQUE[b.balde] ?? 9));
     postosDefesa.sort((a, b) => (ORDEM_DEFESA[a.balde] ?? 9) - (ORDEM_DEFESA[b.balde] ?? 9));
     const postosMeio = rxOrdenarPorDesempate(candidatosMeio, presencasA, partidasA.length)
       .slice(0, maxMeio)
-      .map((jogador) => ({ balde: 'MEI', jogador }));
+      .map((jogador) => ({ balde: 'MEI', baldeCede: 'MEI', jogador }));
 
-    const anexarCede = (postos) => postos.map((posto) => Object.assign({}, posto, { cede: cedeB.get(posto.balde) || null }));
+    const anexarCede = (postos) => postos.map((posto) => Object.assign({}, posto, { cede: cedeB.get(posto.baldeCede || posto.balde) || null }));
     // Posto sem NADA a mostrar (zero conquistado E zero cedido nos 4
     // números) não aparece no campinho -- pedido explícito do Renato
     // (2026-08-20): um card inteiro em branco não ajuda em nada, só
@@ -529,9 +538,15 @@
   // -----------------------------------------------------------------------
   // Renderização.
   // -----------------------------------------------------------------------
-  const RX_LINHAS_STAT = [
-    ['Finaliz.', 'finalizacoes'], ['xG', 'xg'], ['xA', 'xa'], ['G. chance', 'grandeChanceCriada'],
-  ];
+  // Só finalizações -- xG/xA/grande chance tirados de propósito (pedido do
+  // Renato, 2026-08-20): "não mais XG, XGa e grandes chances", quer só os
+  // scouts diretos (gol/assistência/finalização), cedidos e conquistados.
+  const RX_LINHAS_STAT = [['Finalizações', 'finalizacoes']];
+
+  /** Verde quando > 0 (oportunidade real), vermelho quando zero (rival nunca cedeu ali) -- mesmo critério do card resumo do campinho. */
+  function rxClasseNumCede(v) {
+    return 'rx-cede-num' + (v > 0 ? ' rx-cede-num-positivo' : '');
+  }
 
   /**
    * Card ÚNICO por jogador (produção + cedido empilhados, não mais lado a
@@ -567,22 +582,22 @@
       const eventosTruncados = eventosOrdenados.length - RX_CEDE_EVENTOS_MAX;
       const eventosHtml = eventosOrdenados.slice(0, RX_CEDE_EVENTOS_MAX).map((ev) => `
         <div class="rx-cede-evento">
-          <img class="rx-cede-evento-escudo" src="${rxEscudoUrl(ev.timeAdversario)}" alt="${rxTeamName(ev.timeAdversario)}" />
+          <div class="rx-cede-evento-escudo-bg"><img class="rx-cede-evento-escudo" src="${rxEscudoUrl(ev.timeAdversario)}" alt="${rxTeamName(ev.timeAdversario)}" /></div>
           <div class="rx-cede-evento-foto">${rxFoto(ev.jogadorId, ev.nome, fotosIds)}</div>
           <div class="rx-cede-evento-info">
             <div class="rx-cede-evento-nome">${ev.nome || '—'} <span class="rx-cede-evento-time">(${rxTeamName(ev.timeAdversario)})</span></div>
             <div class="rx-cede-evento-scouts">
               ${ev.gol ? `<span class="rx-pill rx-pill-gol">${ev.gol} gol${ev.gol > 1 ? 's' : ''}</span>` : ''}
               ${ev.assistencia ? `<span class="rx-pill rx-pill-gol">${ev.assistencia} assist.</span>` : ''}
-              <span>Final. ${ev.finalizacoes}</span><span>xG ${rxFmt(ev.xg)}</span><span>xA ${rxFmt(ev.xa)}</span><span>G.chance ${ev.grandeChanceCriada}</span>
+              <span>Final. ${ev.finalizacoes}</span>
             </div>
           </div>
         </div>`).join('');
       cedeHtml = `
         <div class="rx-cede-topo-label">Cedido pelo rival ${janelaLabel}</div>
         <div class="rx-cede-topo-numeros">
-          <div><span class="rx-cede-num">${cede.gol}</span><span class="rx-cede-num-lbl">Gol${cede.gol === 1 ? '' : 's'}</span></div>
-          <div><span class="rx-cede-num">${cede.assistencia}</span><span class="rx-cede-num-lbl">Assist.</span></div>
+          <div><span class="${rxClasseNumCede(cede.gol)}">${cede.gol}</span><span class="rx-cede-num-lbl">Gol${cede.gol === 1 ? '' : 's'}</span></div>
+          <div><span class="${rxClasseNumCede(cede.assistencia)}">${cede.assistencia}</span><span class="rx-cede-num-lbl">Assist.</span></div>
         </div>
         <div class="rx-cede-granular">${eventosHtml}${eventosTruncados > 0 ? `<div class="rx-cede-evento-mais">+${eventosTruncados} outro${eventosTruncados > 1 ? 's' : ''} evento${eventosTruncados > 1 ? 's' : ''} nos totais acima</div>` : ''}</div>`;
     }
@@ -592,11 +607,11 @@
         <div class="rx-card-foto" style="${temFoto ? '' : 'background:#cfcabb'}">${rxFoto(c.jogadorId, c.nome, fotosIds)}</div>
         <div class="rx-card-nome">${c.nome || '—'}${c.duvida ? ' <span class="rx-duvida-tag">dúvida</span>' : ''}</div>
         ${isDestaque ? '<div class="rx-card-estrela">★ DESTAQUE DA RODADA</div>' : ''}
+        <div class="rx-card-block-title rx-card-block-title-produz">Conquistou</div>
         <div class="rx-card-goloassist">
           <div><span class="rx-goloassist-num">${c.gol || 0}</span><span class="rx-goloassist-lbl">Gol</span></div>
           <div><span class="rx-goloassist-num">${c.assistencia || 0}</span><span class="rx-goloassist-lbl">Assist.</span></div>
         </div>
-        <div class="rx-card-block-title">Outros scouts</div>
         <div class="rx-card-stats">${outrosStats}</div>
         <div class="rx-cede-secao">${cedeHtml}</div>
       </div>`;
