@@ -269,26 +269,25 @@
       const alinhado = !infoCanonico || !infoSlot || infoCanonico.balde === infoSlot.balde;
       candidatos.push({ p, info, infoSlot, alinhado });
     }
-    // 2a passada: cada balde de ataque/lateral tem 1 titular fixo no
-    // campinho (ZAG suporta 2 -- back four; MEI é ranqueado à parte, sem
-    // limite aqui). Se a posição de ORIGEM colocar 2+ jogadores no mesmo
-    // balde (achado real, 2026-08-20: um ponta de origem escalado no
-    // meio-campo essa rodada colide com o ponta real da vez, ex.
-    // Vitinho x Johan Carbonero, Internacional) -- processa quem está
-    // REALMENTE jogando ali hoje primeiro (alinhado=true), garantindo que
-    // ele fique com o posto natural. Quem perde a disputa simplesmente
-    // fica de fora dessa exibição -- pedido do Renato (2026-08-20):
-    // reclassificar o perdedor pro slot tático real (ex.: "Vitinho" virar
-    // "Meia") ficava estranho pra quem conhece o jogador. Melhor não
-    // mostrar do que mostrar num rótulo genérico que não é a cara dele.
+    // 2a passada: cada balde de ataque/lateral tem 1 titular NATURAL no
+    // campinho (ZAG já sai com 2 -- back four). Se a posição de ORIGEM
+    // colocar 2+ jogadores no mesmo balde (ex.: Vitor Roque x Flaco López,
+    // Palmeiras, os dois "atacante-área" de origem, só um deles é o
+    // centroavante real da escalação da vez) -- ninguém é descartado: quem
+    // está REALMENTE jogando ali hoje (alinhado=true) fica com o posto
+    // natural, o outro cai pra fileira reservada do rxCalcularPosicoes
+    // (mesmo card, mesmo rótulo de origem, só numa posição extra no
+    // campinho). Duas abordagens já tentadas e rejeitadas: reclassificar o
+    // perdedor pro slot tático real (ex.: "Vitinho" virando "Meia" --
+    // achado real, 2026-08-20, ficou estranho) e simplesmente descartar o
+    // perdedor (achado real, 2026-08-20: escondia produção real, ex. Flaco
+    // López com gol no recorte sumindo do campinho). Mostrar sempre, com o
+    // rótulo certo, é o único critério que não perde informação nem
+    // confunde quem conhece o jogador.
     candidatos.sort((a, b) => (b.alinhado ? 1 : 0) - (a.alinhado ? 1 : 0));
-    const capacidade = (balde) => (balde === 'ZAG' ? 2 : balde === 'MEI' ? Infinity : 1);
-    const ocupantes = new Map();
     const postosAtaque = [], postosDefesa = [], candidatosMeio = [];
     for (const c of candidatos) {
       const info = c.info;
-      if ((ocupantes.get(info.balde) || 0) >= capacidade(info.balde)) continue;
-      ocupantes.set(info.balde, (ocupantes.get(info.balde) || 0) + 1);
       const jogador = rxJogadorComConquista(c.p, conquistaA, info.balde);
       // baldeCede: balde usado SÓ pra buscar o cedido do rival -- sempre o
       // slot tático REAL daquele jogo (não a origem). Achado real
