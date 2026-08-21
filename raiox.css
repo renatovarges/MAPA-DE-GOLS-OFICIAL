@@ -109,6 +109,14 @@
     linear-gradient(180deg, var(--rx-pitch-green-a), var(--rx-pitch-green-b));
 }
 .rx-pitch-svg{position:absolute;inset:0;width:100%;height:100%}
+/* Marca d'água do TCC no meio do campinho -- pedido do Renato (2026-08-21),
+   grande e centralizada, bem transparente pra não brigar com os cards por
+   cima (z-index natural: fica ANTES dos postos no DOM, então pinta
+   embaixo). */
+.rx-pitch-watermark{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:72%;height:auto;opacity:.09;pointer-events:none;user-select:none;
+}
 /* transform exato (ancorado no centro do CARD, não do par) vem inline por posto, calculado em JS. */
 .rx-posto{position:absolute;z-index:1}
 .rx-posto:hover{z-index:5}

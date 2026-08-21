@@ -694,13 +694,15 @@
   const RX_PITCH_W = 2200;
   const RX_PITCH_H = 2600;
   const RX_CARD_W = 450;
-  const RX_MARGIN_X = RX_CARD_W / 2 + 70;
-  // 340 (era 220, 2026-08-20): rótulo do posto mais ao topo (ex.:
-  // "CENTROAVANTE") estava encostando na linha do campinho -- o bloco
-  // rótulo+card é centralizado (translate -50%,-50%), então metade da sua
-  // altura precisa caber ACIMA da linha do gramado pros postos perto de
-  // y=0.
-  const RX_MARGIN_Y = 340;
+  // Margem lateral reduzida bem além de RX_CARD_W/2 (2026-08-21, 3a rodada
+  // -- "falta reduzir dos lados") -- só é seguro porque nenhuma âncora real
+  // fica perto de x=0%/100% (a mais extrema é x=4%, LAT-ESQ), então o
+  // mapeamento encolhido de rxCalcularPosicoes já dá folga de sobra sem
+  // precisar reservar meio card inteiro de margem. Testado por medição
+  // real no navegador antes de fechar (não de cabeça -- essa conta já
+  // errou 2x nessa sessão).
+  const RX_MARGIN_X = 60;
+  const RX_MARGIN_Y = 30;
   const RX_CANVAS_W = RX_PITCH_W + RX_MARGIN_X * 2;
   const RX_CANVAS_H = RX_PITCH_H + RX_MARGIN_Y * 2;
 
@@ -735,8 +737,12 @@
   const RX_R_CARD_W = 1100;
   const RX_R_PITCH_W = 4550;
   const RX_R_PITCH_H = 4169;
-  const RX_R_MARGIN_X = RX_R_CARD_W / 2 + 90;
-  const RX_R_MARGIN_Y = 480;
+  // Margem lateral reduzida bem além de RX_R_CARD_W/2 (2026-08-21, 3a
+  // rodada -- "falta reduzir dos lados") -- segura porque a âncora mais
+  // extrema (PONTA-ESQ/LAT-ESQ, x=15%) já cai bem afastada da borda por
+  // conta própria. Testado por medição real no navegador antes de fechar.
+  const RX_R_MARGIN_X = 100;
+  const RX_R_MARGIN_Y = 100;
   const RX_R_CANVAS_W = RX_R_PITCH_W + RX_R_MARGIN_X * 2;
   const RX_R_CANVAS_H = RX_R_PITCH_H + RX_R_MARGIN_Y * 2;
 
@@ -924,7 +930,7 @@
     const gramadoH = Math.max(RX_PITCH_H, menorBaseCard - RX_MARGIN_Y + 40);
     const canvasH = RX_MARGIN_Y + gramadoH + RX_MARGIN_Y;
     html += `<div class="rx-pitch-canvas" style="width:${RX_CANVAS_W}px;height:${canvasH}px">`;
-    html += `<div class="rx-pitch-gramado" style="left:${RX_MARGIN_X}px;top:${RX_MARGIN_Y}px;width:${RX_PITCH_W}px;height:${gramadoH}px">${rxPitchMarkingsSvg()}</div>`;
+    html += `<div class="rx-pitch-gramado" style="left:${RX_MARGIN_X}px;top:${RX_MARGIN_Y}px;width:${RX_PITCH_W}px;height:${gramadoH}px">${rxPitchMarkingsSvg()}<img class="rx-pitch-watermark" src="TCCBRANCOTRANSPARENTE.png" alt="" /></div>`;
     posicoes.forEach((posicao) => {
       html += rxRenderPosto(posicao, fotosIds, janelaLabel);
     });
@@ -1286,7 +1292,7 @@
           <div class="rx-pitch-head"><span class="rx-team-name">Campinho geral da rodada</span></div>
           <div class="rx-pitch-sub">melhores oportunidades ofensivas da rodada, por posição</div>
           <div class="rx-pitch-canvas" style="width:${RX_R_CANVAS_W}px;height:${RX_R_CANVAS_H}px">
-            <div class="rx-pitch-gramado" style="left:${RX_R_MARGIN_X}px;top:${RX_R_MARGIN_Y}px;width:${RX_R_PITCH_W}px;height:${RX_R_PITCH_H}px">${rxPitchMarkingsSvg()}</div>
+            <div class="rx-pitch-gramado" style="left:${RX_R_MARGIN_X}px;top:${RX_R_MARGIN_Y}px;width:${RX_R_PITCH_W}px;height:${RX_R_PITCH_H}px">${rxPitchMarkingsSvg()}<img class="rx-pitch-watermark" src="TCCBRANCOTRANSPARENTE.png" alt="" /></div>
             ${postosHtml}
           </div>
         </div>
