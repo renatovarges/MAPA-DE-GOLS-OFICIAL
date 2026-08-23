@@ -1,10 +1,10 @@
 {
   "teamKey": "cruzeiro",
-  "geradoEm": "2026-08-22T09:25:53.346Z",
+  "geradoEm": "2026-08-23T09:26:43.388Z",
   "ataca": [
     "O Cruzeiro registra cerca de 9 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada.",
-    "No Cruzeiro, o atacante de área registra cerca de 2 finalizações por jogo. É uma posição a observar na escalação.",
-    "No Cruzeiro, passes do meia originam cerca de 3 finalizações por jogo."
+    "No Cruzeiro, passes do meia originam cerca de 3 finalizações por jogo.",
+    "No Cruzeiro, o meia registra cerca de 2 finalizações por jogo. É uma posição a observar na escalação."
   ],
   "evidenciasAtaca": [
     {
@@ -12,21 +12,17 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "posicao|atacante-area|",
+      "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "assistentePosicao|meia|",
+      "chave": "posicao|meia|",
       "confianca": "padrao-consolidado"
     }
   ],
   "evidenciasSofre": [
     {
-      "chave": "ladoDaJogada|esquerda|meia",
-      "confianca": "padrao-consolidado"
-    },
-    {
-      "chave": "posicao|meia|",
+      "chave": "ladoDaJogada|esquerda|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
@@ -34,14 +30,18 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|dentro-da-area|atacante-area",
+      "chave": "posicao|meia|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|fora-da-area|meia",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
-    "O Cruzeiro cede cerca de 4 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o meia adversário é quem mais finaliza nesses lances.",
-    "O Cruzeiro cede cerca de 2 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa.",
+    "O Cruzeiro cede cerca de 4 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
     "O Cruzeiro cede cerca de 2 finalizações por jogo após cruzamentos. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
-    "O Cruzeiro cede cerca de 7 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances."
+    "O Cruzeiro cede cerca de 2 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa.",
+    "O Cruzeiro cede cerca de 5 finalizações por jogo de fora da área. Atenção: o meia adversário é quem mais finaliza nesses lances."
   ]
 }
