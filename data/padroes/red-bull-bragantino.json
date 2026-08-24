@@ -1,11 +1,11 @@
 {
   "teamKey": "red-bull-bragantino",
-  "geradoEm": "2026-08-23T09:26:43.388Z",
+  "geradoEm": "2026-08-24T09:46:29.504Z",
   "ataca": [
     "No Red Bull Bragantino, o ponta-direita registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
     "O Red Bull Bragantino registra cerca de 3 finalizações por jogo de cabeça. O atacante de área é quem mais finaliza nesse tipo de jogada.",
-    "O Red Bull Bragantino registra cerca de 7 finalizações por jogo de fora da área. O ponta-direita é quem mais finaliza nesse tipo de jogada.",
-    "O Red Bull Bragantino registra cerca de 3 finalizações por jogo após sobras de bola. O ponta-esquerda é quem mais finaliza nesse tipo de jogada."
+    "O Red Bull Bragantino registra cerca de 5 finalizações por jogo em jogadas construídas pelo lado direito. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+    "O Red Bull Bragantino registra cerca de 7 finalizações por jogo de fora da área. O ponta-direita é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
@@ -17,26 +17,26 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|fora-da-area|ponta-direita",
+      "chave": "ladoDaJogada|direita|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|REBATIDA|ponta-esquerda",
+      "chave": "area|fora-da-area|ponta-direita",
       "confianca": "padrao-consolidado"
     }
   ],
   "evidenciasSofre": [
     {
-      "chave": "ladoDaJogada|esquerda|atacante-area",
+      "chave": "origem|REBATIDA|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "posicao|atacante-area|",
+      "chave": "ladoDaJogada|esquerda|atacante-area",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
-    "O Red Bull Bragantino cede cerca de 4 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
-    "O Red Bull Bragantino cede cerca de 3 finalizações por jogo ao atacante de área adversário. É uma posição a observar contra essa defesa."
+    "O Red Bull Bragantino cede cerca de 3 finalizações por jogo após sobras de bola. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Red Bull Bragantino cede cerca de 3 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances."
   ]
 }
