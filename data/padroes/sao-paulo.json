@@ -1,9 +1,10 @@
 {
   "teamKey": "sao-paulo",
-  "geradoEm": "2026-08-23T09:26:43.388Z",
+  "geradoEm": "2026-08-24T09:46:29.504Z",
   "ataca": [
     "No São Paulo, o atacante de área registra cerca de 5 finalizações por jogo. É uma posição a observar na escalação.",
-    "O São Paulo registra cerca de 2 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+    "O São Paulo registra cerca de 3 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+    "No São Paulo, passes do volante originam cerca de 2 finalizações por jogo.",
     "O São Paulo registra cerca de 5 finalizações por jogo de fora da área. O volante é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
@@ -13,6 +14,10 @@
     },
     {
       "chave": "origem|CRUZAMENTO|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "assistentePosicao|volante|",
       "confianca": "padrao-consolidado"
     },
     {
@@ -30,13 +35,18 @@
       "confianca": "padrao-consolidado"
     },
     {
+      "chave": "assistentePosicao|meia|",
+      "confianca": "padrao-consolidado"
+    },
+    {
       "chave": "origem|REBATIDA|volante",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
     "O São Paulo cede cerca de 3 finalizações por jogo de cabeça. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
-    "O São Paulo cede cerca de 7 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O São Paulo cede cerca de 8 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O São Paulo cede cerca de 2 finalizações por jogo após passes do meia adversário.",
     "O São Paulo cede cerca de 2 finalizações por jogo após sobras de bola. Atenção: o volante adversário é quem mais finaliza nesses lances."
   ]
 }
