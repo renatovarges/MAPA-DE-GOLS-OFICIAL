@@ -1,9 +1,9 @@
 {
   "teamKey": "chapecoense",
-  "geradoEm": "2026-08-23T09:26:43.388Z",
+  "geradoEm": "2026-08-24T09:46:29.504Z",
   "ataca": [
     "O Chapecoense registra cerca de 2 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada.",
-    "O Chapecoense registra cerca de 2 finalizações por jogo de cabeça. O atacante de área é quem mais finaliza nesse tipo de jogada."
+    "O Chapecoense registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado direito. O atacante de área é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
@@ -11,13 +11,13 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "parteDoCorpo|cabeca|atacante-area",
+      "chave": "ladoDaJogada|direita|atacante-area",
       "confianca": "padrao-consolidado"
     }
   ],
   "evidenciasSofre": [
     {
-      "chave": "posicao|meia|",
+      "chave": "assistentePosicao|volante|",
       "confianca": "padrao-consolidado"
     },
     {
@@ -25,18 +25,18 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "assistentePosicao|volante|",
+      "chave": "posicao|meia|",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|REBATIDA|meia",
+      "chave": "area|dentro-da-area|atacante-area",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
-    "O Chapecoense cede cerca de 4 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa.",
-    "O Chapecoense cede cerca de 4 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o ponta-esquerda adversário é quem mais finaliza nesses lances.",
     "O Chapecoense cede cerca de 3 finalizações por jogo após passes do volante adversário.",
-    "O Chapecoense cede cerca de 3 finalizações por jogo após sobras de bola. Atenção: o meia adversário é quem mais finaliza nesses lances."
+    "O Chapecoense cede cerca de 5 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o ponta-esquerda adversário é quem mais finaliza nesses lances.",
+    "O Chapecoense cede cerca de 4 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa.",
+    "O Chapecoense cede cerca de 9 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances."
   ]
 }
