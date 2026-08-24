@@ -3,8 +3,8 @@
   "tipoLeitura": "pre-jogo",
   "rodada": 25,
   "rodadaDados": 23,
-  "janelaAte": "2026-08-22",
-  "geradoEm": "2026-08-23T09:26:47.706Z",
+  "janelaAte": "2026-08-23",
+  "geradoEm": "2026-08-24T09:46:33.807Z",
   "jogos": [
     {
       "id": 237765,
@@ -83,7 +83,7 @@
       "titulo": "Palmeiras tem um encaixe favorável contra o Mirassol",
       "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS MEIAS",
       "timeDestaque": "palmeiras",
-      "frase": "O Palmeiras soma participações em gols com seus meias a uma média de 1,40 por jogo, aparecendo em 9 dos últimos 10 jogos. O Mirassol cede participações em gols para meias adversários a uma média de 0,90 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,40 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "frase": "O Palmeiras soma participações em gols com seus meias a uma média de 1,70 por jogo, aparecendo em 9 dos últimos 10 jogos. O Mirassol cede participações em gols para meias adversários a uma média de 0,90 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,41 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "palmeiras",
         "mirassol"
@@ -93,23 +93,23 @@
     },
     {
       "tipo": "convergencia",
-      "titulo": "Remo tem um encaixe favorável contra o Coritiba",
-      "chamada": "PARTICIPAÇÕES EM GOLS COM SEU PONTA ESQUERDA",
-      "timeDestaque": "remo",
-      "frase": "O Remo soma participações em gols com seu ponta esquerda a uma média de 0,70 por jogo, aparecendo em 6 dos últimos 10 jogos. O Coritiba cede participações em gols para pontas-esquerdas adversários a uma média de 0,90 por jogo, aparecendo em 5 dos últimos 10 jogos, enquanto a referência do campeonato é 0,28 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "Coritiba tem um encaixe favorável contra o Remo",
+      "chamada": "MARCA GOLS EM CRUZAMENTOS VINDOS DA DIREITA",
+      "timeDestaque": "coritiba",
+      "frase": "O Coritiba marca gols em cruzamentos vindos da direita a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos. O Remo sofre gols em cruzamentos vindos da direita a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,13 por jogo. Na prática, observe os jogadores mais envolvidos nas bolas aéreas e na conclusão de cruzamentos.",
       "times": [
-        "remo",
-        "coritiba"
+        "coritiba",
+        "remo"
       ],
-      "scout": "participacoes",
-      "chave": "posicao:ponta-esquerda"
+      "scout": "gols",
+      "chave": "cruzamento:direita"
     },
     {
       "tipo": "convergencia",
       "titulo": "Coritiba tem um encaixe favorável contra o Remo",
       "chamada": "MARCA GOLS APÓS CRUZAMENTOS",
       "timeDestaque": "coritiba",
-      "frase": "O Coritiba marca gols após cruzamentos a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos. O Remo sofre gols após cruzamentos a uma média de 0,70 por jogo, aparecendo em 5 dos últimos 10 jogos, enquanto a referência do campeonato é 0,26 por jogo. Na prática, observe os jogadores mais envolvidos nas bolas aéreas e na conclusão de cruzamentos.",
+      "frase": "O Coritiba marca gols após cruzamentos a uma média de 0,60 por jogo, aparecendo em 5 dos últimos 10 jogos. O Remo sofre gols após cruzamentos a uma média de 0,70 por jogo, aparecendo em 5 dos últimos 10 jogos, enquanto a referência do campeonato é 0,26 por jogo. Na prática, observe os jogadores mais envolvidos nas bolas aéreas e na conclusão de cruzamentos.",
       "times": [
         "coritiba",
         "remo"
@@ -120,15 +120,15 @@
     {
       "tipo": "convergencia",
       "titulo": "Remo tem um encaixe favorável contra o Coritiba",
-      "chamada": "MARCA GOLS DE FORA DA ÁREA",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEU PONTA ESQUERDA",
       "timeDestaque": "remo",
-      "frase": "O Remo marca gols de fora da área a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos. O Coritiba sofre gols de fora da área a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,19 por jogo. Na prática, observe os jogadores com liberdade e volume para chutar de média distância.",
+      "frase": "O Remo soma participações em gols com seu ponta esquerda a uma média de 0,70 por jogo, aparecendo em 6 dos últimos 10 jogos. O Coritiba cede participações em gols para pontas-esquerdas adversários a uma média de 0,60 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,28 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "remo",
         "coritiba"
       ],
-      "scout": "gols",
-      "chave": "area:fora"
+      "scout": "participacoes",
+      "chave": "posicao:ponta-esquerda"
     },
     {
       "tipo": "forca-ofensiva-propria",
@@ -158,11 +158,11 @@
     },
     {
       "tipo": "destaque-defensivo",
-      "frase": "Corinthians apresenta o melhor controle defensivo da amostra: permite cerca de 9,7 finalizações por jogo. São Paulo (11,4 por jogo) e Red Bull Bragantino (11,4 por jogo) também estão entre as defesas que menos permitem chutes. Na prática, são as equipes que mais reduzem o volume ofensivo dos adversários.",
+      "frase": "Corinthians apresenta o melhor controle defensivo da amostra: permite cerca de 10,1 finalizações por jogo. São Paulo (11,5 por jogo) e Internacional (11,6 por jogo) também estão entre as defesas que menos permitem chutes. Na prática, são as equipes que mais reduzem o volume ofensivo dos adversários.",
       "times": [
         "corinthians",
         "sao-paulo",
-        "red-bull-bragantino"
+        "internacional"
       ],
       "chamada": "CONTROLE DEFENSIVO",
       "timeDestaque": "corinthians"
@@ -171,14 +171,14 @@
   "statusAtualizacao": {
     "estado": "parcial",
     "rodada": 23,
-    "jogosProcessados": 3,
+    "jogosProcessados": 9,
     "jogosEsperados": 10,
-    "timesAtualizados": 6,
+    "timesAtualizados": 18,
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-08-23T09:26:47.706Z",
-    "ultimaPartidaEm": "2026-08-22",
+    "atualizadoEm": "2026-08-24T09:46:33.807Z",
+    "ultimaPartidaEm": "2026-08-23",
     "rodadaLeitura": 25
   }
 }
