@@ -1584,6 +1584,96 @@
           }
         }
       ]
+    },
+    "24": {
+      "roundNumber": 24,
+      "date": "2026-08-23",
+      "opponent": "corinthians",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 75,
+            "y": 28.333333333333336
+          },
+          "shot": {
+            "x": 87.32469590000001,
+            "y": 39.75394
+          },
+          "assistPlayer": {
+            "id": "131516",
+            "name": "JP Chermont",
+            "fullName": "João Pedro Chermont Crema",
+            "position": "Lateral",
+            "side": null,
+            "team": "coritiba"
+          },
+          "shotPlayer": {
+            "id": "141339",
+            "name": "Paulo Roberto",
+            "fullName": "Paulo Roberto da Silva Souza",
+            "position": "Atacante",
+            "side": null,
+            "team": "coritiba"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": {
+            "x": 75,
+            "y": 62.33333333333333
+          },
+          "shot": {
+            "x": 90.72155000000001,
+            "y": 22.543619999999997
+          },
+          "assistPlayer": {
+            "id": "131516",
+            "name": "JP Chermont",
+            "fullName": "João Pedro Chermont Crema",
+            "position": "Lateral",
+            "side": null,
+            "team": "coritiba"
+          },
+          "shotPlayer": {
+            "id": "90302",
+            "name": "Pedro Rocha",
+            "fullName": "Pedro Rocha Neves",
+            "position": "Atacante",
+            "side": null,
+            "team": "coritiba"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 21,
+            "y": 62.333333333333336
+          },
+          "shot": {
+            "x": 12.7797171,
+            "y": 29.088
+          },
+          "assistPlayer": {
+            "id": "96652",
+            "name": "Allan",
+            "fullName": "Allan Rodrigues de Souza",
+            "position": "Meia",
+            "side": null,
+            "team": "corinthians"
+          },
+          "shotPlayer": {
+            "id": "95556",
+            "name": "Raniele",
+            "fullName": "Raniele Almeida Melo",
+            "position": "Meia",
+            "side": null,
+            "team": "corinthians"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
