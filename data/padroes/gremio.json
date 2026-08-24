@@ -1,11 +1,11 @@
 {
   "teamKey": "gremio",
-  "geradoEm": "2026-08-23T09:26:43.388Z",
+  "geradoEm": "2026-08-24T09:46:29.504Z",
   "ataca": [
     "O Grêmio registra cerca de 3 finalizações por jogo após sobras de bola. O atacante de área é quem mais finaliza nesse tipo de jogada.",
     "No Grêmio, o ponta-esquerda registra cerca de 2 finalizações por jogo. É uma posição a observar na escalação.",
-    "O Grêmio registra cerca de 2 finalizações por jogo em jogadas construídas pelo lado esquerdo. O atacante de área é quem mais finaliza nesse tipo de jogada.",
-    "O Grêmio registra cerca de 4 finalizações por jogo de fora da área. O ponta-esquerda é quem mais finaliza nesse tipo de jogada."
+    "O Grêmio registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado direito. O ponta-esquerda é quem mais finaliza nesse tipo de jogada.",
+    "O Grêmio registra cerca de 6 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
@@ -17,11 +17,11 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "ladoDaJogada|esquerda|atacante-area",
+      "chave": "ladoDaJogada|direita|ponta-esquerda",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|fora-da-area|ponta-esquerda",
+      "chave": "area|dentro-da-area|atacante-area",
       "confianca": "padrao-consolidado"
     }
   ],
@@ -35,13 +35,13 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|dentro-da-area|atacante-area",
+      "chave": "ladoDaJogada|esquerda|atacante-area",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
     "O Grêmio cede cerca de 3 finalizações por jogo após cruzamentos. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
     "O Grêmio cede cerca de 2 finalizações por jogo ao volante adversário. É uma posição a observar contra essa defesa.",
-    "O Grêmio cede cerca de 9 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances."
+    "O Grêmio cede cerca de 4 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances."
   ]
 }
