@@ -1,19 +1,19 @@
 {
   "teamKey": "remo",
-  "geradoEm": "2026-08-24T09:46:29.504Z",
+  "geradoEm": "2026-08-25T09:34:21.821Z",
   "ataca": [
-    "O Remo registra cerca de 5 finalizações por jogo de fora da área. O volante é quem mais finaliza nesse tipo de jogada.",
     "No Remo, o volante registra cerca de 2 finalizações por jogo. É uma posição a observar na escalação.",
+    "O Remo registra cerca de 5 finalizações por jogo de fora da área. O volante é quem mais finaliza nesse tipo de jogada.",
     "No Remo, passes do volante originam cerca de 2 finalizações por jogo.",
-    "O Remo registra cerca de 2 finalizações por jogo após sobras de bola. O ponta-esquerda é quem mais finaliza nesse tipo de jogada."
+    "O Remo registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado esquerdo. O ponta-esquerda é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
-      "chave": "area|fora-da-area|volante",
+      "chave": "posicao|volante|",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "posicao|volante|",
+      "chave": "area|fora-da-area|volante",
       "confianca": "padrao-consolidado"
     },
     {
@@ -21,7 +21,7 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|REBATIDA|ponta-esquerda",
+      "chave": "ladoDaJogada|esquerda|ponta-esquerda",
       "confianca": "padrao-consolidado"
     }
   ],
