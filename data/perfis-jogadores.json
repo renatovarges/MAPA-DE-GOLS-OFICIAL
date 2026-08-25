@@ -150,6 +150,18 @@
     "nome": "Jogador #103987"
   },
   {
+    "jogadorId": "80129",
+    "teamKey": "athletico-pr",
+    "posicao": "volante",
+    "jogosComDado": 17,
+    "recuperacoes": 42,
+    "perdas": 28,
+    "taxaRecuperacao": 2.4705882352941178,
+    "taxaPerda": 1.6470588235294117,
+    "notavelDesarmador": true,
+    "nome": "Jadson"
+  },
+  {
     "jogadorId": "78445",
     "teamKey": "fluminense",
     "posicao": "lateral-esquerdo",
@@ -185,18 +197,6 @@
     "taxaPerda": 1.1111111111111112,
     "notavelDesarmador": true,
     "nome": "Camilo"
-  },
-  {
-    "jogadorId": "100898",
-    "teamKey": "botafogo",
-    "posicao": "lateral-direito",
-    "jogosComDado": 19,
-    "recuperacoes": 45,
-    "perdas": 37,
-    "taxaRecuperacao": 2.3684210526315788,
-    "taxaPerda": 1.9473684210526316,
-    "notavelDesarmador": true,
-    "nome": "Vitinho"
   },
   {
     "jogadorId": "99815",
@@ -312,6 +312,18 @@
     "nome": "Picco"
   },
   {
+    "jogadorId": "100898",
+    "teamKey": "botafogo",
+    "posicao": "lateral-direito",
+    "jogosComDado": 20,
+    "recuperacoes": 46,
+    "perdas": 37,
+    "taxaRecuperacao": 2.3,
+    "taxaPerda": 1.85,
+    "notavelDesarmador": true,
+    "nome": "Vitinho"
+  },
+  {
     "jogadorId": "112017",
     "teamKey": "athletico-pr",
     "posicao": "meia",
@@ -335,18 +347,6 @@
     "notavelDesarmador": true,
     "notavelPerdedor": true,
     "nome": "Jogador #125467"
-  },
-  {
-    "jogadorId": "80129",
-    "teamKey": "athletico-pr",
-    "posicao": "volante",
-    "jogosComDado": 16,
-    "recuperacoes": 36,
-    "perdas": 28,
-    "taxaRecuperacao": 2.25,
-    "taxaPerda": 1.75,
-    "notavelDesarmador": true,
-    "nome": "Jadson"
   },
   {
     "jogadorId": "100342",
@@ -592,17 +592,16 @@
     "nome": "Kauã Pascini"
   },
   {
-    "jogadorId": "141400",
+    "jogadorId": "105300",
     "teamKey": "botafogo",
-    "posicao": "volante",
-    "jogosComDado": 6,
-    "recuperacoes": 12,
-    "perdas": 15,
+    "posicao": "zagueiro",
+    "jogosComDado": 15,
+    "recuperacoes": 30,
+    "perdas": 7,
     "taxaRecuperacao": 2,
-    "taxaPerda": 2.5,
+    "taxaPerda": 0.4666666666666667,
     "notavelDesarmador": true,
-    "notavelPerdedor": true,
-    "nome": "Huguinho"
+    "nome": "Ferraresi"
   },
   {
     "jogadorId": "104693",
@@ -1139,6 +1138,7 @@
     "perdas": 23,
     "taxaRecuperacao": 1.75,
     "taxaPerda": 1.4375,
+    "notavelDesarmador": true,
     "nome": "Jorginho"
   },
   {
@@ -1162,6 +1162,17 @@
     "taxaRecuperacao": 1.7272727272727273,
     "taxaPerda": 0.9090909090909091,
     "nome": "Arthur"
+  },
+  {
+    "jogadorId": "130843",
+    "teamKey": "athletico-pr",
+    "posicao": "zagueiro",
+    "jogosComDado": 18,
+    "recuperacoes": 31,
+    "perdas": 8,
+    "taxaRecuperacao": 1.7222222222222223,
+    "taxaPerda": 0.4444444444444444,
+    "nome": "Arthur Dias"
   },
   {
     "jogadorId": "141754",
@@ -1195,19 +1206,19 @@
     "perdas": 2,
     "taxaRecuperacao": 1.7142857142857142,
     "taxaPerda": 0.2857142857142857,
-    "notavelDesarmador": true,
     "nome": "Jogador #88312"
   },
   {
-    "jogadorId": "105300",
+    "jogadorId": "141400",
     "teamKey": "botafogo",
-    "posicao": "zagueiro",
-    "jogosComDado": 14,
-    "recuperacoes": 24,
-    "perdas": 7,
+    "posicao": "volante",
+    "jogosComDado": 7,
+    "recuperacoes": 12,
+    "perdas": 16,
     "taxaRecuperacao": 1.7142857142857142,
-    "taxaPerda": 0.5,
-    "nome": "Ferraresi"
+    "taxaPerda": 2.2857142857142856,
+    "notavelPerdedor": true,
+    "nome": "Huguinho"
   },
   {
     "jogadorId": "116706",
@@ -1232,6 +1243,18 @@
     "taxaRecuperacao": 1.6923076923076923,
     "taxaPerda": 0.8461538461538461,
     "nome": "Erick Pulgar"
+  },
+  {
+    "jogadorId": "109987",
+    "teamKey": "botafogo",
+    "posicao": "meia",
+    "jogosComDado": 16,
+    "recuperacoes": 27,
+    "perdas": 37,
+    "taxaRecuperacao": 1.6875,
+    "taxaPerda": 2.3125,
+    "notavelDesarmador": true,
+    "nome": "Medina"
   },
   {
     "jogadorId": "101908",
@@ -1278,29 +1301,6 @@
     "nome": "Jogador #105373"
   },
   {
-    "jogadorId": "109987",
-    "teamKey": "botafogo",
-    "posicao": "meia",
-    "jogosComDado": 15,
-    "recuperacoes": 25,
-    "perdas": 33,
-    "taxaRecuperacao": 1.6666666666666667,
-    "taxaPerda": 2.2,
-    "notavelDesarmador": true,
-    "nome": "Medina"
-  },
-  {
-    "jogadorId": "69140",
-    "teamKey": "botafogo",
-    "posicao": "volante",
-    "jogosComDado": 9,
-    "recuperacoes": 15,
-    "perdas": 5,
-    "taxaRecuperacao": 1.6666666666666667,
-    "taxaPerda": 0.5555555555555556,
-    "nome": "Allan"
-  },
-  {
     "jogadorId": "96652",
     "teamKey": "corinthians",
     "posicao": "volante",
@@ -1332,17 +1332,6 @@
     "taxaRecuperacao": 1.6666666666666667,
     "taxaPerda": 1.5555555555555556,
     "nome": "Marlon"
-  },
-  {
-    "jogadorId": "130843",
-    "teamKey": "athletico-pr",
-    "posicao": "zagueiro",
-    "jogosComDado": 17,
-    "recuperacoes": 28,
-    "perdas": 8,
-    "taxaRecuperacao": 1.6470588235294117,
-    "taxaPerda": 0.47058823529411764,
-    "nome": "Arthur Dias"
   },
   {
     "jogadorId": "102928",
@@ -1461,6 +1450,17 @@
     "notavelDesarmador": true,
     "notavelPerdedor": true,
     "nome": "Cuello"
+  },
+  {
+    "jogadorId": "69140",
+    "teamKey": "botafogo",
+    "posicao": "volante",
+    "jogosComDado": 10,
+    "recuperacoes": 16,
+    "perdas": 7,
+    "taxaRecuperacao": 1.6,
+    "taxaPerda": 0.7,
+    "nome": "Allan"
   },
   {
     "jogadorId": "42500",
@@ -1609,6 +1609,17 @@
     "taxaPerda": 1.0526315789473684,
     "notavelDesarmador": true,
     "nome": "Vini Paulista"
+  },
+  {
+    "jogadorId": "123869",
+    "teamKey": "athletico-pr",
+    "posicao": "zagueiro",
+    "jogosComDado": 14,
+    "recuperacoes": 21,
+    "perdas": 6,
+    "taxaRecuperacao": 1.5,
+    "taxaPerda": 0.42857142857142855,
+    "nome": "Aguirre"
   },
   {
     "jogadorId": "109336",
@@ -1865,17 +1876,6 @@
     "nome": "Vitinho"
   },
   {
-    "jogadorId": "146430",
-    "teamKey": "botafogo",
-    "posicao": "zagueiro",
-    "jogosComDado": 7,
-    "recuperacoes": 10,
-    "perdas": 4,
-    "taxaRecuperacao": 1.4285714285714286,
-    "taxaPerda": 0.5714285714285714,
-    "nome": "Justino"
-  },
-  {
     "jogadorId": "98720",
     "teamKey": "corinthians",
     "posicao": "lateral-esquerdo",
@@ -1989,17 +1989,6 @@
     "nome": "Renan Lodi"
   },
   {
-    "jogadorId": "123869",
-    "teamKey": "athletico-pr",
-    "posicao": "zagueiro",
-    "jogosComDado": 13,
-    "recuperacoes": 18,
-    "perdas": 6,
-    "taxaRecuperacao": 1.3846153846153846,
-    "taxaPerda": 0.46153846153846156,
-    "nome": "Aguirre"
-  },
-  {
     "jogadorId": "110510",
     "teamKey": "internacional",
     "posicao": "lateral-direito",
@@ -2009,6 +1998,17 @@
     "taxaRecuperacao": 1.3846153846153846,
     "taxaPerda": 0.5384615384615384,
     "nome": "Aguirre"
+  },
+  {
+    "jogadorId": "146430",
+    "teamKey": "botafogo",
+    "posicao": "zagueiro",
+    "jogosComDado": 8,
+    "recuperacoes": 11,
+    "perdas": 4,
+    "taxaRecuperacao": 1.375,
+    "taxaPerda": 0.5,
+    "nome": "Justino"
   },
   {
     "jogadorId": "105213",
@@ -2509,13 +2509,25 @@
     "nome": "Hércules"
   },
   {
+    "jogadorId": "128431",
+    "teamKey": "athletico-pr",
+    "posicao": "volante",
+    "jogosComDado": 14,
+    "recuperacoes": 17,
+    "perdas": 27,
+    "taxaRecuperacao": 1.2142857142857142,
+    "taxaPerda": 1.9285714285714286,
+    "notavelPerdedor": true,
+    "nome": "João Cruz"
+  },
+  {
     "jogadorId": "123101",
     "teamKey": "athletico-pr",
     "posicao": "ponta-direita",
-    "jogosComDado": 9,
-    "recuperacoes": 11,
-    "perdas": 18,
-    "taxaRecuperacao": 1.2222222222222223,
+    "jogosComDado": 10,
+    "recuperacoes": 12,
+    "perdas": 20,
+    "taxaRecuperacao": 1.2,
     "taxaPerda": 2,
     "notavelDesarmador": true,
     "nome": "Leozinho"
@@ -2872,18 +2884,6 @@
     "nome": "Cauly"
   },
   {
-    "jogadorId": "130393",
-    "teamKey": "athletico-pr",
-    "posicao": "volante",
-    "jogosComDado": 15,
-    "recuperacoes": 16,
-    "perdas": 27,
-    "taxaRecuperacao": 1.0666666666666667,
-    "taxaPerda": 1.8,
-    "notavelPerdedor": true,
-    "nome": "Luiz Gustavo"
-  },
-  {
     "jogadorId": "123738",
     "teamKey": "red-bull-bragantino",
     "posicao": "ponta-direita",
@@ -2898,11 +2898,11 @@
     "jogadorId": "113113",
     "teamKey": "athletico-pr",
     "posicao": "lateral-direito",
-    "jogosComDado": 16,
-    "recuperacoes": 17,
-    "perdas": 12,
-    "taxaRecuperacao": 1.0625,
-    "taxaPerda": 0.75,
+    "jogosComDado": 17,
+    "recuperacoes": 18,
+    "perdas": 13,
+    "taxaRecuperacao": 1.0588235294117647,
+    "taxaPerda": 0.7647058823529411,
     "nome": "Benavídez"
   },
   {
@@ -2930,25 +2930,25 @@
     "nome": "Breno Bidon"
   },
   {
-    "jogadorId": "128431",
+    "jogadorId": "130393",
     "teamKey": "athletico-pr",
     "posicao": "volante",
-    "jogosComDado": 13,
-    "recuperacoes": 13,
-    "perdas": 22,
+    "jogosComDado": 16,
+    "recuperacoes": 16,
+    "perdas": 28,
     "taxaRecuperacao": 1,
-    "taxaPerda": 1.6923076923076923,
-    "nome": "João Cruz"
+    "taxaPerda": 1.75,
+    "nome": "Luiz Gustavo"
   },
   {
     "jogadorId": "131832",
     "teamKey": "athletico-pr",
     "posicao": "volante",
-    "jogosComDado": 12,
-    "recuperacoes": 12,
-    "perdas": 11,
+    "jogosComDado": 13,
+    "recuperacoes": 13,
+    "perdas": 13,
     "taxaRecuperacao": 1,
-    "taxaPerda": 0.9166666666666666,
+    "taxaPerda": 1,
     "nome": "Portilla"
   },
   {
@@ -2991,11 +2991,11 @@
     "jogadorId": "142086",
     "teamKey": "botafogo",
     "posicao": "ponta-direita",
-    "jogosComDado": 6,
-    "recuperacoes": 6,
-    "perdas": 19,
+    "jogosComDado": 7,
+    "recuperacoes": 7,
+    "perdas": 23,
     "taxaRecuperacao": 1,
-    "taxaPerda": 3.1666666666666665,
+    "taxaPerda": 3.2857142857142856,
     "nome": "Kauan Toledo"
   },
   {
@@ -3789,6 +3789,17 @@
     "nome": "Marinho"
   },
   {
+    "jogadorId": "90031",
+    "teamKey": "athletico-pr",
+    "posicao": "ponta-esquerda",
+    "jogosComDado": 24,
+    "recuperacoes": 19,
+    "perdas": 57,
+    "taxaRecuperacao": 0.7916666666666666,
+    "taxaPerda": 2.375,
+    "nome": "Mendoza"
+  },
+  {
     "jogadorId": "142004",
     "teamKey": "gremio",
     "posicao": "ponta-esquerda",
@@ -3809,17 +3820,6 @@
     "taxaRecuperacao": 0.7894736842105263,
     "taxaPerda": 1.5263157894736843,
     "nome": "Danielzinho"
-  },
-  {
-    "jogadorId": "90031",
-    "teamKey": "athletico-pr",
-    "posicao": "ponta-esquerda",
-    "jogosComDado": 23,
-    "recuperacoes": 18,
-    "perdas": 56,
-    "taxaRecuperacao": 0.782608695652174,
-    "taxaPerda": 2.4347826086956523,
-    "nome": "Mendoza"
   },
   {
     "jogadorId": "105089",
@@ -3913,17 +3913,6 @@
     "taxaPerda": 1,
     "notavelPerdedor": true,
     "nome": "Vitão"
-  },
-  {
-    "jogadorId": "125746",
-    "teamKey": "athletico-pr",
-    "posicao": "meia",
-    "jogosComDado": 12,
-    "recuperacoes": 9,
-    "perdas": 20,
-    "taxaRecuperacao": 0.75,
-    "taxaPerda": 1.6666666666666667,
-    "nome": "Dudu"
   },
   {
     "jogadorId": "94034",
@@ -4061,17 +4050,6 @@
     "nome": "Rodrigo Castillo"
   },
   {
-    "jogadorId": "111831",
-    "teamKey": "botafogo",
-    "posicao": "ponta-esquerda",
-    "jogosComDado": 18,
-    "recuperacoes": 13,
-    "perdas": 53,
-    "taxaRecuperacao": 0.7222222222222222,
-    "taxaPerda": 2.9444444444444446,
-    "nome": "Matheus Martins"
-  },
-  {
     "jogadorId": "92171",
     "teamKey": "botafogo",
     "posicao": "atacante-area",
@@ -4140,6 +4118,17 @@
     "nome": "Pedro"
   },
   {
+    "jogadorId": "125746",
+    "teamKey": "athletico-pr",
+    "posicao": "meia",
+    "jogosComDado": 13,
+    "recuperacoes": 9,
+    "perdas": 21,
+    "taxaRecuperacao": 0.6923076923076923,
+    "taxaPerda": 1.6153846153846154,
+    "nome": "Dudu"
+  },
+  {
     "jogadorId": "110144",
     "teamKey": "vasco",
     "posicao": "atacante-area",
@@ -4160,6 +4149,17 @@
     "taxaRecuperacao": 0.6875,
     "taxaPerda": 2.875,
     "nome": "Ferreira"
+  },
+  {
+    "jogadorId": "111831",
+    "teamKey": "botafogo",
+    "posicao": "ponta-esquerda",
+    "jogosComDado": 19,
+    "recuperacoes": 13,
+    "perdas": 54,
+    "taxaRecuperacao": 0.6842105263157895,
+    "taxaPerda": 2.8421052631578947,
+    "nome": "Matheus Martins"
   },
   {
     "jogadorId": "118774",
@@ -4464,28 +4464,6 @@
     "nome": "Marino Hinestroza"
   },
   {
-    "jogadorId": "63289",
-    "teamKey": "botafogo",
-    "posicao": "volante",
-    "jogosComDado": 12,
-    "recuperacoes": 7,
-    "perdas": 21,
-    "taxaRecuperacao": 0.5833333333333334,
-    "taxaPerda": 1.75,
-    "nome": "Edenílson"
-  },
-  {
-    "jogadorId": "142890",
-    "teamKey": "botafogo",
-    "posicao": "meia",
-    "jogosComDado": 19,
-    "recuperacoes": 11,
-    "perdas": 45,
-    "taxaRecuperacao": 0.5789473684210527,
-    "taxaPerda": 2.3684210526315788,
-    "nome": "Montoro"
-  },
-  {
     "jogadorId": "78850",
     "teamKey": "mirassol",
     "posicao": "lateral-esquerdo",
@@ -4542,15 +4520,15 @@
     "nome": "Jogador #108588"
   },
   {
-    "jogadorId": "146375",
+    "jogadorId": "142890",
     "teamKey": "botafogo",
-    "posicao": "atacante-area",
-    "jogosComDado": 9,
-    "recuperacoes": 5,
-    "perdas": 12,
-    "taxaRecuperacao": 0.5555555555555556,
-    "taxaPerda": 1.3333333333333333,
-    "nome": "Kadir"
+    "posicao": "meia",
+    "jogosComDado": 20,
+    "recuperacoes": 11,
+    "perdas": 47,
+    "taxaRecuperacao": 0.55,
+    "taxaPerda": 2.35,
+    "nome": "Montoro"
   },
   {
     "jogadorId": "117632",
@@ -4608,6 +4586,17 @@
     "taxaRecuperacao": 0.5454545454545454,
     "taxaPerda": 2.409090909090909,
     "nome": "Matheuzinho"
+  },
+  {
+    "jogadorId": "63289",
+    "teamKey": "botafogo",
+    "posicao": "volante",
+    "jogosComDado": 13,
+    "recuperacoes": 7,
+    "perdas": 23,
+    "taxaRecuperacao": 0.5384615384615384,
+    "taxaPerda": 1.7692307692307692,
+    "nome": "Edenílson"
   },
   {
     "jogadorId": "92811",
@@ -4688,6 +4677,17 @@
     "taxaRecuperacao": 0.5,
     "taxaPerda": 2.3333333333333335,
     "nome": "Gustavo Scarpa"
+  },
+  {
+    "jogadorId": "146375",
+    "teamKey": "botafogo",
+    "posicao": "atacante-area",
+    "jogosComDado": 10,
+    "recuperacoes": 5,
+    "perdas": 13,
+    "taxaRecuperacao": 0.5,
+    "taxaPerda": 1.3,
+    "nome": "Kadir"
   },
   {
     "jogadorId": "140438",
@@ -4856,17 +4856,6 @@
     "nome": "Kauê Furquim"
   },
   {
-    "jogadorId": "101002",
-    "teamKey": "botafogo",
-    "posicao": "ponta-direita",
-    "jogosComDado": 10,
-    "recuperacoes": 4,
-    "perdas": 33,
-    "taxaRecuperacao": 0.4,
-    "taxaPerda": 3.3,
-    "nome": "Júnior Santos"
-  },
-  {
     "jogadorId": "111829",
     "teamKey": "internacional",
     "posicao": "ponta-direita",
@@ -4912,6 +4901,17 @@
     "nome": "Cissé"
   },
   {
+    "jogadorId": "101002",
+    "teamKey": "botafogo",
+    "posicao": "ponta-direita",
+    "jogosComDado": 11,
+    "recuperacoes": 4,
+    "perdas": 36,
+    "taxaRecuperacao": 0.36363636363636365,
+    "taxaPerda": 3.272727272727273,
+    "nome": "Júnior Santos"
+  },
+  {
     "jogadorId": "107516",
     "teamKey": "chapecoense",
     "posicao": "ponta-esquerda",
@@ -4943,17 +4943,6 @@
     "taxaRecuperacao": 0.3333333333333333,
     "taxaPerda": 1,
     "nome": "Cauã Soares"
-  },
-  {
-    "jogadorId": "105518",
-    "teamKey": "athletico-pr",
-    "posicao": "atacante-area",
-    "jogosComDado": 3,
-    "recuperacoes": 1,
-    "perdas": 4,
-    "taxaRecuperacao": 0.3333333333333333,
-    "taxaPerda": 1.3333333333333333,
-    "nome": "Renan Peixoto"
   },
   {
     "jogadorId": "110633",
@@ -5157,6 +5146,17 @@
     "taxaPerda": 2.5,
     "notavelPerdedor": true,
     "nome": "Rollheiser"
+  },
+  {
+    "jogadorId": "105518",
+    "teamKey": "athletico-pr",
+    "posicao": "atacante-area",
+    "jogosComDado": 4,
+    "recuperacoes": 1,
+    "perdas": 5,
+    "taxaRecuperacao": 0.25,
+    "taxaPerda": 1.25,
+    "nome": "Renan Peixoto"
   },
   {
     "jogadorId": "85048",
@@ -5364,11 +5364,11 @@
     "jogadorId": "143193",
     "teamKey": "athletico-pr",
     "posicao": "atacante-area",
-    "jogosComDado": 22,
+    "jogosComDado": 23,
     "recuperacoes": 3,
-    "perdas": 133,
-    "taxaRecuperacao": 0.13636363636363635,
-    "taxaPerda": 6.045454545454546,
+    "perdas": 139,
+    "taxaRecuperacao": 0.13043478260869565,
+    "taxaPerda": 6.043478260869565,
     "notavelPerdedor": true,
     "nome": "Viveros"
   },
