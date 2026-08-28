@@ -3382,6 +3382,12 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   // TEXTOS DE PÊNALTIS (Abaixo das caixas) - Movido para o final para garantir que conquistadosX exista
   const penaltyY = boxStartY + boxH + 25;
 
+  // GOL CONTRA entra na MESMA linha do PENALTIS (não numa linha abaixo) —
+  // achado real 2026-08: uma linha nova ali embaixo colide com o fundo
+  // escuro da legenda de marcadores (drawMarkerLegendNew, chamada logo
+  // depois desta função), que pinta por cima e escondia o texto por
+  // completo mesmo com ele existindo certinho no DOM. Preso na mesma
+  // linha do PENALTIS não tem esse risco.
   const cedidosPenaltyText = el('text', {
     x: cedidosX,
     y: penaltyY,
@@ -3391,7 +3397,9 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
     'font-weight': 900,
     fill: '#f7d36a' // Dourado
   });
-  cedidosPenaltyText.textContent = `PENALTIS: ${cedidosPenaltis}`;
+  cedidosPenaltyText.textContent = cedidosGolContra > 0
+    ? `PENALTIS: ${cedidosPenaltis}  ·  GOL CONTRA: ${cedidosGolContra}`
+    : `PENALTIS: ${cedidosPenaltis}`;
   g.appendChild(cedidosPenaltyText);
 
   const conquistadosPenaltyText = el('text', {
@@ -3403,39 +3411,10 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
     'font-weight': 900,
     fill: '#f7d36a' // Dourado
   });
-  conquistadosPenaltyText.textContent = `PENALTIS: ${conquistadosPenaltis}`;
+  conquistadosPenaltyText.textContent = conquistadosGolContra > 0
+    ? `PENALTIS: ${conquistadosPenaltis}  ·  GOL CONTRA: ${conquistadosGolContra}`
+    : `PENALTIS: ${conquistadosPenaltis}`;
   g.appendChild(conquistadosPenaltyText);
-
-  // TEXTO DE GOL CONTRA (mesmo padrão do PENALTIS, uma linha abaixo) — só
-  // aparece quando existe pelo menos um caso, pra não poluir os cards que
-  // nunca tiveram gol contra (a grande maioria).
-  const golContraY = penaltyY + 22;
-  if (cedidosGolContra > 0) {
-    const cedidosGolContraText = el('text', {
-      x: cedidosX,
-      y: golContraY,
-      'text-anchor': 'middle',
-      'font-family': 'Inter, Arial, sans-serif',
-      'font-size': 16,
-      'font-weight': 900,
-      fill: '#ef4444' // Vermelho, mesma cor do marcador de gol contra no campo
-    });
-    cedidosGolContraText.textContent = `GOL CONTRA: ${cedidosGolContra}`;
-    g.appendChild(cedidosGolContraText);
-  }
-  if (conquistadosGolContra > 0) {
-    const conquistadosGolContraText = el('text', {
-      x: conquistadosX,
-      y: golContraY,
-      'text-anchor': 'middle',
-      'font-family': 'Inter, Arial, sans-serif',
-      'font-size': 16,
-      'font-weight': 900,
-      fill: '#ef4444'
-    });
-    conquistadosGolContraText.textContent = `GOL CONTRA: ${conquistadosGolContra}`;
-    g.appendChild(conquistadosGolContraText);
-  }
 }
 
 // Nova função dedicada para desenhar a legenda de marcadores no SVG (sem depender de estatísticas)
