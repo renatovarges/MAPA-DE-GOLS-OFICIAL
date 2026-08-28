@@ -2,32 +2,32 @@
   "rounds": {
     "1": {
       "roundNumber": 1,
-      "date": "2026-01-28",
+      "date": "2026-01-29",
       "opponent": "mirassol",
       "home": false,
       "created_goals": [
         {
           "pass": {
-            "x": 87.75903875177556,
-            "y": 62.40919325086806
+            "x": 91.66666666666666,
+            "y": 62.33333333333333
           },
           "shot": {
-            "x": 88.90909423828126,
-            "y": 39.27220278139468
+            "x": 87.24375040000001,
+            "y": 38.326339999999995
           },
           "assistPlayer": {
             "id": "99213",
             "name": "Puma Rodríguez",
             "fullName": "José Luis Rodríguez Bebanz",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "vasco"
           },
           "shotPlayer": {
             "id": "68899",
-            "name": "Philippe Coutinho",
-            "fullName": "Philippe Coutinho Correia",
-            "position": "Meia",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "vasco"
           },
@@ -36,30 +36,13 @@
       ],
       "conceded_goals": [
         {
-          "pass": null,
-          "shot": {
-            "x": 6.762324662642044,
-            "y": 34.53101557978877
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "117330",
-            "name": "Robert Renan",
-            "fullName": "Robert Renan Alves Barbosa",
-            "position": "Zagueiro",
-            "side": null,
-            "team": "vasco"
-          },
-          "own_goal": true
-        },
-        {
           "pass": {
-            "x": 20.23439275568181,
-            "y": 42.30656105324074
+            "x": 21,
+            "y": 39.666666666666664
           },
           "shot": {
-            "x": 11.033955522017038,
-            "y": 41.54797148527922
+            "x": 12.356895899999998,
+            "y": 42.446380000000005
           },
           "assistPlayer": {
             "id": "97321",
@@ -77,6 +60,13 @@
             "side": null,
             "team": "mirassol"
           }
+        },
+        {
+          "shot": null,
+          "pass": null,
+          "assistPlayer": null,
+          "shotPlayer": null,
+          "isOwnGoal": true
         }
       ]
     },
