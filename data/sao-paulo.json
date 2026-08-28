@@ -769,19 +769,19 @@
       "created_goals": [
         {
           "pass": {
-            "x": 79.5232577237216,
-            "y": 14.353026891637732
+            "x": 91.66666666666666,
+            "y": 17
           },
           "shot": {
-            "x": 77.88142089843751,
-            "y": 33.30509010597512
+            "x": 77.41125290000001,
+            "y": 31.386999999999997
           },
           "assistPlayer": {
             "id": "80570",
             "name": "Wendell",
             "fullName": "Wendell Nascimento Borges",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "sao-paulo"
           },
           "shotPlayer": {
@@ -795,12 +795,12 @@
         },
         {
           "pass": {
-            "x": 87.07570578835227,
-            "y": 64.19695095486111
+            "x": 91.66666666666666,
+            "y": 62.33333333333333
           },
           "shot": {
-            "x": 88.71754261363637,
-            "y": 27.240429800528066
+            "x": 85.5058029,
+            "y": 29.237
           },
           "assistPlayer": {
             "id": "89840",
@@ -824,12 +824,12 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 21.073883056640625,
-            "y": 24.208098687065974
+            "x": 21,
+            "y": 28.33333333333333
           },
           "shot": {
-            "x": 20.74551669034091,
-            "y": 38.61166811342593
+            "x": 18.983951599999997,
+            "y": 41.19594000000001
           },
           "assistPlayer": {
             "id": "51772",
@@ -844,15 +844,15 @@
             "name": "Luciano Juba",
             "fullName": "Luciano Batista da Silva Júnior",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "bahia"
           }
         },
         {
           "pass": null,
           "shot": {
-            "x": 1.0434789484197444,
-            "y": 33.68412837275752
+            "x": 5.556521599999996,
+            "y": 30.875940000000007
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -875,12 +875,12 @@
       "created_goals": [
         {
           "pass": {
-            "x": 89.70264420942827,
-            "y": 45.687108018663196
+            "x": 91.66666666666666,
+            "y": 39.66666666666667
           },
           "shot": {
-            "x": 91.01611383611505,
-            "y": 34.884432870370375
+            "x": 87.8960759,
+            "y": 33.44584
           },
           "assistPlayer": {
             "id": "107873",
@@ -900,60 +900,22 @@
           }
         },
         {
+          "shot": null,
           "pass": null,
-          "shot": {
-            "x": 93.64305142489347,
-            "y": 40.0014879014757
-          },
           "assistPlayer": null,
-          "shotPlayer": {
-            "id": "101727",
-            "name": "Matheuzinho",
-            "fullName": "Matheus França Silva",
-            "position": "Lateral",
-            "side": "LD",
-            "team": "corinthians"
-          },
-          "own_goal": true
+          "shotPlayer": null,
+          "isOwnGoal": true
         }
       ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 0.38674538352272236,
-            "y": 0.7707198531539348
+            "x": 37.666666666666664,
+            "y": 28.33333333333333
           },
           "shot": {
-            "x": 2.3569469105113683,
-            "y": 24.460795988859957
-          },
-          "assistPlayer": {
-            "id": "117632",
-            "name": "Garro",
-            "fullName": "Rodrigo Garro",
-            "position": "Meia",
-            "side": null,
-            "team": "corinthians"
-          },
-          "shotPlayer": {
-            "id": "95556",
-            "name": "Raniele",
-            "fullName": "Raniele Almeida Melo",
-            "position": "Meia",
-            "side": null,
-            "team": "corinthians"
-          },
-          "isSetPiece": true,
-          "isHeader": true
-        },
-        {
-          "pass": {
-            "x": 30.596530983664778,
-            "y": 8.9201079191985
-          },
-          "shot": {
-            "x": 8.595922851562506,
-            "y": 19.533260091145834
+            "x": 10.089469600000001,
+            "y": 19.69852000000001
           },
           "assistPlayer": {
             "id": "77485",
@@ -968,18 +930,18 @@
             "name": "Matheuzinho",
             "fullName": "Matheus França Silva",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "corinthians"
           }
         },
         {
           "pass": {
-            "x": 16.312553267045445,
-            "y": 50.99368410463687
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
           },
           "shot": {
-            "x": 17.954390092329547,
-            "y": 32.799703188295716
+            "x": 18.66016959999999,
+            "y": 30.96452
           },
           "assistPlayer": {
             "id": "117632",
@@ -997,6 +959,33 @@
             "side": null,
             "team": "corinthians"
           }
+        },
+        {
+          "pass": {
+            "x": 21,
+            "y": 51
+          },
+          "shot": {
+            "x": 3.80428959999999,
+            "y": 26.062520000000006
+          },
+          "assistPlayer": {
+            "id": "117632",
+            "name": "Garro",
+            "fullName": "Rodrigo Garro",
+            "position": "Meia",
+            "side": null,
+            "team": "corinthians"
+          },
+          "shotPlayer": {
+            "id": "95556",
+            "name": "Raniele",
+            "fullName": "Raniele Almeida Melo",
+            "position": "Meia",
+            "side": null,
+            "team": "corinthians"
+          },
+          "isHeader": true
         }
       ]
     },
