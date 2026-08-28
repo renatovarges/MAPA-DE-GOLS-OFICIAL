@@ -372,20 +372,19 @@ class Handler(SimpleHTTPRequestHandler):
             super().do_GET()
 
     def end_headers(self):
-        # Achado 2026-08: o index.html não tinha NENHUM cabeçalho de cache
-        # próprio — diferente do script.js (?v=) e dos data/*.json (?t=),
-        # que já se protegem com cache-busting na própria URL. Sem isso, o
-        # navegador guarda o HTML em cache heurístico (sem Cache-Control
-        # nem Expires, ele mesmo decide por quanto tempo confiar no que já
-        # tem) e um deploy novo pode ficar invisível pro usuário mesmo com
-        # Ctrl+F5 — foi exatamente o que aconteceu com o Renato depois do
-        # deploy da legenda de gol contra. `no-cache, must-revalidate`
-        # obriga o navegador a sempre checar com o servidor antes de usar
-        # a cópia guardada (o servidor ainda responde 304 quando nada
-        # mudou, então não pesa banda) — sem isso nunca mais.
-        path = self.path.split('?', 1)[0]
-        if path == '/' or path.endswith('.html'):
-            self.send_header('Cache-Control', 'no-cache, must-revalidate')
+        # Achado 2026-08: nenhum arquivo servido daqui tinha Cache-Control
+        # próprio — o index.html sozinho já causou um deploy inteiro ficar
+        # invisível pro Renato, mesmo testando em navegadores/redes
+        # diferentes (Chrome, Brave, outro perfil, aba anônima — logo não
+        # era cache do navegador dele, era alguma camada entre o servidor
+        # e ele, provavelmente o Cloudflare que fica na frente do Render).
+        # Primeira correção cobriu só HTML; essa cobre TUDO que passa por
+        # aqui — script.js, style.css, data/*.json, o que for — pra fechar
+        # de vez qualquer brecha de cache intermediário, não só a do
+        # navegador. `no-cache, must-revalidate` obriga sempre revalidar
+        # com o servidor antes de usar a cópia guardada (ele ainda responde
+        # 304 quando nada mudou, então não pesa banda).
+        self.send_header('Cache-Control', 'no-cache, must-revalidate')
         super().end_headers()
 
     def handle_jogadores(self):
