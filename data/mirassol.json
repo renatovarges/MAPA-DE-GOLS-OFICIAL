@@ -2,35 +2,18 @@
   "rounds": {
     "1": {
       "roundNumber": 1,
-      "date": "2026-01-28",
+      "date": "2026-01-29",
       "opponent": "vasco",
       "home": true,
       "created_goals": [
         {
-          "pass": null,
-          "shot": {
-            "x": 89.23767533735796,
-            "y": 33.46898442021123
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "117330",
-            "name": "Robert Renan",
-            "fullName": "Robert Renan Alves Barbosa",
-            "position": "Zagueiro",
-            "side": null,
-            "team": "vasco"
-          },
-          "own_goal": true
-        },
-        {
           "pass": {
-            "x": 75.76560724431819,
-            "y": 25.69343894675926
+            "x": 75,
+            "y": 28.333333333333336
           },
           "shot": {
-            "x": 84.96604447798296,
-            "y": 26.452028514720777
+            "x": 83.6431041,
+            "y": 25.55362
           },
           "assistPlayer": {
             "id": "97321",
@@ -48,31 +31,38 @@
             "side": null,
             "team": "mirassol"
           }
+        },
+        {
+          "shot": null,
+          "pass": null,
+          "assistPlayer": null,
+          "shotPlayer": null,
+          "isOwnGoal": true
         }
       ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 8.240961248224432,
-            "y": 5.590806749131945
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
           },
           "shot": {
-            "x": 7.0909057617187505,
-            "y": 28.72779721860532
+            "x": 8.75624959999999,
+            "y": 29.673660000000005
           },
           "assistPlayer": {
             "id": "99213",
             "name": "Puma Rodríguez",
             "fullName": "José Luis Rodríguez Bebanz",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "vasco"
           },
           "shotPlayer": {
             "id": "68899",
-            "name": "Philippe Coutinho",
-            "fullName": "Philippe Coutinho Correia",
-            "position": "Meia",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "vasco"
           },
@@ -88,12 +78,12 @@
       "created_goals": [
         {
           "pass": {
-            "x": 77.57283991033381,
-            "y": 9.687196180555553
+            "x": 58.333333333333336,
+            "y": 17
           },
           "shot": {
-            "x": 84.80175559303977,
-            "y": 40.78937999584056
+            "x": 85.7772084,
+            "y": 29.532839999999997
           },
           "assistPlayer": {
             "id": "105903",
@@ -108,32 +98,32 @@
             "name": "Igor Formiga",
             "fullName": "Igor Marques Paciência Cardoso",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "mirassol"
           }
         },
         {
           "pass": {
-            "x": 89.40197504216974,
-            "y": 33.203482394748264
+            "x": 91.66666666666666,
+            "y": 39.66666666666667
           },
           "shot": {
-            "x": 92.03067127574573,
-            "y": 44.2030359338831
+            "x": 87.3961184,
+            "y": 40.71283999999999
           },
           "assistPlayer": {
             "id": "97460",
             "name": "João Victor",
-            "fullName": "João Victor Carroll Santana",
+            "fullName": "João Victor Carroll Santana - Caroll",
             "position": "Zagueiro",
             "side": null,
             "team": "mirassol"
           },
           "shotPlayer": {
             "id": "102667",
-            "name": "Nathan Fogaça",
-            "fullName": "Nathan Uiliam Fogaça - Uilian",
-            "position": "Atacante",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "mirassol"
           }
@@ -142,12 +132,12 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 12.184011008522731,
-            "y": 49.13386908637153
+            "x": 4.333333333333343,
+            "y": 51
           },
           "shot": {
-            "x": 5.119389204545456,
-            "y": 25.427936921296293
+            "x": 4.897529999999989,
+            "y": 26.994760000000007
           },
           "assistPlayer": {
             "id": "101254",
@@ -159,9 +149,9 @@
           },
           "shotPlayer": {
             "id": "146040",
-            "name": "João Pedro",
-            "fullName": "João Pedro Sousa Silva",
-            "position": "Atacante",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "remo"
           }
@@ -169,8 +159,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 13.662650923295445,
-            "y": 41.73761743616175
+            "x": 13.087309999999988,
+            "y": 38.08876000000001
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -186,31 +176,15 @@
     },
     "3": {
       "roundNumber": 3,
-      "date": "2026-02-10",
+      "date": "2026-02-11",
       "opponent": "cruzeiro",
       "home": true,
       "created_goals": [
         {
           "pass": null,
           "shot": {
-            "x": 90.55201970880681,
-            "y": 40.86523799189815
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "102667",
-            "name": "Nathan Fogaça",
-            "fullName": "Nathan Uiliam Fogaça - Uilian",
-            "position": "Atacante",
-            "side": null,
-            "team": "mirassol"
-          }
-        },
-        {
-          "pass": null,
-          "shot": {
-            "x": 80.36582253196023,
-            "y": 40.10664650245949
+            "x": 78.9349329,
+            "y": 41.52123999999999
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -221,17 +195,33 @@
             "side": null,
             "team": "mirassol"
           }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 90.1720729,
+            "y": 36.55302
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "102667",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
+            "side": null,
+            "team": "mirassol"
+          }
         }
       ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 24.83460804332386,
-            "y": 43.14100861725984
+            "x": 21,
+            "y": 39.666666666666664
           },
           "shot": {
-            "x": 10.212482799183238,
-            "y": 45.416775399667245
+            "x": 11.75408999999999,
+            "y": 44.05200000000001
           },
           "assistPlayer": {
             "id": "84558",
@@ -253,8 +243,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 10.705362770774148,
-            "y": 33.658634214048035
+            "x": 11.65885999999999,
+            "y": 33.646
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -277,12 +267,12 @@
       "created_goals": [
         {
           "pass": {
-            "x": 85.92642267400568,
-            "y": 13.65811891908999
+            "x": 91.66666666666666,
+            "y": 17
           },
           "shot": {
-            "x": 85.7622403231534,
-            "y": 42.27573287398727
+            "x": 89.58640840000001,
+            "y": 41.742259999999995
           },
           "assistPlayer": {
             "id": "97321",
@@ -297,18 +287,18 @@
             "name": "Igor Formiga",
             "fullName": "Igor Marques Paciência Cardoso",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "mirassol"
           }
         },
         {
           "pass": {
-            "x": 69.50805442116477,
-            "y": 58.9535472728588
+            "x": 91.66666666666666,
+            "y": 62.33333333333333
           },
           "shot": {
-            "x": 85.10550426136363,
-            "y": 47.96135299117477
+            "x": 86.79331250000001,
+            "y": 48.10625999999999
           },
           "assistPlayer": {
             "id": "97520",
@@ -332,8 +322,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 13.521436656605113,
-            "y": 27.114083071108215
+            "x": 9.904723399999995,
+            "y": 26.169160000000005
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -348,8 +338,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 10.730313387784092,
-            "y": 33.9368256745515
+            "x": 11.65885999999999,
+            "y": 33.646
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -373,12 +363,12 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 22.715718217329538,
-            "y": 34.69490989402488
+            "x": 21,
+            "y": 28.33333333333333
           },
           "shot": {
-            "x": 22.87990056818181,
-            "y": 23.89223474573206
+            "x": 21.5170696,
+            "y": 19.61252000000001
           },
           "assistPlayer": {
             "id": "105647",
@@ -409,8 +399,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 3.0136829723011362,
-            "y": 25.724263283058452
+            "x": 5.232739599999988,
+            "y": 28.64166
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -426,7 +416,7 @@
     },
     "8": {
       "roundNumber": 8,
-      "date": "2026-03-21",
+      "date": "2026-03-22",
       "opponent": "vitoria",
       "home": false,
       "created_goals": [],
@@ -434,8 +424,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 9.88390003551136,
-            "y": 25.238287127459493
+            "x": 12.08929959999999,
+            "y": 22.363660000000003
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -458,8 +448,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 71.97080965909092,
-            "y": 20.670386420355904
+            "x": 74.34199000000001,
+            "y": 21.65524
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -473,18 +463,18 @@
         },
         {
           "pass": {
-            "x": 95.7774390480735,
-            "y": 1.1497581199363367
+            "x": 91.66666666666666,
+            "y": 5.666666666666666
           },
           "shot": {
-            "x": 85.10550259676846,
-            "y": 34.12634865089699
+            "x": 87.57896000000001,
+            "y": 29.911239999999996
           },
           "assistPlayer": {
             "id": "71898",
-            "name": "Gabriel Pires",
-            "fullName": "Gabriel Appelt Pires",
-            "position": "Meia",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "mirassol"
           },
@@ -493,22 +483,21 @@
             "name": "Igor Formiga",
             "fullName": "Igor Marques Paciência Cardoso",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "mirassol"
           },
-          "isSetPiece": true,
           "isHeader": true
         }
       ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 15.327452503551143,
-            "y": 53.26793292010272
+            "x": 4.333333333333343,
+            "y": 51
           },
           "shot": {
-            "x": 19.26786221590909,
-            "y": 49.09847932038484
+            "x": 19.436294099999998,
+            "y": 40.63006
           },
           "assistPlayer": {
             "id": "63289",
@@ -530,25 +519,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 11.22286044034091,
-            "y": 33.936829517505785
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "72493",
-            "name": "Alex Telles",
-            "fullName": "Alex Nicolao Telles",
-            "position": "Lateral",
-            "side": "LE",
-            "team": "botafogo"
-          },
-          "is_penalty": true
-        },
-        {
-          "pass": null,
-          "shot": {
-            "x": 13.028886274857953,
-            "y": 45.30806590892651
+            "x": 11.0236759,
+            "y": 39.25406
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -559,6 +531,23 @@
             "side": null,
             "team": "botafogo"
           }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.65885999999999,
+            "y": 33.646
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "72493",
+            "name": "Alex Telles",
+            "fullName": "Alex Nicolao Telles",
+            "position": "Lateral",
+            "side": null,
+            "team": "botafogo"
+          },
+          "is_penalty": true
         }
       ]
     },
@@ -571,12 +560,12 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 0.38674455122514206,
-            "y": 0.7075416847511574
+            "x": 4.333333333333343,
+            "y": 28.33333333333333
           },
           "shot": {
-            "x": 3.8346013849431824,
-            "y": 43.53920401114004
+            "x": 5.256547099999992,
+            "y": 40.01774
           },
           "assistPlayer": {
             "id": "112886",
@@ -593,8 +582,7 @@
             "position": "Atacante",
             "side": null,
             "team": "red-bull-bragantino"
-          },
-          "isSetPiece": true
+          }
         }
       ]
     },
@@ -605,29 +593,19 @@
       "home": true,
       "created_goals": [
         {
+          "shot": null,
           "pass": null,
-          "shot": {
-            "x": 92.32958096590909,
-            "y": 40.8859130859375
-          },
           "assistPlayer": null,
-          "shotPlayer": {
-            "id": "91772",
-            "name": "David Duarte",
-            "fullName": "David de Duarte Macedo",
-            "position": "Zagueiro",
-            "side": null,
-            "team": "bahia"
-          },
-          "own_goal": true
+          "shotPlayer": null,
+          "isOwnGoal": true
         }
       ],
       "conceded_goals": [
         {
           "pass": null,
           "shot": {
-            "x": 10.894497403231535,
-            "y": 33.87365134910301
+            "x": 11.65885999999999,
+            "y": 33.646
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -635,7 +613,7 @@
             "name": "Luciano Juba",
             "fullName": "Luciano Batista da Silva Júnior",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "bahia"
           },
           "is_penalty": true
@@ -643,8 +621,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 3.6704173694957385,
-            "y": 42.97063892505787
+            "x": 4.8756270999999884,
+            "y": 41.300000000000004
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -666,12 +644,12 @@
       "created_goals": [
         {
           "pass": {
-            "x": 95.89528489546342,
-            "y": 11.809617558232056
+            "x": 91.66666666666666,
+            "y": 17
           },
           "shot": {
-            "x": 89.98749639337713,
-            "y": 43.823305935329856
+            "x": 87.8151304,
+            "y": 43.141479999999994
           },
           "assistPlayer": {
             "id": "97321",
@@ -692,12 +670,12 @@
         },
         {
           "pass": {
-            "x": 48.14066495028409,
-            "y": 22.796566207320602
+            "x": 58.333333333333336,
+            "y": 17
           },
           "shot": {
-            "x": 83.09507779208097,
-            "y": 34.351799406828704
+            "x": 81.6251804,
+            "y": 33.85348
           },
           "assistPlayer": {
             "id": "97321",
@@ -720,18 +698,18 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 12.693936434659093,
-            "y": 44.58102699562355
+            "x": 4.333333333333343,
+            "y": 39.666666666666664
           },
           "shot": {
-            "x": 7.934885475852269,
-            "y": 48.18019963017217
+            "x": 9.6276041,
+            "y": 42.69406
           },
           "assistPlayer": {
             "id": "92854",
-            "name": "Borré",
-            "fullName": "Rafael Santos Borré Maury",
-            "position": "Atacante",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "internacional"
           },
@@ -755,19 +733,19 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 0.7151100852272663,
-            "y": 55.54217981409143
+            "x": 21,
+            "y": 62.333333333333336
           },
           "shot": {
-            "x": 6.789903675426132,
-            "y": 41.70717355233651
+            "x": 5.899349599999994,
+            "y": 38.145520000000005
           },
           "assistPlayer": {
             "id": "80570",
             "name": "Wendell",
             "fullName": "Wendell Nascimento Borges",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "sao-paulo"
           },
           "shotPlayer": {
@@ -791,8 +769,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 84.77713955965909,
-            "y": 34.063170482494215
+            "x": 84.34114000000001,
+            "y": 34.354
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -807,12 +785,12 @@
         },
         {
           "pass": {
-            "x": 94.95652521306819,
-            "y": 57.753250461154515
+            "x": 91.66666666666666,
+            "y": 62.33333333333333
           },
           "shot": {
-            "x": 89.37427867542614,
-            "y": 36.716461407696755
+            "x": 87.10281,
+            "y": 36.934
           },
           "assistPlayer": {
             "id": "90917",
@@ -835,12 +813,22 @@
       ],
       "conceded_goals": [
         {
-          "pass": null,
-          "shot": {
-            "x": 25.014291104403405,
-            "y": 15.679670432761863
+          "pass": {
+            "x": 21,
+            "y": 5.666666666666671
           },
-          "assistPlayer": null,
+          "shot": {
+            "x": 21.334227999999996,
+            "y": 16.124360000000003
+          },
+          "assistPlayer": {
+            "id": "104036",
+            "name": "Labyad",
+            "fullName": "Zakaria Labyad",
+            "position": "Meia",
+            "side": null,
+            "team": "corinthians"
+          },
           "shotPlayer": {
             "id": "141995",
             "name": "Dieguinho",
@@ -860,12 +848,12 @@
       "created_goals": [
         {
           "pass": {
-            "x": 91.83703391335227,
-            "y": 14.921588134765624
+            "x": 91.66666666666666,
+            "y": 28.333333333333336
           },
           "shot": {
-            "x": 88.55336026278408,
-            "y": 26.861387690791375
+            "x": 87.61038590000001,
+            "y": 28.362379999999995
           },
           "assistPlayer": {
             "id": "101908",
@@ -887,21 +875,11 @@
       ],
       "conceded_goals": [
         {
+          "shot": null,
           "pass": null,
-          "shot": {
-            "x": 6.297355790571733,
-            "y": 26.861387690791375
-          },
           "assistPlayer": null,
-          "shotPlayer": {
-            "id": "97460",
-            "name": "João Victor",
-            "fullName": "João Victor Carroll Santana - Caroll",
-            "position": "Zagueiro",
-            "side": null,
-            "team": "mirassol"
-          },
-          "own_goal": true
+          "shotPlayer": null,
+          "isOwnGoal": true
         }
       ]
     },
@@ -1093,6 +1071,13 @@
             "team": "mirassol"
           },
           "isHeader": true
+        },
+        {
+          "shot": null,
+          "pass": null,
+          "assistPlayer": null,
+          "shotPlayer": null,
+          "isOwnGoal": true
         }
       ],
       "conceded_goals": [
@@ -1522,6 +1507,58 @@
             "position": "Atacante",
             "side": null,
             "team": "flamengo"
+          }
+        }
+      ]
+    },
+    "24": {
+      "roundNumber": 24,
+      "date": "2026-08-23",
+      "opponent": "santos",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 74.91337000000001,
+            "y": 36.04562
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "68708",
+            "name": "Eduardo",
+            "fullName": "Carlos Eduardo de Oliveira Alves",
+            "position": "Meia",
+            "side": null,
+            "team": "mirassol"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 21,
+            "y": 17
+          },
+          "shot": {
+            "x": 18.51541999999999,
+            "y": 33.35962000000001
+          },
+          "assistPlayer": {
+            "id": "63007",
+            "name": "Neymar",
+            "fullName": "Neymar da Silva Santos Júnior",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          },
+          "shotPlayer": {
+            "id": "126471",
+            "name": "Barreal",
+            "fullName": "Álvaro Martín Barreal",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
           }
         }
       ]

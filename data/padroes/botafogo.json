@@ -1,14 +1,14 @@
 {
   "teamKey": "botafogo",
-  "geradoEm": "2026-08-20T09:33:15.247Z",
+  "geradoEm": "2026-08-27T19:26:50.490Z",
   "ataca": [
-    "No Botafogo, o volante registra cerca de 2 finalizações por jogo. É uma posição a observar na escalação.",
-    "O Botafogo registra cerca de 6 finalizações por jogo de fora da área. O volante é quem mais finaliza nesse tipo de jogada.",
-    "O Botafogo registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado direito. O atacante de área é quem mais finaliza nesse tipo de jogada."
+    "O Botafogo registra cerca de 3 finalizações por jogo após sobras de bola. O volante é quem mais finaliza nesse tipo de jogada.",
+    "O Botafogo registra cerca de 7 finalizações por jogo de fora da área. O volante é quem mais finaliza nesse tipo de jogada.",
+    "No Botafogo, o atacante de área registra cerca de 4 finalizações por jogo. É uma posição a observar na escalação."
   ],
   "evidenciasAtaca": [
     {
-      "chave": "posicao|volante|",
+      "chave": "origem|REBATIDA|volante",
       "confianca": "padrao-consolidado"
     },
     {
@@ -16,7 +16,7 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "ladoDaJogada|direita|atacante-area",
+      "chave": "posicao|atacante-area|",
       "confianca": "padrao-consolidado"
     }
   ],
@@ -30,18 +30,18 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "posicao|meia|",
+      "chave": "origem|REBATIDA|meia",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|REBATIDA|meia",
+      "chave": "posicao|meia|",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
     "O Botafogo cede cerca de 10 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
     "O Botafogo cede cerca de 3 finalizações por jogo após passes do meia adversário.",
-    "O Botafogo cede cerca de 3 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa.",
-    "O Botafogo cede cerca de 3 finalizações por jogo após sobras de bola. Atenção: o meia adversário é quem mais finaliza nesses lances."
+    "O Botafogo cede cerca de 3 finalizações por jogo após sobras de bola. Atenção: o meia adversário é quem mais finaliza nesses lances.",
+    "O Botafogo cede cerca de 3 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa."
   ]
 }

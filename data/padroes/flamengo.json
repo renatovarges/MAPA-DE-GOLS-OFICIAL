@@ -1,11 +1,11 @@
 {
   "teamKey": "flamengo",
-  "geradoEm": "2026-08-20T09:33:15.247Z",
+  "geradoEm": "2026-08-27T19:26:50.490Z",
   "ataca": [
     "O Flamengo registra cerca de 9 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+    "No Flamengo, passes do meia originam cerca de 4 finalizações por jogo.",
     "No Flamengo, o atacante de área registra cerca de 4 finalizações por jogo. É uma posição a observar na escalação.",
-    "No Flamengo, passes do meia originam cerca de 3 finalizações por jogo.",
-    "O Flamengo registra cerca de 4 finalizações por jogo em jogadas construídas pelo lado direito. O meia é quem mais finaliza nesse tipo de jogada."
+    "O Flamengo registra cerca de 4 finalizações por jogo em jogadas construídas pelo lado esquerdo. O meia é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
@@ -13,15 +13,15 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "posicao|atacante-area|",
-      "confianca": "padrao-consolidado"
-    },
-    {
       "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "ladoDaJogada|direita|meia",
+      "chave": "posicao|atacante-area|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "ladoDaJogada|esquerda|meia",
       "confianca": "padrao-consolidado"
     }
   ],
@@ -35,18 +35,13 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|REBATIDA|atacante-area",
-      "confianca": "padrao-consolidado"
-    },
-    {
       "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
     "O Flamengo cede cerca de 3 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa.",
-    "O Flamengo cede cerca de 3 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o meia adversário é quem mais finaliza nesses lances.",
-    "O Flamengo cede cerca de 2 finalizações por jogo após sobras de bola. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Flamengo cede cerca de 4 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o meia adversário é quem mais finaliza nesses lances.",
     "O Flamengo cede cerca de 2 finalizações por jogo após passes do meia adversário."
   ]
 }

@@ -2,32 +2,32 @@
   "rounds": {
     "1": {
       "roundNumber": 1,
-      "date": "2026-01-28",
+      "date": "2026-01-29",
       "opponent": "mirassol",
       "home": false,
       "created_goals": [
         {
           "pass": {
-            "x": 87.75903875177556,
-            "y": 62.40919325086806
+            "x": 91.66666666666666,
+            "y": 62.33333333333333
           },
           "shot": {
-            "x": 88.90909423828126,
-            "y": 39.27220278139468
+            "x": 87.24375040000001,
+            "y": 38.326339999999995
           },
           "assistPlayer": {
             "id": "99213",
             "name": "Puma Rodríguez",
             "fullName": "José Luis Rodríguez Bebanz",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "vasco"
           },
           "shotPlayer": {
             "id": "68899",
-            "name": "Philippe Coutinho",
-            "fullName": "Philippe Coutinho Correia",
-            "position": "Meia",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "vasco"
           },
@@ -36,30 +36,13 @@
       ],
       "conceded_goals": [
         {
-          "pass": null,
-          "shot": {
-            "x": 6.762324662642044,
-            "y": 34.53101557978877
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "117330",
-            "name": "Robert Renan",
-            "fullName": "Robert Renan Alves Barbosa",
-            "position": "Zagueiro",
-            "side": null,
-            "team": "vasco"
-          },
-          "own_goal": true
-        },
-        {
           "pass": {
-            "x": 20.23439275568181,
-            "y": 42.30656105324074
+            "x": 21,
+            "y": 39.666666666666664
           },
           "shot": {
-            "x": 11.033955522017038,
-            "y": 41.54797148527922
+            "x": 12.356895899999998,
+            "y": 42.446380000000005
           },
           "assistPlayer": {
             "id": "97321",
@@ -77,23 +60,30 @@
             "side": null,
             "team": "mirassol"
           }
+        },
+        {
+          "shot": null,
+          "pass": null,
+          "assistPlayer": null,
+          "shotPlayer": null,
+          "isOwnGoal": true
         }
       ]
     },
     "2": {
       "roundNumber": 2,
-      "date": "2026-02-04",
+      "date": "2026-02-05",
       "opponent": "chapecoense",
       "home": true,
       "created_goals": [
         {
           "pass": {
-            "x": 76.09419167258523,
-            "y": 10.521640862358941
+            "x": 75,
+            "y": 17
           },
           "shot": {
-            "x": 89.40197088068182,
-            "y": 42.192771176938656
+            "x": 89.8149604,
+            "y": 40.21834
           },
           "assistPlayer": {
             "id": "116706",
@@ -108,7 +98,7 @@
             "name": "Puma Rodríguez",
             "fullName": "José Luis Rodríguez Bebanz",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "vasco"
           }
         }
@@ -117,15 +107,15 @@
         {
           "pass": null,
           "shot": {
-            "x": 23.355964799360795,
-            "y": 35.555109094690394
+            "x": 23.721644099999992,
+            "y": 37.19006
           },
           "assistPlayer": null,
           "shotPlayer": {
             "id": "70958",
-            "name": "Jean Carlos",
-            "fullName": "Jean Carlos Vicente",
-            "position": "Meia",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "chapecoense"
           }
@@ -134,19 +124,19 @@
     },
     "3": {
       "roundNumber": 3,
-      "date": "2026-02-10",
+      "date": "2026-02-11",
       "opponent": "bahia",
       "home": true,
       "created_goals": [],
       "conceded_goals": [
         {
           "pass": {
-            "x": 0.6834578080610796,
-            "y": 0.09102973937988282
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
           },
           "shot": {
-            "x": 12.512592107599433,
-            "y": 38.96876311125578
+            "x": 13.27776999999999,
+            "y": 37.258
           },
           "assistPlayer": {
             "id": "51772",
@@ -161,27 +151,26 @@
             "name": "Luciano Juba",
             "fullName": "Luciano Batista da Silva Júnior",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "bahia"
-          },
-          "isSetPiece": true
+          }
         }
       ]
     },
     "4": {
       "roundNumber": 4,
-      "date": "2026-02-25",
+      "date": "2026-02-26",
       "opponent": "santos",
       "home": false,
       "created_goals": [
         {
           "pass": {
-            "x": 84.80175559303977,
-            "y": 11.20437531647859
+            "x": 91.66666666666666,
+            "y": 17
           },
           "shot": {
-            "x": 81.18729858398437,
-            "y": 35.289603226273144
+            "x": 83.98212290000001,
+            "y": 40.976
           },
           "assistPlayer": {
             "id": "116706",
@@ -203,22 +192,12 @@
       ],
       "conceded_goals": [
         {
-          "pass": {
-            "x": 18.920048384232956,
-            "y": 40.78937999584056
-          },
+          "pass": null,
           "shot": {
-            "x": 9.39102006392045,
-            "y": 46.85810038248698
+            "x": 11.532204100000001,
+            "y": 43.50762
           },
-          "assistPlayer": {
-            "id": "91607",
-            "name": "Rony",
-            "fullName": "Ronielson da Silva Barbosa",
-            "position": "Atacante",
-            "side": null,
-            "team": "santos"
-          },
+          "assistPlayer": null,
           "shotPlayer": {
             "id": "63007",
             "name": "Neymar",
@@ -229,12 +208,22 @@
           }
         },
         {
-          "pass": null,
-          "shot": {
-            "x": 11.855426580255681,
-            "y": 41.73761743616175
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 39.666666666666664
           },
-          "assistPlayer": null,
+          "shot": {
+            "x": 8.770534099999992,
+            "y": 45.915620000000004
+          },
+          "assistPlayer": {
+            "id": "104666",
+            "name": "Moisés",
+            "fullName": "Moisés Vieira da Veiga",
+            "position": "Atacante",
+            "side": null,
+            "team": "santos"
+          },
           "shotPlayer": {
             "id": "63007",
             "name": "Neymar",
@@ -248,18 +237,18 @@
     },
     "5": {
       "roundNumber": 5,
-      "date": "2026-02-25",
+      "date": "2026-03-12",
       "opponent": "palmeiras",
       "home": true,
       "created_goals": [
         {
           "pass": {
-            "x": 76.2584872159091,
-            "y": 24.934849378797743
+            "x": 75,
+            "y": 28.333333333333336
           },
           "shot": {
-            "x": 81.84446244673296,
-            "y": 29.86568445276331
+            "x": 83.91070040000001,
+            "y": 28.43462
           },
           "assistPlayer": {
             "id": "90309",
@@ -280,19 +269,19 @@
         },
         {
           "pass": {
-            "x": 85.7875088778409,
-            "y": 21.710841313114873
+            "x": 91.66666666666666,
+            "y": 17
           },
           "shot": {
-            "x": 86.28038884943182,
-            "y": 36.124050790292245
+            "x": 85.81530040000001,
+            "y": 36.86262
           },
           "assistPlayer": {
             "id": "93716",
             "name": "Paulo Henrique",
             "fullName": "Paulo Henrique de Oliveira Alves",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "vasco"
           },
           "shotPlayer": {
@@ -300,7 +289,7 @@
             "name": "Cuiabano",
             "fullName": "Luís Eduardo Soares da Silva",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "vasco"
           }
         }
@@ -308,12 +297,12 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 31.570642089843748,
-            "y": 20.383310049551504
+            "x": 37.666666666666664,
+            "y": 28.33333333333333
           },
           "shot": {
-            "x": 12.019712136008522,
-            "y": 13.935295839662906
+            "x": 12.946369599999997,
+            "y": 16.086520000000007
           },
           "assistPlayer": {
             "id": "93790",
@@ -342,19 +331,19 @@
       "created_goals": [
         {
           "pass": {
-            "x": 94.29978665438566,
-            "y": 3.4240107783564895
+            "x": 91.66666666666666,
+            "y": 5.666666666666666
           },
           "shot": {
-            "x": 88.2249922318892,
-            "y": 28.251209400318288
+            "x": 86.7676004,
+            "y": 35.056619999999995
           },
           "assistPlayer": {
             "id": "116065",
             "name": "Cuiabano",
             "fullName": "Luís Eduardo Soares da Silva",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "vasco"
           },
           "shotPlayer": {
@@ -370,8 +359,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 91.67284823330967,
-            "y": 27.114086914062497
+            "x": 90.38634040000001,
+            "y": 25.76862
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -386,19 +375,19 @@
         },
         {
           "pass": {
-            "x": 78.53815696022727,
-            "y": 37.15867784288194
+            "x": 91.66666666666666,
+            "y": 39.66666666666667
           },
           "shot": {
-            "x": 79.03070734197443,
-            "y": 33.17874529803241
+            "x": 78.1969004,
+            "y": 32.73462
           },
           "assistPlayer": {
             "id": "99213",
             "name": "Puma Rodríguez",
             "fullName": "José Luis Rodríguez Bebanz",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "vasco"
           },
           "shotPlayer": {
@@ -414,26 +403,26 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 4.655519797585228,
-            "y": 47.582312802915226
+            "x": 4.333333333333343,
+            "y": 51
           },
           "shot": {
-            "x": 6.62572132457386,
-            "y": 22.56558928313079
+            "x": 10.737985899999998,
+            "y": 22.32238000000001
           },
           "assistPlayer": {
             "id": "112709",
-            "name": "Kaiki Bruno",
-            "fullName": "Kaiki Bruno da Silva",
-            "position": "Lateral",
-            "side": "LE",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
+            "side": null,
             "team": "cruzeiro"
           },
           "shotPlayer": {
             "id": "104502",
-            "name": "Christian",
-            "fullName": "Christian Roberto Alves Cardoso",
-            "position": "Meia",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "cruzeiro"
           },
@@ -441,12 +430,12 @@
         },
         {
           "pass": {
-            "x": 8.10337579900569,
-            "y": 42.6547769052011
+            "x": 4.333333333333343,
+            "y": 39.666666666666664
           },
           "shot": {
-            "x": 5.968985262784088,
-            "y": 42.27573671694155
+            "x": 7.080201599999995,
+            "y": 41.13574
           },
           "assistPlayer": {
             "id": "90608",
@@ -468,19 +457,19 @@
         },
         {
           "pass": {
-            "x": 10.073577325994322,
-            "y": 11.194352891710068
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
           },
           "shot": {
-            "x": 6.297356622869316,
-            "y": 40.0014879014757
+            "x": 7.080201599999995,
+            "y": 40.96374
           },
           "assistPlayer": {
             "id": "143600",
             "name": "Kauã Moraes",
             "fullName": "Kauã Moraes da Silva",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "cruzeiro"
           },
           "shotPlayer": {
@@ -497,25 +486,25 @@
     },
     "8": {
       "roundNumber": 8,
-      "date": "2026-03-21",
+      "date": "2026-03-22",
       "opponent": "gremio",
       "home": true,
       "created_goals": [
         {
           "pass": {
-            "x": 81.35158247514204,
-            "y": 21.710841313114873
+            "x": 91.66666666666666,
+            "y": 5.666666666666666
           },
           "shot": {
-            "x": 88.41620427911931,
-            "y": 28.5381512677228
+            "x": 88.5388784,
+            "y": 26.608839999999997
           },
           "assistPlayer": {
             "id": "116065",
             "name": "Cuiabano",
             "fullName": "Luís Eduardo Soares da Silva",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "vasco"
           },
           "shotPlayer": {
@@ -529,19 +518,19 @@
         },
         {
           "pass": {
-            "x": 88.90908425071022,
-            "y": 7.487281629774306
+            "x": 91.66666666666666,
+            "y": 28.333333333333336
           },
           "shot": {
-            "x": 85.13033336292614,
-            "y": 34.606871654369215
+            "x": 86.3866804,
+            "y": 31.31562
           },
           "assistPlayer": {
             "id": "116065",
             "name": "Cuiabano",
             "fullName": "Luís Eduardo Soares da Silva",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "vasco"
           },
           "shotPlayer": {
@@ -558,8 +547,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 14.812701416015626,
-            "y": 38.589467366536454
+            "x": 12.684487099999998,
+            "y": 38.5265
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -582,34 +571,27 @@
         {
           "pass": null,
           "shot": {
-            "x": 76.23958407315341,
-            "y": 33.68412837275752
+            "x": 78.95874040000001,
+            "y": 31.272619999999996
           },
           "assistPlayer": null,
-          "shotPlayer": {
-            "id": "142279",
-            "name": "Nuno Moreira",
-            "fullName": "Nuno Gonçalo Rocha Moreira",
-            "position": "Meia",
-            "side": null,
-            "team": "vasco"
-          }
+          "shotPlayer": null
         },
         {
           "pass": {
-            "x": 67.37367054332387,
-            "y": 5.635077582465278
+            "x": 75,
+            "y": 17
           },
           "shot": {
-            "x": 82.80693137428977,
-            "y": 36.526938431351276
+            "x": 86.1009904,
+            "y": 41.248619999999995
           },
           "assistPlayer": {
             "id": "116065",
             "name": "Cuiabano",
             "fullName": "Luís Eduardo Soares da Silva",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "vasco"
           },
           "shotPlayer": {
@@ -624,12 +606,12 @@
         },
         {
           "pass": {
-            "x": 86.4189697265625,
-            "y": 4.308434041341146
+            "x": 91.66666666666666,
+            "y": 5.666666666666666
           },
           "shot": {
-            "x": 85.43386896306818,
-            "y": 33.87365134910301
+            "x": 88.95789040000001,
+            "y": 38.49662
           },
           "assistPlayer": {
             "id": "128433",
@@ -647,28 +629,17 @@
             "side": null,
             "team": "vasco"
           },
-          "isSetPiece": true,
           "isHeader": true
         }
       ],
       "conceded_goals": [
         {
-          "pass": {
-            "x": 10.566131036931818,
-            "y": 12.457820185908565
-          },
+          "pass": null,
           "shot": {
-            "x": 10.237763006036932,
-            "y": 21.933851793077256
+            "x": 9.437144099999998,
+            "y": 27.511620000000008
           },
-          "assistPlayer": {
-            "id": "89837",
-            "name": "Lucho Acosta",
-            "fullName": "Luciano Federico Acosta",
-            "position": "Meia",
-            "side": null,
-            "team": "fluminense"
-          },
+          "assistPlayer": null,
           "shotPlayer": {
             "id": "102928",
             "name": "Canobbio",
@@ -679,22 +650,12 @@
           }
         },
         {
-          "pass": {
-            "x": 14.178171053799716,
-            "y": 45.05536860713253
-          },
+          "pass": null,
           "shot": {
-            "x": 19.924598277698863,
-            "y": 43.160161901403356
+            "x": 21.2456641,
+            "y": 39.723620000000004
           },
-          "assistPlayer": {
-            "id": "89837",
-            "name": "Lucho Acosta",
-            "fullName": "Luciano Federico Acosta",
-            "position": "Meia",
-            "side": null,
-            "team": "fluminense"
-          },
+          "assistPlayer": null,
           "shotPlayer": {
             "id": "116447",
             "name": "Hércules",
@@ -714,19 +675,19 @@
       "created_goals": [
         {
           "pass": {
-            "x": 87.73244018554688,
-            "y": 62.74396356653284
+            "x": 91.66666666666666,
+            "y": 62.33333333333333
           },
           "shot": {
-            "x": 81.98601296164773,
-            "y": 52.130808512369796
+            "x": 82.72223000000001,
+            "y": 43.757239999999996
           },
           "assistPlayer": {
             "id": "93716",
             "name": "Paulo Henrique",
             "fullName": "Paulo Henrique de Oliveira Alves",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "vasco"
           },
           "shotPlayer": {
@@ -741,21 +702,11 @@
       ],
       "conceded_goals": [
         {
+          "shot": null,
           "pass": null,
-          "shot": {
-            "x": 1.7002108487215821,
-            "y": 31.283538592303245
-          },
           "assistPlayer": null,
-          "shotPlayer": {
-            "id": "118655",
-            "name": "Saldivia",
-            "fullName": "Alan Gabriel Saldivia Vázquez",
-            "position": "Zagueiro",
-            "side": null,
-            "team": "vasco"
-          },
-          "own_goal": true
+          "shotPlayer": null,
+          "isOwnGoal": true
         }
       ]
     },
@@ -767,19 +718,19 @@
       "created_goals": [
         {
           "pass": {
-            "x": 79.85162908380681,
-            "y": 55.66852077907986
+            "x": 91.66666666666666,
+            "y": 51
           },
           "shot": {
-            "x": 90.35937943892046,
-            "y": 26.10330539279514
+            "x": 90.19588040000001,
+            "y": 28.006339999999998
           },
           "assistPlayer": {
             "id": "99213",
             "name": "Puma Rodríguez",
             "fullName": "José Luis Rodríguez Bebanz",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "vasco"
           },
           "shotPlayer": {
@@ -795,19 +746,19 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 15.820006214488636,
-            "y": 56.04756288881655
+            "x": 4.333333333333343,
+            "y": 51
           },
           "shot": {
-            "x": 5.148070179332387,
-            "y": 20.79672738534433
+            "x": 8.661019599999989,
+            "y": 19.440520000000006
           },
           "assistPlayer": {
             "id": "130232",
             "name": "Caio Roque",
             "fullName": "Caio Alves Roque Gomes",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "botafogo"
           },
           "shotPlayer": {
@@ -822,12 +773,12 @@
         },
         {
           "pass": {
-            "x": 20.088782293146306,
-            "y": 61.35414089626736
+            "x": 21,
+            "y": 51
           },
           "shot": {
-            "x": 18.282761452414775,
-            "y": 43.53920401114004
+            "x": 20.183849600000002,
+            "y": 48.508520000000004
           },
           "assistPlayer": {
             "id": "142890",
@@ -856,12 +807,12 @@
       "created_goals": [
         {
           "pass": {
-            "x": 90.8519298206676,
-            "y": 15.932369656032982
+            "x": 91.66666666666666,
+            "y": 17
           },
           "shot": {
-            "x": 86.25478737571022,
-            "y": 44.739504665798606
+            "x": 83.7916629,
+            "y": 39.599999999999994
           },
           "assistPlayer": {
             "id": "71123",
@@ -884,18 +835,18 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 24.35755504261364,
-            "y": 65.2077315153899
+            "x": 21,
+            "y": 62.333333333333336
           },
           "shot": {
-            "x": 9.581030273437506,
-            "y": 30.71497734917535
+            "x": 9.087649999999996,
+            "y": 38.174760000000006
           },
           "assistPlayer": {
             "id": "111945",
-            "name": "Diego Hernández",
-            "fullName": "Diego Manuel Hernández González",
-            "position": "Meia",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "remo"
           },
@@ -907,7 +858,6 @@
             "side": null,
             "team": "remo"
           },
-          "isSetPiece": true,
           "isHeader": true
         }
       ]
@@ -921,8 +871,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 84.78301225142044,
-            "y": 33.837627495659724
+            "x": 84.34114000000001,
+            "y": 34.354
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -930,28 +880,18 @@
             "name": "Puma Rodríguez",
             "fullName": "José Luis Rodríguez Bebanz",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "vasco"
           },
           "is_penalty": true
         },
         {
-          "pass": {
-            "x": 89.21385165127842,
-            "y": 38.95224225079572
-          },
+          "pass": null,
           "shot": {
-            "x": 83.3060635653409,
-            "y": 42.93027253327546
+            "x": 84.59540410000001,
+            "y": 45.601079999999996
           },
-          "assistPlayer": {
-            "id": "99789",
-            "name": "Brenner",
-            "fullName": "Brenner Souza da Silva",
-            "position": "Atacante",
-            "side": null,
-            "team": "vasco"
-          },
+          "assistPlayer": null,
           "shotPlayer": {
             "id": "116706",
             "name": "Andrés Gómez",
@@ -966,8 +906,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 6.6689242276278415,
-            "y": 34.97420812536169
+            "x": 7.446837099999996,
+            "y": 36.36274
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -990,12 +930,12 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 17.62602539062499,
-            "y": 47.77183385778356
+            "x": 4.333333333333343,
+            "y": 51
           },
           "shot": {
-            "x": 12.536332563920453,
-            "y": 48.5299161557798
+            "x": 11.595055899999991,
+            "y": 40.20006
           },
           "assistPlayer": {
             "id": "117632",
@@ -1010,7 +950,7 @@
             "name": "Matheus Bidu",
             "fullName": "Matheus Lima Beltrão Oliveira Valin",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "corinthians"
           }
         }
@@ -1023,22 +963,12 @@
       "home": false,
       "created_goals": [
         {
-          "pass": {
-            "x": 95.94162264737216,
-            "y": 1.3392849392361086
-          },
+          "pass": null,
           "shot": {
-            "x": 89.70264420942827,
-            "y": 26.73504480432581
+            "x": 90.56251590000001,
+            "y": 28.745939999999997
           },
-          "assistPlayer": {
-            "id": "142279",
-            "name": "Nuno Moreira",
-            "fullName": "Nuno Gonçalo Rocha Moreira",
-            "position": "Meia",
-            "side": null,
-            "team": "vasco"
-          },
+          "assistPlayer": null,
           "shotPlayer": {
             "id": "117330",
             "name": "Robert Renan",
@@ -1047,17 +977,16 @@
             "side": null,
             "team": "vasco"
           },
-          "isSetPiece": true,
           "isHeader": true
         },
         {
           "pass": {
-            "x": 72.2991776899858,
-            "y": 60.848756860803675
+            "x": 75,
+            "y": 62.33333333333333
           },
           "shot": {
-            "x": 85.10550259676846,
-            "y": 41.70717355233651
+            "x": 85.99147590000001,
+            "y": 38.29194
           },
           "assistPlayer": {
             "id": "97095",
@@ -1069,9 +998,9 @@
           },
           "shotPlayer": {
             "id": "101594",
-            "name": "Hugo Moura",
-            "fullName": "Hugo Moura Arruda da Silva",
-            "position": "Meia",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "vasco"
           },
@@ -1082,8 +1011,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 9.90939497514205,
-            "y": 37.34820081922743
+            "x": 9.818064099999987,
+            "y": 39.110440000000004
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -1098,8 +1027,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 11.058678089488637,
-            "y": 34.12634865089699
+            "x": 11.65885999999999,
+            "y": 33.646
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -1122,19 +1051,19 @@
       "created_goals": [
         {
           "pass": {
-            "x": 78.20979225852273,
-            "y": 50.74098488136574
+            "x": 91.66666666666666,
+            "y": 51
           },
           "shot": {
-            "x": 83.46366743607955,
-            "y": 45.43441071686921
+            "x": 83.1345759,
+            "y": 42.466379999999994
           },
           "assistPlayer": {
             "id": "99213",
             "name": "Puma Rodríguez",
             "fullName": "José Luis Rodríguez Bebanz",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "vasco"
           },
           "shotPlayer": {
@@ -1552,6 +1481,128 @@
             "position": "Zagueiro",
             "side": null,
             "team": "santos"
+          }
+        }
+      ]
+    },
+    "24": {
+      "roundNumber": 24,
+      "date": "2026-08-23",
+      "opponent": "palmeiras",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 91.57862,
+            "y": 31.115239999999993
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "114323",
+            "name": "Colidio",
+            "fullName": "Facundo Colidio",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 21,
+            "y": 17
+          },
+          "shot": {
+            "x": 17.383135299999992,
+            "y": 27.144400000000005
+          },
+          "assistPlayer": {
+            "id": "141451",
+            "name": "Allan",
+            "fullName": "Allan Andrade Elias",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "shotPlayer": {
+            "id": "113103",
+            "name": "Flaco López",
+            "fullName": "José Manuel Alberto López",
+            "position": "Atacante",
+            "side": null,
+            "team": "palmeiras"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.65885999999999,
+            "y": 33.646
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "114802",
+            "name": "Vitor Roque",
+            "fullName": "Vitor Hugo Roque Ferreira",
+            "position": "Atacante",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 21,
+            "y": 39.666666666666664
+          },
+          "shot": {
+            "x": 13.002555299999997,
+            "y": 26.5424
+          },
+          "assistPlayer": {
+            "id": "89274",
+            "name": "Andreas Pereira",
+            "fullName": "Andreas Hugo Hoelgebaum Pereira",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "shotPlayer": {
+            "id": "105647",
+            "name": "Maurício",
+            "fullName": "Maurício Magalhães Prado",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          }
+        },
+        {
+          "pass": {
+            "x": 21,
+            "y": 51
+          },
+          "shot": {
+            "x": 19.668655299999998,
+            "y": 25.080400000000004
+          },
+          "assistPlayer": {
+            "id": "99815",
+            "name": "Arias",
+            "fullName": "Jhon Adolfo Arias Andrade",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "shotPlayer": {
+            "id": "113103",
+            "name": "Flaco López",
+            "fullName": "José Manuel Alberto López",
+            "position": "Atacante",
+            "side": null,
+            "team": "palmeiras"
           }
         }
       ]

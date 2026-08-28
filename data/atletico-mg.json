@@ -8,19 +8,19 @@
       "created_goals": [
         {
           "pass": {
-            "x": 79.87294256036931,
-            "y": 28.91744701244213
+            "x": 91.66666666666666,
+            "y": 28.333333333333336
           },
           "shot": {
-            "x": 82.50163796164773,
-            "y": 34.796517605251736
+            "x": 85.5867484,
+            "y": 34.52083999999999
           },
           "assistPlayer": {
             "id": "96591",
             "name": "Renan Lodi",
             "fullName": "Renan Augusto Lodi dos Santos",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "atletico-mg"
           },
           "shotPlayer": {
@@ -33,32 +33,22 @@
           }
         },
         {
+          "shot": null,
           "pass": null,
-          "shot": {
-            "x": 89.40197088068182,
-            "y": 30.24498019748264
-          },
           "assistPlayer": null,
-          "shotPlayer": {
-            "id": "105175",
-            "name": "Khellven",
-            "fullName": "Khellven Douglas Silva Oliveira",
-            "position": "Lateral",
-            "side": "LD",
-            "team": "palmeiras"
-          },
-          "own_goal": true
+          "shotPlayer": null,
+          "isOwnGoal": true
         }
       ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 1.0434789484197444,
-            "y": 66.34485496238426
+            "x": 4.333333333333343,
+            "y": 62.333333333333336
           },
           "shot": {
-            "x": 3.342050170898437,
-            "y": 42.84429411711516
+            "x": 5.304162099999999,
+            "y": 39.236000000000004
           },
           "assistPlayer": {
             "id": "89274",
@@ -76,14 +66,13 @@
             "side": null,
             "team": "palmeiras"
           },
-          "isSetPiece": true,
           "isHeader": true
         },
         {
           "pass": null,
           "shot": {
-            "x": 7.912373490767045,
-            "y": 31.76215933340567
+            "x": 8.970517099999995,
+            "y": 34.85
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -107,8 +96,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 17.769992897727278,
-            "y": 41.54797148527922
+            "x": 17.626924099999997,
+            "y": 37.62006
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -124,18 +113,18 @@
     },
     "3": {
       "roundNumber": 3,
-      "date": "2026-02-10",
+      "date": "2026-02-11",
       "opponent": "remo",
       "home": true,
       "created_goals": [
         {
           "pass": {
-            "x": 65.41511452414773,
-            "y": 43.520300519024886
+            "x": 58.333333333333336,
+            "y": 39.66666666666667
           },
           "shot": {
-            "x": 83.48739790482955,
-            "y": 45.22712944878472
+            "x": 83.7916629,
+            "y": 41.60723999999999
           },
           "assistPlayer": {
             "id": "116034",
@@ -156,12 +145,12 @@
         },
         {
           "pass": {
-            "x": 70.83680087002841,
-            "y": 8.245871197735822
+            "x": 75,
+            "y": 5.666666666666666
           },
           "shot": {
-            "x": 88.25191539417614,
-            "y": 40.48594224717882
+            "x": 89.31500290000001,
+            "y": 39.199239999999996
           },
           "assistPlayer": {
             "id": "39148",
@@ -179,16 +168,25 @@
             "side": null,
             "team": "atletico-mg"
           },
-          "isSetPiece": true,
           "isHeader": true
         },
         {
-          "pass": null,
-          "shot": {
-            "x": 88.74479536576705,
-            "y": 35.555109094690394
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 51
           },
-          "assistPlayer": null,
+          "shot": {
+            "x": 90.64822290000001,
+            "y": 33.35124
+          },
+          "assistPlayer": {
+            "id": "87999",
+            "name": "Gustavo Scarpa",
+            "fullName": "Gustavo Henrique Furtado Scarpa",
+            "position": "Meia",
+            "side": null,
+            "team": "atletico-mg"
+          },
           "shotPlayer": {
             "id": "68920",
             "name": "Dudu",
@@ -201,35 +199,19 @@
       ],
       "conceded_goals": [
         {
-          "pass": null,
-          "shot": {
-            "x": 7.583785733309659,
-            "y": 30.24498019748264
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "87552",
-            "name": "Vitor Bueno",
-            "fullName": "Vitor Frezarin Bueno",
-            "position": "Meia",
-            "side": null,
-            "team": "remo"
-          }
-        },
-        {
           "pass": {
-            "x": 34.03504527698863,
-            "y": 23.228022370515045
+            "x": 37.666666666666664,
+            "y": 17
           },
           "shot": {
-            "x": 11.526830499822443,
-            "y": 18.67648304126881
+            "x": 7.327799599999992,
+            "y": 16.602520000000013
           },
           "assistPlayer": {
             "id": "107172",
-            "name": "Patrick de Paula",
-            "fullName": "Patrick de Paula Carreiro",
-            "position": "Meia",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "remo"
           },
@@ -243,19 +225,35 @@
           }
         },
         {
+          "pass": null,
+          "shot": {
+            "x": 7.613489599999994,
+            "y": 26.922520000000006
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "87552",
+            "name": "Vitor Bueno",
+            "fullName": "Vitor Frezarin Bueno",
+            "position": "Meia",
+            "side": null,
+            "team": "remo"
+          }
+        },
+        {
           "pass": {
-            "x": 15.798463023792614,
-            "y": 24.365907683195893
+            "x": 21,
+            "y": 17
           },
           "shot": {
-            "x": 15.469876930930397,
-            "y": 32.710396773726856
+            "x": 16.184189599999996,
+            "y": 29.760520000000007
           },
           "assistPlayer": {
             "id": "107172",
-            "name": "Patrick de Paula",
-            "fullName": "Patrick de Paula Carreiro",
-            "position": "Meia",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "remo"
           },
@@ -278,12 +276,12 @@
       "created_goals": [
         {
           "pass": {
-            "x": 49.97152654474432,
-            "y": 40.41008617259838
+            "x": 25,
+            "y": 28.333333333333336
           },
           "shot": {
-            "x": 81.84447243430398,
-            "y": 43.444446365921586
+            "x": 81.96039,
+            "y": 37.651239999999994
           },
           "assistPlayer": {
             "id": "72294",
@@ -306,19 +304,19 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 14.648417524857962,
-            "y": 9.118250641999424
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
           },
           "shot": {
-            "x": 6.2694446910511346,
-            "y": 41.92726530852141
+            "x": 5.468909999999994,
+            "y": 38.57638
           },
           "assistPlayer": {
             "id": "91706",
             "name": "Marlon",
             "fullName": "Marlon Rodrigues Xavier",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "gremio"
           },
           "shotPlayer": {
@@ -333,12 +331,12 @@
         },
         {
           "pass": {
-            "x": 20.727279385653418,
-            "y": 16.324854419849537
+            "x": 21,
+            "y": 28.33333333333333
           },
           "shot": {
-            "x": 20.070103870738635,
-            "y": 38.51361129195602
+            "x": 22.61031,
+            "y": 42.79038
           },
           "assistPlayer": {
             "id": "130048",
@@ -353,7 +351,7 @@
             "name": "Marlon",
             "fullName": "Marlon Rodrigues Xavier",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "gremio"
           }
         }
@@ -361,18 +359,18 @@
     },
     "5": {
       "roundNumber": 5,
-      "date": "2026-03-10",
+      "date": "2026-03-11",
       "opponent": "internacional",
       "home": true,
       "created_goals": [
         {
           "pass": {
-            "x": 66.55275213068181,
-            "y": 48.71943336769387
+            "x": 58.333333333333336,
+            "y": 39.66666666666667
           },
           "shot": {
-            "x": 81.65764825994319,
-            "y": 50.80416304976852
+            "x": 85.4105729,
+            "y": 44.580259999999996
           },
           "assistPlayer": {
             "id": "39148",
@@ -402,13 +400,29 @@
       "created_goals": [],
       "conceded_goals": [
         {
+          "pass": null,
+          "shot": {
+            "x": 21.231379599999997,
+            "y": 45.49938
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "92696",
+            "name": "Renato Kayzer",
+            "fullName": "Renato Kayzer de Souza",
+            "position": "Atacante",
+            "side": null,
+            "team": "vitoria"
+          }
+        },
+        {
           "pass": {
-            "x": 10.073577325994322,
-            "y": 4.371614131221065
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
           },
           "shot": {
-            "x": 15.163270152698857,
-            "y": 19.154221824363425
+            "x": 12.470219599999993,
+            "y": 19.44138000000001
           },
           "assistPlayer": {
             "id": "99440",
@@ -426,22 +440,6 @@
             "side": null,
             "team": "vitoria"
           }
-        },
-        {
-          "pass": null,
-          "shot": {
-            "x": 29.283065518465918,
-            "y": 51.37272621437356
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "92696",
-            "name": "Renato Kayzer",
-            "fullName": "Renato Kayzer de Souza",
-            "position": "Atacante",
-            "side": null,
-            "team": "vitoria"
-          }
         }
       ]
     },
@@ -453,12 +451,12 @@
       "created_goals": [
         {
           "pass": {
-            "x": 93.31468838778409,
-            "y": 23.829058498806422
+            "x": 91.66666666666666,
+            "y": 28.333333333333336
           },
           "shot": {
-            "x": 92.98631702769886,
-            "y": 41.64399730541088
+            "x": 90.15017,
+            "y": 36.81962
           },
           "assistPlayer": {
             "id": "39656",
@@ -470,9 +468,9 @@
           },
           "shotPlayer": {
             "id": "124661",
-            "name": "Iván Román",
-            "fullName": "Ivan Ramiro Román Hurtado",
-            "position": "Zagueiro",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "atletico-mg"
           },
@@ -489,19 +487,19 @@
       "created_goals": [
         {
           "pass": {
-            "x": 81.82182894620028,
-            "y": 55.35265875922309
+            "x": 91.66666666666666,
+            "y": 51
           },
           "shot": {
-            "x": 92.98631702769886,
-            "y": 43.79190131293403
+            "x": 90.91201000000001,
+            "y": 40.44107999999999
           },
           "assistPlayer": {
             "id": "107554",
             "name": "Natanael",
             "fullName": "Natanael Moreira Milouski",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "atletico-mg"
           },
           "shotPlayer": {
@@ -515,12 +513,12 @@
         },
         {
           "pass": {
-            "x": 79.19489135742188,
-            "y": 55.163137704354746
+            "x": 75,
+            "y": 51
           },
           "shot": {
-            "x": 94.13560263893821,
-            "y": 23.89223474573206
+            "x": 91.26150410000001,
+            "y": 27.283079999999995
           },
           "assistPlayer": {
             "id": "39148",
@@ -541,12 +539,12 @@
         },
         {
           "pass": {
-            "x": 48.328368030894886,
-            "y": 36.02155535662615
+            "x": 41.66666666666667,
+            "y": 39.66666666666667
           },
           "shot": {
-            "x": 80.34417613636364,
-            "y": 25.21888020833333
+            "x": 79.70629590000001,
+            "y": 28.573079999999994
           },
           "assistPlayer": {
             "id": "105068",
@@ -567,12 +565,12 @@
         },
         {
           "pass": {
-            "x": 67.86622092507102,
-            "y": 59.3325922648112
+            "x": 75,
+            "y": 51
           },
           "shot": {
-            "x": 80.83672818270597,
-            "y": 42.6547769052011
+            "x": 83.16695410000001,
+            "y": 39.839079999999996
           },
           "assistPlayer": {
             "id": "98909",
@@ -603,8 +601,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 77.38887384588068,
-            "y": 33.87365134910301
+            "x": 79.00826,
+            "y": 32.40524
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -618,19 +616,19 @@
         },
         {
           "pass": {
-            "x": 61.134694602272724,
-            "y": 60.596060519748264
+            "x": 58.333333333333336,
+            "y": 62.33333333333333
           },
           "shot": {
-            "x": 74.43356489701705,
-            "y": 44.676326497395834
+            "x": 74.43722000000001,
+            "y": 44.78924
           },
           "assistPlayer": {
             "id": "107554",
             "name": "Natanael",
             "fullName": "Natanael Moreira Milouski",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "atletico-mg"
           },
           "shotPlayer": {
@@ -646,12 +644,12 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 0.22256095192649145,
-            "y": 0.5180211102520977
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
           },
           "shot": {
-            "x": 5.968988591974432,
-            "y": 23.070976200810186
+            "x": 6.304077100000001,
+            "y": 24.788000000000004
           },
           "assistPlayer": {
             "id": "128431",
@@ -663,13 +661,12 @@
           },
           "shotPlayer": {
             "id": "102796",
-            "name": "Julimar",
-            "fullName": "Julimar Silva Oliveira Júnior",
-            "position": "Atacante",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "athletico-pr"
           },
-          "isSetPiece": true,
           "isHeader": true
         }
       ]
@@ -683,12 +680,12 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 47.34326393821023,
-            "y": 34.69490989402488
+            "x": 37.666666666666664,
+            "y": 28.33333333333333
           },
           "shot": {
-            "x": 12.536332563920453,
-            "y": 26.73504480432581
+            "x": 12.833045899999988,
+            "y": 30.482920000000007
           },
           "assistPlayer": {
             "id": "83257",
@@ -717,22 +714,12 @@
       "created_goals": [],
       "conceded_goals": [
         {
-          "pass": {
-            "x": 0.7151100852272663,
-            "y": 67.67149946424696
-          },
+          "pass": null,
           "shot": {
-            "x": 2.02858220880681,
-            "y": 42.6547769052011
+            "x": 5.256547099999992,
+            "y": 40.440000000000005
           },
-          "assistPlayer": {
-            "id": "84626",
-            "name": "Josué",
-            "fullName": "Josué Filipe Soares Pesqueira",
-            "position": "Meia",
-            "side": null,
-            "team": "coritiba"
-          },
+          "assistPlayer": null,
           "shotPlayer": {
             "id": "93988",
             "name": "Breno Lopes",
@@ -740,14 +727,13 @@
             "position": "Atacante",
             "side": null,
             "team": "coritiba"
-          },
-          "isSetPiece": true
+          }
         },
         {
           "pass": null,
           "shot": {
-            "x": 14.178169389204555,
-            "y": 21.428466796875
+            "x": 14.112937099999996,
+            "y": 24.616000000000007
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -770,12 +756,12 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 5.640621393377131,
-            "y": 51.49906910083912
+            "x": 4.333333333333343,
+            "y": 51
           },
           "shot": {
-            "x": 2.6853157737038353,
-            "y": 26.10330539279514
+            "x": 4.897529999999989,
+            "y": 28.88676000000001
           },
           "assistPlayer": {
             "id": "98873",
@@ -796,12 +782,12 @@
         },
         {
           "pass": {
-            "x": 47.34326726740057,
-            "y": 10.941655589916087
+            "x": 54.33333333333333,
+            "y": 17
           },
           "shot": {
-            "x": 18.11857743696733,
-            "y": 35.76885805483218
+            "x": 19.086799999999997,
+            "y": 37.14276000000001
           },
           "assistPlayer": {
             "id": "98873",
@@ -822,39 +808,12 @@
         },
         {
           "pass": {
-            "x": 9.252660577947443,
-            "y": 5.256036433467158
+            "x": 4.333333333333343,
+            "y": 28.33333333333333
           },
           "shot": {
-            "x": 6.297355790571733,
-            "y": 35.579335078486686
-          },
-          "assistPlayer": {
-            "id": "84816",
-            "name": "Varela",
-            "fullName": "Guillermo Varela Olivera",
-            "position": "Lateral",
-            "side": "LD",
-            "team": "flamengo"
-          },
-          "shotPlayer": {
-            "id": "87863",
-            "name": "Arrascaeta",
-            "fullName": "Giorgian Daniel de Arrascaeta Benedetti",
-            "position": "Meia",
-            "side": null,
-            "team": "flamengo"
-          },
-          "isHeader": true
-        },
-        {
-          "pass": {
-            "x": 4.983886163884943,
-            "y": 21.17576949508102
-          },
-          "shot": {
-            "x": 2.6853157737038353,
-            "y": 41.64399730541088
+            "x": 7.5325440999999955,
+            "y": 35.34622
           },
           "assistPlayer": {
             "id": "115914",
@@ -872,6 +831,33 @@
             "side": null,
             "team": "flamengo"
           }
+        },
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
+          },
+          "shot": {
+            "x": 6.325979999999987,
+            "y": 37.65876
+          },
+          "assistPlayer": {
+            "id": "84816",
+            "name": "Varela",
+            "fullName": "Guillermo Varela Olivera",
+            "position": "Lateral",
+            "side": null,
+            "team": "flamengo"
+          },
+          "shotPlayer": {
+            "id": "87863",
+            "name": "Arrascaeta",
+            "fullName": "Giorgian Daniel de Arrascaeta Benedetti",
+            "position": "Meia",
+            "side": null,
+            "team": "flamengo"
+          },
+          "isHeader": true
         }
       ]
     },
@@ -883,12 +869,12 @@
       "created_goals": [
         {
           "pass": {
-            "x": 89.70264420942827,
-            "y": 25.597922318070026
+            "x": 91.66666666666666,
+            "y": 17
           },
           "shot": {
-            "x": 87.89662420099432,
-            "y": 24.839838098596644
+            "x": 88.4046041,
+            "y": 27.61762
           },
           "assistPlayer": {
             "id": "95362",
@@ -908,37 +894,20 @@
           }
         },
         {
-          "pass": null,
-          "shot": {
-            "x": 85.10550259676846,
-            "y": 33.936829517505785
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "94154",
-            "name": "Maycon",
-            "fullName": "Maycon de Andrade Barberan",
-            "position": "Meia",
-            "side": null,
-            "team": "atletico-mg"
-          },
-          "is_penalty": true
-        },
-        {
           "pass": {
-            "x": 75.2544833096591,
-            "y": 4.371614131221065
+            "x": 75,
+            "y": 5.666666666666666
           },
           "shot": {
-            "x": 89.37427701083097,
-            "y": 34.69490989402488
+            "x": 86.4676259,
+            "y": 35.013619999999996
           },
           "assistPlayer": {
             "id": "96591",
             "name": "Renan Lodi",
             "fullName": "Renan Augusto Lodi dos Santos",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "atletico-mg"
           },
           "shotPlayer": {
@@ -950,14 +919,31 @@
             "team": "atletico-mg"
           },
           "isHeader": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.34114000000001,
+            "y": 34.354
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "94154",
+            "name": "Maycon",
+            "fullName": "Maycon de Andrade Barberan",
+            "position": "Meia",
+            "side": null,
+            "team": "atletico-mg"
+          },
+          "is_penalty": true
         }
       ],
       "conceded_goals": [
         {
           "pass": null,
           "shot": {
-            "x": 11.058678089488637,
-            "y": 33.936829517505785
+            "x": 11.65885999999999,
+            "y": 33.646
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -981,8 +967,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 84.44876819957386,
-            "y": 35.95837718822338
+            "x": 84.131634,
+            "y": 37.2436
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -999,8 +985,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 9.252660577947443,
-            "y": 36.33741929796007
+            "x": 9.278109999999998,
+            "y": 37.57276
           },
           "assistPlayer": null,
           "shotPlayer": {
