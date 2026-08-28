@@ -416,7 +416,7 @@
     },
     "8": {
       "roundNumber": 8,
-      "date": "2026-03-21",
+      "date": "2026-03-22",
       "opponent": "vitoria",
       "home": false,
       "created_goals": [],
@@ -424,8 +424,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 9.88390003551136,
-            "y": 25.238287127459493
+            "x": 12.08929959999999,
+            "y": 22.363660000000003
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -448,8 +448,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 71.97080965909092,
-            "y": 20.670386420355904
+            "x": 74.34199000000001,
+            "y": 21.65524
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -463,18 +463,18 @@
         },
         {
           "pass": {
-            "x": 95.7774390480735,
-            "y": 1.1497581199363367
+            "x": 91.66666666666666,
+            "y": 5.666666666666666
           },
           "shot": {
-            "x": 85.10550259676846,
-            "y": 34.12634865089699
+            "x": 87.57896000000001,
+            "y": 29.911239999999996
           },
           "assistPlayer": {
             "id": "71898",
-            "name": "Gabriel Pires",
-            "fullName": "Gabriel Appelt Pires",
-            "position": "Meia",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "mirassol"
           },
@@ -483,22 +483,21 @@
             "name": "Igor Formiga",
             "fullName": "Igor Marques Paciência Cardoso",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "mirassol"
           },
-          "isSetPiece": true,
           "isHeader": true
         }
       ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 15.327452503551143,
-            "y": 53.26793292010272
+            "x": 4.333333333333343,
+            "y": 51
           },
           "shot": {
-            "x": 19.26786221590909,
-            "y": 49.09847932038484
+            "x": 19.436294099999998,
+            "y": 40.63006
           },
           "assistPlayer": {
             "id": "63289",
@@ -520,25 +519,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 11.22286044034091,
-            "y": 33.936829517505785
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "72493",
-            "name": "Alex Telles",
-            "fullName": "Alex Nicolao Telles",
-            "position": "Lateral",
-            "side": "LE",
-            "team": "botafogo"
-          },
-          "is_penalty": true
-        },
-        {
-          "pass": null,
-          "shot": {
-            "x": 13.028886274857953,
-            "y": 45.30806590892651
+            "x": 11.0236759,
+            "y": 39.25406
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -549,6 +531,23 @@
             "side": null,
             "team": "botafogo"
           }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.65885999999999,
+            "y": 33.646
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "72493",
+            "name": "Alex Telles",
+            "fullName": "Alex Nicolao Telles",
+            "position": "Lateral",
+            "side": null,
+            "team": "botafogo"
+          },
+          "is_penalty": true
         }
       ]
     },
