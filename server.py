@@ -486,6 +486,72 @@ class Handler(SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps({'ok': True, 'round': round_no, 'saved_files': saved_paths}).encode('utf-8'))
 
+        elif self.path == '/api/delete-round':
+            # Remove uma rodada de um time — diferente de /api/save-round,
+            # que só sobrescreve/adiciona. Existe pra apagar dado de teste
+            # ou fabricado que ficou em produção (ex.: "rodada 99" que não
+            # corresponde a nenhuma partida real da FootStats — a
+            # auditoria de 2026-08 achou isso no Flamengo e no Botafogo,
+            # com um gol "Teste Sync" dentro). Remove a CHAVE inteira do
+            # dict `rounds`, não deixa um objeto vazio no lugar.
+            length = int(self.headers.get('Content-Length', '0'))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode('utf-8'))
+            except Exception as e:
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'invalid_json', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            team_key = payload.get('teamKey')
+            round_no = payload.get('roundNumber')
+            if not team_key or round_no is None:
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'missing_fields', 'detail': 'teamKey e roundNumber são obrigatórios'}).encode('utf-8'))
+                return
+
+            normalized_key = normalize_team_key(team_key)
+            path = os.path.join(DATA_DIR, f'{normalized_key}.json')
+            try:
+                if os.path.exists(path):
+                    with open(path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                else:
+                    data = {}
+                rounds = data.get('rounds')
+                removed = False
+                if isinstance(rounds, dict) and str(round_no) in rounds:
+                    del rounds[str(round_no)]
+                    data['rounds'] = rounds
+                    removed = True
+                    with open(path, 'w', encoding='utf-8') as f:
+                        json.dump(data, f, ensure_ascii=False, indent=2)
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'delete_failed', 'detail': str(e)}).encode('utf-8'))
+                return
+
+            try:
+                print(f"[delete-round] team={normalized_key} round={round_no} removed={removed}")
+            except Exception:
+                pass
+
+            if removed:
+                def _sync_delete():
+                    github_commit_file(path, f'data: remover rodada {round_no} de {normalized_key}')
+                threading.Thread(target=_sync_delete, daemon=True).start()
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'team': normalized_key, 'round': round_no, 'removed': removed}).encode('utf-8'))
+
         elif self.path == '/api/save-shots':
             # Dataset novo e independente do mapa de gols: guarda TODAS as
             # finalizações (não só gols) por time, uma entrada por partida

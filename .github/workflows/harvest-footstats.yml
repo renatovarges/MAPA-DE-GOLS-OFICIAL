@@ -119,3 +119,52 @@ jobs:
           CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
           CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
         run: node scripts/build_proximo_confronto.mjs
+
+      # --- Raio X Ofensivo (2026-08: era o único recurso fora dessa
+      # automação diária, atualizado só manualmente — motivo real da
+      # defasagem que o Renato notou). Pipeline de 2 passos, NESSA ordem
+      # sempre: o .py grava o cache local que o .mjs lê em seguida.
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependências Python (Raio X Ofensivo — soccerdata/SofaScore)
+        working-directory: scripts
+        run: pip install -r requirements.txt
+
+      - name: "Raio X — passo 1/2: cache SofaScore (xG/xA/grande chance criada)"
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          ALERT_EMAIL_FROM: ${{ secrets.ALERT_EMAIL_FROM }}
+          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
+          CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
+        # só lê a SofaScore e escreve scripts/.cache/sofascore-raiox.json —
+        # não fala com o site, não precisa de ENVIO_REAL.
+        run: python scripts/harvest_sofascore_raiox.py
+
+      - name: "Raio X — passo 2/2: montar e gravar no site ao vivo"
+        env:
+          FOOTSTATS_EMAIL: ${{ secrets.FOOTSTATS_EMAIL }}
+          FOOTSTATS_PASSWORD: ${{ secrets.FOOTSTATS_PASSWORD }}
+          ENVIO_REAL: "1"
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          ALERT_EMAIL_FROM: ${{ secrets.ALERT_EMAIL_FROM }}
+          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
+          CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
+        # reaproveita o token da FootStats já cacheado pelo primeiro passo do job
+        run: node scripts/harvest_raio_x.mjs
+
+      - name: Prováveis do Cartola (escalação/desfalques do próximo confronto)
+        env:
+          ENVIO_REAL: "1"
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          ALERT_EMAIL_FROM: ${{ secrets.ALERT_EMAIL_FROM }}
+          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
+          CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
+        # usa o Chromium já instalado no passo "Instalar navegador (Playwright)" acima
+        run: node scripts/harvest_pdc.mjs

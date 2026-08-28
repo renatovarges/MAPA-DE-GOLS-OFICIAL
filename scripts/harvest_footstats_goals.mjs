@@ -74,12 +74,29 @@ import { dispatchAlert } from "./lib/alerts.mjs";
  *     mesmo jogador lado a lado) — sem essa ponte, os dois nunca casam
  *     (taxa de acerto medida: 98,4%, 63/64 assistências reais testadas).
  *
- * O QUE FICA DE FORA (testado e descartado — limitação real da fonte, não
- * falta de esforço):
- *   - own_goal (gol contra): a FootStats não registra em NENHUM endpoint
- *     testado. Confirmado batendo o placar oficial contra os gols achados
- *     (ver `divergenciasPlacar` abaixo) — quando não bate, é sempre isso.
- *     Continua manual; o script avisa exatamente em qual jogo procurar.
+ * GOL CONTRA (2026-08, corrigido após auditoria completa da temporada):
+ *   achado inicial era que a FootStats não registra gol contra em nenhum
+ *   endpoint — falso. Ela registra sim, só que num evento separado dos
+ *   chutes normais: `idSkill 13` ("Gol contra do adversário", code
+ *   `ownGoalOtherTeam`) dentro do MESMO `fieldPositionByMatch` que já
+ *   buscávamos pra assistência — sem custo extra de request. `idTeam`
+ *   desse evento é o time BENEFICIADO (quem marcou contra é o outro lado).
+ *   O que a FootStats NÃO traz aí: coordenada de chute utilizável nem o
+ *   jogador que fez contra (`idPlayer` sempre vem 0) — testado navegando a
+ *   própria tela "Individual" da FootStats manualmente, que mostra o nome
+ *   do jogador, mas via uma chamada interna não identificada mesmo depois
+ *   de instrumentar o browser real; não vale a pena persegui-la. Por
+ *   decisão do Renato (2026-08): registra mesmo assim, SEM posição no
+ *   campo e SEM jogador — aparece só como contagem na legenda "GOL
+ *   CONTRA: N" (script.js::drawPositionSummaryLegend), mesmo padrão do
+ *   "PENALTIS: N" que já existia pra pênalti. Nunca vira marcador no
+ *   campinho (script.js::renderEvents já filtra fora eventos sem `shot`).
+ *   PEGADINHA DE ID (achada testando isso ao vivo): esse `idTeam` NÃO é o
+ *   clube_id estilo Cartola usado no resto deste script (`CLUBE_ID`,
+ *   `s.equipe_id` dos chutes) — é um ID INTERNO da FootStats, diferente
+ *   (ex.: Bahia é clube_id 265 em todo o resto do projeto, mas aparece
+ *   como 1250 aqui). A ponte é `shotDetail.match.idteamhome`/`idteamaway`,
+ *   que já vem de graça na MESMA resposta que já buscamos.
  *
  * Como rodar (a partir da RAIZ do repositório):
  *   1. cd scripts && npm install && cd ..
@@ -95,6 +112,12 @@ import { dispatchAlert } from "./lib/alerts.mjs";
  *   5. ENVIO_REAL=1 node --env-file=.env.local scripts/harvest_footstats_goals.mjs
  *      → agora sim grava de verdade no site ao vivo.
  *      (LIMITE_PARTIDAS=5 antes do comando testa só nas 5 primeiras partidas)
+ *
+ * Pra corrigir dado já gravado (backfill): FORCE_REPROCESS=1 reprocessa
+ * mesmo rodada já existente dos dois lados; SOMENTE_PARTIDAS=id1,id2 (id da
+ * FootStats, não da rodada) restringe a essas partidas só — combine os
+ * dois pra corrigir cirurgicamente um jogo específico sem varrer a
+ * temporada inteira.
  *
  * Também roda sozinho, todo dia, via GitHub Actions — ver
  * .github/workflows/harvest-footstats.yml.
@@ -234,6 +257,20 @@ async function main() {
   const limiteEnvios = Number(process.env.LIMITE_ENVIOS);
   const temLimiteEnvios = Number.isFinite(limiteEnvios) && limiteEnvios > 0;
 
+  // FORCE_REPROCESS=1: ignora o "já existe" e regrava mesmo rodadas já
+  // registradas dos dois lados — pra corrigir dado velho/errado a partir da
+  // FootStats de novo (mesmo mecanismo já usado no harvester de
+  // finalizações). Seguro porque `/api/save-round` sobrescreve limpo por
+  // número de rodada (ver server.py) e este script deriva tudo direto da
+  // fonte, então reprocessar uma rodada já certa produz o mesmo resultado.
+  const forcarReprocesso = process.env.FORCE_REPROCESS === "1";
+  // SOMENTE_PARTIDAS=id1,id2,...: restringe a essas partidas da FootStats
+  // (por `m.id`) — usado pra backfill cirúrgico em vez de varrer a
+  // temporada inteira.
+  const somentePartidas = (process.env.SOMENTE_PARTIDAS || "")
+    .split(",").map((s) => s.trim()).filter(Boolean).map(Number);
+  const temFiltroPartidas = somentePartidas.length > 0;
+
   for (let i = 0; i < jogadas.length; i++) {
     if (temLimiteEnvios && rodadasEnviadas >= limiteEnvios) {
       console.log(`\n(parando aqui — LIMITE_ENVIOS=${limiteEnvios} atingido; rode de novo pra continuar o restante)`);
@@ -243,13 +280,14 @@ async function main() {
     const homeSlug = CLUBE_ID[m.sdE_EQUIPE_MANDANTE_ID];
     const awaySlug = CLUBE_ID[m.sdE_EQUIPE_VISITANTE_ID];
     if (!homeSlug || !awaySlug) continue;
+    if (temFiltroPartidas && !somentePartidas.includes(m.id)) continue;
 
     const rodada = Number(m.round);
     const [existentesHome, existentesAway] = await Promise.all([
       rodadasExistentesDoTime(homeSlug), rodadasExistentesDoTime(awaySlug),
     ]);
-    const homeJaExiste = existentesHome.has(String(rodada));
-    const awayJaExiste = existentesAway.has(String(rodada));
+    const homeJaExiste = !forcarReprocesso && existentesHome.has(String(rodada));
+    const awayJaExiste = !forcarReprocesso && existentesAway.has(String(rodada));
     if (homeJaExiste && awayJaExiste) { rodadasPuladas++; continue; } // já registrado dos dois lados — intocável
 
     let shotDetail, fieldPos;
@@ -266,13 +304,17 @@ async function main() {
 
     const matchShots = shotDetail.matchShots || [];
     const gols = matchShots.filter((s) => s.goal).sort((a, b) => (a.timePlayInSeconds ?? 0) - (b.timePlayInSeconds ?? 0));
-    if (!gols.length) continue;
+    // idSkill 13 = "Gol contra do adversário" — ver achado no cabeçalho.
+    // `idTeam` é sempre o time BENEFICIADO pelo gol contra.
+    const eventosGolContra = (fieldPos.data || []).filter((e) => e.idSkill === 13);
+    if (!gols.length && !eventosGolContra.length) continue;
 
     const placarOficial = (Number(m.goalshome) || 0) + (Number(m.goalsaway) || 0);
-    if (placarOficial > 0 && gols.length !== placarOficial) {
+    const totalContabilizado = gols.length + eventosGolContra.length;
+    if (placarOficial > 0 && totalContabilizado !== placarOficial) {
       divergenciasPlacar.push({
         homeSlug, awaySlug, rodada: m.round, data: m.date ? m.date.slice(0, 10) : "?",
-        oficial: placarOficial, achados: gols.length,
+        oficial: placarOficial, achados: totalContabilizado,
       });
     }
 
@@ -332,6 +374,22 @@ async function main() {
       else { createdAway.push(golCriado); concededHome.push(golSofrido); }
     }
 
+    // Gols contra: sem posição no campo nem jogador (ver achado no
+    // cabeçalho) — entram só pra contar certo no placar e aparecer na
+    // legenda "GOL CONTRA: N". `timeBeneficiado` é quem marca o gol
+    // criado; o outro lado sofre.
+    const idTeamHomeFS = shotDetail.match?.idteamhome;
+    const idTeamAwayFS = shotDetail.match?.idteamaway;
+    for (const ev of eventosGolContra) {
+      totalGols++;
+      const timeBeneficiado = ev.idTeam === idTeamHomeFS ? homeSlug : ev.idTeam === idTeamAwayFS ? awaySlug : null;
+      if (!timeBeneficiado) continue;
+      const golContraCriado = { shot: null, pass: null, assistPlayer: null, shotPlayer: null, isOwnGoal: true };
+      const golContraSofrido = { shot: null, pass: null, assistPlayer: null, shotPlayer: null, isOwnGoal: true };
+      if (timeBeneficiado === homeSlug) { createdHome.push(golContraCriado); concededAway.push(golContraSofrido); }
+      else { createdAway.push(golContraCriado); concededHome.push(golContraSofrido); }
+    }
+
     // payload no MESMO formato que script.js::computeRoundPayload manda pro
     // /api/save-round — home/away vem null pro lado que já existe, pra
     // nunca sobrescrever o que já está registrado nesse time.
@@ -341,6 +399,7 @@ async function main() {
       away: awayJaExiste ? null : { roundNumber: rodada, date: dataISO, opponent: homeSlug, home: false, created_goals: createdAway, conceded_goals: concededAway },
     };
 
+    if (process.env.DEBUG_PAYLOAD === "1") console.log(JSON.stringify(payload, null, 2));
     try {
       await salvarRodada(payload);
       rodadasEnviadas++;
@@ -362,7 +421,7 @@ async function main() {
   console.log(`✓ ${rodadasEnviadas} rodada(s) ${ENVIO_REAL ? "enviadas" : "que seriam enviadas"} | ${rodadasPuladas} já existiam nos dois times e foram puladas`);
 
   if (divergenciasPlacar.length) {
-    console.log(`\n⚠ ATENÇÃO — ${divergenciasPlacar.length} jogo(s) onde o placar oficial não bate com os gols montados (quase sempre gol contra — a FootStats não registra, ver cabeçalho). Adicione manualmente pelo editor:`);
+    console.log(`\n⚠ ATENÇÃO — ${divergenciasPlacar.length} jogo(s) onde o placar oficial não bate com os gols + gols contra montados (agora que o gol contra já é capturado via idSkill 13, isso é uma divergência genuína — vale investigar, não é mais "sempre gol contra"):`);
     for (const d of divergenciasPlacar) {
       console.log(`  · ${d.homeSlug} x ${d.awaySlug} (${d.data}, rodada FootStats ${d.rodada}) — placar oficial ${d.oficial}, harvester montou ${d.achados}`);
     }
