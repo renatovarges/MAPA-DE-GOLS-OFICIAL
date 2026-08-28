@@ -423,6 +423,16 @@ let currentTeamRight = null;
 let currentTeamLeftExtra = null;
 let currentTeamRightExtra = null;
 
+// Contadores de geração — evitam corrida entre chamadas assíncronas de
+// loadTeamData*: clicar no time, depois trocar "Modo", depois trocar
+// "Jogos" rapidamente dispara uma chamada nova a cada passo, e a busca
+// mais ANTIGA pode terminar DEPOIS da mais nova (rede não garante ordem
+// de chegada) — sem essa trava, ela sobrescreve o resultado certo com um
+// desatualizado, silenciosamente (achado real 2026-08: era exatamente
+// por isso que "GOL CONTRA" às vezes sumia pro Renato, mesmo com dado e
+// código certos — a legenda certa era desenhada e depois substituída).
+let __loadGenLeft = 0, __loadGenRight = 0, __loadGenLeftExtra = 0, __loadGenRightExtra = 0;
+
 function resolveDataFileKey(teamKey) {
   // Padroniza chave do arquivo JSON para casos com nome especial
   // Suporta variações com underscore usadas pelos escudos vs. hifens usados nos arquivos
@@ -574,9 +584,11 @@ async function getTeamAggregatedData(teamKey, { homeFilter = null } = {}) {
 async function loadTeamData(teamKey = 'cruzeiro', { showCrest = true } = {}) {
   currentTeamLeft = teamKey;
   try { window.currentTeamLeft = teamKey; } catch (e) { }
+  const meuGen = ++__loadGenLeft;
   const mode = (window.__aggregationSettings && window.__aggregationSettings.mode) ? String(window.__aggregationSettings.mode) : 'seguidas';
   const homeFilter = (mode === 'mando') ? true : null; // 'mando' -> apenas mandante; caso contrário -> todas
   const data = await getTeamAggregatedData(teamKey, { homeFilter });
+  if (meuGen !== __loadGenLeft) return; // uma chamada mais nova já começou — descarta este resultado desatualizado
   if (showCrest) setCrest(teamKey, data.name);
   renderEvents(defensiveLayer, data.conceded || [], { flipX: false });
   renderEvents(offensiveLayer, data.created || [], { flipX: false });
@@ -597,9 +609,11 @@ async function loadTeamData(teamKey = 'cruzeiro', { showCrest = true } = {}) {
 async function loadTeamData2(teamKey = 'fortaleza', { showCrest = true } = {}) {
   currentTeamRight = teamKey;
   try { window.currentTeamRight = teamKey; } catch (e) { }
+  const meuGen = ++__loadGenRight;
   const mode = (window.__aggregationSettings && window.__aggregationSettings.mode) ? String(window.__aggregationSettings.mode) : 'seguidas';
   const homeFilter = (mode === 'mando') ? false : null; // 'mando' -> apenas visitante; caso contrário -> todas
   const data = await getTeamAggregatedData(teamKey, { homeFilter });
+  if (meuGen !== __loadGenRight) return; // uma chamada mais nova já começou — descarta este resultado desatualizado
   if (showCrest) setCrest2(teamKey, data.name);
   renderEvents(defensiveLayer2, data.conceded || [], { flipX: false });
   renderEvents(offensiveLayer2, data.created || [], { flipX: false });
@@ -619,9 +633,11 @@ async function loadTeamData2(teamKey = 'fortaleza', { showCrest = true } = {}) {
 async function loadTeamDataLeftExtra(teamKey = 'cruzeiro') {
   currentTeamLeftExtra = teamKey;
   try { window.currentTeamLeftExtra = teamKey; } catch (e) { }
+  const meuGen = ++__loadGenLeftExtra;
   const mode = (window.__aggregationSettings && window.__aggregationSettings.mode) ? String(window.__aggregationSettings.mode) : 'seguidas';
   const homeFilter = (mode === 'mando') ? true : null;
   const data = await getTeamAggregatedData(teamKey, { homeFilter });
+  if (meuGen !== __loadGenLeftExtra) return; // uma chamada mais nova já começou — descarta este resultado desatualizado
   setCrestLx(teamKey, data.name);
   if (defensiveLayerLx && offensiveLayerLx) {
     renderEvents(defensiveLayerLx, data.conceded || [], { flipX: false });
@@ -639,9 +655,11 @@ async function loadTeamDataLeftExtra(teamKey = 'cruzeiro') {
 async function loadTeamDataRightExtra(teamKey = 'fortaleza') {
   currentTeamRightExtra = teamKey;
   try { window.currentTeamRightExtra = teamKey; } catch (e) { }
+  const meuGen = ++__loadGenRightExtra;
   const mode = (window.__aggregationSettings && window.__aggregationSettings.mode) ? String(window.__aggregationSettings.mode) : 'seguidas';
   const homeFilter = (mode === 'mando') ? false : null;
   const data = await getTeamAggregatedData(teamKey, { homeFilter });
+  if (meuGen !== __loadGenRightExtra) return; // uma chamada mais nova já começou — descarta este resultado desatualizado
   setCrestRx(teamKey, data.name);
   if (defensiveLayerRx && offensiveLayerRx) {
     renderEvents(defensiveLayerRx, data.conceded || [], { flipX: false });
