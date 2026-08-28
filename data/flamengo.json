@@ -5,23 +5,50 @@
       "date": "2026-01-28",
       "opponent": "sao-paulo",
       "home": false,
-      "created_goals": [],
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 39.66666666666667
+          },
+          "shot": {
+            "x": 90.05494,
+            "y": 34.383239999999994
+          },
+          "assistPlayer": {
+            "id": "94583",
+            "name": "Pedro",
+            "fullName": "Pedro Guilherme Abreu dos Santos",
+            "position": "Atacante",
+            "side": null,
+            "team": "flamengo"
+          },
+          "shotPlayer": {
+            "id": "109096",
+            "name": "Plata",
+            "fullName": "Gonzalo Jordy Plata Jiménez",
+            "position": "Atacante",
+            "side": null,
+            "team": "flamengo"
+          }
+        }
+      ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 11.526835493607962,
-            "y": 62.21954633924696
+            "x": 4.333333333333343,
+            "y": 62.333333333333336
           },
           "shot": {
-            "x": 8.240964577414772,
-            "y": 33.203482394748264
+            "x": 9.151454099999995,
+            "y": 32.27
           },
           "assistPlayer": {
             "id": "104758",
             "name": "Enzo Díaz",
             "fullName": "Enzo Hernán Díaz",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "sao-paulo"
           },
           "shotPlayer": {
@@ -37,8 +64,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 6.926620205965918,
-            "y": 24.669345431857643
+            "x": 5.723174099999994,
+            "y": 30.034000000000006
           },
           "assistPlayer": null,
           "shotPlayer": {
