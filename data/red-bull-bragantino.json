@@ -790,30 +790,13 @@
       "home": false,
       "created_goals": [
         {
-          "pass": null,
-          "shot": {
-            "x": 80.67254416725852,
-            "y": 16.12188878942419
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "78605",
-            "name": "Gabriel",
-            "fullName": "Gabriel Girotto Franco",
-            "position": "Meia",
-            "side": null,
-            "team": "red-bull-bragantino"
-          },
-          "isHeader": true
-        },
-        {
           "pass": {
-            "x": 72.79172807173296,
-            "y": 27.49312902379919
+            "x": 75,
+            "y": 28.333333333333336
           },
           "shot": {
-            "x": 82.80693137428977,
-            "y": 40.0014879014757
+            "x": 84.26781290000001,
+            "y": 38.82599999999999
           },
           "assistPlayer": {
             "id": "122394",
@@ -831,24 +814,41 @@
             "side": null,
             "team": "red-bull-bragantino"
           }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 82.2679829,
+            "y": 15.863999999999999
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "78605",
+            "name": "Gabriel",
+            "fullName": "Gabriel Girotto Franco",
+            "position": "Meia",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "isHeader": true
         }
       ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 4.491337446732956,
-            "y": 52.88889081036603
+            "x": 4.333333333333343,
+            "y": 51
           },
           "shot": {
-            "x": 6.62572132457386,
-            "y": 27.303606047453705
+            "x": 7.327799599999992,
+            "y": 28.64166
           },
           "assistPlayer": {
             "id": "90061",
             "name": "Bruno Pacheco",
             "fullName": "Bruno de Jesus Pacheco",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "chapecoense"
           },
           "shotPlayer": {
@@ -871,13 +871,29 @@
       "created_goals": [],
       "conceded_goals": [
         {
+          "pass": null,
+          "shot": {
+            "x": 12.230239999999995,
+            "y": 24.500760000000007
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "108469",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
+            "side": null,
+            "team": "santos"
+          }
+        },
+        {
           "pass": {
-            "x": 18.282761452414775,
-            "y": 30.90450032552083
+            "x": 21,
+            "y": 28.33333333333333
           },
           "shot": {
-            "x": 13.357250976562511,
-            "y": 44.17094150119358
+            "x": 11.08748,
+            "y": 37.88838
           },
           "assistPlayer": {
             "id": "141754",
@@ -892,22 +908,6 @@
             "name": "Neymar",
             "fullName": "Neymar da Silva Santos Júnior",
             "position": "Meia",
-            "side": null,
-            "team": "santos"
-          }
-        },
-        {
-          "pass": null,
-          "shot": {
-            "x": 13.521433327414769,
-            "y": 23.70271561234086
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "108469",
-            "name": "Adonis Frías",
-            "fullName": "Adonis Uriel Frías",
-            "position": "Zagueiro",
             "side": null,
             "team": "santos"
           }
