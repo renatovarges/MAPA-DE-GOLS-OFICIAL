@@ -1270,7 +1270,15 @@
       "date": "2026-08-08",
       "opponent": "gremio",
       "home": false,
-      "created_goals": [],
+      "created_goals": [
+        {
+          "shot": null,
+          "pass": null,
+          "assistPlayer": null,
+          "shotPlayer": null,
+          "isOwnGoal": true
+        }
+      ],
       "conceded_goals": [
         {
           "pass": {
