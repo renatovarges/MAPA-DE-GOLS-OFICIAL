@@ -212,19 +212,19 @@
       "created_goals": [
         {
           "pass": {
-            "x": 83.29948175603693,
-            "y": 47.329617422598375
+            "x": 91.66666666666666,
+            "y": 51
           },
           "shot": {
-            "x": 87.73244018554688,
-            "y": 30.27276091399016
+            "x": 90.1006504,
+            "y": 31.876339999999995
           },
           "assistPlayer": {
             "id": "78445",
             "name": "Renê",
             "fullName": "Renê Rodrigues Martins",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "fluminense"
           },
           "shotPlayer": {
@@ -237,22 +237,12 @@
           }
         },
         {
-          "pass": {
-            "x": 77.71723854758523,
-            "y": 18.52248241283276
-          },
+          "pass": null,
           "shot": {
-            "x": 90.03101140802556,
-            "y": 42.212560470015916
+            "x": 91.0529504,
+            "y": 41.50834
           },
-          "assistPlayer": {
-            "id": "89837",
-            "name": "Lucho Acosta",
-            "fullName": "Luciano Federico Acosta",
-            "position": "Meia",
-            "side": null,
-            "team": "fluminense"
-          },
+          "assistPlayer": null,
           "shotPlayer": {
             "id": "102928",
             "name": "Canobbio",
@@ -268,18 +258,18 @@
     },
     "6": {
       "roundNumber": 6,
-      "date": "2026-03-14",
+      "date": "2026-03-15",
       "opponent": "athletico-pr",
       "home": true,
       "created_goals": [
         {
           "pass": {
-            "x": 75.2544833096591,
-            "y": 18.90152067961516
+            "x": 75,
+            "y": 17
           },
           "shot": {
-            "x": 86.9115234375,
-            "y": 16.248233597366898
+            "x": 87.13423590000001,
+            "y": 22.181559999999998
           },
           "assistPlayer": {
             "id": "98672",
@@ -300,12 +290,12 @@
         },
         {
           "pass": {
-            "x": 83.79203213778409,
-            "y": 18.90152067961516
+            "x": 91.66666666666666,
+            "y": 17
           },
           "shot": {
-            "x": 90.03101473721591,
-            "y": 18.522480491355612
+            "x": 89.77686840000001,
+            "y": 23.768259999999998
           },
           "assistPlayer": {
             "id": "98672",
@@ -327,8 +317,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 82.15019531249999,
-            "y": 22.312891981336808
+            "x": 85.4915184,
+            "y": 26.844479999999997
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -336,7 +326,7 @@
             "name": "Guilherme Arana",
             "fullName": "Guilherme Antonio Arana Lopes",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "fluminense"
           }
         }
@@ -344,12 +334,12 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 19.596230246803977,
-            "y": 33.49460923936632
+            "x": 21,
+            "y": 39.666666666666664
           },
           "shot": {
-            "x": 10.566131036931818,
-            "y": 53.77331791630498
+            "x": 11.81789409999999,
+            "y": 52.09644
           },
           "assistPlayer": {
             "id": "125926",
@@ -370,30 +360,23 @@
         },
         {
           "pass": {
-            "x": 30.103983931107955,
-            "y": 14.73206707989728
+            "x": 21,
+            "y": 17
           },
           "shot": {
-            "x": 8.760110196200284,
-            "y": 28.5670733416522
+            "x": 9.437144099999998,
+            "y": 29.30644000000001
           },
           "assistPlayer": {
             "id": "110668",
             "name": "Esquivel",
             "fullName": "Lucas Ángel Esquivel",
             "position": "Lateral",
-            "side": "LE",
-            "team": "athletico-pr"
-          },
-          "shotPlayer": {
-            "id": "71536",
-            "name": "Luiz Gustavo",
-            "fullName": "Luiz Gustavo Dias",
-            "position": "Meia",
             "side": null,
             "team": "athletico-pr"
           },
-          "isSetPiece": true
+          "shotPlayer": null,
+          "isHeader": true
         }
       ]
     },
