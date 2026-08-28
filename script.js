@@ -1449,9 +1449,22 @@ function initExtraFieldsToggle() {
 }
 
 function initAggregationControls() {
-  window.__aggregationSettings = { count: 3, mode: 'seguidas' };
   const rc = document.getElementById('roundCountSelect');
   const sm = document.getElementById('selectionMode');
+  // Achado real 2026-08 (Renato via print + Console, F12): ao recarregar a
+  // página, o NAVEGADOR restaura sozinho o valor visual dos <select>
+  // "Jogos"/"Modo" pro que estava selecionado antes (comportamento nativo
+  // do browser, não é este código) — mas SEM disparar o evento 'change',
+  // então o JavaScript nunca ficava sabendo e sempre assumia o padrão
+  // (3 jogos, Seguidas) por baixo dos panos. Resultado: o menu na tela
+  // mostrava "5"/"Por mando atual", mas os cálculos usavam 3/Seguidas —
+  // sem nenhum aviso visual da diferença. Por isso agora lê o valor REAL
+  // que já está nos elementos (que reflete o que a pessoa está vendo),
+  // em vez de sempre assumir o padrão de fábrica.
+  window.__aggregationSettings = {
+    count: (rc && Number(rc.value)) || 3,
+    mode: (sm && String(sm.value)) || 'seguidas',
+  };
   if (rc) {
     rc.addEventListener('change', (e) => {
       const v = Number(e.target.value) || 3;
