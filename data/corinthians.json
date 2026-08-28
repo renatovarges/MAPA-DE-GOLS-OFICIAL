@@ -391,16 +391,33 @@
       "date": "2026-04-01",
       "opponent": "fluminense",
       "home": false,
-      "created_goals": [],
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 83.86499,
+            "y": 37.04923999999999
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "145744",
+            "name": "André",
+            "fullName": "André Luiz Santos Dias",
+            "position": "Meia",
+            "side": null,
+            "team": "corinthians"
+          }
+        }
+      ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 9.41684126420455,
-            "y": 52.32032956723813
+            "x": 4.333333333333343,
+            "y": 39.666666666666664
           },
           "shot": {
-            "x": 6.789903675426132,
-            "y": 43.79190131293403
+            "x": 9.246684099999996,
+            "y": 37.53406
           },
           "assistPlayer": {
             "id": "132071",
@@ -420,29 +437,13 @@
           }
         },
         {
-          "pass": null,
-          "shot": {
-            "x": 11.058678089488637,
-            "y": 34.31587162724248
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "116447",
-            "name": "Hércules",
-            "fullName": "Hércules Pereira do Nascimento",
-            "position": "Meia",
-            "side": null,
-            "team": "fluminense"
-          }
-        },
-        {
           "pass": {
-            "x": 13.028886274857953,
-            "y": 34.31587162724248
+            "x": 4.333333333333343,
+            "y": 28.33333333333333
           },
           "shot": {
-            "x": 10.237759676846593,
-            "y": 38.86436541521991
+            "x": 10.675134099999994,
+            "y": 36.07206
           },
           "assistPlayer": {
             "id": "109573",
@@ -457,6 +458,22 @@
             "name": "Rodrigo Castillo",
             "fullName": "Rodrigo Castillo",
             "position": "Atacante",
+            "side": null,
+            "team": "fluminense"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 12.198814099999993,
+            "y": 35.55606
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "116447",
+            "name": "Hércules",
+            "fullName": "Hércules Pereira do Nascimento",
+            "position": "Meia",
             "side": null,
             "team": "fluminense"
           }
