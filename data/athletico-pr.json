@@ -180,18 +180,18 @@
     },
     "6": {
       "roundNumber": 6,
-      "date": "2026-03-14",
+      "date": "2026-03-15",
       "opponent": "fluminense",
       "home": false,
       "created_goals": [
         {
           "pass": {
-            "x": 76.40376975319603,
-            "y": 34.50539076063368
+            "x": 75,
+            "y": 28.333333333333336
           },
           "shot": {
-            "x": 85.43386896306818,
-            "y": 14.226682083695017
+            "x": 84.18210590000001,
+            "y": 15.90356
           },
           "assistPlayer": {
             "id": "125926",
@@ -212,41 +212,34 @@
         },
         {
           "pass": {
-            "x": 65.89601606889204,
-            "y": 53.26793292010272
+            "x": 75,
+            "y": 51
           },
           "shot": {
-            "x": 87.23988980379971,
-            "y": 39.432926658347796
+            "x": 86.5628559,
+            "y": 38.69355999999999
           },
           "assistPlayer": {
             "id": "110668",
             "name": "Esquivel",
             "fullName": "Lucas Ángel Esquivel",
             "position": "Lateral",
-            "side": "LE",
-            "team": "athletico-pr"
-          },
-          "shotPlayer": {
-            "id": "71536",
-            "name": "Luiz Gustavo",
-            "fullName": "Luiz Gustavo Dias",
-            "position": "Meia",
             "side": null,
             "team": "athletico-pr"
           },
-          "isSetPiece": true
+          "shotPlayer": null,
+          "isHeader": true
         }
       ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 20.745516690340907,
-            "y": 49.09847932038484
+            "x": 21,
+            "y": 51
           },
           "shot": {
-            "x": 9.088476562500006,
-            "y": 51.7517664026331
+            "x": 8.865764099999993,
+            "y": 45.81844
           },
           "assistPlayer": {
             "id": "98672",
@@ -267,12 +260,12 @@
         },
         {
           "pass": {
-            "x": 12.20796786221591,
-            "y": 49.09847932038484
+            "x": 4.333333333333343,
+            "y": 51
           },
           "shot": {
-            "x": 5.968985262784088,
-            "y": 49.47751950864439
+            "x": 6.223131599999988,
+            "y": 44.23174
           },
           "assistPlayer": {
             "id": "98672",
@@ -294,8 +287,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 13.849804687500011,
-            "y": 45.687108018663196
+            "x": 10.508481599999996,
+            "y": 41.15552
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -303,7 +296,7 @@
             "name": "Guilherme Arana",
             "fullName": "Guilherme Antonio Arana Lopes",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "fluminense"
           }
         }
