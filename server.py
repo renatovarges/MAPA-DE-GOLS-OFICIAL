@@ -371,6 +371,23 @@ class Handler(SimpleHTTPRequestHandler):
         else:
             super().do_GET()
 
+    def end_headers(self):
+        # Achado 2026-08: o index.html não tinha NENHUM cabeçalho de cache
+        # próprio — diferente do script.js (?v=) e dos data/*.json (?t=),
+        # que já se protegem com cache-busting na própria URL. Sem isso, o
+        # navegador guarda o HTML em cache heurístico (sem Cache-Control
+        # nem Expires, ele mesmo decide por quanto tempo confiar no que já
+        # tem) e um deploy novo pode ficar invisível pro usuário mesmo com
+        # Ctrl+F5 — foi exatamente o que aconteceu com o Renato depois do
+        # deploy da legenda de gol contra. `no-cache, must-revalidate`
+        # obriga o navegador a sempre checar com o servidor antes de usar
+        # a cópia guardada (o servidor ainda responde 304 quando nada
+        # mudou, então não pesa banda) — sem isso nunca mais.
+        path = self.path.split('?', 1)[0]
+        if path == '/' or path.endswith('.html'):
+            self.send_header('Cache-Control', 'no-cache, must-revalidate')
+        super().end_headers()
+
     def handle_jogadores(self):
         """Endpoint que retorna jogadores: API em tempo real ou CSV como fallback."""
         jogadores, api_ok = buscar_jogadores_api()
