@@ -474,122 +474,80 @@
     },
     "8": {
       "roundNumber": 8,
-      "date": "2026-03-29",
-      "opponent": "athletico-pr",
+      "date": "2026-03-21",
+      "opponent": "red-bull-bragantino",
       "home": false,
       "created_goals": [
         {
           "pass": null,
           "shot": {
-            "x": 89.23768116344105,
-            "y": 34.910307481553815
+            "x": 84.34114000000001,
+            "y": 34.354
           },
           "assistPlayer": null,
           "shotPlayer": {
-            "id": "63289",
-            "name": "Edenílson",
-            "fullName": "Edenílson Andrade dos Santos",
+            "id": "72493",
+            "name": "Alex Telles",
+            "fullName": "Alex Nicolao Telles",
+            "position": "Lateral",
+            "side": null,
+            "team": "botafogo"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 5.666666666666666
+          },
+          "shot": {
+            "x": 84.91252,
+            "y": 32.74923999999999
+          },
+          "assistPlayer": {
+            "id": "107231",
+            "name": "Danilo",
+            "fullName": "Danilo dos Santos de Oliveira",
             "position": "Meia",
             "side": null,
             "team": "botafogo"
-          }
+          },
+          "shotPlayer": {
+            "id": "99274",
+            "name": "Alexander Barboza",
+            "fullName": "Alexander Nahuel Barboza Ullúa",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "botafogo"
+          },
+          "isHeader": true
         }
       ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 26.80613458806819,
-            "y": 3.808121744791663
+            "x": 21,
+            "y": 17
           },
           "shot": {
-            "x": 8.569555664062506,
-            "y": 19.16956674081308
+            "x": 11.08748,
+            "y": 32.958000000000006
           },
           "assistPlayer": {
-            "id": "125746",
-            "name": "Dudu",
-            "fullName": "Eduardo Kogitzki Anastacio",
-            "position": "Meia",
-            "side": null,
-            "team": "athletico-pr"
-          },
-          "shotPlayer": {
-            "id": "143193",
-            "name": "Viveros",
-            "fullName": "Kevin Stiven Viveros Rodallega",
+            "id": "124239",
+            "name": "Henry Mosquera",
+            "fullName": "Henry David Mosquera Sánchez",
             "position": "Atacante",
             "side": null,
-            "team": "athletico-pr"
-          }
-        },
-        {
-          "pass": {
-            "x": 7.090915749289778,
-            "y": 6.463188114872686
-          },
-          "shot": {
-            "x": 10.705371093749989,
-            "y": 30.927711769386576
-          },
-          "assistPlayer": {
-            "id": "113113",
-            "name": "Benavídez",
-            "fullName": "Gastón Américo Benavídez",
-            "position": "Lateral",
-            "side": "LD",
-            "team": "athletico-pr"
+            "team": "red-bull-bragantino"
           },
           "shotPlayer": {
-            "id": "143193",
-            "name": "Viveros",
-            "fullName": "Kevin Stiven Viveros Rodallega",
+            "id": "112886",
+            "name": "Lucas Barbosa",
+            "fullName": "Lucas Henrique Barbosa",
             "position": "Atacante",
             "side": null,
-            "team": "athletico-pr"
-          }
-        },
-        {
-          "pass": {
-            "x": 19.412928355823865,
-            "y": 13.85943784360532
-          },
-          "shot": {
-            "x": 8.240964577414772,
-            "y": 26.37617436161748
-          },
-          "assistPlayer": {
-            "id": "110668",
-            "name": "Esquivel",
-            "fullName": "Lucas Ángel Esquivel",
-            "position": "Lateral",
-            "side": "LE",
-            "team": "athletico-pr"
-          },
-          "shotPlayer": {
-            "id": "123869",
-            "name": "Aguirre",
-            "fullName": "Juan Felipe Aguirre Tabares",
-            "position": "Zagueiro",
-            "side": null,
-            "team": "athletico-pr"
-          },
-          "isSetPiece": true,
-          "isHeader": true
-        },
-        {
-          "pass": null,
-          "shot": {
-            "x": 12.67689098011364,
-            "y": 6.652837908709493
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "110668",
-            "name": "Esquivel",
-            "fullName": "Lucas Ángel Esquivel",
-            "position": "Lateral",
-            "side": "LE",
-            "team": "athletico-pr"
+            "team": "red-bull-bragantino"
           }
         }
       ]
