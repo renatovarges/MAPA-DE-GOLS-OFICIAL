@@ -8,19 +8,19 @@
       "created_goals": [
         {
           "pass": {
-            "x": 79.87294256036931,
-            "y": 28.91744701244213
+            "x": 91.66666666666666,
+            "y": 28.333333333333336
           },
           "shot": {
-            "x": 82.50163796164773,
-            "y": 34.796517605251736
+            "x": 85.5867484,
+            "y": 34.52083999999999
           },
           "assistPlayer": {
             "id": "96591",
             "name": "Renan Lodi",
             "fullName": "Renan Augusto Lodi dos Santos",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "atletico-mg"
           },
           "shotPlayer": {
@@ -33,32 +33,22 @@
           }
         },
         {
+          "shot": null,
           "pass": null,
-          "shot": {
-            "x": 89.40197088068182,
-            "y": 30.24498019748264
-          },
           "assistPlayer": null,
-          "shotPlayer": {
-            "id": "105175",
-            "name": "Khellven",
-            "fullName": "Khellven Douglas Silva Oliveira",
-            "position": "Lateral",
-            "side": "LD",
-            "team": "palmeiras"
-          },
-          "own_goal": true
+          "shotPlayer": null,
+          "isOwnGoal": true
         }
       ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 1.0434789484197444,
-            "y": 66.34485496238426
+            "x": 4.333333333333343,
+            "y": 62.333333333333336
           },
           "shot": {
-            "x": 3.342050170898437,
-            "y": 42.84429411711516
+            "x": 5.304162099999999,
+            "y": 39.236000000000004
           },
           "assistPlayer": {
             "id": "89274",
@@ -76,14 +66,13 @@
             "side": null,
             "team": "palmeiras"
           },
-          "isSetPiece": true,
           "isHeader": true
         },
         {
           "pass": null,
           "shot": {
-            "x": 7.912373490767045,
-            "y": 31.76215933340567
+            "x": 8.970517099999995,
+            "y": 34.85
           },
           "assistPlayer": null,
           "shotPlayer": {
