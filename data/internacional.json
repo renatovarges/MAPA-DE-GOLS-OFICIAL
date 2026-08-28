@@ -317,18 +317,35 @@
     },
     "8": {
       "roundNumber": 8,
-      "date": "2026-03-21",
+      "date": "2026-03-22",
       "opponent": "chapecoense",
       "home": true,
       "created_goals": [
         {
+          "pass": null,
+          "shot": {
+            "x": 84.34114000000001,
+            "y": 34.354
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "68685",
+            "name": "Alan Patrick",
+            "fullName": "Alan Patrick Lourenço",
+            "position": "Meia",
+            "side": null,
+            "team": "internacional"
+          },
+          "is_penalty": true
+        },
+        {
           "pass": {
-            "x": 88.74479536576705,
-            "y": 17.728245600947627
+            "x": 91.66666666666666,
+            "y": 17
           },
           "shot": {
-            "x": 89.07337979403408,
-            "y": 32.52074697989004
+            "x": 90.4577629,
+            "y": 36.912499999999994
           },
           "assistPlayer": {
             "id": "101960",
@@ -347,23 +364,6 @@
             "team": "internacional"
           },
           "isHeader": true
-        },
-        {
-          "pass": null,
-          "shot": {
-            "x": 84.63745339133523,
-            "y": 33.46898442021123
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "68685",
-            "name": "Alan Patrick",
-            "fullName": "Alan Patrick Lourenço",
-            "position": "Meia",
-            "side": null,
-            "team": "internacional"
-          },
-          "is_penalty": true
         }
       ],
       "conceded_goals": []
