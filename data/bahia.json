@@ -511,12 +511,12 @@
       "created_goals": [
         {
           "pass": {
-            "x": 81.32927689985794,
-            "y": 6.014118731463397
+            "x": 75,
+            "y": 5.666666666666666
           },
           "shot": {
-            "x": 87.07570578835227,
-            "y": 43.728723144531244
+            "x": 86.91235,
+            "y": 39.199239999999996
           },
           "assistPlayer": {
             "id": "51772",
@@ -534,19 +534,18 @@
             "side": null,
             "team": "bahia"
           },
-          "isSetPiece": true,
           "isHeader": true
         }
       ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 6.297355790571733,
-            "y": 54.72092126916956
+            "x": 4.333333333333343,
+            "y": 51
           },
           "shot": {
-            "x": 14.013987038352273,
-            "y": 49.60386239510996
+            "x": 12.8359028,
+            "y": 49.60846000000001
           },
           "assistPlayer": {
             "id": "113103",
@@ -566,21 +565,11 @@
           }
         },
         {
+          "shot": null,
           "pass": null,
-          "shot": {
-            "x": 3.0136829723011362,
-            "y": 27.998512098524305
-          },
           "assistPlayer": null,
-          "shotPlayer": {
-            "id": "105990",
-            "name": "Santiago Mingo",
-            "fullName": "Santiago Martín Ramos Mingo",
-            "position": "Zagueiro",
-            "side": null,
-            "team": "bahia"
-          },
-          "own_goal": true
+          "shotPlayer": null,
+          "isOwnGoal": true
         }
       ]
     },
