@@ -1,0 +1,20 @@
+# Dependências Python do harvester do Raio X Ofensivo
+# (scripts/harvest_sofascore_raiox.py) — usa a lib `soccerdata` com TLS
+# impersonation pra driblar o bloqueio 403 do Cloudflare da SofaScore (ver
+# comentário no topo daquele arquivo). Versões travadas nas mesmas já
+# testadas e funcionando localmente (2026-08).
+#
+# Fica dentro de scripts/, junto do package.json do Node — a raiz do
+# repositório precisa continuar limpa de arquivo de dependência pro Render
+# (ver render.yaml e o comentário equivalente no harvest_footstats_goals.mjs).
+soccerdata==1.9.0
+pandas==2.3.3
+lxml==6.0.2
+html5lib==1.1
+rich==15.0.0
+seleniumbase==4.49.2
+tqdm==4.67.1
+Unidecode==1.4.0
+urllib3==2.7.0
+requests==2.34.2
+wrapper-tls-requests==1.2.5

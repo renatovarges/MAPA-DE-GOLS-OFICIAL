@@ -334,19 +334,24 @@ function renderEvents(layer, events, { flipX = false } = {}) {
   layer.appendChild(linesG);
   layer.appendChild(nodesG);
 
-  const items = events.map((ev) => {
+  // `origIdx` preserva a posição no array ORIGINAL de `events` (o mesmo
+  // que addClickInteractivity recebe, sem filtro) — necessário desde que
+  // gol contra sem posição (harvester automático) passou a existir aqui:
+  // sem isso, o `.filter` abaixo desalinha `data-event-index` do índice
+  // real assim que o primeiro evento sem `shot` aparece no array.
+  const items = events.map((ev, origIdx) => {
     const shotPt = normalizePoint(ev.shot);
     const passPt = ev.pass ? normalizePoint(ev.pass) : null;
     const shot = maybeFlip(shotPt, flipX);
     const pass = passPt ? maybeFlip(passPt, flipX) : null;
-    return { ev, shot, pass };
+    return { ev, shot, pass, origIdx };
   }).filter(i => i.shot);
 
-  items.forEach(({ ev, shot, pass }, idx) => {
+  items.forEach(({ ev, shot, pass, origIdx }) => {
     if (pass) {
       linesG.appendChild(drawDashedLine(pass, shot));
       const a = drawAssistMarker(pass, { isSetPiece: ev.isSetPiece });
-      a.setAttribute('data-event-index', String(idx));
+      a.setAttribute('data-event-index', String(origIdx));
       nodesG.appendChild(a);
     }
     // Mudança solicitada: Pênaltis não aparecem mais como bolinhas no campo principal
@@ -356,7 +361,7 @@ function renderEvents(layer, events, { flipX = false } = {}) {
         isOwnGoal: ev.isOwnGoal,
         isHeader: ev.isHeader
       });
-      s.setAttribute('data-event-index', String(idx));
+      s.setAttribute('data-event-index', String(origIdx));
       nodesG.appendChild(s);
     }
   });
@@ -3114,11 +3119,17 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
 
   let cedidosPenaltis = 0;
   let conquistadosPenaltis = 0;
+  // Gol contra: sem posição conhecida (harvester automático) não vira
+  // marcador no campo — só conta aqui na legenda, mesmo padrão do
+  // "PENALTIS: N". Um gol contra registrado manualmente pelo editor (com
+  // posição real) também soma aqui, além de aparecer no campo.
+  let cedidosGolContra = 0;
+  let conquistadosGolContra = 0;
 
   // Processar eventos CEDIDOS
   for (const ev of (concededEvents || [])) {
-    // IGNORAR GOL CONTRA NAS ESTATÍSTICAS (mas manter no campo)
-    if (ev && ev.isOwnGoal) continue;
+    // IGNORAR GOL CONTRA NAS ESTATÍSTICAS DE POSIÇÃO (mas manter no campo)
+    if (ev && ev.isOwnGoal) { cedidosGolContra++; continue; }
 
     if (ev && ev.isPenalty) {
       cedidosPenaltis++;
@@ -3148,8 +3159,8 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
 
   // Processar eventos CONQUISTADOS
   for (const ev of (createdEvents || [])) {
-    // IGNORAR GOL CONTRA NAS ESTATÍSTICAS
-    if (ev && ev.isOwnGoal) continue;
+    // IGNORAR GOL CONTRA NAS ESTATÍSTICAS DE POSIÇÃO
+    if (ev && ev.isOwnGoal) { conquistadosGolContra++; continue; }
 
     if (ev && ev.isPenalty) {
       conquistadosPenaltis++;
@@ -3176,9 +3187,9 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
     }
   }
 
-  // Verificar se há dados (incluindo pênaltis)
-  const totalCedidos = Object.values(cedidosAssist).reduce((a, b) => a + b, 0) + Object.values(cedidosGols).reduce((a, b) => a + b, 0) + cedidosPenaltis;
-  const totalConquistados = Object.values(conquistadosAssist).reduce((a, b) => a + b, 0) + Object.values(conquistadosGols).reduce((a, b) => a + b, 0) + conquistadosPenaltis;
+  // Verificar se há dados (incluindo pênaltis e gols contra)
+  const totalCedidos = Object.values(cedidosAssist).reduce((a, b) => a + b, 0) + Object.values(cedidosGols).reduce((a, b) => a + b, 0) + cedidosPenaltis + cedidosGolContra;
+  const totalConquistados = Object.values(conquistadosAssist).reduce((a, b) => a + b, 0) + Object.values(conquistadosGols).reduce((a, b) => a + b, 0) + conquistadosPenaltis + conquistadosGolContra;
 
   if (totalCedidos === 0 && totalConquistados === 0) return;
 
@@ -3363,6 +3374,37 @@ function drawPositionSummaryLegend(overlayEl, concededEvents, createdEvents, gro
   });
   conquistadosPenaltyText.textContent = `PENALTIS: ${conquistadosPenaltis}`;
   g.appendChild(conquistadosPenaltyText);
+
+  // TEXTO DE GOL CONTRA (mesmo padrão do PENALTIS, uma linha abaixo) — só
+  // aparece quando existe pelo menos um caso, pra não poluir os cards que
+  // nunca tiveram gol contra (a grande maioria).
+  const golContraY = penaltyY + 22;
+  if (cedidosGolContra > 0) {
+    const cedidosGolContraText = el('text', {
+      x: cedidosX,
+      y: golContraY,
+      'text-anchor': 'middle',
+      'font-family': 'Inter, Arial, sans-serif',
+      'font-size': 16,
+      'font-weight': 900,
+      fill: '#ef4444' // Vermelho, mesma cor do marcador de gol contra no campo
+    });
+    cedidosGolContraText.textContent = `GOL CONTRA: ${cedidosGolContra}`;
+    g.appendChild(cedidosGolContraText);
+  }
+  if (conquistadosGolContra > 0) {
+    const conquistadosGolContraText = el('text', {
+      x: conquistadosX,
+      y: golContraY,
+      'text-anchor': 'middle',
+      'font-family': 'Inter, Arial, sans-serif',
+      'font-size': 16,
+      'font-weight': 900,
+      fill: '#ef4444'
+    });
+    conquistadosGolContraText.textContent = `GOL CONTRA: ${conquistadosGolContra}`;
+    g.appendChild(conquistadosGolContraText);
+  }
 }
 
 // Nova função dedicada para desenhar a legenda de marcadores no SVG (sem depender de estatísticas)
