@@ -636,12 +636,12 @@
       "created_goals": [
         {
           "pass": {
-            "x": 48.328368030894886,
-            "y": 35.452994113498264
+            "x": 25,
+            "y": 51
           },
           "shot": {
-            "x": 80.67254416725852,
-            "y": 29.76737399631076
+            "x": 80.67288040000001,
+            "y": 27.702759999999998
           },
           "assistPlayer": {
             "id": "111309",
@@ -663,13 +663,29 @@
       ],
       "conceded_goals": [
         {
+          "pass": null,
+          "shot": {
+            "x": 17.563119999999998,
+            "y": 27.82638
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "93790",
+            "name": "Marlon Freitas",
+            "fullName": "Marlon Rodrigues Freitas",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          }
+        },
+        {
           "pass": {
-            "x": 20.252962979403407,
-            "y": 5.698255750868057
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
           },
           "shot": {
-            "x": 7.939193448153418,
-            "y": 26.73504480432581
+            "x": 9.119075899999999,
+            "y": 26.62238
           },
           "assistPlayer": {
             "id": "89274",
@@ -687,24 +703,7 @@
             "side": null,
             "team": "palmeiras"
           },
-          "isSetPiece": true,
           "isHeader": true
-        },
-        {
-          "pass": null,
-          "shot": {
-            "x": 17.62602539062499,
-            "y": 29.388331886574072
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "93790",
-            "name": "Marlon Freitas",
-            "fullName": "Marlon Rodrigues Freitas",
-            "position": "Meia",
-            "side": null,
-            "team": "palmeiras"
-          }
         }
       ]
     },
