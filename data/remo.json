@@ -474,31 +474,15 @@
     },
     "8": {
       "roundNumber": 8,
-      "date": "2026-03-21",
+      "date": "2026-03-22",
       "opponent": "bahia",
       "home": true,
       "created_goals": [
         {
           "pass": null,
           "shot": {
-            "x": 75.1084317294034,
-            "y": 26.831324259440102
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "87552",
-            "name": "Vitor Bueno",
-            "fullName": "Vitor Frezarin Bueno",
-            "position": "Meia",
-            "side": null,
-            "team": "remo"
-          }
-        },
-        {
-          "pass": null,
-          "shot": {
-            "x": 87.10185990767044,
-            "y": 30.24498019748264
+            "x": 90.1720729,
+            "y": 30.225999999999996
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -512,12 +496,12 @@
         },
         {
           "pass": {
-            "x": 74.61555175781251,
-            "y": 17.159301983868634
+            "x": 75,
+            "y": 17
           },
           "shot": {
-            "x": 84.14457341974432,
-            "y": 25.124497251157408
+            "x": 86.8390229,
+            "y": 23.862
           },
           "assistPlayer": {
             "id": "87552",
@@ -538,12 +522,12 @@
         },
         {
           "pass": {
-            "x": 85.7875088778409,
-            "y": 15.07318115234375
+            "x": 91.66666666666666,
+            "y": 17
           },
           "shot": {
-            "x": 84.47316450639204,
-            "y": 38.02052567093461
+            "x": 84.26781290000001,
+            "y": 31.343999999999998
           },
           "assistPlayer": {
             "id": "101254",
@@ -561,22 +545,38 @@
             "side": null,
             "team": "remo"
           }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 75.5066529,
+            "y": 28.763999999999996
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "87552",
+            "name": "Vitor Bueno",
+            "fullName": "Vitor Frezarin Bueno",
+            "position": "Meia",
+            "side": null,
+            "team": "remo"
+          }
         }
       ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 0.5191639293323864,
-            "y": 13.935295839662906
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
           },
           "shot": {
-            "x": 7.255199640447444,
-            "y": 27.210620004159434
+            "x": 7.042109599999989,
+            "y": 31.393660000000004
           },
           "assistPlayer": {
             "id": "113397",
             "name": "Cristian Olivera",
-            "fullName": "Cristian Gonzalo Olivera Ibarra",
+            "fullName": "Cristian Gonzalo Olivera Ibarra - Kike",
             "position": "Atacante",
             "side": null,
             "team": "bahia"
@@ -602,40 +602,12 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 0.5509277343749943,
-            "y": 0.9602389865451357
+            "x": 4.333333333333343,
+            "y": 39.666666666666664
           },
           "shot": {
-            "x": 10.894495738636365,
-            "y": 32.04162281177662
-          },
-          "assistPlayer": {
-            "id": "87863",
-            "name": "Arrascaeta",
-            "fullName": "Giorgian Daniel de Arrascaeta Benedetti",
-            "position": "Meia",
-            "side": null,
-            "team": "flamengo"
-          },
-          "shotPlayer": {
-            "id": "97867",
-            "name": "Léo Ortiz",
-            "fullName": "Leonardo Rech Ortiz",
-            "position": "Zagueiro",
-            "side": null,
-            "team": "flamengo"
-          },
-          "isSetPiece": true,
-          "isHeader": true
-        },
-        {
-          "pass": {
-            "x": 17.790207741477275,
-            "y": 39.243407524956595
-          },
-          "shot": {
-            "x": 18.11857910156249,
-            "y": 32.799703188295716
+            "x": 16.698431599999992,
+            "y": 33.23062
           },
           "assistPlayer": {
             "id": "82627",
@@ -657,8 +629,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 14.013987038352269,
-            "y": 33.36826827437789
+            "x": 13.512988100000001,
+            "y": 33.66062000000001
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -669,6 +641,33 @@
             "side": null,
             "team": "flamengo"
           }
+        },
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
+          },
+          "shot": {
+            "x": 11.175091599999988,
+            "y": 31.978460000000005
+          },
+          "assistPlayer": {
+            "id": "87863",
+            "name": "Arrascaeta",
+            "fullName": "Giorgian Daniel de Arrascaeta Benedetti",
+            "position": "Meia",
+            "side": null,
+            "team": "flamengo"
+          },
+          "shotPlayer": {
+            "id": "97867",
+            "name": "Léo Ortiz",
+            "fullName": "Leonardo Rech Ortiz",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "flamengo"
+          },
+          "isHeader": true
         }
       ]
     },
