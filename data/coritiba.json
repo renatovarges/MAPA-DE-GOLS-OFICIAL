@@ -595,12 +595,12 @@
       "created_goals": [
         {
           "pass": {
-            "x": 70.82152654474432,
-            "y": 34.69490989402488
+            "x": 75,
+            "y": 28.333333333333336
           },
           "shot": {
-            "x": 89.04590981223366,
-            "y": 22.186551016348375
+            "x": 86.9342529,
+            "y": 19.906
           },
           "assistPlayer": {
             "id": "84626",
@@ -622,8 +622,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 84.77713456587358,
-            "y": 21.807508906611694
+            "x": 83.0298229,
+            "y": 25.323999999999998
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -639,19 +639,19 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 18.77530850497159,
-            "y": 9.67818829571759
+            "x": 4.333333333333343,
+            "y": 17
           },
           "shot": {
-            "x": 12.864697265625011,
-            "y": 17.25901511863426
+            "x": 12.946369599999997,
+            "y": 22.150380000000006
           },
           "assistPlayer": {
             "id": "100898",
             "name": "Vitinho",
             "fullName": "Victor Alexander da Silva",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "botafogo"
           },
           "shotPlayer": {
@@ -664,12 +664,22 @@
           }
         },
         {
-          "pass": null,
-          "shot": {
-            "x": 6.62572132457386,
-            "y": 28.819770643446184
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 39.666666666666664
           },
-          "assistPlayer": null,
+          "shot": {
+            "x": 8.3753296,
+            "y": 35.91038
+          },
+          "assistPlayer": {
+            "id": "63289",
+            "name": "Edenílson",
+            "fullName": "Edenílson Andrade dos Santos",
+            "position": "Meia",
+            "side": null,
+            "team": "botafogo"
+          },
           "shotPlayer": {
             "id": "92171",
             "name": "Arthur Cabral",
@@ -688,22 +698,12 @@
       "home": true,
       "created_goals": [
         {
-          "pass": {
-            "x": 95.28488991477273,
-            "y": 0.3285005357530382
-          },
+          "pass": null,
           "shot": {
-            "x": 93.97141779119319,
-            "y": 25.3452230947989
+            "x": 90.74345290000001,
+            "y": 27.559999999999995
           },
-          "assistPlayer": {
-            "id": "84626",
-            "name": "Josué",
-            "fullName": "Josué Filipe Soares Pesqueira",
-            "position": "Meia",
-            "side": null,
-            "team": "coritiba"
-          },
+          "assistPlayer": null,
           "shotPlayer": {
             "id": "93988",
             "name": "Breno Lopes",
@@ -711,14 +711,13 @@
             "position": "Atacante",
             "side": null,
             "team": "coritiba"
-          },
-          "isSetPiece": true
+          }
         },
         {
           "pass": null,
           "shot": {
-            "x": 81.82183061079544,
-            "y": 46.571533203125
+            "x": 81.8870629,
+            "y": 43.38399999999999
           },
           "assistPlayer": null,
           "shotPlayer": {
