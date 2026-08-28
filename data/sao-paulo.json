@@ -991,16 +991,33 @@
     },
     "17": {
       "roundNumber": 17,
-      "date": "2026-05-10",
+      "date": "2026-05-23",
       "opponent": "botafogo",
       "home": true,
-      "created_goals": [],
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 89.58640840000001,
+            "y": 38.328059999999994
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "80287",
+            "name": "Luciano",
+            "fullName": "Luciano da Rocha Neves",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          }
+        }
+      ],
       "conceded_goals": [
         {
           "pass": null,
           "shot": {
-            "x": 19.025806773792613,
-            "y": 35.175813349971065
+            "x": 18.610649999999993,
+            "y": 38.43276
           },
           "assistPlayer": null,
           "shotPlayer": {
