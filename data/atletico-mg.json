@@ -113,18 +113,18 @@
     },
     "3": {
       "roundNumber": 3,
-      "date": "2026-02-10",
+      "date": "2026-02-11",
       "opponent": "remo",
       "home": true,
       "created_goals": [
         {
           "pass": {
-            "x": 65.41511452414773,
-            "y": 43.520300519024886
+            "x": 58.333333333333336,
+            "y": 39.66666666666667
           },
           "shot": {
-            "x": 83.48739790482955,
-            "y": 45.22712944878472
+            "x": 83.7916629,
+            "y": 41.60723999999999
           },
           "assistPlayer": {
             "id": "116034",
@@ -145,12 +145,12 @@
         },
         {
           "pass": {
-            "x": 70.83680087002841,
-            "y": 8.245871197735822
+            "x": 75,
+            "y": 5.666666666666666
           },
           "shot": {
-            "x": 88.25191539417614,
-            "y": 40.48594224717882
+            "x": 89.31500290000001,
+            "y": 39.199239999999996
           },
           "assistPlayer": {
             "id": "39148",
@@ -168,16 +168,25 @@
             "side": null,
             "team": "atletico-mg"
           },
-          "isSetPiece": true,
           "isHeader": true
         },
         {
-          "pass": null,
-          "shot": {
-            "x": 88.74479536576705,
-            "y": 35.555109094690394
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 51
           },
-          "assistPlayer": null,
+          "shot": {
+            "x": 90.64822290000001,
+            "y": 33.35124
+          },
+          "assistPlayer": {
+            "id": "87999",
+            "name": "Gustavo Scarpa",
+            "fullName": "Gustavo Henrique Furtado Scarpa",
+            "position": "Meia",
+            "side": null,
+            "team": "atletico-mg"
+          },
           "shotPlayer": {
             "id": "68920",
             "name": "Dudu",
@@ -190,35 +199,19 @@
       ],
       "conceded_goals": [
         {
-          "pass": null,
-          "shot": {
-            "x": 7.583785733309659,
-            "y": 30.24498019748264
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "87552",
-            "name": "Vitor Bueno",
-            "fullName": "Vitor Frezarin Bueno",
-            "position": "Meia",
-            "side": null,
-            "team": "remo"
-          }
-        },
-        {
           "pass": {
-            "x": 34.03504527698863,
-            "y": 23.228022370515045
+            "x": 37.666666666666664,
+            "y": 17
           },
           "shot": {
-            "x": 11.526830499822443,
-            "y": 18.67648304126881
+            "x": 7.327799599999992,
+            "y": 16.602520000000013
           },
           "assistPlayer": {
             "id": "107172",
-            "name": "Patrick de Paula",
-            "fullName": "Patrick de Paula Carreiro",
-            "position": "Meia",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "remo"
           },
@@ -232,19 +225,35 @@
           }
         },
         {
+          "pass": null,
+          "shot": {
+            "x": 7.613489599999994,
+            "y": 26.922520000000006
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "87552",
+            "name": "Vitor Bueno",
+            "fullName": "Vitor Frezarin Bueno",
+            "position": "Meia",
+            "side": null,
+            "team": "remo"
+          }
+        },
+        {
           "pass": {
-            "x": 15.798463023792614,
-            "y": 24.365907683195893
+            "x": 21,
+            "y": 17
           },
           "shot": {
-            "x": 15.469876930930397,
-            "y": 32.710396773726856
+            "x": 16.184189599999996,
+            "y": 29.760520000000007
           },
           "assistPlayer": {
             "id": "107172",
-            "name": "Patrick de Paula",
-            "fullName": "Patrick de Paula Carreiro",
-            "position": "Meia",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "remo"
           },
