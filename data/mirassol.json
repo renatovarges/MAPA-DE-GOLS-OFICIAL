@@ -560,12 +560,12 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 0.38674455122514206,
-            "y": 0.7075416847511574
+            "x": 4.333333333333343,
+            "y": 28.33333333333333
           },
           "shot": {
-            "x": 3.8346013849431824,
-            "y": 43.53920401114004
+            "x": 5.256547099999992,
+            "y": 40.01774
           },
           "assistPlayer": {
             "id": "112886",
@@ -582,8 +582,7 @@
             "position": "Atacante",
             "side": null,
             "team": "red-bull-bragantino"
-          },
-          "isSetPiece": true
+          }
         }
       ]
     },
@@ -594,29 +593,19 @@
       "home": true,
       "created_goals": [
         {
+          "shot": null,
           "pass": null,
-          "shot": {
-            "x": 92.32958096590909,
-            "y": 40.8859130859375
-          },
           "assistPlayer": null,
-          "shotPlayer": {
-            "id": "91772",
-            "name": "David Duarte",
-            "fullName": "David de Duarte Macedo",
-            "position": "Zagueiro",
-            "side": null,
-            "team": "bahia"
-          },
-          "own_goal": true
+          "shotPlayer": null,
+          "isOwnGoal": true
         }
       ],
       "conceded_goals": [
         {
           "pass": null,
           "shot": {
-            "x": 10.894497403231535,
-            "y": 33.87365134910301
+            "x": 11.65885999999999,
+            "y": 33.646
           },
           "assistPlayer": null,
           "shotPlayer": {
@@ -624,7 +613,7 @@
             "name": "Luciano Juba",
             "fullName": "Luciano Batista da Silva Júnior",
             "position": "Lateral",
-            "side": "LE",
+            "side": null,
             "team": "bahia"
           },
           "is_penalty": true
@@ -632,8 +621,8 @@
         {
           "pass": null,
           "shot": {
-            "x": 3.6704173694957385,
-            "y": 42.97063892505787
+            "x": 4.8756270999999884,
+            "y": 41.300000000000004
           },
           "assistPlayer": null,
           "shotPlayer": {
