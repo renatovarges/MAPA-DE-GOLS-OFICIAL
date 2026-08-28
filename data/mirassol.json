@@ -2,35 +2,18 @@
   "rounds": {
     "1": {
       "roundNumber": 1,
-      "date": "2026-01-28",
+      "date": "2026-01-29",
       "opponent": "vasco",
       "home": true,
       "created_goals": [
         {
-          "pass": null,
-          "shot": {
-            "x": 89.23767533735796,
-            "y": 33.46898442021123
-          },
-          "assistPlayer": null,
-          "shotPlayer": {
-            "id": "117330",
-            "name": "Robert Renan",
-            "fullName": "Robert Renan Alves Barbosa",
-            "position": "Zagueiro",
-            "side": null,
-            "team": "vasco"
-          },
-          "own_goal": true
-        },
-        {
           "pass": {
-            "x": 75.76560724431819,
-            "y": 25.69343894675926
+            "x": 75,
+            "y": 28.333333333333336
           },
           "shot": {
-            "x": 84.96604447798296,
-            "y": 26.452028514720777
+            "x": 83.6431041,
+            "y": 25.55362
           },
           "assistPlayer": {
             "id": "97321",
@@ -48,31 +31,38 @@
             "side": null,
             "team": "mirassol"
           }
+        },
+        {
+          "shot": null,
+          "pass": null,
+          "assistPlayer": null,
+          "shotPlayer": null,
+          "isOwnGoal": true
         }
       ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 8.240961248224432,
-            "y": 5.590806749131945
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
           },
           "shot": {
-            "x": 7.0909057617187505,
-            "y": 28.72779721860532
+            "x": 8.75624959999999,
+            "y": 29.673660000000005
           },
           "assistPlayer": {
             "id": "99213",
             "name": "Puma Rodríguez",
             "fullName": "José Luis Rodríguez Bebanz",
             "position": "Lateral",
-            "side": "LD",
+            "side": null,
             "team": "vasco"
           },
           "shotPlayer": {
             "id": "68899",
-            "name": "Philippe Coutinho",
-            "fullName": "Philippe Coutinho Correia",
-            "position": "Meia",
+            "name": "?",
+            "fullName": "?",
+            "position": "",
             "side": null,
             "team": "vasco"
           },
