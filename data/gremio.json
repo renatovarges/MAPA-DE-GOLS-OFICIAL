@@ -843,21 +843,127 @@
       "date": "2026-05-23",
       "opponent": "santos",
       "home": true,
-      "created_goals": [],
+      "created_goals": [
+        {
+          "pass": {
+            "x": 75,
+            "y": 62.33333333333333
+          },
+          "shot": {
+            "x": 85.33915040000001,
+            "y": 28.135339999999996
+          },
+          "assistPlayer": {
+            "id": "91908",
+            "name": "Pavón",
+            "fullName": "Cristian David Pavón",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "105563",
+            "name": "Carlos Vinícius",
+            "fullName": "Carlos Vinícius Alves Morais",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          }
+        },
+        {
+          "pass": {
+            "x": 75,
+            "y": 62.33333333333333
+          },
+          "shot": {
+            "x": 82.6727104,
+            "y": 45.93734
+          },
+          "assistPlayer": {
+            "id": "91908",
+            "name": "Pavón",
+            "fullName": "Cristian David Pavón",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "105089",
+            "name": "Tetê",
+            "fullName": "Mateus Cardoso Lemos Martins",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          }
+        },
+        {
+          "pass": {
+            "x": 75,
+            "y": 51
+          },
+          "shot": {
+            "x": 90.19588040000001,
+            "y": 36.90734
+          },
+          "assistPlayer": {
+            "id": "142004",
+            "name": "Amuzu",
+            "fullName": "Francis Amuzu",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "105563",
+            "name": "Carlos Vinícius",
+            "fullName": "Carlos Vinícius Alves Morais",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          },
+          "isHeader": true
+        }
+      ],
       "conceded_goals": [
         {
           "pass": {
-            "x": 9.661075661399147,
-            "y": 21.710841313114873
+            "x": 4.333333333333343,
+            "y": 39.666666666666664
           },
           "shot": {
-            "x": 12.94694657759233,
-            "y": 32.710396773726856
+            "x": 11.468399999999988,
+            "y": 37.63038
           },
           "assistPlayer": {
             "id": "141754",
             "name": "Gabriel Bontempo",
             "fullName": "Gabriel Morais Silva Bontempo",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          },
+          "shotPlayer": {
+            "id": "83257",
+            "name": "Gabriel",
+            "fullName": "Gabriel Barbosa Almeida",
+            "position": "Atacante",
+            "side": null,
+            "team": "santos"
+          }
+        },
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 28.33333333333333
+          },
+          "shot": {
+            "x": 9.182879999999997,
+            "y": 38.49038
+          },
+          "assistPlayer": {
+            "id": "115025",
+            "name": "Miguelito",
+            "fullName": "Miguel Àngel Terceros",
             "position": "Meia",
             "side": null,
             "team": "santos"
