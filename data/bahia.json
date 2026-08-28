@@ -81,21 +81,31 @@
     },
     "2": {
       "roundNumber": 2,
-      "date": "2026-02-04",
+      "date": "2026-02-05",
       "opponent": "fluminense",
       "home": true,
       "created_goals": [
         {
-          "pass": null,
-          "shot": {
-            "x": 87.10185990767044,
-            "y": 39.34805885597512
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 5.666666666666666
           },
-          "assistPlayer": null,
+          "shot": {
+            "x": 86.18193590000001,
+            "y": 35.539939999999994
+          },
+          "assistPlayer": {
+            "id": "136955",
+            "name": "Sanabria",
+            "fullName": "Mateo Naín Sanabria Doracio",
+            "position": "Atacante",
+            "side": null,
+            "team": "bahia"
+          },
           "shotPlayer": {
             "id": "113397",
             "name": "Cristian Olivera",
-            "fullName": "Cristian Gonzalo Olivera Ibarra",
+            "fullName": "Cristian Gonzalo Olivera Ibarra - Kike",
             "position": "Atacante",
             "side": null,
             "team": "bahia"
@@ -105,12 +115,12 @@
       "conceded_goals": [
         {
           "pass": {
-            "x": 18.591453968394887,
-            "y": 32.52074697989004
+            "x": 21,
+            "y": 28.33333333333333
           },
           "shot": {
-            "x": 12.184006014737216,
-            "y": 36.31369674117477
+            "x": 6.535485999999992,
+            "y": 36.94840000000001
           },
           "assistPlayer": {
             "id": "100987",
