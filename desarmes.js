@@ -17,6 +17,14 @@
     ['remo', 'Remo'], ['santos', 'Santos'], ['sao-paulo', 'São Paulo'],
     ['vasco', 'Vasco'], ['vitoria', 'Vitória'],
   ];
+
+  // status_id oficial da própria API do Cartola (server.py::STATUS_ID_TO_NOME
+  // já expõe isso em /api/jogadores) — pedido do Renato, 2026-08: filtro
+  // "Status" na aba Líderes, pra não deixar um jogador suspenso/contundido
+  // aparecer no topo do ranking com estatística de quando ele ainda jogava.
+  const DSM_STATUS_LIST = [
+    [7, 'Provável'], [2, 'Dúvida'], [3, 'Suspenso'], [5, 'Contundido'], [6, 'Nulo'],
+  ];
   function dsmTeamName(key) {
     const found = TEAMS.find(([k]) => k === key);
     return found ? found[1] : key;
@@ -560,7 +568,7 @@
     return null; // geral
   }
 
-  async function dsmComputeLideres({ teamKeys, count, mando }) {
+  async function dsmComputeLideres({ teamKeys, count, mando, statusIds = null }) {
     const teamsToScan = (teamKeys && teamKeys.length) ? teamKeys : TEAMS.map(([k]) => k);
     const [proximoConfronto, playersMap] = await Promise.all([
       mando === 'rodada-atual' ? dsmGetProximoConfronto() : Promise.resolve({}),
@@ -595,8 +603,21 @@
       return p ? (p.apelido || p.nome_completo || `Jogador #${jogadorId}`) : `Jogador #${jogadorId}`;
     }
 
+    // Filtro de Status (Provável/Dúvida/Suspenso/Contundido/Nulo, ver
+    // DSM_STATUS_LIST) — jogador sem status conhecido (ex.: fallback do
+    // CSV, sem esse campo) nunca é excluído por esse filtro: não sabemos o
+    // status dele, então preferimos mostrar a esconder por engano.
+    function statusPermite(jogadorId) {
+      if (!statusIds) return true;
+      const p = playersMap.get(String(jogadorId));
+      const sid = p ? p.status_id : undefined;
+      if (sid === undefined || sid === null) return true;
+      return statusIds.has(sid);
+    }
+
     function toRankedList(mapa) {
       return Array.from(mapa.entries())
+        .filter(([jogadorId]) => statusPermite(jogadorId))
         .map(([jogadorId, v]) => ({
           jogadorId, nome: nomeDe(jogadorId), posicao: dsmFormatPosicaoLabel(v.posicao),
           teamName: dsmTeamName(v.teamKey), count: v.count, gamesUsed: v.gamesUsed,
@@ -631,17 +652,24 @@
     const teamKeys = checks.map(c => c.value);
     const count = Math.max(1, Number(document.getElementById('dsmLideresWindowInput').value) || 5);
     const mando = document.getElementById('dsmLideresMandoSelect').value;
+    const statusChecks = Array.from(document.querySelectorAll('#dsmLideresStatusChecks input[type=checkbox]:checked'));
+    // Todas marcadas (ou o painel nem existir ainda) = sem filtro, igual ao
+    // comportamento de sempre — só filtra de verdade quando pelo menos uma
+    // está desmarcada.
+    const statusIds = (statusChecks.length && statusChecks.length < DSM_STATUS_LIST.length)
+      ? new Set(statusChecks.map(c => Number(c.value)))
+      : null;
 
     const runId = Symbol('lideres-refresh');
     __dsmLideresRefreshInFlight = runId;
 
-    if (!teamKeys.length) {
+    if (!teamKeys.length || !statusChecks.length) {
       dsmRenderLideresList('dsmLideresDesarmeList', []);
       dsmRenderLideresList('dsmLideresPerdaList', []);
       return;
     }
 
-    const { desarmadores, perdedores } = await dsmComputeLideres({ teamKeys, count, mando });
+    const { desarmadores, perdedores } = await dsmComputeLideres({ teamKeys, count, mando, statusIds });
     if (__dsmLideresRefreshInFlight !== runId) return;
 
     dsmRenderLideresList('dsmLideresDesarmeList', desarmadores);
@@ -673,6 +701,15 @@
         <label class="dsm-control-item">Últimos jogos
           <input id="dsmLideresWindowInput" type="number" min="1" max="38" value="5" />
         </label>
+        <div class="dsm-control-item" style="min-width:280px">
+          Status
+          <div class="dsm-checkbox-panel" id="dsmLideresStatusChecks">
+            <div class="dsm-checkbox-panel-head">
+              <button type="button" data-act="all">todos</button>
+              <button type="button" data-act="none">nenhum</button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="dsm-lideres-cols">
         <div class="dsm-lideres-col dsm-col-rec">
@@ -700,6 +737,23 @@
     });
     panel.querySelector('[data-act="none"]').addEventListener('click', () => {
       panel.querySelectorAll('input[type=checkbox]').forEach(c => { c.checked = false; });
+      dsmRefreshLideres();
+    });
+
+    const statusPanel = document.getElementById('dsmLideresStatusChecks');
+    DSM_STATUS_LIST.forEach(([id, name]) => {
+      const label = document.createElement('label');
+      label.className = 'dsm-checkbox-item';
+      label.innerHTML = `<input type="checkbox" value="${id}" checked /> ${name}`;
+      statusPanel.appendChild(label);
+    });
+    statusPanel.addEventListener('change', (e) => { if (e.target.matches('input[type=checkbox]')) dsmRefreshLideres(); });
+    statusPanel.querySelector('[data-act="all"]').addEventListener('click', () => {
+      statusPanel.querySelectorAll('input[type=checkbox]').forEach(c => { c.checked = true; });
+      dsmRefreshLideres();
+    });
+    statusPanel.querySelector('[data-act="none"]').addEventListener('click', () => {
+      statusPanel.querySelectorAll('input[type=checkbox]').forEach(c => { c.checked = false; });
       dsmRefreshLideres();
     });
 

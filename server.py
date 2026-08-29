@@ -55,6 +55,22 @@ POSICAO_ID_TO_NOME = {
     6: 'Técnico',
 }
 
+# status_id oficial da própria API do Cartola (bate com o campo "status" que
+# vem na resposta de /atletas/mercado) — usado pro filtro "Status" na aba
+# Líderes do Mapa de Desarmes (pedido do Renato, 2026-08): permite excluir
+# do ranking quem está suspenso/contundido, ou focar só em quem é provável
+# titular pra próxima rodada. Cobre o elenco inteiro (775 jogadores testado
+# ao vivo), sem "jogador sumido" como acontecia tentando cruzar com o
+# provaveisdocartola.com.br (que só lista titulares + desfalques, não o
+# elenco inteiro).
+STATUS_ID_TO_NOME = {
+    2: 'Dúvida',
+    3: 'Suspenso',
+    5: 'Contundido',
+    6: 'Nulo',
+    7: 'Provável',
+}
+
 # Mapeamento de código de clube do CSV para chave de time
 # Códigos verificados na API em março/2026
 CSV_CLUBE_TO_KEY = {
@@ -116,6 +132,7 @@ def buscar_jogadores_api():
             clube_info = clubes.get(str(clube_id), {})
             clube_abrev = clube_info.get('abreviacao', '')
 
+            status_id = atleta.get('status_id')
             jogadores.append({
                 'id': str(atleta.get('atleta_id', '')),
                 'apelido': atleta.get('apelido', atleta.get('nome', '')),
@@ -126,6 +143,8 @@ def buscar_jogadores_api():
                 'posicao': POSICAO_ID_TO_NOME.get(posicao_id, ''),
                 'posicao_id': str(posicao_id),
                 'teamKey': team_key,
+                'status_id': status_id,
+                'status': STATUS_ID_TO_NOME.get(status_id, ''),
                 'fonte': 'api',
             })
 
