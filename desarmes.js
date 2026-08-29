@@ -262,7 +262,7 @@
     return pts.join(' ');
   }
 
-  function dsmRenderConfronto(containerId, teamRecName, teamLossName, recEvents, lossEvents, playersMap, perfisMap, gamesUsedRec, gamesUsedLoss) {
+  function dsmRenderConfronto(containerId, teamRecName, teamLossName, recEvents, lossEvents, playersMap, perfisMap, gamesUsedRec, gamesUsedLoss, statusIds = null) {
     const container = document.getElementById(containerId);
     if (!container) return;
     container.style.display = '';
@@ -331,8 +331,18 @@
     recEvents.forEach(ev => { if (!ev.__xy) ev.__xy = dsmQuadranteToXY(ev.quadrante); });
     lossEvents.forEach(ev => { if (!ev.__xy) ev.__xy = dsmQuadranteToXY(dsmMirrorQuadrante(ev.quadrante)); });
 
-    const visRec = new Set(rosterRec.map(p => p.jogadorId));
-    const visLoss = new Set(rosterLoss.map(p => p.jogadorId));
+    // Filtro de Status (ver DSM_STATUS_LIST) pré-marca quem começa visível
+    // aqui — jogador sem status conhecido nunca começa escondido por
+    // engano (mesma regra "não sabemos, então mostra" da aba Líderes).
+    function statusPermiteInicial(jogadorId) {
+      if (!statusIds) return true;
+      const p = playersMap.get(String(jogadorId));
+      const sid = p ? p.status_id : undefined;
+      if (sid === undefined || sid === null) return true;
+      return statusIds.has(sid);
+    }
+    const visRec = new Set(rosterRec.filter(p => statusPermiteInicial(p.jogadorId)).map(p => p.jogadorId));
+    const visLoss = new Set(rosterLoss.filter(p => statusPermiteInicial(p.jogadorId)).map(p => p.jogadorId));
 
     function renderDots() {
       recLayer.innerHTML = '';
@@ -470,6 +480,15 @@
     const teamB = document.getElementById('dsmTeamBSelect').value;
     const count = Math.max(1, Number(document.getElementById('dsmWindowCountInput').value) || 5);
     const mando = document.getElementById('dsmMandoSelect').value;
+    const statusChecks = Array.from(document.querySelectorAll('#dsmConfrontoStatusChecks input[type=checkbox]:checked'));
+    // Todas marcadas = sem filtro (comportamento de sempre: todo mundo
+    // começa visível na lista/campinho). Desmarcar algumas faz quem tem
+    // aquele status começar OFF na lista (continua lá, só não desenhado —
+    // um clique liga de volta, igual já funciona pro toggle manual). Zero
+    // marcadas = todo mundo começa OFF (usa o botão "todos" pra reverter).
+    const statusIds = (statusChecks.length < DSM_STATUS_LIST.length)
+      ? new Set(statusChecks.map(c => Number(c.value)))
+      : null;
 
     if (!teamA || !teamB || teamA === teamB) {
       if (emptyEl) {
@@ -500,8 +519,8 @@
     const nameA = dsmTeamName(teamA);
     const nameB = dsmTeamName(teamB);
 
-    dsmRenderConfronto('dsmConfrontoA', nameA, nameB, dataA.recoveries, dataB.losses, playersMap, perfisMap, dataA.gamesUsed, dataB.gamesUsed);
-    dsmRenderConfronto('dsmConfrontoB', nameB, nameA, dataB.recoveries, dataA.losses, playersMap, perfisMap, dataB.gamesUsed, dataA.gamesUsed);
+    dsmRenderConfronto('dsmConfrontoA', nameA, nameB, dataA.recoveries, dataB.losses, playersMap, perfisMap, dataA.gamesUsed, dataB.gamesUsed, statusIds);
+    dsmRenderConfronto('dsmConfrontoB', nameB, nameA, dataB.recoveries, dataA.losses, playersMap, perfisMap, dataB.gamesUsed, dataA.gamesUsed, statusIds);
   }
 
   function dsmBuildDesarmesView() {
@@ -524,6 +543,15 @@
             <option value="mando">Mesmo mando do confronto (A em casa / B fora)</option>
           </select>
         </label>
+        <div class="dsm-control-item" style="min-width:280px">
+          Status
+          <div class="dsm-checkbox-panel" id="dsmConfrontoStatusChecks">
+            <div class="dsm-checkbox-panel-head">
+              <button type="button" data-act="all">todos</button>
+              <button type="button" data-act="none">nenhum</button>
+            </div>
+          </div>
+        </div>
       </div>
       <div id="dsmEmptyState" class="dsm-empty">Escolha os dois times acima pra ver o mapa.</div>
       <div id="dsmConfrontoA" class="dsm-confronto" style="display:none"></div>
@@ -538,6 +566,23 @@
     });
     a.value = 'palmeiras';
     b.value = 'flamengo';
+
+    const statusPanel = document.getElementById('dsmConfrontoStatusChecks');
+    DSM_STATUS_LIST.forEach(([id, name]) => {
+      const label = document.createElement('label');
+      label.className = 'dsm-checkbox-item';
+      label.innerHTML = `<input type="checkbox" value="${id}" checked /> ${name}`;
+      statusPanel.appendChild(label);
+    });
+    statusPanel.addEventListener('change', (e) => { if (e.target.matches('input[type=checkbox]')) dsmRefreshSection(); });
+    statusPanel.querySelector('[data-act="all"]').addEventListener('click', () => {
+      statusPanel.querySelectorAll('input[type=checkbox]').forEach(c => { c.checked = true; });
+      dsmRefreshSection();
+    });
+    statusPanel.querySelector('[data-act="none"]').addEventListener('click', () => {
+      statusPanel.querySelectorAll('input[type=checkbox]').forEach(c => { c.checked = false; });
+      dsmRefreshSection();
+    });
 
     ['dsmTeamASelect', 'dsmTeamBSelect', 'dsmWindowCountInput', 'dsmMandoSelect'].forEach(id => {
       document.getElementById(id).addEventListener('change', dsmRefreshSection);
