@@ -1,6 +1,6 @@
 {
   "teamKey": "palmeiras",
-  "geradoEm": "2026-08-29T14:11:18.430Z",
+  "geradoEm": "2026-08-30T14:18:00.543Z",
   "ataca": [
     "No Palmeiras, o meia registra cerca de 7 finalizações por jogo. É uma posição a observar na escalação.",
     "No Palmeiras, passes do meia originam cerca de 5 finalizações por jogo.",
@@ -22,10 +22,6 @@
   ],
   "evidenciasSofre": [
     {
-      "chave": "ladoDaJogada|direita|meia",
-      "confianca": "padrao-consolidado"
-    },
-    {
       "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     },
@@ -34,14 +30,18 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|dentro-da-area|atacante-area",
+      "chave": "ladoDaJogada|direita|meia",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|fora-da-area|meia",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
-    "O Palmeiras cede cerca de 3 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o meia adversário é quem mais finaliza nesses lances.",
     "O Palmeiras cede cerca de 2 finalizações por jogo após passes do meia adversário.",
     "O Palmeiras cede cerca de 2 finalizações por jogo após cruzamentos. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
-    "O Palmeiras cede cerca de 7 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances."
+    "O Palmeiras cede cerca de 3 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o meia adversário é quem mais finaliza nesses lances.",
+    "O Palmeiras cede cerca de 6 finalizações por jogo de fora da área. Atenção: o meia adversário é quem mais finaliza nesses lances."
   ]
 }
