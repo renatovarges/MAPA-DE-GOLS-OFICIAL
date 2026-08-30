@@ -1606,6 +1606,112 @@
           }
         }
       ]
+    },
+    "25": {
+      "roundNumber": 25,
+      "date": "2026-08-29",
+      "opponent": "cruzeiro",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 62.33333333333333
+          },
+          "shot": {
+            "x": 91.8957359,
+            "y": 29.577559999999995
+          },
+          "assistPlayer": {
+            "id": "105584",
+            "name": "Lucas Piton",
+            "fullName": "Lucas Piton Crivellaro",
+            "position": "Lateral",
+            "side": null,
+            "team": "vasco"
+          },
+          "shotPlayer": {
+            "id": "115141",
+            "name": "Lucas Freitas",
+            "fullName": "Lucas de Freitas Molarinho Chagas",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "vasco"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 90.1815959,
+            "y": 40.67155999999999
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "86686",
+            "name": "Tchê Tchê",
+            "fullName": "Danilo das Neves Pinheiro",
+            "position": "Meia",
+            "side": null,
+            "team": "vasco"
+          }
+        },
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 62.33333333333333
+          },
+          "shot": {
+            "x": 89.03883590000001,
+            "y": 39.03755999999999
+          },
+          "assistPlayer": {
+            "id": "150180",
+            "name": "Ramon Rique",
+            "fullName": "Ramon Rique Santos de Souza Barros",
+            "position": "Meia",
+            "side": null,
+            "team": "vasco"
+          },
+          "shotPlayer": {
+            "id": "90309",
+            "name": "David",
+            "fullName": "David Corrêa da Fonseca",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 62.333333333333336
+          },
+          "shot": {
+            "x": 7.365891599999998,
+            "y": 27.521940000000008
+          },
+          "assistPlayer": {
+            "id": "96610",
+            "name": "Matheus Pereira",
+            "fullName": "Matheus Fellipe Costa Pereira",
+            "position": "Meia",
+            "side": null,
+            "team": "cruzeiro"
+          },
+          "shotPlayer": {
+            "id": "151292",
+            "name": "Felipe Morais",
+            "fullName": "Felipe de Morais Barbosa Penna dos Santos",
+            "position": "Meia",
+            "side": null,
+            "team": "cruzeiro"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
