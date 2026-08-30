@@ -1352,6 +1352,75 @@
         }
       ],
       "conceded_goals": []
+    },
+    "25": {
+      "roundNumber": 25,
+      "date": "2026-08-29",
+      "opponent": "sao-paulo",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 17
+          },
+          "shot": {
+            "x": 89.22929590000001,
+            "y": 40.48837999999999
+          },
+          "assistPlayer": {
+            "id": "124239",
+            "name": "Henry Mosquera",
+            "fullName": "Henry David Mosquera Sánchez",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "shotPlayer": {
+            "id": "100695",
+            "name": "Fernando",
+            "fullName": "Fernando dos Santos Pedro",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.65885999999999,
+            "y": 33.646
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "80287",
+            "name": "Luciano",
+            "fullName": "Luciano da Rocha Neves",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 9.827587099999988,
+            "y": 29.733000000000004
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "141382",
+            "name": "Gustavo Santana",
+            "fullName": "Gustavo Domingos Santana",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          }
+        }
+      ]
     }
   }
 }
