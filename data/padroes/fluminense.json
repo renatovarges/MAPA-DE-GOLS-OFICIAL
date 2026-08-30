@@ -1,6 +1,6 @@
 {
   "teamKey": "fluminense",
-  "geradoEm": "2026-08-29T14:11:18.430Z",
+  "geradoEm": "2026-08-30T14:18:00.543Z",
   "ataca": [
     "No Fluminense, passes do atacante de área originam cerca de 3 finalizações por jogo.",
     "No Fluminense, o atacante de área registra cerca de 5 finalizações por jogo. É uma posição a observar na escalação.",
@@ -27,6 +27,10 @@
   ],
   "evidenciasSofre": [
     {
+      "chave": "area|fora-da-area|meia",
+      "confianca": "padrao-consolidado"
+    },
+    {
       "chave": "posicao|atacante-area|",
       "confianca": "padrao-consolidado"
     },
@@ -35,18 +39,14 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|fora-da-area|meia",
-      "confianca": "padrao-consolidado"
-    },
-    {
       "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
+    "O Fluminense cede cerca de 5 finalizações por jogo de fora da área. Atenção: o meia adversário é quem mais finaliza nesses lances.",
     "O Fluminense cede cerca de 3 finalizações por jogo ao atacante de área adversário. É uma posição a observar contra essa defesa.",
     "O Fluminense cede cerca de 3 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
-    "O Fluminense cede cerca de 5 finalizações por jogo de fora da área. Atenção: o meia adversário é quem mais finaliza nesses lances.",
     "O Fluminense cede cerca de 2 finalizações por jogo após passes do meia adversário."
   ]
 }
