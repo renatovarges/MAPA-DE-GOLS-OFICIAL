@@ -1553,6 +1553,74 @@
           }
         }
       ]
+    },
+    "25": {
+      "roundNumber": 25,
+      "date": "2026-08-29",
+      "opponent": "atletico-mg",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 81.8965859,
+            "y": 27.341559999999994
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "97810",
+            "name": "Erick",
+            "fullName": "Erick de Arruda Serafim",
+            "position": "Atacante",
+            "side": null,
+            "team": "vitoria"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 14.69860159999999,
+            "y": 37.583940000000005
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "105068",
+            "name": "Reinier",
+            "fullName": "Reinier Jesus Carvalho",
+            "position": "Meia",
+            "side": null,
+            "team": "atletico-mg"
+          }
+        },
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 28.33333333333333
+          },
+          "shot": {
+            "x": 6.0326716000000005,
+            "y": 33.71394000000001
+          },
+          "assistPlayer": {
+            "id": "105068",
+            "name": "Reinier",
+            "fullName": "Reinier Jesus Carvalho",
+            "position": "Meia",
+            "side": null,
+            "team": "atletico-mg"
+          },
+          "shotPlayer": {
+            "id": "117314",
+            "name": "Thiago Borbas",
+            "fullName": "Thiago Nicolás Borbas Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "atletico-mg"
+          }
+        }
+      ]
     }
   }
 }
