@@ -3,8 +3,8 @@
   "tipoLeitura": "pre-jogo",
   "rodada": 26,
   "rodadaDados": 24,
-  "janelaAte": "2026-08-29",
-  "geradoEm": "2026-08-30T14:18:04.049Z",
+  "janelaAte": "2026-08-30",
+  "geradoEm": "2026-08-31T16:44:36.218Z",
   "jogos": [
     {
       "id": 237714,
@@ -23,7 +23,7 @@
     {
       "id": 237667,
       "rodada": 26,
-      "data": "2026-09-06T00:00:00",
+      "data": "2026-09-05T21:00:00",
       "mandante": "fluminense",
       "visitante": "vasco"
     },
@@ -80,16 +80,42 @@
   "conclusoes": [
     {
       "tipo": "convergencia",
+      "titulo": "Palmeiras tem um encaixe favorável contra o Botafogo",
+      "chamada": "MARCA GOLS COM SEUS MEIAS",
+      "timeDestaque": "palmeiras",
+      "frase": "O Palmeiras marca gols com seus meias a uma média de 1,00 por jogo, aparecendo em 8 dos últimos 10 jogos. O Botafogo sofre gols de meias a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,23 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "times": [
+        "palmeiras",
+        "botafogo"
+      ],
+      "scout": "gols",
+      "chave": "posicao:meia"
+    },
+    {
+      "tipo": "convergencia",
       "titulo": "Atlético-MG tem um encaixe favorável contra o São Paulo",
       "chamada": "MARCA GOLS COM SEUS ZAGUEIROS",
       "timeDestaque": "atletico-mg",
-      "frase": "O Atlético-MG marca gols com seus zagueiros a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos. O São Paulo sofre gols de zagueiros a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,09 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "frase": "O Atlético-MG marca gols com seus zagueiros a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos. O São Paulo sofre gols de zagueiros a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,10 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "atletico-mg",
         "sao-paulo"
       ],
       "scout": "gols",
       "chave": "posicao:zagueiro"
+    },
+    {
+      "tipo": "convergencia",
+      "titulo": "Internacional tem um encaixe favorável contra o Santos",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEU PONTA DIREITA",
+      "timeDestaque": "internacional",
+      "frase": "O Internacional soma participações em gols com seu ponta direita a uma média de 0,70 por jogo, aparecendo em 4 dos últimos 10 jogos. O Santos cede participações em gols para pontas-direitas adversários a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,17 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "times": [
+        "internacional",
+        "santos"
+      ],
+      "scout": "participacoes",
+      "chave": "posicao:ponta-direita"
     },
     {
       "tipo": "convergencia",
@@ -100,32 +126,6 @@
       "times": [
         "flamengo",
         "remo"
-      ],
-      "scout": "participacoes",
-      "chave": "posicao:atacante-area"
-    },
-    {
-      "tipo": "convergencia",
-      "titulo": "Internacional tem um encaixe favorável contra o Santos",
-      "chamada": "PARTICIPAÇÕES EM GOLS COM SEU PONTA DIREITA",
-      "timeDestaque": "internacional",
-      "frase": "O Internacional soma participações em gols com seu ponta direita a uma média de 0,60 por jogo, aparecendo em 3 dos últimos 10 jogos. O Santos cede participações em gols para pontas-direitas adversários a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,17 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
-      "times": [
-        "internacional",
-        "santos"
-      ],
-      "scout": "participacoes",
-      "chave": "posicao:ponta-direita"
-    },
-    {
-      "tipo": "convergencia",
-      "titulo": "Fluminense tem um encaixe favorável contra o Vasco",
-      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS ATACANTES DE ÁREA",
-      "timeDestaque": "fluminense",
-      "frase": "O Fluminense soma participações em gols com seus atacantes de área a uma média de 1,00 por jogo, aparecendo em 6 dos últimos 10 jogos. O Vasco cede participações em gols para atacantes de área adversários a uma média de 0,90 por jogo, aparecendo em 5 dos últimos 10 jogos, enquanto a referência do campeonato é 0,48 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
-      "times": [
-        "fluminense",
-        "vasco"
       ],
       "scout": "participacoes",
       "chave": "posicao:atacante-area"
@@ -146,19 +146,19 @@
     {
       "tipo": "forca-ofensiva-propria",
       "titulo": "Coritiba mantém um padrão ofensivo recorrente",
-      "chamada": "MARCA GOLS APÓS LANÇAMENTOS",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEU PONTA ESQUERDA",
       "timeDestaque": "coritiba",
-      "frase": "O Coritiba marca gols após lançamentos a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, acima da referência de 0,05 do campeonato. O Mirassol não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Coritiba mantém o alerta. Na prática, observe os jogadores mais presentes nessa característica ofensiva.",
+      "frase": "O Coritiba soma participações em gols com seu ponta esquerda a uma média de 1,10 por jogo, aparecendo em 6 dos últimos 10 jogos, acima da referência de 0,29 do campeonato. O Mirassol não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Coritiba mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "coritiba",
         "mirassol"
       ],
-      "scout": "gols",
-      "chave": "origem:lancamento"
+      "scout": "participacoes",
+      "chave": "posicao:ponta-esquerda"
     },
     {
       "tipo": "destaque-defensivo",
-      "frase": "Corinthians apresenta o melhor controle defensivo da amostra: permite cerca de 10,1 finalizações por jogo. São Paulo (11,1 por jogo) e Red Bull Bragantino (11,6 por jogo) também estão entre as defesas que menos permitem chutes. Na prática, são as equipes que mais reduzem o volume ofensivo dos adversários.",
+      "frase": "Corinthians apresenta o melhor controle defensivo da amostra: permite cerca de 9,9 finalizações por jogo. São Paulo (11,1 por jogo) e Red Bull Bragantino (11,6 por jogo) também estão entre as defesas que menos permitem chutes. Na prática, são as equipes que mais reduzem o volume ofensivo dos adversários.",
       "times": [
         "corinthians",
         "sao-paulo",
@@ -171,14 +171,14 @@
   "statusAtualizacao": {
     "estado": "parcial",
     "rodada": 24,
-    "jogosProcessados": 3,
+    "jogosProcessados": 9,
     "jogosEsperados": 10,
-    "timesAtualizados": 6,
+    "timesAtualizados": 18,
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-08-30T14:18:04.049Z",
-    "ultimaPartidaEm": "2026-08-29",
+    "atualizadoEm": "2026-08-31T16:44:36.218Z",
+    "ultimaPartidaEm": "2026-08-30",
     "rodadaLeitura": 26
   }
 }
