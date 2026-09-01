@@ -75,6 +75,18 @@
     "nome": "Cauê"
   },
   {
+    "jogadorId": "86864",
+    "teamKey": "remo",
+    "posicao": "lateral-esquerdo",
+    "jogosComDado": 3,
+    "recuperacoes": 8,
+    "perdas": 5,
+    "taxaRecuperacao": 2.6666666666666665,
+    "taxaPerda": 1.6666666666666667,
+    "notavelDesarmador": true,
+    "nome": "Marlon"
+  },
+  {
     "jogadorId": "102255",
     "teamKey": "vasco",
     "posicao": "volante",
@@ -108,6 +120,7 @@
     "taxaRecuperacao": 2.6,
     "taxaPerda": 1.9333333333333333,
     "notavelDesarmador": true,
+    "notavelPerdedor": true,
     "nome": "Jogador #112709"
   },
   {
@@ -223,6 +236,18 @@
     "nome": "Arias"
   },
   {
+    "jogadorId": "113125",
+    "teamKey": "remo",
+    "posicao": "meia",
+    "jogosComDado": 17,
+    "recuperacoes": 40,
+    "perdas": 26,
+    "taxaRecuperacao": 2.3529411764705883,
+    "taxaPerda": 1.5294117647058822,
+    "notavelDesarmador": true,
+    "nome": "Picco"
+  },
+  {
     "jogadorId": "99440",
     "teamKey": "vitoria",
     "posicao": "volante",
@@ -321,18 +346,6 @@
     "notavelDesarmador": true,
     "notavelPerdedor": true,
     "nome": "Enzo Díaz"
-  },
-  {
-    "jogadorId": "113125",
-    "teamKey": "remo",
-    "posicao": "meia",
-    "jogosComDado": 16,
-    "recuperacoes": 37,
-    "perdas": 24,
-    "taxaRecuperacao": 2.3125,
-    "taxaPerda": 1.5,
-    "notavelDesarmador": true,
-    "nome": "Picco"
   },
   {
     "jogadorId": "112017",
@@ -590,6 +603,18 @@
     "nome": "Gustavo Henrique"
   },
   {
+    "jogadorId": "86859",
+    "teamKey": "remo",
+    "posicao": "volante",
+    "jogosComDado": 17,
+    "recuperacoes": 35,
+    "perdas": 13,
+    "taxaRecuperacao": 2.0588235294117645,
+    "taxaPerda": 0.7647058823529411,
+    "notavelDesarmador": true,
+    "nome": "José Welison"
+  },
+  {
     "jogadorId": "103388",
     "teamKey": "vitoria",
     "posicao": "meia",
@@ -735,18 +760,6 @@
     "taxaPerda": 0.2,
     "notavelDesarmador": true,
     "nome": "Victor Gabriel"
-  },
-  {
-    "jogadorId": "86859",
-    "teamKey": "remo",
-    "posicao": "volante",
-    "jogosComDado": 16,
-    "recuperacoes": 32,
-    "perdas": 12,
-    "taxaRecuperacao": 2,
-    "taxaPerda": 0.75,
-    "notavelDesarmador": true,
-    "nome": "José Welison"
   },
   {
     "jogadorId": "83433",
@@ -1229,6 +1242,19 @@
     "nome": "Arthur"
   },
   {
+    "jogadorId": "100804",
+    "teamKey": "remo",
+    "posicao": "zagueiro",
+    "jogosComDado": 12,
+    "recuperacoes": 21,
+    "perdas": 12,
+    "taxaRecuperacao": 1.75,
+    "taxaPerda": 1,
+    "notavelDesarmador": true,
+    "notavelPerdedor": true,
+    "nome": "Tchamba"
+  },
+  {
     "jogadorId": "93368",
     "teamKey": "santos",
     "posicao": "zagueiro",
@@ -1237,7 +1263,6 @@
     "perdas": 5,
     "taxaRecuperacao": 1.7272727272727273,
     "taxaPerda": 0.45454545454545453,
-    "notavelDesarmador": true,
     "nome": "Lucas Veríssimo"
   },
   {
@@ -1481,18 +1506,6 @@
     "nome": "Ignácio"
   },
   {
-    "jogadorId": "100804",
-    "teamKey": "remo",
-    "posicao": "zagueiro",
-    "jogosComDado": 11,
-    "recuperacoes": 18,
-    "perdas": 12,
-    "taxaRecuperacao": 1.6363636363636365,
-    "taxaPerda": 1.0909090909090908,
-    "notavelPerdedor": true,
-    "nome": "Tchamba"
-  },
-  {
     "jogadorId": "77777",
     "teamKey": "santos",
     "posicao": "volante",
@@ -1620,6 +1633,18 @@
     "nome": "Vini Lira"
   },
   {
+    "jogadorId": "102911",
+    "teamKey": "remo",
+    "posicao": "volante",
+    "jogosComDado": 22,
+    "recuperacoes": 35,
+    "perdas": 46,
+    "taxaRecuperacao": 1.5909090909090908,
+    "taxaPerda": 2.090909090909091,
+    "notavelPerdedor": true,
+    "nome": "Zé Ricardo"
+  },
+  {
     "jogadorId": "107231",
     "teamKey": "botafogo",
     "posicao": "volante",
@@ -1643,18 +1668,6 @@
     "nome": "Balbuena"
   },
   {
-    "jogadorId": "102911",
-    "teamKey": "remo",
-    "posicao": "volante",
-    "jogosComDado": 21,
-    "recuperacoes": 33,
-    "perdas": 44,
-    "taxaRecuperacao": 1.5714285714285714,
-    "taxaPerda": 2.0952380952380953,
-    "notavelPerdedor": true,
-    "nome": "Zé Ricardo"
-  },
-  {
     "jogadorId": "110750",
     "teamKey": "red-bull-bragantino",
     "posicao": "zagueiro",
@@ -1666,15 +1679,16 @@
     "nome": "Gustavo Marques"
   },
   {
-    "jogadorId": "70666",
-    "teamKey": "remo",
-    "posicao": "zagueiro",
-    "jogosComDado": 16,
-    "recuperacoes": 25,
-    "perdas": 7,
-    "taxaRecuperacao": 1.5625,
-    "taxaPerda": 0.4375,
-    "nome": "Marllon"
+    "jogadorId": "112576",
+    "teamKey": "coritiba",
+    "posicao": "meia",
+    "jogosComDado": 20,
+    "recuperacoes": 31,
+    "perdas": 20,
+    "taxaRecuperacao": 1.55,
+    "taxaPerda": 1,
+    "notavelDesarmador": true,
+    "nome": "Vini Paulista"
   },
   {
     "jogadorId": "97321",
@@ -1734,18 +1748,6 @@
     "taxaRecuperacao": 1.5294117647058822,
     "taxaPerda": 0.4117647058823529,
     "nome": "Sabino"
-  },
-  {
-    "jogadorId": "112576",
-    "teamKey": "coritiba",
-    "posicao": "meia",
-    "jogosComDado": 19,
-    "recuperacoes": 29,
-    "perdas": 20,
-    "taxaRecuperacao": 1.5263157894736843,
-    "taxaPerda": 1.0526315789473684,
-    "notavelDesarmador": true,
-    "nome": "Vini Paulista"
   },
   {
     "jogadorId": "118774",
@@ -1860,17 +1862,6 @@
     "nome": "Erick"
   },
   {
-    "jogadorId": "104811",
-    "teamKey": "coritiba",
-    "posicao": "volante",
-    "jogosComDado": 19,
-    "recuperacoes": 28,
-    "perdas": 26,
-    "taxaRecuperacao": 1.4736842105263157,
-    "taxaPerda": 1.368421052631579,
-    "nome": "Sebastián Gómez"
-  },
-  {
     "jogadorId": "104502",
     "teamKey": "cruzeiro",
     "posicao": "volante",
@@ -1881,6 +1872,17 @@
     "taxaPerda": 2.411764705882353,
     "notavelPerdedor": true,
     "nome": "Jogador #104502"
+  },
+  {
+    "jogadorId": "70666",
+    "teamKey": "remo",
+    "posicao": "zagueiro",
+    "jogosComDado": 17,
+    "recuperacoes": 25,
+    "perdas": 8,
+    "taxaRecuperacao": 1.4705882352941178,
+    "taxaPerda": 0.47058823529411764,
+    "nome": "Marllon"
   },
   {
     "jogadorId": "123869",
@@ -1927,6 +1929,17 @@
     "taxaPerda": 4.136363636363637,
     "notavelPerdedor": true,
     "nome": "Bernabei"
+  },
+  {
+    "jogadorId": "104811",
+    "teamKey": "coritiba",
+    "posicao": "volante",
+    "jogosComDado": 20,
+    "recuperacoes": 29,
+    "perdas": 28,
+    "taxaRecuperacao": 1.45,
+    "taxaPerda": 1.4,
+    "nome": "Sebastián Gómez"
   },
   {
     "jogadorId": "95620",
@@ -2155,6 +2168,17 @@
     "taxaRecuperacao": 1.375,
     "taxaPerda": 0.75,
     "nome": "Jogador #101594"
+  },
+  {
+    "jogadorId": "131516",
+    "teamKey": "coritiba",
+    "posicao": "lateral-direito",
+    "jogosComDado": 11,
+    "recuperacoes": 15,
+    "perdas": 16,
+    "taxaRecuperacao": 1.3636363636363635,
+    "taxaPerda": 1.4545454545454546,
+    "nome": "JP Chermont"
   },
   {
     "jogadorId": "122394",
@@ -2405,17 +2429,6 @@
     "nome": "Neto Moura"
   },
   {
-    "jogadorId": "131516",
-    "teamKey": "coritiba",
-    "posicao": "lateral-direito",
-    "jogosComDado": 10,
-    "recuperacoes": 13,
-    "perdas": 14,
-    "taxaRecuperacao": 1.3,
-    "taxaPerda": 1.4,
-    "nome": "JP Chermont"
-  },
-  {
     "jogadorId": "87228",
     "teamKey": "fluminense",
     "posicao": "lateral-esquerdo",
@@ -2585,6 +2598,18 @@
     "taxaRecuperacao": 1.25,
     "taxaPerda": 1.6875,
     "nome": "Felipe Anderson"
+  },
+  {
+    "jogadorId": "97795",
+    "teamKey": "remo",
+    "posicao": "lateral-direito",
+    "jogosComDado": 20,
+    "recuperacoes": 25,
+    "perdas": 47,
+    "taxaRecuperacao": 1.25,
+    "taxaPerda": 2.35,
+    "notavelPerdedor": true,
+    "nome": "Marcelinho"
   },
   {
     "jogadorId": "91866",
@@ -2803,18 +2828,6 @@
     "nome": "Thiago Maia"
   },
   {
-    "jogadorId": "97795",
-    "teamKey": "remo",
-    "posicao": "lateral-direito",
-    "jogosComDado": 19,
-    "recuperacoes": 22,
-    "perdas": 45,
-    "taxaRecuperacao": 1.1578947368421053,
-    "taxaPerda": 2.3684210526315788,
-    "notavelPerdedor": true,
-    "nome": "Marcelinho"
-  },
-  {
     "jogadorId": "106593",
     "teamKey": "cruzeiro",
     "posicao": "zagueiro",
@@ -2874,17 +2887,6 @@
     "nome": "Tchê Tchê"
   },
   {
-    "jogadorId": "84339",
-    "teamKey": "coritiba",
-    "posicao": "lateral-esquerdo",
-    "jogosComDado": 16,
-    "recuperacoes": 18,
-    "perdas": 15,
-    "taxaRecuperacao": 1.125,
-    "taxaPerda": 0.9375,
-    "nome": "Bruno Melo"
-  },
-  {
     "jogadorId": "122660",
     "teamKey": "cruzeiro",
     "posicao": "meia",
@@ -2917,17 +2919,6 @@
     "taxaPerda": 1.1111111111111112,
     "notavelPerdedor": true,
     "nome": "Tiago Cóser"
-  },
-  {
-    "jogadorId": "101708",
-    "teamKey": "coritiba",
-    "posicao": "lateral-esquerdo",
-    "jogosComDado": 9,
-    "recuperacoes": 10,
-    "perdas": 9,
-    "taxaRecuperacao": 1.1111111111111112,
-    "taxaPerda": 1,
-    "nome": "Felipe Jonatan"
   },
   {
     "jogadorId": "92981",
@@ -3029,6 +3020,17 @@
     "taxaRecuperacao": 1.0588235294117647,
     "taxaPerda": 1.6470588235294117,
     "nome": "Luiz Gustavo"
+  },
+  {
+    "jogadorId": "84339",
+    "teamKey": "coritiba",
+    "posicao": "lateral-esquerdo",
+    "jogosComDado": 17,
+    "recuperacoes": 18,
+    "perdas": 16,
+    "taxaRecuperacao": 1.0588235294117647,
+    "taxaPerda": 0.9411764705882353,
+    "nome": "Bruno Melo"
   },
   {
     "jogadorId": "106294",
@@ -3159,6 +3161,17 @@
     "nome": "Kayke"
   },
   {
+    "jogadorId": "101708",
+    "teamKey": "coritiba",
+    "posicao": "lateral-esquerdo",
+    "jogosComDado": 10,
+    "recuperacoes": 10,
+    "perdas": 11,
+    "taxaRecuperacao": 1,
+    "taxaPerda": 1.1,
+    "nome": "Felipe Jonatan"
+  },
+  {
     "jogadorId": "141339",
     "teamKey": "coritiba",
     "posicao": "atacante-area",
@@ -3169,6 +3182,17 @@
     "taxaPerda": 1.25,
     "notavelDesarmador": true,
     "nome": "Paulo Roberto"
+  },
+  {
+    "jogadorId": "141344",
+    "teamKey": "coritiba",
+    "posicao": "volante",
+    "jogosComDado": 3,
+    "recuperacoes": 3,
+    "perdas": 2,
+    "taxaRecuperacao": 1,
+    "taxaPerda": 0.6666666666666666,
+    "nome": "Vitor Tissi"
   },
   {
     "jogadorId": "71227",
@@ -3693,7 +3717,6 @@
     "perdas": 40,
     "taxaRecuperacao": 0.8461538461538461,
     "taxaPerda": 3.076923076923077,
-    "notavelPerdedor": true,
     "nome": "Villalba"
   },
   {
@@ -4219,6 +4242,18 @@
     "nome": "Pedro"
   },
   {
+    "jogadorId": "93988",
+    "teamKey": "coritiba",
+    "posicao": "ponta-esquerda",
+    "jogosComDado": 20,
+    "recuperacoes": 14,
+    "perdas": 62,
+    "taxaRecuperacao": 0.7,
+    "taxaPerda": 3.1,
+    "notavelPerdedor": true,
+    "nome": "Breno Lopes"
+  },
+  {
     "jogadorId": "89840",
     "teamKey": "sao-paulo",
     "posicao": "atacante-area",
@@ -4399,6 +4434,18 @@
     "nome": "Riquelme Fillipi"
   },
   {
+    "jogadorId": "95131",
+    "teamKey": "remo",
+    "posicao": "atacante-area",
+    "jogosComDado": 12,
+    "recuperacoes": 8,
+    "perdas": 41,
+    "taxaRecuperacao": 0.6666666666666666,
+    "taxaPerda": 3.4166666666666665,
+    "notavelPerdedor": true,
+    "nome": "Gabriel Taliari"
+  },
+  {
     "jogadorId": "80287",
     "teamKey": "sao-paulo",
     "posicao": "atacante-area",
@@ -4452,17 +4499,6 @@
     "taxaRecuperacao": 0.6470588235294118,
     "taxaPerda": 2.823529411764706,
     "nome": "Ferreira"
-  },
-  {
-    "jogadorId": "93988",
-    "teamKey": "coritiba",
-    "posicao": "ponta-esquerda",
-    "jogosComDado": 19,
-    "recuperacoes": 12,
-    "perdas": 57,
-    "taxaRecuperacao": 0.631578947368421,
-    "taxaPerda": 3,
-    "nome": "Breno Lopes"
   },
   {
     "jogadorId": "105664",
@@ -4654,6 +4690,17 @@
     "nome": "Jogador #108588"
   },
   {
+    "jogadorId": "80196",
+    "teamKey": "remo",
+    "posicao": "meia",
+    "jogosComDado": 23,
+    "recuperacoes": 13,
+    "perdas": 34,
+    "taxaRecuperacao": 0.5652173913043478,
+    "taxaPerda": 1.4782608695652173,
+    "nome": "Yago Pikachu"
+  },
+  {
     "jogadorId": "130209",
     "teamKey": "vitoria",
     "posicao": "ponta-esquerda",
@@ -4675,29 +4722,6 @@
     "taxaRecuperacao": 0.5454545454545454,
     "taxaPerda": 1.2727272727272727,
     "nome": "Eric Ramires"
-  },
-  {
-    "jogadorId": "95131",
-    "teamKey": "remo",
-    "posicao": "atacante-area",
-    "jogosComDado": 11,
-    "recuperacoes": 6,
-    "perdas": 37,
-    "taxaRecuperacao": 0.5454545454545454,
-    "taxaPerda": 3.3636363636363638,
-    "notavelPerdedor": true,
-    "nome": "Gabriel Taliari"
-  },
-  {
-    "jogadorId": "80196",
-    "teamKey": "remo",
-    "posicao": "meia",
-    "jogosComDado": 22,
-    "recuperacoes": 12,
-    "perdas": 34,
-    "taxaRecuperacao": 0.5454545454545454,
-    "taxaPerda": 1.5454545454545454,
-    "nome": "Yago Pikachu"
   },
   {
     "jogadorId": "90703",
@@ -4799,7 +4823,6 @@
     "perdas": 25,
     "taxaRecuperacao": 0.5,
     "taxaPerda": 1.7857142857142858,
-    "notavelPerdedor": true,
     "nome": "Edenílson"
   },
   {
@@ -4825,17 +4848,6 @@
     "nome": "David"
   },
   {
-    "jogadorId": "84428",
-    "teamKey": "coritiba",
-    "posicao": "volante",
-    "jogosComDado": 4,
-    "recuperacoes": 2,
-    "perdas": 5,
-    "taxaRecuperacao": 0.5,
-    "taxaPerda": 1.25,
-    "nome": "Fernando Sobral"
-  },
-  {
     "jogadorId": "124219",
     "teamKey": "fluminense",
     "posicao": "zagueiro",
@@ -4857,6 +4869,17 @@
     "taxaRecuperacao": 0.5,
     "taxaPerda": 1,
     "nome": "Dodi"
+  },
+  {
+    "jogadorId": "108713",
+    "teamKey": "mirassol",
+    "posicao": "ponta-esquerda",
+    "jogosComDado": 10,
+    "recuperacoes": 5,
+    "perdas": 20,
+    "taxaRecuperacao": 0.5,
+    "taxaPerda": 2,
+    "nome": "Galeano"
   },
   {
     "jogadorId": "126120",
@@ -4948,17 +4971,6 @@
     "nome": "Alerrandro"
   },
   {
-    "jogadorId": "108713",
-    "teamKey": "mirassol",
-    "posicao": "ponta-esquerda",
-    "jogosComDado": 9,
-    "recuperacoes": 4,
-    "perdas": 18,
-    "taxaRecuperacao": 0.4444444444444444,
-    "taxaPerda": 2,
-    "nome": "Galeano"
-  },
-  {
     "jogadorId": "39148",
     "teamKey": "atletico-mg",
     "posicao": "atacante-area",
@@ -5004,6 +5016,18 @@
     "nome": "Dieguinho"
   },
   {
+    "jogadorId": "84428",
+    "teamKey": "coritiba",
+    "posicao": "volante",
+    "jogosComDado": 5,
+    "recuperacoes": 2,
+    "perdas": 9,
+    "taxaRecuperacao": 0.4,
+    "taxaPerda": 1.8,
+    "notavelPerdedor": true,
+    "nome": "Fernando Sobral"
+  },
+  {
     "jogadorId": "111829",
     "teamKey": "internacional",
     "posicao": "ponta-direita",
@@ -5047,6 +5071,18 @@
     "taxaRecuperacao": 0.375,
     "taxaPerda": 1.625,
     "nome": "Pedro Raul"
+  },
+  {
+    "jogadorId": "90302",
+    "teamKey": "coritiba",
+    "posicao": "ponta-esquerda",
+    "jogosComDado": 24,
+    "recuperacoes": 9,
+    "perdas": 85,
+    "taxaRecuperacao": 0.375,
+    "taxaPerda": 3.5416666666666665,
+    "notavelPerdedor": true,
+    "nome": "Pedro Rocha"
   },
   {
     "jogadorId": "107516",
@@ -5124,6 +5160,17 @@
     "taxaRecuperacao": 0.3333333333333333,
     "taxaPerda": 2,
     "nome": "Paulinho"
+  },
+  {
+    "jogadorId": "87552",
+    "teamKey": "remo",
+    "posicao": "meia",
+    "jogosComDado": 15,
+    "recuperacoes": 5,
+    "perdas": 34,
+    "taxaRecuperacao": 0.3333333333333333,
+    "taxaPerda": 2.2666666666666666,
+    "nome": "Vitor Bueno"
   },
   {
     "jogadorId": "102877",
@@ -5215,18 +5262,6 @@
     "nome": "Gabriel"
   },
   {
-    "jogadorId": "90302",
-    "teamKey": "coritiba",
-    "posicao": "ponta-esquerda",
-    "jogosComDado": 23,
-    "recuperacoes": 7,
-    "perdas": 81,
-    "taxaRecuperacao": 0.30434782608695654,
-    "taxaPerda": 3.5217391304347827,
-    "notavelPerdedor": true,
-    "nome": "Pedro Rocha"
-  },
-  {
     "jogadorId": "86292",
     "teamKey": "chapecoense",
     "posicao": "atacante-area",
@@ -5294,17 +5329,6 @@
     "taxaPerda": 5.857142857142857,
     "notavelPerdedor": true,
     "nome": "Bruno Santos"
-  },
-  {
-    "jogadorId": "87552",
-    "teamKey": "remo",
-    "posicao": "meia",
-    "jogosComDado": 14,
-    "recuperacoes": 4,
-    "perdas": 33,
-    "taxaRecuperacao": 0.2857142857142857,
-    "taxaPerda": 2.357142857142857,
-    "nome": "Vitor Bueno"
   },
   {
     "jogadorId": "68920",
@@ -5579,11 +5603,11 @@
     "jogadorId": "101729",
     "teamKey": "coritiba",
     "posicao": "ponta-direita",
-    "jogosComDado": 4,
+    "jogosComDado": 5,
     "recuperacoes": 0,
-    "perdas": 7,
+    "perdas": 8,
     "taxaRecuperacao": 0,
-    "taxaPerda": 1.75,
+    "taxaPerda": 1.6,
     "nome": "Fabinho"
   },
   {
