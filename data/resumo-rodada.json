@@ -2,9 +2,9 @@
   "versao": 3,
   "tipoLeitura": "pre-jogo",
   "rodada": 26,
-  "rodadaDados": 24,
-  "janelaAte": "2026-08-30",
-  "geradoEm": "2026-08-31T16:44:36.218Z",
+  "rodadaDados": 25,
+  "janelaAte": "2026-08-31",
+  "geradoEm": "2026-09-01T13:57:03.205Z",
   "jogos": [
     {
       "id": 237714,
@@ -106,19 +106,6 @@
     },
     {
       "tipo": "convergencia",
-      "titulo": "Internacional tem um encaixe favorável contra o Santos",
-      "chamada": "PARTICIPAÇÕES EM GOLS COM SEU PONTA DIREITA",
-      "timeDestaque": "internacional",
-      "frase": "O Internacional soma participações em gols com seu ponta direita a uma média de 0,70 por jogo, aparecendo em 4 dos últimos 10 jogos. O Santos cede participações em gols para pontas-direitas adversários a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,17 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
-      "times": [
-        "internacional",
-        "santos"
-      ],
-      "scout": "participacoes",
-      "chave": "posicao:ponta-direita"
-    },
-    {
-      "tipo": "convergencia",
       "titulo": "Flamengo tem um encaixe favorável contra o Remo",
       "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS ATACANTES DE ÁREA",
       "timeDestaque": "flamengo",
@@ -129,6 +116,19 @@
       ],
       "scout": "participacoes",
       "chave": "posicao:atacante-area"
+    },
+    {
+      "tipo": "convergencia",
+      "titulo": "Coritiba tem um encaixe favorável contra o Mirassol",
+      "chamada": "FINALIZAÇÕES EM CONTRA-ATAQUES",
+      "timeDestaque": "coritiba",
+      "frase": "O Coritiba produz finalizações em contra-ataques a uma média de 1,1 por jogo, aparecendo em 5 dos últimos 10 jogos. O Mirassol cede finalizações em contra-ataques a uma média de 1,2 por jogo, aparecendo em 8 dos últimos 10 jogos, enquanto a referência do campeonato é 0,5 por jogo. Na prática, observe os jogadores mais presentes nessa característica ofensiva.",
+      "times": [
+        "coritiba",
+        "mirassol"
+      ],
+      "scout": "finalizacoes",
+      "chave": "transicao:contra-ataque"
     },
     {
       "tipo": "forca-ofensiva-propria",
@@ -169,16 +169,16 @@
     }
   ],
   "statusAtualizacao": {
-    "estado": "parcial",
-    "rodada": 24,
-    "jogosProcessados": 9,
+    "estado": "pronto",
+    "rodada": 25,
+    "jogosProcessados": 10,
     "jogosEsperados": 10,
-    "timesAtualizados": 18,
+    "timesAtualizados": 20,
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-08-31T16:44:36.218Z",
-    "ultimaPartidaEm": "2026-08-30",
+    "atualizadoEm": "2026-09-01T13:57:03.205Z",
+    "ultimaPartidaEm": "2026-08-31",
     "rodadaLeitura": 26
   }
 }
