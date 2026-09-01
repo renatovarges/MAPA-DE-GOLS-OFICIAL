@@ -1,23 +1,23 @@
 {
   "teamKey": "mirassol",
-  "geradoEm": "2026-08-31T16:44:32.082Z",
+  "geradoEm": "2026-09-01T13:56:59.762Z",
   "ataca": [
+    "O Mirassol registra cerca de 3 finalizações por jogo de cabeça. O atacante de área é quem mais finaliza nesse tipo de jogada.",
     "O Mirassol registra cerca de 2 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada.",
     "No Mirassol, passes do lateral-esquerdo originam cerca de 2 finalizações por jogo.",
-    "O Mirassol registra cerca de 3 finalizações por jogo de cabeça. O atacante de área é quem mais finaliza nesse tipo de jogada.",
     "O Mirassol registra cerca de 5 finalizações por jogo de fora da área. O volante é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
+    {
+      "chave": "parteDoCorpo|cabeca|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
     {
       "chave": "origem|CRUZAMENTO|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
       "chave": "assistentePosicao|lateral-esquerdo|",
-      "confianca": "padrao-consolidado"
-    },
-    {
-      "chave": "parteDoCorpo|cabeca|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
@@ -31,11 +31,11 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "assistentePosicao|meia|",
+      "chave": "origem|REBATIDA|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|REBATIDA|atacante-area",
+      "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     },
     {
@@ -45,8 +45,8 @@
   ],
   "sofre": [
     "O Mirassol cede cerca de 3 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa.",
-    "O Mirassol cede cerca de 3 finalizações por jogo após passes do meia adversário.",
     "O Mirassol cede cerca de 3 finalizações por jogo após sobras de bola. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Mirassol cede cerca de 3 finalizações por jogo após passes do meia adversário.",
     "O Mirassol cede cerca de 3 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o meia adversário é quem mais finaliza nesses lances."
   ]
 }
