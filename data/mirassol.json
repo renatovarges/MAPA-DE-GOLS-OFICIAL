@@ -1625,6 +1625,68 @@
           }
         }
       ]
+    },
+    "4": {
+      "roundNumber": 4,
+      "date": "2026-09-02",
+      "opponent": "flamengo",
+      "home": false,
+      "created_goals": [],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 28.33333333333333
+          },
+          "shot": {
+            "x": 10.03994999999999,
+            "y": 26.422000000000004
+          },
+          "assistPlayer": {
+            "id": "94583",
+            "name": "Pedro",
+            "fullName": "Pedro Guilherme Abreu dos Santos",
+            "position": "Atacante",
+            "side": null,
+            "team": "flamengo"
+          },
+          "shotPlayer": {
+            "id": "105436",
+            "name": "Carrascal",
+            "fullName": "Jorge Andrés Carrascal Guardo",
+            "position": "Meia",
+            "side": null,
+            "team": "flamengo"
+          }
+        },
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
+          },
+          "shot": {
+            "x": 6.516439999999989,
+            "y": 31.582
+          },
+          "assistPlayer": {
+            "id": "105436",
+            "name": "Carrascal",
+            "fullName": "Jorge Andrés Carrascal Guardo",
+            "position": "Meia",
+            "side": null,
+            "team": "flamengo"
+          },
+          "shotPlayer": {
+            "id": "94930",
+            "name": "Lucas Paquetá",
+            "fullName": "Lucas Tolentino Coelho de Lima",
+            "position": "Meia",
+            "side": null,
+            "team": "flamengo"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
