@@ -3,8 +3,8 @@
   "tipoLeitura": "pre-jogo",
   "rodada": 26,
   "rodadaDados": 25,
-  "janelaAte": "2026-08-31",
-  "geradoEm": "2026-09-02T13:15:29.613Z",
+  "janelaAte": "2026-09-02",
+  "geradoEm": "2026-09-03T13:16:41.139Z",
   "jogos": [
     {
       "id": 237714,
@@ -80,6 +80,19 @@
   "conclusoes": [
     {
       "tipo": "convergencia",
+      "titulo": "Coritiba tem um encaixe favorável contra o Mirassol",
+      "chamada": "MARCA GOLS EM CONTRA-ATAQUES",
+      "timeDestaque": "coritiba",
+      "frase": "O Coritiba marca gols em contra-ataques a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos. O Mirassol sofre gols em contra-ataques a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,07 por jogo. Na prática, observe os jogadores mais presentes nessa característica ofensiva.",
+      "times": [
+        "coritiba",
+        "mirassol"
+      ],
+      "scout": "gols",
+      "chave": "transicao:contra-ataque"
+    },
+    {
+      "tipo": "convergencia",
       "titulo": "Palmeiras tem um encaixe favorável contra o Botafogo",
       "chamada": "MARCA GOLS COM SEUS MEIAS",
       "timeDestaque": "palmeiras",
@@ -106,23 +119,10 @@
     },
     {
       "tipo": "convergencia",
-      "titulo": "Flamengo tem um encaixe favorável contra o Remo",
-      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS ATACANTES DE ÁREA",
-      "timeDestaque": "flamengo",
-      "frase": "O Flamengo soma participações em gols com seus atacantes de área a uma média de 1,30 por jogo, aparecendo em 7 dos últimos 10 jogos. O Remo cede participações em gols para atacantes de área adversários a uma média de 1,00 por jogo, aparecendo em 5 dos últimos 10 jogos, enquanto a referência do campeonato é 0,48 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
-      "times": [
-        "flamengo",
-        "remo"
-      ],
-      "scout": "participacoes",
-      "chave": "posicao:atacante-area"
-    },
-    {
-      "tipo": "convergencia",
       "titulo": "Coritiba tem um encaixe favorável contra o Mirassol",
       "chamada": "FINALIZAÇÕES EM CONTRA-ATAQUES",
       "timeDestaque": "coritiba",
-      "frase": "O Coritiba produz finalizações em contra-ataques a uma média de 1,1 por jogo, aparecendo em 5 dos últimos 10 jogos. O Mirassol cede finalizações em contra-ataques a uma média de 1,2 por jogo, aparecendo em 8 dos últimos 10 jogos, enquanto a referência do campeonato é 0,5 por jogo. Na prática, observe os jogadores mais presentes nessa característica ofensiva.",
+      "frase": "O Coritiba produz finalizações em contra-ataques a uma média de 1,1 por jogo, aparecendo em 5 dos últimos 10 jogos. O Mirassol cede finalizações em contra-ataques a uma média de 1,3 por jogo, aparecendo em 9 dos últimos 10 jogos, enquanto a referência do campeonato é 0,5 por jogo. Na prática, observe os jogadores mais presentes nessa característica ofensiva.",
       "times": [
         "coritiba",
         "mirassol"
@@ -132,29 +132,29 @@
     },
     {
       "tipo": "forca-ofensiva-propria",
-      "titulo": "Mirassol mantém um padrão ofensivo recorrente",
-      "chamada": "MARCA GOLS APÓS ESCANTEIOS",
-      "timeDestaque": "mirassol",
-      "frase": "O Mirassol marca gols após escanteios a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos, acima da referência de 0,07 do campeonato. O Coritiba não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Mirassol mantém o alerta. Na prática, observe os jogadores mais presentes nessa característica ofensiva.",
+      "titulo": "Atlético-MG mantém um padrão ofensivo recorrente",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEU PONTA DIREITA",
+      "timeDestaque": "atletico-mg",
+      "frase": "O Atlético-MG soma participações em gols com seu ponta direita a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos, acima da referência de 0,17 do campeonato. O São Paulo não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Atlético-MG mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "mirassol",
-        "coritiba"
+        "atletico-mg",
+        "sao-paulo"
       ],
-      "scout": "gols",
-      "chave": "origem:escanteio"
+      "scout": "participacoes",
+      "chave": "posicao:ponta-direita"
     },
     {
       "tipo": "forca-ofensiva-propria",
-      "titulo": "Coritiba mantém um padrão ofensivo recorrente",
-      "chamada": "PARTICIPAÇÕES EM GOLS COM SEU PONTA ESQUERDA",
-      "timeDestaque": "coritiba",
-      "frase": "O Coritiba soma participações em gols com seu ponta esquerda a uma média de 1,10 por jogo, aparecendo em 6 dos últimos 10 jogos, acima da referência de 0,29 do campeonato. O Mirassol não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Coritiba mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "Fluminense mantém um padrão ofensivo recorrente",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEU PONTA DIREITA",
+      "timeDestaque": "fluminense",
+      "frase": "O Fluminense soma participações em gols com seu ponta direita a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos, acima da referência de 0,17 do campeonato. O Vasco não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Fluminense mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "coritiba",
-        "mirassol"
+        "fluminense",
+        "vasco"
       ],
       "scout": "participacoes",
-      "chave": "posicao:ponta-esquerda"
+      "chave": "posicao:ponta-direita"
     },
     {
       "tipo": "destaque-defensivo",
@@ -177,8 +177,8 @@
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-09-02T13:15:29.613Z",
-    "ultimaPartidaEm": "2026-08-31",
+    "atualizadoEm": "2026-09-03T13:16:41.139Z",
+    "ultimaPartidaEm": "2026-09-02",
     "rodadaLeitura": 26
   }
 }
