@@ -158,13 +158,8 @@ jobs:
         # reaproveita o token da FootStats já cacheado pelo primeiro passo do job
         run: node scripts/harvest_raio_x.mjs
 
-      - name: Prováveis do Cartola (escalação/desfalques do próximo confronto)
-        env:
-          ENVIO_REAL: "1"
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
-          ALERT_EMAIL_FROM: ${{ secrets.ALERT_EMAIL_FROM }}
-          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
-          CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
-        # usa o Chromium já instalado no passo "Instalar navegador (Playwright)" acima
-        run: node scripts/harvest_pdc.mjs
+      # Prováveis do Cartola (harvest_pdc.mjs) SAIU daqui em 2026-09 — agora
+      # tem workflow próprio (harvest-pdc-frequente.yml), que dispara a cada
+      # 2h o dia inteiro e decide sozinho quando vale a pena coletar de
+      # verdade (perto do fechamento do mercado, que não é sempre no mesmo
+      # dia da semana). Rodar aqui TAMBÉM seria redundante/correria com ele.

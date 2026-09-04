@@ -27,10 +27,75 @@
  */
 import { chromium } from "playwright";
 import { parsePdcHtml } from "./lib/pdc.mjs";
+import { fetchJsonWithRetry } from "./lib/http.mjs";
 
 const SITE_URL = process.env.SITE_URL || "https://mapa-de-gols-oficial.onrender.com";
 const ENVIO_REAL = process.env.ENVIO_REAL === "1";
+const FORCE_RUN = process.env.FORCE_RUN === "1";
 const URL = "https://provaveisdocartola.com.br/";
+
+/**
+ * Decide se vale a pena coletar AGORA — pedido do Renato (2026-08/09):
+ * escalação provável muda rápido perto do fechamento do mercado, mas o
+ * fechamento não é sempre sábado (rodada pode começar quarta-feira) — nunca
+ * assume um dia fixo da semana. Em vez disso, lê `data/proximo-confronto.json`
+ * (já publicado, já tem a data de CADA jogo futuro) pra achar o primeiro jogo
+ * da próxima rodada, e decide pela distância até lá:
+ *   - faltam <=48h pro primeiro jogo -> sempre coleta (roda a cada disparo,
+ *     que no workflow é de 2 em 2h nessa janela).
+ *   - faltam mais de 48h -> só coleta se já fizeram >=6h desde a última
+ *     coleta bem-sucedida (lida do próprio `geradoEm` do provaveis.json ao
+ *     vivo) -- garante nunca passar muito longe do teto de 1 dia pedido,
+ *     com folga, sem martelar o site de terceiro à toa nos dias parados.
+ * De propósito NÃO usa login na FootStats aqui — só fetch público no nosso
+ * próprio site, pra essa checagem custar o mínimo possível quando a
+ * resposta é "ainda não" (a maioria dos disparos). O workflow que chama
+ * isto dispara a cada 2h o ano inteiro; quem decide se a coleta de verdade
+ * acontece é esta função, não o cron.
+ */
+export async function deveColetarAgora() {
+  if (FORCE_RUN) return { sim: true, motivo: "FORCE_RUN=1" };
+
+  const [horasAteProximoJogo, horasDesdeUltimaColeta] = await Promise.all([
+    horasAteProximoJogoDaRodada(),
+    horasDesdeUltimaColetaBemSucedida(),
+  ]);
+
+  if (horasAteProximoJogo !== null && horasAteProximoJogo <= 48) {
+    return { sim: true, motivo: `faltam ${horasAteProximoJogo.toFixed(1)}h pro próximo jogo (<=48h, janela densa)` };
+  }
+  if (horasDesdeUltimaColeta === null || horasDesdeUltimaColeta >= 6) {
+    return { sim: true, motivo: `${horasDesdeUltimaColeta === null ? "sem coleta anterior" : horasDesdeUltimaColeta.toFixed(1) + "h desde a última coleta"} (>=6h, janela de manutenção)` };
+  }
+  return {
+    sim: false,
+    motivo: `faltam ${horasAteProximoJogo === null ? "?" : horasAteProximoJogo.toFixed(1)}h pro próximo jogo e só ${horasDesdeUltimaColeta.toFixed(1)}h desde a última coleta — nem perto do fechamento, nem estourou a janela de manutenção`,
+  };
+}
+
+async function horasAteProximoJogoDaRodada() {
+  const proximoConfronto = await fetchJsonWithRetry(`${SITE_URL}/data/proximo-confronto.json?t=${Date.now()}`);
+  const datas = Object.values(proximoConfronto || {})
+    .map((c) => c && c.data)
+    .filter(Boolean)
+    .map((d) => new Date(d))
+    .filter((d) => !Number.isNaN(d.getTime()));
+  if (!datas.length) return null;
+  const proximo = new Date(Math.min(...datas.map((d) => d.getTime())));
+  return (proximo.getTime() - Date.now()) / 3_600_000;
+}
+
+async function horasDesdeUltimaColetaBemSucedida() {
+  try {
+    const atual = await fetchJsonWithRetry(`${SITE_URL}/data/provaveis.json?t=${Date.now()}`);
+    if (!atual?.geradoEm) return null;
+    const geradoEm = new Date(atual.geradoEm);
+    if (Number.isNaN(geradoEm.getTime())) return null;
+    return (Date.now() - geradoEm.getTime()) / 3_600_000;
+  } catch {
+    return null; // ainda não existe/erro de rede -> trata como "nunca coletado", força coleta
+  }
+}
 
 const MIN_CLUBES = 15;
 const MIN_FIGURAS_HIDRATADO = 200;
@@ -84,6 +149,11 @@ export async function harvestPdc() {
 async function main() {
   console.log(`=== Harvester Prováveis (PDC) ===`);
   console.log(`→ modo: ${ENVIO_REAL ? "ENVIO REAL (grava no site ao vivo)" : "SIMULAÇÃO (nada é gravado)"}`);
+
+  const decisao = await deveColetarAgora();
+  console.log(`→ coletar agora? ${decisao.sim ? "SIM" : "não"} — ${decisao.motivo}`);
+  if (!decisao.sim) return;
+
   console.log(`→ abrindo ${URL} e esperando a escalação hidratar ...`);
   const { rodadaInfo, teams, totalFiguras } = await harvestPdc();
   const totalJogadores = Object.values(teams).reduce((n, t) => n + t.players.length, 0);
