@@ -1,0 +1,77 @@
+name: Prováveis do Cartola (frequência adaptativa)
+
+# Dispara a cada 2h, o ANO INTEIRO — não assume dia fixo da semana (rodada
+# pode começar quarta-feira, não só fim de semana). Quem decide se a coleta
+# de verdade acontece é o script (scripts/harvest_pdc.mjs::deveColetarAgora),
+# lendo o calendário real (data/proximo-confronto.json, já publicado):
+#   - faltam <=48h pro primeiro jogo da próxima rodada -> sempre coleta
+#     (efetivamente a cada 2h nessa janela, que é quando a escalação muda
+#     rápido perto do fechamento do mercado).
+#   - fora dessa janela -> só se já fizeram >=6h desde a última coleta
+#     bem-sucedida (nunca passa muito longe de 1 dia sem checar, sem
+#     martelar o site de terceiro à toa nos dias parados).
+#
+# Repositório é público -> minutos de GitHub Actions são ilimitados e
+# grátis (não é isso que limita a frequência); a moderação é só respeito
+# ao provaveisdocartola.com.br. Por isso o job "checar" é propositalmente
+# leve (sem instalar navegador nenhum) — só o job "coletar" (que só roda
+# quando checar diz "sim") paga o custo de instalar o Chromium.
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  checar:
+    runs-on: ubuntu-latest
+    outputs:
+      deve_coletar: ${{ steps.check.outputs.deve_coletar }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependências (sem baixar navegador)
+        working-directory: scripts
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+        run: npm install
+
+      - name: Decidir se é hora de coletar
+        id: check
+        run: |
+          RESULT=$(node scripts/should_harvest_pdc.mjs)
+          echo "resultado: $RESULT"
+          echo "deve_coletar=$RESULT" >> "$GITHUB_OUTPUT"
+
+  coletar:
+    needs: checar
+    if: needs.checar.outputs.deve_coletar == 'sim'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependências
+        working-directory: scripts
+        run: npm install
+
+      - name: Instalar navegador (Playwright)
+        working-directory: scripts
+        run: npx playwright install --with-deps chromium
+
+      - name: Coletar prováveis do Cartola
+        env:
+          ENVIO_REAL: "1"
+          FORCE_RUN: "1"
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          ALERT_EMAIL_FROM: ${{ secrets.ALERT_EMAIL_FROM }}
+          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
+          CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
+        run: node scripts/harvest_pdc.mjs
