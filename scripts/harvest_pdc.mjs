@@ -175,7 +175,16 @@ async function main() {
   console.log(`✓ data/provaveis.json`);
 }
 
-main().catch((e) => {
-  console.error("✗", e.message);
-  process.exitCode = 1;
-});
+// Só roda main() quando este arquivo é executado DIRETO (`node
+// harvest_pdc.mjs`) — não quando é só importado por outro script (como
+// should_harvest_pdc.mjs, que importa `deveColetarAgora` daqui sem querer
+// disparar a coleta de verdade). Sem essa trava, o import sozinho já
+// chamava main() -> harvestPdc() -> chromium.launch(), quebrando o job
+// "checar" do workflow, que de propósito não instala navegador nenhum.
+import { fileURLToPath } from "node:url";
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main().catch((e) => {
+    console.error("✗", e.message);
+    process.exitCode = 1;
+  });
+}
