@@ -1709,6 +1709,120 @@
           }
         }
       ]
+    },
+    "26": {
+      "roundNumber": 26,
+      "date": "2026-09-05",
+      "opponent": "red-bull-bragantino",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 62.33333333333333
+          },
+          "shot": {
+            "x": 89.95971,
+            "y": 32.519619999999996
+          },
+          "assistPlayer": {
+            "id": "106822",
+            "name": "Rodrigo Nestor",
+            "fullName": "Rodrigo Nestor Bertalia",
+            "position": "Meia",
+            "side": null,
+            "team": "bahia"
+          },
+          "shotPlayer": {
+            "id": "98022",
+            "name": "Erick",
+            "fullName": "Erick Luis Conrado de Carvalho",
+            "position": "Meia",
+            "side": null,
+            "team": "bahia"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.34114000000001,
+            "y": 34.354
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "107093",
+            "name": "Luciano Juba",
+            "fullName": "Luciano Batista da Silva Júnior",
+            "position": "Lateral",
+            "side": null,
+            "team": "bahia"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 62.33333333333333
+          },
+          "shot": {
+            "x": 88.84837590000001,
+            "y": 30.005839999999996
+          },
+          "assistPlayer": {
+            "id": "106822",
+            "name": "Rodrigo Nestor",
+            "fullName": "Rodrigo Nestor Bertalia",
+            "position": "Meia",
+            "side": null,
+            "team": "bahia"
+          },
+          "shotPlayer": {
+            "id": "114208",
+            "name": "Alejo Véliz",
+            "fullName": "Alejo Véliz",
+            "position": "Atacante",
+            "side": null,
+            "team": "bahia"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 21,
+            "y": 51
+          },
+          "shot": {
+            "x": 8.611499999999992,
+            "y": 26.96638
+          },
+          "assistPlayer": {
+            "id": "122573",
+            "name": "Wallace Yan",
+            "fullName": "Wallace Yan de Souza Barreto",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "shotPlayer": {
+            "id": "112886",
+            "name": "Lucas Barbosa",
+            "fullName": "Lucas Henrique Barbosa",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        },
+        {
+          "shot": null,
+          "pass": null,
+          "assistPlayer": null,
+          "shotPlayer": null,
+          "isOwnGoal": true
+        }
+      ]
     }
   }
 }
