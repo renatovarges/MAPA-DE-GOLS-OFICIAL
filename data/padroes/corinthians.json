@@ -1,11 +1,11 @@
 {
   "teamKey": "corinthians",
-  "geradoEm": "2026-09-05T12:23:29.880Z",
+  "geradoEm": "2026-09-06T12:38:59.084Z",
   "ataca": [
     "O Corinthians registra cerca de 4 finalizações por jogo em jogadas construídas pelo lado direito. O meia é quem mais finaliza nesse tipo de jogada.",
     "No Corinthians, o volante registra cerca de 2 finalizações por jogo. É uma posição a observar na escalação.",
-    "O Corinthians registra cerca de 7 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada.",
-    "No Corinthians, passes do meia originam cerca de 3 finalizações por jogo."
+    "O Corinthians registra cerca de 2 finalizações por jogo após sobras de bola. O meia é quem mais finaliza nesse tipo de jogada.",
+    "O Corinthians registra cerca de 7 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
@@ -17,11 +17,11 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|dentro-da-area|atacante-area",
+      "chave": "origem|REBATIDA|meia",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "assistentePosicao|meia|",
+      "chave": "area|dentro-da-area|atacante-area",
       "confianca": "padrao-consolidado"
     }
   ],
