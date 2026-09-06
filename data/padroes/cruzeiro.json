@@ -1,27 +1,22 @@
 {
   "teamKey": "cruzeiro",
-  "geradoEm": "2026-09-05T12:23:29.880Z",
+  "geradoEm": "2026-09-06T12:38:59.084Z",
   "ataca": [
-    "O Cruzeiro registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado esquerdo. O meia é quem mais finaliza nesse tipo de jogada.",
-    "No Cruzeiro, passes do meia originam cerca de 3 finalizações por jogo.",
     "No Cruzeiro, o meia registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
-    "O Cruzeiro registra cerca de 8 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada."
+    "O Cruzeiro registra cerca de 8 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+    "No Cruzeiro, passes do meia originam cerca de 3 finalizações por jogo."
   ],
   "evidenciasAtaca": [
-    {
-      "chave": "ladoDaJogada|esquerda|meia",
-      "confianca": "padrao-consolidado"
-    },
-    {
-      "chave": "assistentePosicao|meia|",
-      "confianca": "padrao-consolidado"
-    },
     {
       "chave": "posicao|meia|",
       "confianca": "padrao-consolidado"
     },
     {
       "chave": "area|dentro-da-area|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     }
   ],
