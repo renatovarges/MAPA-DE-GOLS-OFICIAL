@@ -1894,6 +1894,95 @@
           }
         }
       ]
+    },
+    "26": {
+      "roundNumber": 26,
+      "date": "2026-09-06",
+      "opponent": "corinthians",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 5.666666666666666
+          },
+          "shot": {
+            "x": 89.35690410000001,
+            "y": 30.71362
+          },
+          "assistPlayer": {
+            "id": "86292",
+            "name": "Bolasie",
+            "fullName": "Yannick Bolasie",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "shotPlayer": {
+            "id": "95332",
+            "name": "Marcinho",
+            "fullName": "Márcio Antônio de Sousa Júnior",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          }
+        },
+        {
+          "pass": {
+            "x": 75,
+            "y": 62.33333333333333
+          },
+          "shot": {
+            "x": 85.1667841,
+            "y": 42.75362
+          },
+          "assistPlayer": {
+            "id": "104649",
+            "name": "Heitor",
+            "fullName": "Heitor Rodrigues da Fonseca",
+            "position": "Lateral",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "shotPlayer": {
+            "id": "95332",
+            "name": "Marcinho",
+            "fullName": "Márcio Antônio de Sousa Júnior",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 39.666666666666664
+          },
+          "shot": {
+            "x": 10.603711599999997,
+            "y": 20.56970000000001
+          },
+          "assistPlayer": {
+            "id": "78248",
+            "name": "Gustavo Henrique",
+            "fullName": "Gustavo Henrique Vernes",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "corinthians"
+          },
+          "shotPlayer": {
+            "id": "105531",
+            "name": "Matheus Bidu",
+            "fullName": "Matheus Lima Beltrão Oliveira Valin",
+            "position": "Lateral",
+            "side": null,
+            "team": "corinthians"
+          }
+        }
+      ]
     }
   }
 }
