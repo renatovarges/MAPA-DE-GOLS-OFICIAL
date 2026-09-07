@@ -1738,6 +1738,119 @@
         }
       ],
       "conceded_goals": []
+    },
+    "26": {
+      "roundNumber": 26,
+      "date": "2026-09-06",
+      "opponent": "internacional",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 82.48225040000001,
+            "y": 23.117239999999995
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "83257",
+            "name": "Gabriel",
+            "fullName": "Gabriel Barbosa Almeida",
+            "position": "Atacante",
+            "side": null,
+            "team": "santos"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.34114000000001,
+            "y": 34.354
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "83257",
+            "name": "Gabriel",
+            "fullName": "Gabriel Barbosa Almeida",
+            "position": "Atacante",
+            "side": null,
+            "team": "santos"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 5.666666666666666
+          },
+          "shot": {
+            "x": 89.8149604,
+            "y": 32.49124
+          },
+          "assistPlayer": {
+            "id": "102256",
+            "name": "Rollheiser",
+            "fullName": "Benjamín Rollheiser",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          },
+          "shotPlayer": {
+            "id": "101807",
+            "name": "Oliva",
+            "fullName": "Christian Gabriel Oliva Giménez",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 17
+          },
+          "shot": {
+            "x": 23.34072409999999,
+            "y": 31.811620000000005
+          },
+          "assistPlayer": {
+            "id": "89637",
+            "name": "Thiago Maia",
+            "fullName": "Thiago Maia Alencar",
+            "position": "Meia",
+            "side": null,
+            "team": "internacional"
+          },
+          "shotPlayer": {
+            "id": "110510",
+            "name": "Aguirre",
+            "fullName": "Braian Nahuel Aguirre",
+            "position": "Lateral",
+            "side": null,
+            "team": "internacional"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.65885999999999,
+            "y": 33.646
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "70944",
+            "name": "Bruno Henrique",
+            "fullName": "Bruno Henrique Corsini",
+            "position": "Meia",
+            "side": null,
+            "team": "internacional"
+          },
+          "is_penalty": true
+        }
+      ]
     }
   }
 }
