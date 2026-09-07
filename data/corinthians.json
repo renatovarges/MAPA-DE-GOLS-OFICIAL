@@ -1360,6 +1360,95 @@
           }
         }
       ]
+    },
+    "26": {
+      "roundNumber": 26,
+      "date": "2026-09-06",
+      "opponent": "chapecoense",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 28.333333333333336
+          },
+          "shot": {
+            "x": 85.3962884,
+            "y": 47.43029999999999
+          },
+          "assistPlayer": {
+            "id": "78248",
+            "name": "Gustavo Henrique",
+            "fullName": "Gustavo Henrique Vernes",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "corinthians"
+          },
+          "shotPlayer": {
+            "id": "105531",
+            "name": "Matheus Bidu",
+            "fullName": "Matheus Lima Beltrão Oliveira Valin",
+            "position": "Lateral",
+            "side": null,
+            "team": "corinthians"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 62.333333333333336
+          },
+          "shot": {
+            "x": 6.643095899999992,
+            "y": 37.28638
+          },
+          "assistPlayer": {
+            "id": "86292",
+            "name": "Bolasie",
+            "fullName": "Yannick Bolasie",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "shotPlayer": {
+            "id": "95332",
+            "name": "Marcinho",
+            "fullName": "Márcio Antônio de Sousa Júnior",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          }
+        },
+        {
+          "pass": {
+            "x": 21,
+            "y": 5.666666666666671
+          },
+          "shot": {
+            "x": 10.833215899999999,
+            "y": 25.246380000000002
+          },
+          "assistPlayer": {
+            "id": "104649",
+            "name": "Heitor",
+            "fullName": "Heitor Rodrigues da Fonseca",
+            "position": "Lateral",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "shotPlayer": {
+            "id": "95332",
+            "name": "Marcinho",
+            "fullName": "Márcio Antônio de Sousa Júnior",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
