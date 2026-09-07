@@ -155,7 +155,28 @@ async function main() {
   if (!decisao.sim) return;
 
   console.log(`→ abrindo ${URL} e esperando a escalação hidratar ...`);
-  const { rodadaInfo, teams, totalFiguras } = await harvestPdc();
+  // Retry: achado real (2026-09), depois de rodar a cada 2h em vez de 1x/dia
+  // — o site às vezes leva mais de 4min pra hidratar de verdade (lentidão
+  // deles, não nosso código), e isso que era raro o bastante pra nunca
+  // aparecer virou visível com a frequência nova. Uma segunda tentativa
+  // (browser novo do zero) resolve a maioria dos casos sem precisar de
+  // intervenção — só falha de verdade (e alerta) se as duas travarem.
+  const TENTATIVAS = 2;
+  let ultimoErro;
+  let resultado;
+  for (let tentativa = 1; tentativa <= TENTATIVAS; tentativa++) {
+    try {
+      resultado = await harvestPdc();
+      ultimoErro = null;
+      break;
+    } catch (e) {
+      ultimoErro = e;
+      console.log(`  ! tentativa ${tentativa}/${TENTATIVAS} falhou: ${e.message}`);
+      if (tentativa < TENTATIVAS) console.log(`  → tentando de novo com navegador novo ...`);
+    }
+  }
+  if (ultimoErro) throw ultimoErro;
+  const { rodadaInfo, teams, totalFiguras } = resultado;
   const totalJogadores = Object.values(teams).reduce((n, t) => n + t.players.length, 0);
   console.log(`  ${Object.keys(teams).length} clubes, ${totalJogadores} jogadores (${totalFiguras} figuras hidratadas, rodada ${rodadaInfo})`);
   for (const [slug, t] of Object.entries(teams)) {
