@@ -2,9 +2,9 @@
   "versao": 3,
   "tipoLeitura": "pre-jogo",
   "rodada": 27,
-  "rodadaDados": 25,
-  "janelaAte": "2026-09-06",
-  "geradoEm": "2026-09-07T14:49:23.775Z",
+  "rodadaDados": 26,
+  "janelaAte": "2026-09-07",
+  "geradoEm": "2026-09-08T13:21:02.601Z",
   "jogos": [
     {
       "id": 237778,
@@ -96,7 +96,7 @@
       "titulo": "Athletico-PR tem um encaixe favorável contra o Coritiba",
       "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS VOLANTES",
       "timeDestaque": "athletico-pr",
-      "frase": "O Athletico-PR soma participações em gols com seus volantes a uma média de 0,60 por jogo, aparecendo em 5 dos últimos 10 jogos. O Coritiba cede participações em gols para volantes adversários a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,25 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "frase": "O Athletico-PR soma participações em gols com seus volantes a uma média de 0,60 por jogo, aparecendo em 5 dos últimos 10 jogos. O Coritiba cede participações em gols para volantes adversários a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,24 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "athletico-pr",
         "coritiba"
@@ -119,16 +119,16 @@
     },
     {
       "tipo": "convergencia",
-      "titulo": "Vitória tem um encaixe favorável contra o Mirassol",
-      "chamada": "FINALIZAÇÕES EM CONTRA-ATAQUES",
-      "timeDestaque": "vitoria",
-      "frase": "O Vitória produz finalizações em contra-ataques a uma média de 0,9 por jogo, aparecendo em 5 dos últimos 10 jogos. O Mirassol cede finalizações em contra-ataques a uma média de 1,2 por jogo, aparecendo em 8 dos últimos 10 jogos, enquanto a referência do campeonato é 0,5 por jogo. Na prática, observe os jogadores mais presentes nessa característica ofensiva.",
+      "titulo": "Bahia tem um encaixe favorável contra o Remo",
+      "chamada": "MARCA GOLS EM JOGADAS INICIADAS PELA DIREITA",
+      "timeDestaque": "bahia",
+      "frase": "O Bahia marca gols em jogadas iniciadas pela direita a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos. O Remo sofre gols em jogadas iniciadas pela direita a uma média de 0,70 por jogo, aparecendo em 7 dos últimos 10 jogos, enquanto a referência do campeonato é 0,29 por jogo. Na prática, observe quem participa com mais frequência das jogadas construídas por esse setor.",
       "times": [
-        "vitoria",
-        "mirassol"
+        "bahia",
+        "remo"
       ],
-      "scout": "finalizacoes",
-      "chave": "transicao:contra-ataque"
+      "scout": "gols",
+      "chave": "lado:direita"
     },
     {
       "tipo": "forca-ofensiva-propria",
@@ -144,19 +144,6 @@
       "chave": "transicao:contra-ataque"
     },
     {
-      "tipo": "forca-ofensiva-propria",
-      "titulo": "Chapecoense mantém um padrão ofensivo recorrente",
-      "chamada": "MARCA GOLS EM CRUZAMENTOS VINDOS DA ESQUERDA",
-      "timeDestaque": "chapecoense",
-      "frase": "O Chapecoense marca gols em cruzamentos vindos da esquerda a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos, acima da referência de 0,12 do campeonato. O Internacional não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Chapecoense mantém o alerta. Na prática, observe os jogadores mais envolvidos nas bolas aéreas e na conclusão de cruzamentos.",
-      "times": [
-        "chapecoense",
-        "internacional"
-      ],
-      "scout": "gols",
-      "chave": "cruzamento:esquerda"
-    },
-    {
       "tipo": "fragilidade-defensiva-propria",
       "titulo": "Chapecoense apresenta uma vulnerabilidade que merece atenção",
       "chamada": "CEDE PARTICIPAÇÕES EM GOLS PARA ZAGUEIROS ADVERSÁRIOS",
@@ -168,6 +155,19 @@
       ],
       "scout": "participacoes",
       "chave": "posicao:zagueiro"
+    },
+    {
+      "tipo": "forca-ofensiva-propria",
+      "titulo": "Mirassol mantém um padrão ofensivo recorrente",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS LATERAIS-DIREITOS",
+      "timeDestaque": "mirassol",
+      "frase": "O Mirassol soma participações em gols com seus laterais-direitos a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos, acima da referência de 0,14 do campeonato. O Vitória não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Mirassol mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "times": [
+        "mirassol",
+        "vitoria"
+      ],
+      "scout": "participacoes",
+      "chave": "posicao:lateral-direito"
     },
     {
       "tipo": "destaque-defensivo",
@@ -182,16 +182,16 @@
     }
   ],
   "statusAtualizacao": {
-    "estado": "parcial",
-    "rodada": 25,
-    "jogosProcessados": 9,
+    "estado": "pronto",
+    "rodada": 26,
+    "jogosProcessados": 10,
     "jogosEsperados": 10,
-    "timesAtualizados": 18,
+    "timesAtualizados": 20,
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-09-07T14:49:23.775Z",
-    "ultimaPartidaEm": "2026-09-06",
+    "atualizadoEm": "2026-09-08T13:21:02.601Z",
+    "ultimaPartidaEm": "2026-09-07",
     "rodadaLeitura": 27
   }
 }
