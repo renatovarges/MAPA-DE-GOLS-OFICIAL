@@ -1,10 +1,11 @@
 {
   "teamKey": "internacional",
-  "geradoEm": "2026-09-07T14:49:19.383Z",
+  "geradoEm": "2026-09-08T13:20:59.066Z",
   "ataca": [
     "No Internacional, o lateral-esquerdo registra cerca de 2 finalizações por jogo. É uma posição a observar na escalação.",
     "O Internacional registra cerca de 8 finalizações por jogo de dentro da área. O ponta-direita é quem mais finaliza nesse tipo de jogada.",
-    "No Internacional, passes do meia originam cerca de 3 finalizações por jogo."
+    "No Internacional, passes do meia originam cerca de 3 finalizações por jogo.",
+    "O Internacional registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado esquerdo. O ponta-direita é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
@@ -17,6 +18,10 @@
     },
     {
       "chave": "assistentePosicao|meia|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "ladoDaJogada|esquerda|ponta-direita",
       "confianca": "padrao-consolidado"
     }
   ],
