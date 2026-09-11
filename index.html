@@ -90,6 +90,13 @@
             <option value="mando">Por mando atual</option>
           </select>
         </label>
+        <button id="baixarTudoBtn" type="button" class="toolbar-btn" style="background:#155c44;color:#fff;border:1px solid #1f8f68">⬇ Baixar tudo desta rodada (ZIP)</button>
+      </div>
+      <div id="baixarTudoProgresso" style="display:none;width:100%;max-width:480px;font-size:13px;color:#cfe9dd">
+        <div id="baixarTudoProgressoTexto">Gerando imagens...</div>
+        <div style="background:#0b1f16;border-radius:6px;overflow:hidden;height:8px;margin-top:4px">
+          <div id="baixarTudoProgressoBarra" style="background:#22c55e;height:100%;width:0%;transition:width 0.2s"></div>
+        </div>
       </div>
     </header>
 
@@ -550,9 +557,10 @@
     </div>
    </div>
   </div><!-- fim #app -->
-  <script src="script.js?v=novo-motor-10"></script>
+  <script src="vendor/jszip.min.js"></script>
+  <script src="script.js?v=novo-motor-11"></script>
   <script src="desarmes.js?v=3"></script>
   <script src="vendor/html2canvas.min.js"></script>
-  <script src="raiox.js?v=9"></script>
+  <script src="raiox.js?v=10"></script>
 </body>
 </html>

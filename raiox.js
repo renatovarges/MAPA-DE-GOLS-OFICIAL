@@ -1114,13 +1114,12 @@
   // Renato reportou ("ilegível mesmo com zoom máximo") era o preview do chat
   // reduzindo a imagem que eu mandava por SendUserFile, não o tamanho da
   // fonte; com o download direto ele pega o arquivo real, sem essa perda.
-  async function rxBaixarImagemDe(elId, filename, btnId) {
-    const btn = document.getElementById(btnId);
+  // Núcleo da captura (extraído em 2026-09 pro "Baixar tudo (ZIP)" poder
+  // gerar as mesmas imagens em lote, fora da tela, sem duplicar a lógica de
+  // scale/CORS/transform).
+  async function rxCapturarDataUrl(elId) {
     const pitchEl = document.getElementById(elId);
-    if (!pitchEl || !window.html2canvas) return;
-    const textoOriginal = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = 'Gerando imagem...';
+    if (!pitchEl || !window.html2canvas) throw new Error('elemento ou html2canvas indisponível');
     // O campinho de confronto individual é exibido na tela ENCOLHIDO (ver
     // rxAplicarEscalaTela) pra caber numa janela normal -- mas o download
     // sempre precisa da resolução cheia, então desliga o transform antes de
@@ -1136,7 +1135,20 @@
       // scale:1 já produz um arquivo enorme e nítido porque a fonte já é
       // grande.
       const canvas = await window.html2canvas(pitchEl, { scale: 1, backgroundColor: null, useCORS: true });
-      const url = canvas.toDataURL('image/png');
+      return canvas.toDataURL('image/png');
+    } finally {
+      if (escalaOriginal) pitchEl.style.transform = escalaOriginal;
+    }
+  }
+
+  async function rxBaixarImagemDe(elId, filename, btnId) {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    const textoOriginal = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Gerando imagem...';
+    try {
+      const url = await rxCapturarDataUrl(elId);
       const a = document.createElement('a');
       a.href = url;
       a.download = filename;
@@ -1146,7 +1158,6 @@
     } catch (err) {
       alert('Falha ao gerar a imagem: ' + (err && err.message ? err.message : 'desconhecida'));
     } finally {
-      if (escalaOriginal) pitchEl.style.transform = escalaOriginal;
       btn.disabled = false;
       btn.textContent = textoOriginal;
     }
@@ -1320,6 +1331,100 @@
       rxRenderRodada(5, true);
     }
   }
+
+  // -----------------------------------------------------------------------
+  // "Baixar tudo (ZIP)" — pedido do Renato (2026-09): em vez de escolher
+  // Time A/Time B manualmente pra cada confronto, gera as imagens de TODOS
+  // os confrontos reais da rodada de uma vez (mando de cada time já vem de
+  // proximo-confronto.json), pro script.js empacotar junto com os campinhos
+  // do Mapa de Gols. Renderiza num container fora da tela (nunca troca o
+  // que o Renato está vendo na aba Raio X, se ele estiver nela) e captura
+  // com o mesmo rxCapturarDataUrl que o download manual usa -- resolução e
+  // qualidade idênticas às de sempre.
+  function rxGetContainerFora() {
+    let el = document.getElementById('rxBatchOffscreen');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'rxBatchOffscreen';
+      el.className = 'rx-pitch';
+      el.style.cssText = 'position:fixed;left:-99999px;top:0;pointer-events:none;';
+      document.body.appendChild(el);
+    }
+    return el;
+  }
+
+  async function rxMontarHtmlRodadaGeral(ultimosN, respeitarMando) {
+    const [porBalde, fotosIds] = await Promise.all([rxGetRodada(ultimosN, respeitarMando), rxGetFotosIds()]);
+    const postosHtml = RX_R_ORDEM_BALDES.map((balde) => rxRenderPostoRodada(balde, porBalde.get(balde) || [], fotosIds)).join('');
+    return `
+      <div class="rx-pitch-head"><span class="rx-team-name">Campinho geral da rodada</span></div>
+      <div class="rx-pitch-sub">melhores oportunidades ofensivas da rodada, por posição</div>
+      <div class="rx-pitch-canvas" style="width:${RX_R_CANVAS_W}px;height:${RX_R_CANVAS_H}px">
+        <div class="rx-pitch-gramado" style="left:${RX_R_MARGIN_X}px;top:${RX_R_MARGIN_Y}px;width:${RX_R_PITCH_W}px;height:${RX_R_PITCH_H}px">${rxPitchMarkingsSvg()}<img class="rx-pitch-watermark" src="TCCBRANCOTRANSPARENTE.png" alt="" /></div>
+        ${postosHtml}
+      </div>`;
+  }
+
+  /**
+   * @param {{ultimosN:number, respeitarMando:boolean, incluirRodadaGeral:boolean, onProgress?:(info:{done:number,total:number,label:string})=>void}} opts
+   * @returns {Promise<Array<{filename:string, dataUrl:string}>>}
+   */
+  window.rxGerarPacoteDaRodada = async function (opts) {
+    const { ultimosN, respeitarMando, incluirRodadaGeral = true, onProgress } = opts || {};
+    const container = rxGetContainerFora();
+    const proximoConfronto = await rxGetProximoConfronto();
+    const confrontos = Object.entries(proximoConfronto)
+      .filter(([, info]) => info && info.mando === 'casa' && info.adversario)
+      .map(([mandante, info]) => ({ mandante, visitante: info.adversario }));
+
+    const total = confrontos.length * 2 + (incluirRodadaGeral ? 1 : 0);
+    let done = 0;
+    const avisar = (label) => { done++; if (onProgress) onProgress({ done, total, label }); };
+    const resultados = [];
+
+    const [provaveis, fotosIds, posicoesGranulares] = await Promise.all([
+      rxGetProvaveis(), rxGetFotosIds(), rxGetPosicoesGranulares(),
+    ]);
+
+    for (const { mandante, visitante } of confrontos) {
+      try {
+        const [matchesMandante, matchesVisitante] = await Promise.all([
+          rxGetRaioXData(mandante), rxGetRaioXData(visitante),
+        ]);
+        const mandoMandante = respeitarMando ? 'casa' : null;
+        const mandoVisitante = respeitarMando ? 'fora' : null;
+        const rMandante = rxMontarConfronto(matchesMandante, matchesVisitante, {
+          mandoA: mandoMandante, ultimosN, teamAProvaveis: provaveis.teams[mandante], posicoesGranulares,
+        });
+        const rVisitante = rxMontarConfronto(matchesVisitante, matchesMandante, {
+          mandoA: mandoVisitante, ultimosN, teamAProvaveis: provaveis.teams[visitante], posicoesGranulares,
+        });
+
+        rxRenderCampinho('rxBatchOffscreen', mandante, visitante, rMandante, fotosIds, mandoMandante);
+        resultados.push({ filename: `raio-x/${mandante}-vs-${visitante}.png`, dataUrl: await rxCapturarDataUrl('rxBatchOffscreen') });
+        avisar(`Raio X: ${rxTeamName(mandante)} × ${rxTeamName(visitante)}`);
+
+        rxRenderCampinho('rxBatchOffscreen', visitante, mandante, rVisitante, fotosIds, mandoVisitante);
+        resultados.push({ filename: `raio-x/${visitante}-vs-${mandante}.png`, dataUrl: await rxCapturarDataUrl('rxBatchOffscreen') });
+        avisar(`Raio X: ${rxTeamName(visitante)} × ${rxTeamName(mandante)}`);
+      } catch (err) {
+        console.warn(`[raiox] falha ao gerar confronto ${mandante} x ${visitante} no lote`, err);
+      }
+    }
+
+    if (incluirRodadaGeral) {
+      try {
+        container.innerHTML = await rxMontarHtmlRodadaGeral(ultimosN, respeitarMando);
+        resultados.push({ filename: 'raio-x/campinho-geral-da-rodada.png', dataUrl: await rxCapturarDataUrl('rxBatchOffscreen') });
+        avisar('Raio X: campinho geral da rodada');
+      } catch (err) {
+        console.warn('[raiox] falha ao gerar campinho geral da rodada no lote', err);
+      }
+    }
+
+    container.innerHTML = '';
+    return resultados;
+  };
 
   window.rxBuildRaioXView = rxBuildRaioXView;
 })();

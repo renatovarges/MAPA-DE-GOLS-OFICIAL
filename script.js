@@ -1409,6 +1409,195 @@ function initDownloadButtons() {
 
 // Inicializa os botões de download após o restante
 initDownloadButtons();
+
+// ===========================================================================
+// "Baixar tudo desta rodada (ZIP)" — pedido do Renato (2026-09): automatizar
+// a preparação de conteúdo pra cada rodada. Em vez de escolher time por time
+// e clicar em cada botão de download, gera de uma vez: os 20 campinhos
+// individuais do Mapa de Gols (respeitando o filtro de jogos/mando já
+// escolhido na tela) + os 20 raio-x de confronto (10 jogos reais da rodada,
+// 2 lados cada) + o campinho geral da rodada, tudo num único .zip.
+//
+// Os campinhos são renderizados num par de SVG clonado e NUNCA anexado ao
+// documento (renderEvents/drawPositionSummaryLegend/etc. só manipulam a
+// árvore recebida, sem depender de layout/visibilidade) — por isso o lote
+// inteiro roda sem a tela "piscar" trocando de time.
+// ===========================================================================
+const BAIXAR_TUDO_TEAMS = [
+  'atletico-mg', 'athletico-pr', 'bahia', 'botafogo', 'chapecoense', 'corinthians',
+  'coritiba', 'cruzeiro', 'flamengo', 'fluminense', 'gremio', 'internacional',
+  'mirassol', 'palmeiras', 'red-bull-bragantino', 'remo', 'santos', 'sao-paulo',
+  'vasco', 'vitoria',
+];
+
+function baixarTudoCrestKey(teamKey) {
+  // CREST_MAP usa chaves com underscore para times com hífen no nome
+  // (atletico-mg -> atletico_mg); os demais (nome de uma palavra só) batem
+  // direto nos dois formatos.
+  return String(teamKey).replace(/-/g, '_');
+}
+
+function criarParCampinhoOffscreen() {
+  const pitch = document.getElementById('pitch').cloneNode(true);
+  const overlay = document.getElementById('overlay').cloneNode(true);
+  return { pitch, overlay };
+}
+
+function setCrestOffscreen(overlayEl, teamKey, fallbackName) {
+  const file = CREST_MAP[baixarTudoCrestKey(teamKey)];
+  const img = overlayEl.querySelector('#crestImg');
+  const text = overlayEl.querySelector('#crestText');
+  const group = overlayEl.querySelector('#crestWatermark');
+  if (file && img) {
+    img.setAttribute('href', `escudos  série A 2025/${file}`);
+    if (group) group.style.display = 'block';
+    if (text) text.style.display = 'none';
+  } else if (text) {
+    const display = (fallbackName && String(fallbackName).trim())
+      ? String(fallbackName).toUpperCase()
+      : String(formatTeamName(teamKey)).toUpperCase();
+    text.textContent = display;
+    if (group) group.style.display = 'block';
+    text.style.display = 'block';
+  }
+}
+
+async function renderizarTimeOffscreen(pitchEl, overlayEl, teamKey, homeFilter) {
+  const data = await getTeamAggregatedData(teamKey, { homeFilter });
+  setCrestOffscreen(overlayEl, teamKey, data.name);
+  const defLayer = overlayEl.querySelector('#defensiveLayer');
+  const offLayer = overlayEl.querySelector('#offensiveLayer');
+  renderEvents(defLayer, data.conceded || [], { flipX: false });
+  renderEvents(offLayer, data.created || [], { flipX: false });
+  // IDs iguais aos que o #overlay original já usa (não IDs novos): o clone
+  // foi tirado do overlay AO VIVO, então já vem com esses grupos desenhados
+  // (do time que estava na tela) -- drawX() só substitui um grupo existente
+  // se o ID bater; um ID novo faria o antigo ficar por baixo, duplicado
+  // (achado real testando: legenda fantasma sobreposta).
+  drawCxTitle(overlayEl, 'cxTitleLeft');
+  drawPositionSummaryLegend(overlayEl, data.conceded || [], data.created || [], 'positionSummaryLeft');
+  drawMarkerLegendNew(overlayEl);
+  return { pitchEl, overlayEl };
+}
+
+async function fetchProximoConfrontoSeguro() {
+  try {
+    const res = await fetch(`data/proximo-confronto.json?t=${Date.now()}`, { cache: 'no-store' });
+    return res.ok ? await res.json() : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+/**
+ * @param {{count:number, mode:string, onProgress?:(info:{done:number,total:number,label:string})=>void, proximoConfronto?:object}} opts
+ * @returns {Promise<Array<{filename:string, dataUrl:string}>>}
+ */
+async function gerarImagensMapaDeGols({ count, mode, onProgress, proximoConfronto = {} }) {
+  window.__aggregationSettings = { count, mode };
+  const { pitch, overlay } = criarParCampinhoOffscreen();
+  const total = BAIXAR_TUDO_TEAMS.length;
+  const resultados = [];
+  let done = 0;
+  for (const teamKey of BAIXAR_TUDO_TEAMS) {
+    let homeFilter = null;
+    if (mode === 'mando') {
+      const mando = proximoConfronto[teamKey]?.mando;
+      if (mando === 'casa') homeFilter = true;
+      else if (mando === 'fora') homeFilter = false;
+      // sem confronto conhecido pra esse time -> segue sem filtrar (todas as partidas)
+    }
+    try {
+      await renderizarTimeOffscreen(pitch, overlay, teamKey, homeFilter);
+      const dataUrl = await exportFieldAsPng(pitch, overlay, 3);
+      resultados.push({ filename: `mapa-de-gols/${teamKey}.png`, dataUrl });
+    } catch (err) {
+      console.warn(`[baixar-tudo] falha ao gerar campinho de ${teamKey}`, err);
+    }
+    done++;
+    if (onProgress) onProgress({ done, total, label: `Mapa de Gols: ${formatTeamName(teamKey)}` });
+  }
+  return resultados;
+}
+
+function initBaixarTudoButton() {
+  const btn = document.getElementById('baixarTudoBtn');
+  const progressoWrap = document.getElementById('baixarTudoProgresso');
+  const progressoTexto = document.getElementById('baixarTudoProgressoTexto');
+  const progressoBarra = document.getElementById('baixarTudoProgressoBarra');
+  if (!btn) return;
+
+  btn.addEventListener('click', async () => {
+    const count = Number(document.getElementById('roundCountSelect')?.value) || 3;
+    const mode = document.getElementById('selectionMode')?.value || 'seguidas';
+    const textoOriginal = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Gerando...';
+    if (progressoWrap) progressoWrap.style.display = 'block';
+
+    // Peso combinado das duas fases (Gols + Raio X) numa barra só -- os
+    // totais reais de cada fase só se sabem depois de buscar o calendário,
+    // então usa uma estimativa (20 campinhos + ~21 imagens de raio-x) e
+    // corrige o total assim que a fase de raio-x informa o valor real.
+    let totalEstimado = BAIXAR_TUDO_TEAMS.length + 21;
+    let doneGols = 0, doneRx = 0, totalRx = 21;
+    const atualizarBarra = (label) => {
+      const done = doneGols + doneRx;
+      const total = BAIXAR_TUDO_TEAMS.length + totalRx;
+      const pct = Math.min(100, Math.round((done / total) * 100));
+      if (progressoBarra) progressoBarra.style.width = `${pct}%`;
+      if (progressoTexto) progressoTexto.textContent = `${label} (${done}/${total})`;
+    };
+
+    try {
+      const proximoConfronto = await fetchProximoConfrontoSeguro();
+      const rodadaNum = Object.values(proximoConfronto)[0]?.rodada;
+
+      const imagensGols = await gerarImagensMapaDeGols({
+        count, mode, proximoConfronto,
+        onProgress: (info) => { doneGols = info.done; atualizarBarra(info.label); },
+      });
+
+      let imagensRx = [];
+      if (typeof window.rxGerarPacoteDaRodada === 'function') {
+        imagensRx = await window.rxGerarPacoteDaRodada({
+          ultimosN: count,
+          respeitarMando: mode === 'mando',
+          incluirRodadaGeral: true,
+          onProgress: (info) => { doneRx = info.done; totalRx = info.total; atualizarBarra(info.label); },
+        });
+      } else {
+        console.warn('[baixar-tudo] raiox.js não carregado -- pacote sairá só com o Mapa de Gols');
+      }
+
+      if (progressoTexto) progressoTexto.textContent = 'Compactando .zip...';
+      const zip = new JSZip();
+      [...imagensGols, ...imagensRx].forEach(({ filename, dataUrl }) => {
+        const base64 = String(dataUrl).split(',')[1];
+        if (base64) zip.file(filename, base64, { base64: true });
+      });
+      const nomeArquivo = rodadaNum ? `rodada-${rodadaNum}-conteudo-completo.zip` : 'conteudo-completo.zip';
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = nomeArquivo;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      if (progressoTexto) progressoTexto.textContent = `Pronto! ${imagensGols.length + imagensRx.length} imagens baixadas.`;
+    } catch (err) {
+      alert('Falha ao gerar o pacote: ' + (err && err.message ? err.message : 'desconhecida'));
+    } finally {
+      btn.disabled = false;
+      btn.textContent = textoOriginal;
+      setTimeout(() => { if (progressoWrap) progressoWrap.style.display = 'none'; }, 4000);
+    }
+  });
+}
+initBaixarTudoButton();
+
 function initExtraFieldsToggle() {
   const btnL = document.getElementById('addExtraLeftBtn');
   const btnR = document.getElementById('addExtraRightBtn');
