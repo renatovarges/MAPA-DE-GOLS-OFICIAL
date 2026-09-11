@@ -1352,6 +1352,28 @@
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+  // Espera de verdade as <img> (fotos dos jogadores, escudos, marca d'água)
+  // terminarem de carregar antes do html2canvas rodar -- achado real
+  // (2026-09): o delay fixo acima resolveu no teste local (fotos servidas
+  // do disco, praticamente instantâneas), mas em produção (fotos buscadas
+  // pela rede de verdade, mais lentas) o Renato ainda viu um confronto sair
+  // quase em branco mesmo com times que TÊM prováveis e dado suficiente --
+  // sinal de que era a foto ainda não ter chegado, não falta de dado. Espera
+  // o evento real de load/error de cada <img>, com teto pra nunca travar o
+  // lote se uma imagem específica nunca responder.
+  function rxEsperarImagensCarregarem(containerEl, timeoutMs = 8000) {
+    if (!containerEl) return Promise.resolve();
+    const pendentes = Array.from(containerEl.querySelectorAll('img')).filter((img) => !img.complete);
+    if (!pendentes.length) return Promise.resolve();
+    return Promise.race([
+      Promise.all(pendentes.map((img) => new Promise((resolve) => {
+        img.addEventListener('load', resolve, { once: true });
+        img.addEventListener('error', resolve, { once: true });
+      }))),
+      new Promise((resolve) => setTimeout(resolve, timeoutMs)),
+    ]);
+  }
+
   // Camada extra de segurança em cima do delay fixo acima: testando de
   // verdade, 80ms bastou pra maioria dos cards mas NÃO pro primeiro (recém-
   // criado, ainda sem nenhum layout/paint anterior no elemento -- acha real,
@@ -1425,12 +1447,20 @@
     ]);
 
     const gerarLado = async (time, rival, resultado, mando) => {
-      if (!provaveis.teams[time]) {
+      // Mesma condição que rxRenderCampinho usa pra decidir "sem prováveis
+      // carregados" -- não basta checar se o time TEM prováveis (achado
+      // real, 2026-09: Remo tinha prováveis carregados, mas nesse recorte
+      // de jogos/mando específico todo mundo zerou depois do filtro de
+      // "posto sem nada pra mostrar", resultando no mesmo card quase em
+      // branco que a checagem anterior não pegava).
+      const totalPostos = resultado.postosAtaque.length + resultado.postosMeio.length + resultado.postosDefesa.length;
+      if (totalPostos === 0) {
         semDados.push(time);
-        avisar(`Raio X: ${rxTeamName(time)} (sem prováveis, pulado)`);
+        avisar(`Raio X: ${rxTeamName(time)} (sem dado suficiente nesse recorte, pulado)`);
         return null;
       }
       rxRenderCampinho('rxBatchOffscreen', time, rival, resultado, fotosIds, mando);
+      await rxEsperarImagensCarregarem(document.getElementById('rxBatchOffscreen'));
       await rxEsperarAssentar();
       const dataUrl = await rxCapturarComSeguranca('rxBatchOffscreen');
       avisar(`Raio X: ${rxTeamName(time)} × ${rxTeamName(rival)}`);
@@ -1463,6 +1493,7 @@
     if (incluirRodadaGeral) {
       try {
         container.innerHTML = await rxMontarHtmlRodadaGeral(ultimosN, respeitarMando);
+        await rxEsperarImagensCarregarem(container);
         await rxEsperarAssentar();
         resultados.push({ filename: 'raio-x/campinho-geral-da-rodada.png', dataUrl: await rxCapturarComSeguranca('rxBatchOffscreen', 1000000) });
         avisar('Raio X: campinho geral da rodada');
