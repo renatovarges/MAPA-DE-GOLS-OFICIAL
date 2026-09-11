@@ -1341,6 +1341,37 @@
   // que o Renato está vendo na aba Raio X, se ele estiver nela) e captura
   // com o mesmo rxCapturarDataUrl que o download manual usa -- resolução e
   // qualidade idênticas às de sempre.
+  // Dá tempo do navegador terminar layout/paint do que acabou de entrar via
+  // innerHTML antes do html2canvas começar a percorrer o DOM -- achado real
+  // (2026-09): rodando 20+ capturas grandes em sequência, um confronto saiu
+  // quase em branco (só o escudo e a marca d'água, sem os cards) porque a
+  // captura começou antes do conteúdo novo estar de fato pintado na tela.
+  // setTimeout (não requestAnimationFrame) de propósito: rAF fica pausado
+  // indefinidamente em aba em segundo plano, e o lote roda escondido.
+  function rxEsperarAssentar(ms = 80) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  // Camada extra de segurança em cima do delay fixo acima: testando de
+  // verdade, 80ms bastou pra maioria dos cards mas NÃO pro primeiro (recém-
+  // criado, ainda sem nenhum layout/paint anterior no elemento -- acha real,
+  // 2026-09: com 80ms de delay, o confronto que saiu quase em branco mudou
+  // do 17º pro 1º do lote, só trocou de vítima). Em vez de caçar um número
+  // mágico de ms que cubra todo caso, verifica o TAMANHO do PNG gerado --
+  // uma captura quase em branco (só escudo + marca d'água, sem os cards)
+  // sai muito menor que uma completa -- e tenta de novo com mais tempo se
+  // parecer curta. Mesma filosofia de "detectar e tentar de novo" já usada
+  // no harvester de prováveis pra timeout de rede.
+  async function rxCapturarComSeguranca(elId, minBytes = 150000) {
+    let url = await rxCapturarDataUrl(elId);
+    if (url.length < minBytes) {
+      console.warn(`[raiox] captura de ${elId} saiu pequena demais (${url.length} bytes) -- tentando de novo`);
+      await rxEsperarAssentar(500);
+      url = await rxCapturarDataUrl(elId);
+    }
+    return url;
+  }
+
   function rxGetContainerFora() {
     let el = document.getElementById('rxBatchOffscreen');
     if (!el) {
@@ -1367,7 +1398,7 @@
 
   /**
    * @param {{ultimosN:number, respeitarMando:boolean, incluirRodadaGeral:boolean, onProgress?:(info:{done:number,total:number,label:string})=>void}} opts
-   * @returns {Promise<Array<{filename:string, dataUrl:string}>>}
+   * @returns {Promise<{imagens:Array<{filename:string, dataUrl:string}>, semDados:string[]}>}
    */
   window.rxGerarPacoteDaRodada = async function (opts) {
     const { ultimosN, respeitarMando, incluirRodadaGeral = true, onProgress } = opts || {};
@@ -1381,10 +1412,30 @@
     let done = 0;
     const avisar = (label) => { done++; if (onProgress) onProgress({ done, total, label }); };
     const resultados = [];
+    // Time sem escalação provável carregada (provaveisdocartola.com.br não
+    // tem todo mundo sempre -- achado real, 2026-09: Coritiba e Athletico-PR
+    // faltavam nessa rodada) -- pular em vez de gerar uma imagem quase em
+    // branco (só escudo + "sem prováveis") dentro do zip, que parece
+    // quebrado. Detecta ANTES de renderizar (mais preciso que medir o
+    // tamanho do PNG depois).
+    const semDados = [];
 
     const [provaveis, fotosIds, posicoesGranulares] = await Promise.all([
       rxGetProvaveis(), rxGetFotosIds(), rxGetPosicoesGranulares(),
     ]);
+
+    const gerarLado = async (time, rival, resultado, mando) => {
+      if (!provaveis.teams[time]) {
+        semDados.push(time);
+        avisar(`Raio X: ${rxTeamName(time)} (sem prováveis, pulado)`);
+        return null;
+      }
+      rxRenderCampinho('rxBatchOffscreen', time, rival, resultado, fotosIds, mando);
+      await rxEsperarAssentar();
+      const dataUrl = await rxCapturarComSeguranca('rxBatchOffscreen');
+      avisar(`Raio X: ${rxTeamName(time)} × ${rxTeamName(rival)}`);
+      return { filename: `raio-x/${time}-vs-${rival}.png`, dataUrl };
+    };
 
     for (const { mandante, visitante } of confrontos) {
       try {
@@ -1400,13 +1451,10 @@
           mandoA: mandoVisitante, ultimosN, teamAProvaveis: provaveis.teams[visitante], posicoesGranulares,
         });
 
-        rxRenderCampinho('rxBatchOffscreen', mandante, visitante, rMandante, fotosIds, mandoMandante);
-        resultados.push({ filename: `raio-x/${mandante}-vs-${visitante}.png`, dataUrl: await rxCapturarDataUrl('rxBatchOffscreen') });
-        avisar(`Raio X: ${rxTeamName(mandante)} × ${rxTeamName(visitante)}`);
-
-        rxRenderCampinho('rxBatchOffscreen', visitante, mandante, rVisitante, fotosIds, mandoVisitante);
-        resultados.push({ filename: `raio-x/${visitante}-vs-${mandante}.png`, dataUrl: await rxCapturarDataUrl('rxBatchOffscreen') });
-        avisar(`Raio X: ${rxTeamName(visitante)} × ${rxTeamName(mandante)}`);
+        const imgMandante = await gerarLado(mandante, visitante, rMandante, mandoMandante);
+        if (imgMandante) resultados.push(imgMandante);
+        const imgVisitante = await gerarLado(visitante, mandante, rVisitante, mandoVisitante);
+        if (imgVisitante) resultados.push(imgVisitante);
       } catch (err) {
         console.warn(`[raiox] falha ao gerar confronto ${mandante} x ${visitante} no lote`, err);
       }
@@ -1415,7 +1463,8 @@
     if (incluirRodadaGeral) {
       try {
         container.innerHTML = await rxMontarHtmlRodadaGeral(ultimosN, respeitarMando);
-        resultados.push({ filename: 'raio-x/campinho-geral-da-rodada.png', dataUrl: await rxCapturarDataUrl('rxBatchOffscreen') });
+        await rxEsperarAssentar();
+        resultados.push({ filename: 'raio-x/campinho-geral-da-rodada.png', dataUrl: await rxCapturarComSeguranca('rxBatchOffscreen', 1000000) });
         avisar('Raio X: campinho geral da rodada');
       } catch (err) {
         console.warn('[raiox] falha ao gerar campinho geral da rodada no lote', err);
@@ -1423,7 +1472,7 @@
     }
 
     container.innerHTML = '';
-    return resultados;
+    return { imagens: resultados, semDados: [...new Set(semDados)] };
   };
 
   window.rxBuildRaioXView = rxBuildRaioXView;

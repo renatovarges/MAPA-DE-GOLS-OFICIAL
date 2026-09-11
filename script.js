@@ -1539,8 +1539,8 @@ function initBaixarTudoButton() {
     // totais reais de cada fase só se sabem depois de buscar o calendário,
     // então usa uma estimativa (20 campinhos + ~21 imagens de raio-x) e
     // corrige o total assim que a fase de raio-x informa o valor real.
-    let totalEstimado = BAIXAR_TUDO_TEAMS.length + 21;
     let doneGols = 0, doneRx = 0, totalRx = 21;
+    let esconderProgressoDepoisDe = 4000;
     const atualizarBarra = (label) => {
       const done = doneGols + doneRx;
       const total = BAIXAR_TUDO_TEAMS.length + totalRx;
@@ -1559,13 +1559,16 @@ function initBaixarTudoButton() {
       });
 
       let imagensRx = [];
+      let semDadosRx = [];
       if (typeof window.rxGerarPacoteDaRodada === 'function') {
-        imagensRx = await window.rxGerarPacoteDaRodada({
+        const pacoteRx = await window.rxGerarPacoteDaRodada({
           ultimosN: count,
           respeitarMando: mode === 'mando',
           incluirRodadaGeral: true,
           onProgress: (info) => { doneRx = info.done; totalRx = info.total; atualizarBarra(info.label); },
         });
+        imagensRx = pacoteRx.imagens;
+        semDadosRx = pacoteRx.semDados;
       } else {
         console.warn('[baixar-tudo] raiox.js não carregado -- pacote sairá só com o Mapa de Gols');
       }
@@ -1586,13 +1589,18 @@ function initBaixarTudoButton() {
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
-      if (progressoTexto) progressoTexto.textContent = `Pronto! ${imagensGols.length + imagensRx.length} imagens baixadas.`;
+      const totalImagens = imagensGols.length + imagensRx.length;
+      const avisoSemDados = semDadosRx.length
+        ? ` (sem prováveis ainda pra: ${semDadosRx.map((k) => formatTeamName(baixarTudoCrestKey(k))).join(', ')} -- pulado)`
+        : '';
+      if (progressoTexto) progressoTexto.textContent = `Pronto! ${totalImagens} imagens baixadas.${avisoSemDados}`;
+      esconderProgressoDepoisDe = avisoSemDados ? 12000 : 4000;
     } catch (err) {
       alert('Falha ao gerar o pacote: ' + (err && err.message ? err.message : 'desconhecida'));
     } finally {
       btn.disabled = false;
       btn.textContent = textoOriginal;
-      setTimeout(() => { if (progressoWrap) progressoWrap.style.display = 'none'; }, 4000);
+      setTimeout(() => { if (progressoWrap) progressoWrap.style.display = 'none'; }, esconderProgressoDepoisDe);
     }
   });
 }
