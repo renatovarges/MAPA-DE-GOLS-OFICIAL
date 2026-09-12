@@ -1,10 +1,10 @@
 {
   "teamKey": "coritiba",
-  "geradoEm": "2026-09-11T13:15:40.248Z",
+  "geradoEm": "2026-09-12T12:38:49.585Z",
   "ataca": [
     "No Coritiba, o ponta-esquerda registra cerca de 4 finalizações por jogo. É uma posição a observar na escalação.",
-    "No Coritiba, passes do ponta-esquerda originam cerca de 2 finalizações por jogo.",
-    "O Coritiba registra cerca de 3 finalizações por jogo após sobras de bola. O ponta-esquerda é quem mais finaliza nesse tipo de jogada."
+    "O Coritiba registra cerca de 3 finalizações por jogo após sobras de bola. O ponta-esquerda é quem mais finaliza nesse tipo de jogada.",
+    "No Coritiba, passes do meia originam cerca de 2 finalizações por jogo."
   ],
   "evidenciasAtaca": [
     {
@@ -12,11 +12,11 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "assistentePosicao|ponta-esquerda|",
+      "chave": "origem|REBATIDA|ponta-esquerda",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|REBATIDA|ponta-esquerda",
+      "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     }
   ],
@@ -26,22 +26,17 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|fora-da-area|meia",
+      "chave": "area|fora-da-area|volante",
       "confianca": "padrao-consolidado"
     },
     {
       "chave": "origem|REBATIDA|volante",
       "confianca": "padrao-consolidado"
-    },
-    {
-      "chave": "ladoDaJogada|esquerda|ponta-esquerda",
-      "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
     "O Coritiba cede cerca de 3 finalizações por jogo ao ponta-esquerda adversário. É uma posição a observar contra essa defesa.",
-    "O Coritiba cede cerca de 8 finalizações por jogo de fora da área. Atenção: o meia adversário é quem mais finaliza nesses lances.",
-    "O Coritiba cede cerca de 3 finalizações por jogo após sobras de bola. Atenção: o volante adversário é quem mais finaliza nesses lances.",
-    "O Coritiba cede cerca de 4 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o ponta-esquerda adversário é quem mais finaliza nesses lances."
+    "O Coritiba cede cerca de 8 finalizações por jogo de fora da área. Atenção: o volante adversário é quem mais finaliza nesses lances.",
+    "O Coritiba cede cerca de 4 finalizações por jogo após sobras de bola. Atenção: o volante adversário é quem mais finaliza nesses lances."
   ]
 }
