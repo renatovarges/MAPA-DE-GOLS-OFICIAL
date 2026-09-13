@@ -1976,6 +1976,65 @@
           }
         }
       ]
+    },
+    "27": {
+      "roundNumber": 27,
+      "date": "2026-09-12",
+      "opponent": "santos",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 28.333333333333336
+          },
+          "shot": {
+            "x": 88.76743040000001,
+            "y": 36.99162
+          },
+          "assistPlayer": {
+            "id": "123795",
+            "name": "Lucho Rodríguez",
+            "fullName": "Luciano Rodríguez Rosales",
+            "position": "Atacante",
+            "side": null,
+            "team": "cruzeiro"
+          },
+          "shotPlayer": {
+            "id": "96610",
+            "name": "Matheus Pereira",
+            "fullName": "Matheus Fellipe Costa Pereira",
+            "position": "Meia",
+            "side": null,
+            "team": "cruzeiro"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.922647099999992,
+            "y": 38.20400000000001
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "102256",
+            "name": "Rollheiser",
+            "fullName": "Benjamín Rollheiser",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          }
+        },
+        {
+          "shot": null,
+          "pass": null,
+          "assistPlayer": null,
+          "shotPlayer": null,
+          "isOwnGoal": true
+        }
+      ]
     }
   }
 }
