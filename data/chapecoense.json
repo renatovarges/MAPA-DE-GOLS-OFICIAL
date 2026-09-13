@@ -1983,6 +1983,85 @@
           }
         }
       ]
+    },
+    "27": {
+      "roundNumber": 27,
+      "date": "2026-09-12",
+      "opponent": "internacional",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 75,
+            "y": 51
+          },
+          "shot": {
+            "x": 87.13423590000001,
+            "y": 30.991399999999995
+          },
+          "assistPlayer": {
+            "id": "95332",
+            "name": "Marcinho",
+            "fullName": "Márcio Antônio de Sousa Júnior",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "shotPlayer": {
+            "id": "108131",
+            "name": "Garcez",
+            "fullName": "Maurício Garcez de Jesus",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 9.087649999999996,
+            "y": 27.024
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "107989",
+            "name": "Carbonero",
+            "fullName": "Johan Stiven Carbonero Balanta",
+            "position": "Atacante",
+            "side": null,
+            "team": "internacional"
+          }
+        },
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 51
+          },
+          "shot": {
+            "x": 14.610989999999987,
+            "y": 29.346000000000004
+          },
+          "assistPlayer": {
+            "id": "107989",
+            "name": "Carbonero",
+            "fullName": "Johan Stiven Carbonero Balanta",
+            "position": "Atacante",
+            "side": null,
+            "team": "internacional"
+          },
+          "shotPlayer": {
+            "id": "70944",
+            "name": "Bruno Henrique",
+            "fullName": "Bruno Henrique Corsini",
+            "position": "Meia",
+            "side": null,
+            "team": "internacional"
+          }
+        }
+      ]
     }
   }
 }
