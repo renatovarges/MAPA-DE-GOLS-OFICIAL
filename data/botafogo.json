@@ -1902,6 +1902,50 @@
           }
         }
       ]
+    },
+    "27": {
+      "roundNumber": 27,
+      "date": "2026-09-12",
+      "opponent": "red-bull-bragantino",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 75,
+            "y": 5.666666666666666
+          },
+          "shot": {
+            "x": 85.00775,
+            "y": 43.67123999999999
+          },
+          "assistPlayer": {
+            "id": "72493",
+            "name": "Alex Telles",
+            "fullName": "Alex Nicolao Telles",
+            "position": "Lateral",
+            "side": null,
+            "team": "botafogo"
+          },
+          "shotPlayer": {
+            "id": "100898",
+            "name": "Vitinho",
+            "fullName": "Victor Alexander da Silva",
+            "position": "Lateral",
+            "side": null,
+            "team": "botafogo"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "shot": null,
+          "pass": null,
+          "assistPlayer": null,
+          "shotPlayer": null,
+          "isOwnGoal": true
+        }
+      ]
     }
   }
 }
