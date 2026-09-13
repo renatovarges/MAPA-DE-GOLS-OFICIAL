@@ -1851,6 +1851,65 @@
           "is_penalty": true
         }
       ]
+    },
+    "27": {
+      "roundNumber": 27,
+      "date": "2026-09-12",
+      "opponent": "cruzeiro",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.07735290000001,
+            "y": 29.795999999999996
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "102256",
+            "name": "Rollheiser",
+            "fullName": "Benjamín Rollheiser",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          }
+        },
+        {
+          "shot": null,
+          "pass": null,
+          "assistPlayer": null,
+          "shotPlayer": null,
+          "isOwnGoal": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 39.666666666666664
+          },
+          "shot": {
+            "x": 7.232569599999991,
+            "y": 31.008380000000002
+          },
+          "assistPlayer": {
+            "id": "123795",
+            "name": "Lucho Rodríguez",
+            "fullName": "Luciano Rodríguez Rosales",
+            "position": "Atacante",
+            "side": null,
+            "team": "cruzeiro"
+          },
+          "shotPlayer": {
+            "id": "96610",
+            "name": "Matheus Pereira",
+            "fullName": "Matheus Fellipe Costa Pereira",
+            "position": "Meia",
+            "side": null,
+            "team": "cruzeiro"
+          }
+        }
+      ]
     }
   }
 }
