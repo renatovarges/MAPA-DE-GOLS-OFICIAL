@@ -1,27 +1,27 @@
 {
   "teamKey": "mirassol",
-  "geradoEm": "2026-09-13T13:42:08.247Z",
+  "geradoEm": "2026-09-14T15:41:01.235Z",
   "ataca": [
-    "O Mirassol registra cerca de 2 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada.",
     "No Mirassol, passes do lateral-esquerdo originam cerca de 2 finalizações por jogo.",
-    "O Mirassol registra cerca de 5 finalizações por jogo de fora da área. O volante é quem mais finaliza nesse tipo de jogada.",
-    "No Mirassol, o meia registra cerca de 2 finalizações por jogo. É uma posição a observar na escalação."
+    "O Mirassol registra cerca de 3 finalizações por jogo de cabeça. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+    "O Mirassol registra cerca de 2 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+    "O Mirassol registra cerca de 6 finalizações por jogo de fora da área. O lateral-esquerdo é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
-    {
-      "chave": "origem|CRUZAMENTO|atacante-area",
-      "confianca": "padrao-consolidado"
-    },
     {
       "chave": "assistentePosicao|lateral-esquerdo|",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|fora-da-area|volante",
+      "chave": "parteDoCorpo|cabeca|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "posicao|meia|",
+      "chave": "origem|CRUZAMENTO|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "area|fora-da-area|lateral-esquerdo",
       "confianca": "padrao-consolidado"
     }
   ],
