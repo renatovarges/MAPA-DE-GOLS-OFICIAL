@@ -1,6 +1,6 @@
 {
   "teamKey": "internacional",
-  "geradoEm": "2026-09-14T15:41:01.235Z",
+  "geradoEm": "2026-09-15T14:11:03.366Z",
   "ataca": [
     "No Internacional, o ponta-direita registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
     "O Internacional registra cerca de 4 finalizações por jogo em jogadas construídas pelo lado direito. O ponta-direita é quem mais finaliza nesse tipo de jogada.",
@@ -27,6 +27,10 @@
   ],
   "evidenciasSofre": [
     {
+      "chave": "parteDoCorpo|cabeca|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
       "chave": "origem|CRUZAMENTO|atacante-area",
       "confianca": "padrao-consolidado"
     },
@@ -35,18 +39,14 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "parteDoCorpo|cabeca|atacante-area",
-      "confianca": "padrao-consolidado"
-    },
-    {
       "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
+    "O Internacional cede cerca de 3 finalizações por jogo de cabeça. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
     "O Internacional cede cerca de 2 finalizações por jogo após cruzamentos. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
     "O Internacional cede cerca de 2 finalizações por jogo ao ponta-esquerda adversário. É uma posição a observar contra essa defesa.",
-    "O Internacional cede cerca de 3 finalizações por jogo de cabeça. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
     "O Internacional cede cerca de 2 finalizações por jogo após passes do meia adversário."
   ]
 }
