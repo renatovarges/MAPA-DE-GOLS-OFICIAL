@@ -1352,24 +1352,54 @@
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+  // Espera UMA <img> carregar de verdade, tentando de novo se falhar --
+  // achado real (2026-09), reproduzido no site ao vivo: o escudo do São
+  // Paulo deu erro de carregamento no meio do lote, mesmo o arquivo
+  // respondendo 200 OK num fetch direto logo em seguida -- falha de rede
+  // passageira (provavelmente o navegador com dezenas de imagens em
+  // paralelo ao longo do lote), não arquivo quebrado. Reatribuir o mesmo
+  // `src` força um fetch novo.
+  function rxEsperarUmaImagem(img, tentativasRestantes = 2) {
+    return new Promise((resolve) => {
+      const tentar = () => {
+        if (img.complete && img.naturalWidth > 0) { resolve(); return; }
+        const limpar = () => {
+          img.removeEventListener('load', aoCarregar);
+          img.removeEventListener('error', aoErrar);
+        };
+        const aoCarregar = () => { limpar(); resolve(); };
+        const aoErrar = () => {
+          limpar();
+          if (tentativasRestantes > 0) {
+            tentativasRestantes--;
+            const srcAtual = img.src;
+            setTimeout(() => { img.src = srcAtual; tentar(); }, 250);
+          } else {
+            resolve(); // desiste depois das tentativas -- nunca trava o lote pra sempre
+          }
+        };
+        img.addEventListener('load', aoCarregar, { once: true });
+        img.addEventListener('error', aoErrar, { once: true });
+      };
+      tentar();
+    });
+  }
+
   // Espera de verdade as <img> (fotos dos jogadores, escudos, marca d'água)
   // terminarem de carregar antes do html2canvas rodar -- achado real
-  // (2026-09): o delay fixo acima resolveu no teste local (fotos servidas
-  // do disco, praticamente instantâneas), mas em produção (fotos buscadas
-  // pela rede de verdade, mais lentas) o Renato ainda viu um confronto sair
-  // quase em branco mesmo com times que TÊM prováveis e dado suficiente --
-  // sinal de que era a foto ainda não ter chegado, não falta de dado. Espera
-  // o evento real de load/error de cada <img>, com teto pra nunca travar o
-  // lote se uma imagem específica nunca responder.
-  function rxEsperarImagensCarregarem(containerEl, timeoutMs = 8000) {
+  // (2026-09): o delay fixo resolveu no teste local (fotos servidas do
+  // disco, praticamente instantâneas), mas em produção (rede de verdade)
+  // um confronto ainda saiu quase em branco mesmo com dado suficiente --
+  // sinal de que era a foto ainda não ter chegado. Inclui também imagens já
+  // "complete" mas com naturalWidth 0 (erro ocorrido ANTES da gente
+  // escutar) -- essas também entram no retry acima. Teto geral pra nunca
+  // travar o lote se algo nunca responder de verdade.
+  function rxEsperarImagensCarregarem(containerEl, timeoutMs = 12000) {
     if (!containerEl) return Promise.resolve();
-    const pendentes = Array.from(containerEl.querySelectorAll('img')).filter((img) => !img.complete);
+    const pendentes = Array.from(containerEl.querySelectorAll('img')).filter((img) => !img.complete || img.naturalWidth === 0);
     if (!pendentes.length) return Promise.resolve();
     return Promise.race([
-      Promise.all(pendentes.map((img) => new Promise((resolve) => {
-        img.addEventListener('load', resolve, { once: true });
-        img.addEventListener('error', resolve, { once: true });
-      }))),
+      Promise.all(pendentes.map((img) => rxEsperarUmaImagem(img))),
       new Promise((resolve) => setTimeout(resolve, timeoutMs)),
     ]);
   }
