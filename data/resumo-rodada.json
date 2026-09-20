@@ -1,197 +1,199 @@
 {
   "versao": 3,
   "tipoLeitura": "pre-jogo",
-  "rodada": 28,
+  "rodada": 29,
   "rodadaDados": 27,
-  "janelaAte": "2026-09-16",
-  "geradoEm": "2026-09-19T12:53:49.041Z",
+  "janelaAte": "2026-09-19",
+  "geradoEm": "2026-09-20T13:28:43.461Z",
   "jogos": [
     {
-      "id": 237760,
-      "rodada": 28,
-      "data": "2026-09-19T16:00:00",
-      "mandante": "atletico-mg",
+      "id": 237712,
+      "rodada": 29,
+      "data": "2026-10-07T19:30:00",
+      "mandante": "red-bull-bragantino",
+      "visitante": "mirassol"
+    },
+    {
+      "id": 237831,
+      "rodada": 29,
+      "data": "2026-10-07T19:30:00",
+      "mandante": "remo",
+      "visitante": "gremio"
+    },
+    {
+      "id": 237871,
+      "rodada": 29,
+      "data": "2026-10-07T19:30:00",
+      "mandante": "internacional",
+      "visitante": "corinthians"
+    },
+    {
+      "id": 237913,
+      "rodada": 29,
+      "data": "2026-10-07T20:00:00",
+      "mandante": "vitoria",
       "visitante": "chapecoense"
     },
     {
-      "id": 237598,
-      "rodada": 28,
-      "data": "2026-09-19T17:00:00",
-      "mandante": "mirassol",
-      "visitante": "botafogo"
+      "id": 237629,
+      "rodada": 29,
+      "data": "2026-10-07T20:30:00",
+      "mandante": "botafogo",
+      "visitante": "vasco"
     },
     {
-      "id": 237840,
-      "rodada": 28,
-      "data": "2026-09-19T18:30:00",
-      "mandante": "remo",
-      "visitante": "santos"
+      "id": 237582,
+      "rodada": 29,
+      "data": "2026-10-07T21:30:00",
+      "mandante": "cruzeiro",
+      "visitante": "sao-paulo"
     },
     {
-      "id": 237854,
-      "rodada": 28,
-      "data": "2026-09-19T20:30:00",
-      "mandante": "vasco",
-      "visitante": "coritiba"
+      "id": 237881,
+      "rodada": 29,
+      "data": "2026-10-08T19:30:00",
+      "mandante": "santos",
+      "visitante": "flamengo"
     },
     {
-      "id": 237687,
-      "rodada": 28,
-      "data": "2026-09-19T21:00:00",
-      "mandante": "sao-paulo",
-      "visitante": "internacional"
-    },
-    {
-      "id": 237690,
-      "rodada": 28,
-      "data": "2026-09-20T11:00:00",
-      "mandante": "gremio",
-      "visitante": "palmeiras"
-    },
-    {
-      "id": 237734,
-      "rodada": 28,
-      "data": "2026-09-20T16:00:00",
-      "mandante": "corinthians",
-      "visitante": "fluminense"
-    },
-    {
-      "id": 237901,
-      "rodada": 28,
-      "data": "2026-09-20T16:00:00",
-      "mandante": "vitoria",
-      "visitante": "cruzeiro"
-    },
-    {
-      "id": 237565,
-      "rodada": 28,
-      "data": "2026-09-20T18:30:00",
-      "mandante": "flamengo",
-      "visitante": "red-bull-bragantino"
-    },
-    {
-      "id": 237790,
-      "rodada": 28,
-      "data": "2026-09-20T19:30:00",
+      "id": 237796,
+      "rodada": 29,
+      "data": "2026-10-08T20:00:00",
       "mandante": "athletico-pr",
+      "visitante": "atletico-mg"
+    },
+    {
+      "id": 237542,
+      "rodada": 29,
+      "data": "2026-10-08T21:30:00",
+      "mandante": "palmeiras",
       "visitante": "bahia"
+    },
+    {
+      "id": 237663,
+      "rodada": 29,
+      "data": "2026-10-08T21:30:00",
+      "mandante": "fluminense",
+      "visitante": "coritiba"
     }
   ],
   "conclusoes": [
     {
       "tipo": "convergencia",
-      "titulo": "Athletico-PR tem um encaixe favorável contra o Bahia",
-      "chamada": "MARCA GOLS COM SEU PONTA DIREITA",
-      "timeDestaque": "athletico-pr",
-      "frase": "O Athletico-PR marca gols com seu ponta direita a uma média de 0,40 por jogo, aparecendo em 3 dos últimos 10 jogos. O Bahia sofre gols de ponta direita a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,11 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "Mirassol tem um encaixe favorável contra o Red Bull Bragantino",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS LATERAIS-DIREITOS",
+      "timeDestaque": "mirassol",
+      "frase": "O Mirassol soma participações em gols com seus laterais-direitos a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos. O Red Bull Bragantino cede participações em gols para laterais-direitos adversários a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,14 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "athletico-pr",
-        "bahia"
+        "mirassol",
+        "red-bull-bragantino"
       ],
-      "scout": "gols",
-      "chave": "posicao:ponta-direita"
+      "scout": "participacoes",
+      "chave": "posicao:lateral-direito"
     },
     {
       "tipo": "convergencia",
-      "titulo": "Fluminense tem um encaixe favorável contra o Corinthians",
-      "chamada": "MARCA GOLS EM CRUZAMENTOS VINDOS DA ESQUERDA",
+      "titulo": "Fluminense tem um encaixe favorável contra o Coritiba",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS ZAGUEIROS",
       "timeDestaque": "fluminense",
-      "frase": "O Fluminense marca gols em cruzamentos vindos da esquerda a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos. O Corinthians sofre gols em cruzamentos vindos da esquerda a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,12 por jogo. Na prática, observe os jogadores mais envolvidos nas bolas aéreas e na conclusão de cruzamentos.",
+      "frase": "O Fluminense soma participações em gols com seus zagueiros a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos. O Coritiba cede participações em gols para zagueiros adversários a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,14 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "fluminense",
-        "corinthians"
-      ],
-      "scout": "gols",
-      "chave": "cruzamento:esquerda"
-    },
-    {
-      "tipo": "convergencia",
-      "titulo": "Atlético-MG tem um encaixe favorável contra o Chapecoense",
-      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS ZAGUEIROS",
-      "timeDestaque": "atletico-mg",
-      "frase": "O Atlético-MG soma participações em gols com seus zagueiros a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos. O Chapecoense cede participações em gols para zagueiros adversários a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,14 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
-      "times": [
-        "atletico-mg",
-        "chapecoense"
+        "coritiba"
       ],
       "scout": "participacoes",
       "chave": "posicao:zagueiro"
     },
     {
       "tipo": "convergencia",
-      "titulo": "Athletico-PR tem um encaixe favorável contra o Bahia",
-      "chamada": "FINALIZAÇÕES EM CONTRA-ATAQUES",
-      "timeDestaque": "athletico-pr",
-      "frase": "O Athletico-PR produz finalizações em contra-ataques a uma média de 1,1 por jogo, aparecendo em 6 dos últimos 10 jogos. O Bahia cede finalizações em contra-ataques a uma média de 1,1 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,5 por jogo. Na prática, observe os jogadores mais presentes nessa característica ofensiva.",
+      "titulo": "Palmeiras tem um encaixe favorável contra o Bahia",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS MEIAS",
+      "timeDestaque": "palmeiras",
+      "frase": "O Palmeiras soma participações em gols com seus meias a uma média de 1,40 por jogo, aparecendo em 7 dos últimos 10 jogos. O Bahia cede participações em gols para meias adversários a uma média de 0,70 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,43 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "athletico-pr",
+        "palmeiras",
         "bahia"
       ],
-      "scout": "finalizacoes",
-      "chave": "transicao:contra-ataque"
+      "scout": "participacoes",
+      "chave": "posicao:meia"
+    },
+    {
+      "tipo": "convergencia",
+      "titulo": "Red Bull Bragantino tem um encaixe favorável contra o Mirassol",
+      "chamada": "MARCA GOLS COM SEU PONTA ESQUERDA",
+      "timeDestaque": "red-bull-bragantino",
+      "frase": "O Red Bull Bragantino marca gols com seu ponta esquerda a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos. O Mirassol sofre gols de ponta esquerda a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,18 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "times": [
+        "red-bull-bragantino",
+        "mirassol"
+      ],
+      "scout": "gols",
+      "chave": "posicao:ponta-esquerda"
     },
     {
       "tipo": "fragilidade-defensiva-propria",
       "titulo": "Mirassol apresenta uma vulnerabilidade que merece atenção",
       "chamada": "SOFRE GOLS EM CONTRA-ATAQUES",
       "timeDestaque": "mirassol",
-      "frase": "O Mirassol sofre gols em contra-ataques a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos, acima da referência de 0,07 do campeonato. O Botafogo não tem essa característica entre suas marcas ofensivas mais fortes, mas a vulnerabilidade do adversário é recorrente e merece atenção. Na prática, observe os jogadores mais presentes nessa característica ofensiva.",
+      "frase": "O Mirassol sofre gols em contra-ataques a uma média de 0,40 por jogo, aparecendo em 3 dos últimos 10 jogos, acima da referência de 0,07 do campeonato. O Red Bull Bragantino não tem essa característica entre suas marcas ofensivas mais fortes, mas a vulnerabilidade do adversário é recorrente e merece atenção. Na prática, observe os jogadores mais presentes nessa característica ofensiva.",
       "times": [
-        "botafogo",
+        "red-bull-bragantino",
         "mirassol"
       ],
       "scout": "gols",
       "chave": "transicao:contra-ataque"
     },
     {
-      "tipo": "forca-ofensiva-propria",
-      "titulo": "Mirassol mantém um padrão ofensivo recorrente",
-      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS LATERAIS-DIREITOS",
-      "timeDestaque": "mirassol",
-      "frase": "O Mirassol soma participações em gols com seus laterais-direitos a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos, acima da referência de 0,14 do campeonato. O Botafogo não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Mirassol mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "tipo": "fragilidade-defensiva-propria",
+      "titulo": "Athletico-PR apresenta uma vulnerabilidade que merece atenção",
+      "chamada": "SOFRE GOLS DE ZAGUEIROS",
+      "timeDestaque": "athletico-pr",
+      "frase": "O Athletico-PR sofre gols de zagueiros a uma média de 0,50 por jogo, aparecendo em 3 dos últimos 10 jogos, acima da referência de 0,10 do campeonato. O Atlético-MG não tem essa característica entre suas marcas ofensivas mais fortes, mas a vulnerabilidade do adversário é recorrente e merece atenção. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "mirassol",
-        "botafogo"
+        "atletico-mg",
+        "athletico-pr"
       ],
-      "scout": "participacoes",
-      "chave": "posicao:lateral-direito"
-    },
-    {
-      "tipo": "forca-ofensiva-propria",
-      "titulo": "Coritiba mantém um padrão ofensivo recorrente",
-      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS ZAGUEIROS",
-      "timeDestaque": "coritiba",
-      "frase": "O Coritiba soma participações em gols com seus zagueiros a uma média de 0,50 por jogo, aparecendo em 3 dos últimos 10 jogos, acima da referência de 0,14 do campeonato. O Vasco não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Coritiba mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
-      "times": [
-        "coritiba",
-        "vasco"
-      ],
-      "scout": "participacoes",
+      "scout": "gols",
       "chave": "posicao:zagueiro"
     },
     {
-      "tipo": "destaque-defensivo",
-      "frase": "São Paulo apresenta o melhor controle defensivo da amostra: permite cerca de 10,6 finalizações por jogo. Internacional (11 por jogo) e Flamengo (11,3 por jogo) também estão entre as defesas que menos permitem chutes. Na prática, são as equipes que mais reduzem o volume ofensivo dos adversários.",
+      "tipo": "forca-ofensiva-propria",
+      "titulo": "Santos mantém um padrão ofensivo recorrente",
+      "chamada": "FINALIZAÇÕES COM SEUS MEIAS",
+      "timeDestaque": "santos",
+      "frase": "O Santos produz finalizações com seus meias a uma média de 6,9 por jogo, aparecendo em 8 dos últimos 10 jogos, acima da referência de 2,5 do campeonato. O Flamengo não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Santos mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "sao-paulo",
-        "internacional",
+        "santos",
         "flamengo"
       ],
-      "chamada": "CONTROLE DEFENSIVO",
-      "timeDestaque": "sao-paulo"
+      "scout": "finalizacoes",
+      "chave": "posicao:meia"
+    },
+    {
+      "tipo": "forca-ofensiva-propria",
+      "titulo": "Vitória mantém um padrão ofensivo recorrente",
+      "chamada": "FINALIZAÇÕES APÓS LANÇAMENTOS",
+      "timeDestaque": "vitoria",
+      "frase": "O Vitória produz finalizações após lançamentos a uma média de 1,2 por jogo, aparecendo em 8 dos últimos 10 jogos, acima da referência de 0,5 do campeonato. O Chapecoense não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Vitória mantém o alerta. Na prática, observe os jogadores mais presentes nessa característica ofensiva.",
+      "times": [
+        "vitoria",
+        "chapecoense"
+      ],
+      "scout": "finalizacoes",
+      "chave": "origem:lancamento"
     }
   ],
   "statusAtualizacao": {
-    "estado": "pronto",
+    "estado": "parcial",
     "rodada": 27,
-    "jogosProcessados": 10,
+    "jogosProcessados": 5,
     "jogosEsperados": 10,
-    "timesAtualizados": 20,
+    "timesAtualizados": 10,
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-09-19T12:53:49.041Z",
-    "ultimaPartidaEm": "2026-09-16",
-    "rodadaLeitura": 28
+    "atualizadoEm": "2026-09-20T13:28:43.461Z",
+    "ultimaPartidaEm": "2026-09-19",
+    "rodadaLeitura": 29
   }
 }
