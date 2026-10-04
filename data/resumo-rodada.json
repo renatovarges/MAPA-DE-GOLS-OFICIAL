@@ -3,8 +3,8 @@
   "tipoLeitura": "pre-jogo",
   "rodada": 29,
   "rodadaDados": 28,
-  "janelaAte": "2026-10-02",
-  "geradoEm": "2026-10-03T14:09:32.652Z",
+  "janelaAte": "2026-10-03",
+  "geradoEm": "2026-10-04T14:38:28.713Z",
   "jogos": [
     {
       "id": 237712,
@@ -83,7 +83,7 @@
       "titulo": "Mirassol tem um encaixe favorável contra o Red Bull Bragantino",
       "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS LATERAIS-DIREITOS",
       "timeDestaque": "mirassol",
-      "frase": "O Mirassol soma participações em gols com seus laterais-direitos a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos. O Red Bull Bragantino cede participações em gols para laterais-direitos adversários a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,13 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "frase": "O Mirassol soma participações em gols com seus laterais-direitos a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos. O Red Bull Bragantino cede participações em gols para laterais-direitos adversários a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,13 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "mirassol",
         "red-bull-bragantino"
@@ -119,16 +119,16 @@
     },
     {
       "tipo": "convergencia",
-      "titulo": "Palmeiras tem um encaixe favorável contra o Bahia",
-      "chamada": "FINALIZAÇÕES APÓS ESCANTEIOS",
-      "timeDestaque": "palmeiras",
-      "frase": "O Palmeiras produz finalizações após escanteios a uma média de 1,4 por jogo, aparecendo em 6 dos últimos 10 jogos. O Bahia cede finalizações após escanteios a uma média de 1,3 por jogo, aparecendo em 7 dos últimos 10 jogos, enquanto a referência do campeonato é 0,7 por jogo. Na prática, observe os jogadores mais presentes nessa característica ofensiva.",
+      "titulo": "Red Bull Bragantino tem um encaixe favorável contra o Mirassol",
+      "chamada": "FINALIZAÇÕES COM SEU PONTA ESQUERDA",
+      "timeDestaque": "red-bull-bragantino",
+      "frase": "O Red Bull Bragantino produz finalizações com seu ponta esquerda a uma média de 3,7 por jogo, aparecendo em 10 dos últimos 10 jogos. O Mirassol cede finalizações para pontas-esquerdas adversários a uma média de 2,2 por jogo, aparecendo em 6 dos últimos 10 jogos, enquanto a referência do campeonato é 1,7 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "palmeiras",
-        "bahia"
+        "red-bull-bragantino",
+        "mirassol"
       ],
       "scout": "finalizacoes",
-      "chave": "origem:escanteio"
+      "chave": "posicao:ponta-esquerda"
     },
     {
       "tipo": "fragilidade-defensiva-propria",
@@ -171,16 +171,16 @@
     },
     {
       "tipo": "forca-ofensiva-propria",
-      "titulo": "Red Bull Bragantino mantém um padrão ofensivo recorrente",
-      "chamada": "FINALIZAÇÕES COM SEU PONTA DIREITA",
-      "timeDestaque": "red-bull-bragantino",
-      "frase": "O Red Bull Bragantino produz finalizações com seu ponta direita a uma média de 3,7 por jogo, aparecendo em 10 dos últimos 10 jogos, acima da referência de 1,3 do campeonato. O Mirassol não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Red Bull Bragantino mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "Vitória mantém um padrão ofensivo recorrente",
+      "chamada": "FINALIZAÇÕES APÓS LANÇAMENTOS",
+      "timeDestaque": "vitoria",
+      "frase": "O Vitória produz finalizações após lançamentos a uma média de 1,4 por jogo, aparecendo em 8 dos últimos 10 jogos, acima da referência de 0,5 do campeonato. O Chapecoense não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Vitória mantém o alerta. Na prática, observe os jogadores mais presentes nessa característica ofensiva.",
       "times": [
-        "red-bull-bragantino",
-        "mirassol"
+        "vitoria",
+        "chapecoense"
       ],
       "scout": "finalizacoes",
-      "chave": "posicao:ponta-direita"
+      "chave": "origem:lancamento"
     }
   ],
   "statusAtualizacao": {
@@ -192,8 +192,8 @@
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-10-03T14:09:32.652Z",
-    "ultimaPartidaEm": "2026-10-02",
+    "atualizadoEm": "2026-10-04T14:38:28.713Z",
+    "ultimaPartidaEm": "2026-10-03",
     "rodadaLeitura": 29
   }
 }
