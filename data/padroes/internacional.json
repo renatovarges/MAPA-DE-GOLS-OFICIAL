@@ -1,15 +1,19 @@
 {
   "teamKey": "internacional",
-  "geradoEm": "2026-10-07T16:17:18.104Z",
+  "geradoEm": "2026-10-08T16:09:37.363Z",
   "ataca": [
     "No Internacional, o ponta-direita registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
+    "No Internacional, passes do meia originam cerca de 3 finalizações por jogo.",
     "O Internacional registra cerca de 3 finalizações por jogo após sobras de bola. O meia é quem mais finaliza nesse tipo de jogada.",
-    "O Internacional registra cerca de 6 finalizações por jogo de fora da área. O meia é quem mais finaliza nesse tipo de jogada.",
-    "No Internacional, passes do meia originam cerca de 3 finalizações por jogo."
+    "O Internacional registra cerca de 6 finalizações por jogo de fora da área. O meia é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
       "chave": "posicao|ponta-direita|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     },
     {
@@ -19,10 +23,6 @@
     {
       "chave": "area|fora-da-area|meia",
       "confianca": "padrao-consolidado"
-    },
-    {
-      "chave": "assistentePosicao|meia|",
-      "confianca": "padrao-consolidado"
     }
   ],
   "evidenciasSofre": [
@@ -31,22 +31,17 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|CRUZAMENTO|atacante-area",
+      "chave": "area|dentro-da-area|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "posicao|ponta-esquerda|",
-      "confianca": "padrao-consolidado"
-    },
-    {
-      "chave": "assistentePosicao|meia|",
+      "chave": "origem|REBATIDA|volante",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
     "O Internacional cede cerca de 2 finalizações por jogo de cabeça. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
-    "O Internacional cede cerca de 2 finalizações por jogo após cruzamentos. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
-    "O Internacional cede cerca de 2 finalizações por jogo ao ponta-esquerda adversário. É uma posição a observar contra essa defesa.",
-    "O Internacional cede cerca de 2 finalizações por jogo após passes do meia adversário."
+    "O Internacional cede cerca de 7 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Internacional cede cerca de 2 finalizações por jogo após sobras de bola. Atenção: o volante adversário é quem mais finaliza nesses lances."
   ]
 }
