@@ -1,6 +1,6 @@
 {
   "teamKey": "santos",
-  "geradoEm": "2026-10-07T16:17:18.104Z",
+  "geradoEm": "2026-10-08T16:09:37.363Z",
   "ataca": [
     "No Santos, passes do meia originam cerca de 4 finalizações por jogo.",
     "No Santos, o volante registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
@@ -31,22 +31,22 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "parteDoCorpo|cabeca|atacante-area",
-      "confianca": "padrao-consolidado"
-    },
-    {
       "chave": "posicao|volante|",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|fora-da-area|meia",
+      "chave": "parteDoCorpo|cabeca|atacante-area",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
     "O Santos cede cerca de 2 finalizações por jogo após cruzamentos. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
-    "O Santos cede cerca de 2 finalizações por jogo de cabeça. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
     "O Santos cede cerca de 2 finalizações por jogo ao volante adversário. É uma posição a observar contra essa defesa.",
-    "O Santos cede cerca de 5 finalizações por jogo de fora da área. Atenção: o meia adversário é quem mais finaliza nesses lances."
+    "O Santos cede cerca de 2 finalizações por jogo de cabeça. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Santos cede cerca de 2 finalizações por jogo após passes do meia adversário."
   ]
 }
