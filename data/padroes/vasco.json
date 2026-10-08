@@ -1,9 +1,9 @@
 {
   "teamKey": "vasco",
-  "geradoEm": "2026-10-07T16:17:18.104Z",
+  "geradoEm": "2026-10-08T16:09:37.363Z",
   "ataca": [
     "No Vasco, o volante registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
-    "O Vasco registra cerca de 3 finalizações por jogo após cruzamentos. O volante é quem mais finaliza nesse tipo de jogada."
+    "O Vasco registra cerca de 3 finalizações por jogo após cruzamentos. O ponta-esquerda é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
@@ -11,15 +11,11 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|CRUZAMENTO|volante",
+      "chave": "origem|CRUZAMENTO|ponta-esquerda",
       "confianca": "padrao-consolidado"
     }
   ],
   "evidenciasSofre": [
-    {
-      "chave": "posicao|meia|",
-      "confianca": "padrao-consolidado"
-    },
     {
       "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
@@ -29,14 +25,18 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "ladoDaJogada|direita|atacante-area",
+      "chave": "posicao|meia|",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "ladoDaJogada|esquerda|atacante-area",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
-    "O Vasco cede cerca de 2 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa.",
     "O Vasco cede cerca de 2 finalizações por jogo após passes do meia adversário.",
     "O Vasco cede cerca de 5 finalizações por jogo de fora da área. Atenção: o meia adversário é quem mais finaliza nesses lances.",
-    "O Vasco cede cerca de 3 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances."
+    "O Vasco cede cerca de 2 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa.",
+    "O Vasco cede cerca de 3 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances."
   ]
 }
