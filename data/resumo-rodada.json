@@ -2,9 +2,9 @@
   "versao": 3,
   "tipoLeitura": "pre-jogo",
   "rodada": 30,
-  "rodadaDados": 28,
-  "janelaAte": "2026-10-07",
-  "geradoEm": "2026-10-08T16:09:42.917Z",
+  "rodadaDados": 29,
+  "janelaAte": "2026-10-08",
+  "geradoEm": "2026-10-09T15:51:07.794Z",
   "jogos": [
     {
       "id": 237857,
@@ -83,7 +83,7 @@
       "titulo": "Coritiba tem um encaixe favorável contra o Botafogo",
       "chamada": "MARCA GOLS COM SEU PONTA ESQUERDA",
       "timeDestaque": "coritiba",
-      "frase": "O Coritiba marca gols com seu ponta esquerda a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos. O Botafogo sofre gols de ponta esquerda a uma média de 0,40 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,18 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "frase": "O Coritiba marca gols com seu ponta esquerda a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos. O Botafogo sofre gols de ponta esquerda a uma média de 0,40 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,17 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "coritiba",
         "botafogo"
@@ -131,6 +131,19 @@
       "chave": "posicao:lateral-direito"
     },
     {
+      "tipo": "fragilidade-defensiva-propria",
+      "titulo": "Athletico-PR apresenta uma vulnerabilidade que merece atenção",
+      "chamada": "SOFRE GOLS DE ZAGUEIROS",
+      "timeDestaque": "athletico-pr",
+      "frase": "O Athletico-PR sofre gols de zagueiros a uma média de 0,60 por jogo, aparecendo em 4 dos últimos 10 jogos, acima da referência de 0,10 do campeonato. O Chapecoense não tem essa característica entre suas marcas ofensivas mais fortes, mas a vulnerabilidade do adversário é recorrente e merece atenção. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "times": [
+        "chapecoense",
+        "athletico-pr"
+      ],
+      "scout": "gols",
+      "chave": "posicao:zagueiro"
+    },
+    {
       "tipo": "forca-ofensiva-propria",
       "titulo": "Grêmio mantém um padrão ofensivo recorrente",
       "chamada": "MARCA GOLS COM SEUS ZAGUEIROS",
@@ -145,26 +158,13 @@
     },
     {
       "tipo": "forca-ofensiva-propria",
-      "titulo": "Coritiba mantém um padrão ofensivo recorrente",
-      "chamada": "MARCA GOLS COM SEUS ZAGUEIROS",
-      "timeDestaque": "coritiba",
-      "frase": "O Coritiba marca gols com seus zagueiros a uma média de 0,50 por jogo, aparecendo em 3 dos últimos 10 jogos, acima da referência de 0,10 do campeonato. O Botafogo não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Coritiba mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "Palmeiras mantém um padrão ofensivo recorrente",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS ZAGUEIROS",
+      "timeDestaque": "palmeiras",
+      "frase": "O Palmeiras soma participações em gols com seus zagueiros a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos, acima da referência de 0,14 do campeonato. O Corinthians não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Palmeiras mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "coritiba",
-        "botafogo"
-      ],
-      "scout": "gols",
-      "chave": "posicao:zagueiro"
-    },
-    {
-      "tipo": "fragilidade-defensiva-propria",
-      "titulo": "Athletico-PR apresenta uma vulnerabilidade que merece atenção",
-      "chamada": "CEDE PARTICIPAÇÕES EM GOLS PARA ZAGUEIROS ADVERSÁRIOS",
-      "timeDestaque": "athletico-pr",
-      "frase": "O Athletico-PR cede participações em gols para zagueiros adversários a uma média de 0,50 por jogo, aparecendo em 3 dos últimos 10 jogos, acima da referência de 0,14 do campeonato. O Chapecoense não tem essa característica entre suas marcas ofensivas mais fortes, mas a vulnerabilidade do adversário é recorrente e merece atenção. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
-      "times": [
-        "chapecoense",
-        "athletico-pr"
+        "palmeiras",
+        "corinthians"
       ],
       "scout": "participacoes",
       "chave": "posicao:zagueiro"
@@ -184,16 +184,16 @@
     }
   ],
   "statusAtualizacao": {
-    "estado": "parcial",
-    "rodada": 28,
-    "jogosProcessados": 6,
+    "estado": "pronto",
+    "rodada": 29,
+    "jogosProcessados": 10,
     "jogosEsperados": 10,
-    "timesAtualizados": 12,
+    "timesAtualizados": 20,
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-10-08T16:09:42.917Z",
-    "ultimaPartidaEm": "2026-10-07",
+    "atualizadoEm": "2026-10-09T15:51:07.794Z",
+    "ultimaPartidaEm": "2026-10-08",
     "rodadaLeitura": 30
   }
 }
