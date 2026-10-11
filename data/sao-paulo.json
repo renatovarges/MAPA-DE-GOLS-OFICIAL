@@ -1773,6 +1773,85 @@
           }
         }
       ]
+    },
+    "30": {
+      "roundNumber": 30,
+      "date": "2026-10-10",
+      "opponent": "vitoria",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 5.666666666666666
+          },
+          "shot": {
+            "x": 84.92013840000001,
+            "y": 33.05884
+          },
+          "assistPlayer": {
+            "id": "97868",
+            "name": "Iago",
+            "fullName": "Iago Amaral Borduchi",
+            "position": "Lateral",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "shotPlayer": {
+            "id": "89840",
+            "name": "Calleri",
+            "fullName": "Jonathan Calleri",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 88.3484184,
+            "y": 40.540839999999996
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "89840",
+            "name": "Calleri",
+            "fullName": "Jonathan Calleri",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 17
+          },
+          "shot": {
+            "x": 18.0078441,
+            "y": 35.509620000000005
+          },
+          "assistPlayer": {
+            "id": "97810",
+            "name": "Erick",
+            "fullName": "Erick de Arruda Serafim",
+            "position": "Atacante",
+            "side": null,
+            "team": "vitoria"
+          },
+          "shotPlayer": {
+            "id": "103388",
+            "name": "Emmanuel Martínez",
+            "fullName": "Leandro Emmanuel Martínez",
+            "position": "Meia",
+            "side": null,
+            "team": "vitoria"
+          }
+        }
+      ]
     }
   }
 }
