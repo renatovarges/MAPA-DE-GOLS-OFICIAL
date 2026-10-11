@@ -1978,6 +1978,85 @@
         }
       ],
       "conceded_goals": []
+    },
+    "30": {
+      "roundNumber": 30,
+      "date": "2026-10-10",
+      "opponent": "sao-paulo",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 51
+          },
+          "shot": {
+            "x": 77.9921559,
+            "y": 32.490379999999995
+          },
+          "assistPlayer": {
+            "id": "97810",
+            "name": "Erick",
+            "fullName": "Erick de Arruda Serafim",
+            "position": "Atacante",
+            "side": null,
+            "team": "vitoria"
+          },
+          "shotPlayer": {
+            "id": "103388",
+            "name": "Emmanuel Martínez",
+            "fullName": "Leandro Emmanuel Martínez",
+            "position": "Meia",
+            "side": null,
+            "team": "vitoria"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 62.333333333333336
+          },
+          "shot": {
+            "x": 11.079861599999987,
+            "y": 34.94116
+          },
+          "assistPlayer": {
+            "id": "97868",
+            "name": "Iago",
+            "fullName": "Iago Amaral Borduchi",
+            "position": "Lateral",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "shotPlayer": {
+            "id": "89840",
+            "name": "Calleri",
+            "fullName": "Jonathan Calleri",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 7.6515816,
+            "y": 27.459160000000004
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "89840",
+            "name": "Calleri",
+            "fullName": "Jonathan Calleri",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          }
+        }
+      ]
     }
   }
 }
