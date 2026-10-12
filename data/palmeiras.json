@@ -1824,6 +1824,119 @@
         }
       ],
       "conceded_goals": []
+    },
+    "30": {
+      "roundNumber": 30,
+      "date": "2026-10-11",
+      "opponent": "corinthians",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 89.8959059,
+            "y": 41.12994
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "124526",
+            "name": "Giay",
+            "fullName": "Agustín Giay",
+            "position": "Lateral",
+            "side": null,
+            "team": "palmeiras"
+          }
+        },
+        {
+          "pass": {
+            "x": 75,
+            "y": 62.33333333333333
+          },
+          "shot": {
+            "x": 88.0865359,
+            "y": 28.143939999999997
+          },
+          "assistPlayer": {
+            "id": "84674",
+            "name": "Lucas Evangelista",
+            "fullName": "Lucas Evangelista Santana de Oliveira",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "shotPlayer": {
+            "id": "99274",
+            "name": "Alexander Barboza",
+            "fullName": "Alexander Nahuel Barboza Ullúa",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 28.333333333333336
+          },
+          "shot": {
+            "x": 84.27733590000001,
+            "y": 40.871939999999995
+          },
+          "assistPlayer": {
+            "id": "99815",
+            "name": "Arias",
+            "fullName": "Jhon Adolfo Arias Andrade",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "shotPlayer": {
+            "id": "124526",
+            "name": "Giay",
+            "fullName": "Agustín Giay",
+            "position": "Lateral",
+            "side": null,
+            "team": "palmeiras"
+          }
+        },
+        {
+          "shot": null,
+          "pass": null,
+          "assistPlayer": null,
+          "shotPlayer": null,
+          "isOwnGoal": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 62.333333333333336
+          },
+          "shot": {
+            "x": 9.160977099999997,
+            "y": 35.624
+          },
+          "assistPlayer": {
+            "id": "78435",
+            "name": "Vitinho",
+            "fullName": "Victor Vinícius Coelho dos Santos",
+            "position": "Atacante",
+            "side": null,
+            "team": "corinthians"
+          },
+          "shotPlayer": {
+            "id": "78248",
+            "name": "Gustavo Henrique",
+            "fullName": "Gustavo Henrique Vernes",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "corinthians"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
