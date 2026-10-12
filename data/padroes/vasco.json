@@ -1,10 +1,10 @@
 {
   "teamKey": "vasco",
-  "geradoEm": "2026-10-11T15:21:35.368Z",
+  "geradoEm": "2026-10-12T18:37:41.085Z",
   "ataca": [
     "No Vasco, o volante registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
     "O Vasco registra cerca de 10 finalizações por jogo de dentro da área. O ponta-esquerda é quem mais finaliza nesse tipo de jogada.",
-    "O Vasco registra cerca de 3 finalizações por jogo após sobras de bola. O volante é quem mais finaliza nesse tipo de jogada."
+    "O Vasco registra cerca de 3 finalizações por jogo após cruzamentos. O volante é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
@@ -16,17 +16,17 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|REBATIDA|volante",
+      "chave": "origem|CRUZAMENTO|volante",
       "confianca": "padrao-consolidado"
     }
   ],
   "evidenciasSofre": [
     {
-      "chave": "ladoDaJogada|direita|atacante-area",
+      "chave": "origem|CRUZAMENTO|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "parteDoCorpo|cabeca|atacante-area",
+      "chave": "ladoDaJogada|direita|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
@@ -39,8 +39,8 @@
     }
   ],
   "sofre": [
+    "O Vasco cede cerca de 2 finalizações por jogo após cruzamentos. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
     "O Vasco cede cerca de 3 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
-    "O Vasco cede cerca de 2 finalizações por jogo de cabeça. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
     "O Vasco cede cerca de 5 finalizações por jogo de fora da área. Atenção: o meia adversário é quem mais finaliza nesses lances.",
     "O Vasco cede cerca de 2 finalizações por jogo após passes do meia adversário."
   ]
