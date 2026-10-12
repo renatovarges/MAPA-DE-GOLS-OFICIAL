@@ -1,11 +1,11 @@
 {
   "teamKey": "atletico-mg",
-  "geradoEm": "2026-10-11T15:21:35.368Z",
+  "geradoEm": "2026-10-12T18:37:41.085Z",
   "ataca": [
-    "O Atlético-MG registra cerca de 8 finalizações por jogo de dentro da área. O meia é quem mais finaliza nesse tipo de jogada.",
+    "O Atlético-MG registra cerca de 9 finalizações por jogo de dentro da área. O meia é quem mais finaliza nesse tipo de jogada.",
     "No Atlético-MG, o ponta-direita registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
-    "No Atlético-MG, passes do meia originam cerca de 3 finalizações por jogo.",
-    "O Atlético-MG registra cerca de 2 finalizações por jogo após cruzamentos. O meia é quem mais finaliza nesse tipo de jogada."
+    "O Atlético-MG registra cerca de 4 finalizações por jogo em jogadas construídas pelo lado direito. O meia é quem mais finaliza nesse tipo de jogada.",
+    "No Atlético-MG, passes do meia originam cerca de 3 finalizações por jogo."
   ],
   "evidenciasAtaca": [
     {
@@ -17,26 +17,31 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "assistentePosicao|meia|",
+      "chave": "ladoDaJogada|direita|meia",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|CRUZAMENTO|meia",
+      "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     }
   ],
   "evidenciasSofre": [
     {
+      "chave": "posicao|ponta-esquerda|",
+      "confianca": "padrao-consolidado"
+    },
+    {
       "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|REBATIDA|volante",
+      "chave": "origem|REBATIDA|ponta-esquerda",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
+    "O Atlético-MG cede cerca de 2 finalizações por jogo ao ponta-esquerda adversário. É uma posição a observar contra essa defesa.",
     "O Atlético-MG cede cerca de 2 finalizações por jogo após passes do meia adversário.",
-    "O Atlético-MG cede cerca de 3 finalizações por jogo após sobras de bola. Atenção: o volante adversário é quem mais finaliza nesses lances."
+    "O Atlético-MG cede cerca de 3 finalizações por jogo após sobras de bola. Atenção: o ponta-esquerda adversário é quem mais finaliza nesses lances."
   ]
 }
