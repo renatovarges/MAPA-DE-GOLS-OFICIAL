@@ -1998,6 +1998,130 @@
           }
         }
       ]
+    },
+    "30": {
+      "roundNumber": 30,
+      "date": "2026-10-12",
+      "opponent": "chapecoense",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 75,
+            "y": 62.33333333333333
+          },
+          "shot": {
+            "x": 89.41975590000001,
+            "y": 45.267399999999995
+          },
+          "assistPlayer": {
+            "id": "80313",
+            "name": "Gilberto",
+            "fullName": "Gilberto Moraes Júnior",
+            "position": "Lateral",
+            "side": null,
+            "team": "athletico-pr"
+          },
+          "shotPlayer": {
+            "id": "123101",
+            "name": "Leozinho",
+            "fullName": "Leonardo Caetano Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "athletico-pr"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 90.56251590000001,
+            "y": 41.65539999999999
+          },
+          "assistPlayer": null,
+          "shotPlayer": null
+        },
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 28.333333333333336
+          },
+          "shot": {
+            "x": 91.5148159,
+            "y": 39.67739999999999
+          },
+          "assistPlayer": {
+            "id": "80313",
+            "name": "Gilberto",
+            "fullName": "Gilberto Moraes Júnior",
+            "position": "Lateral",
+            "side": null,
+            "team": "athletico-pr"
+          },
+          "shotPlayer": {
+            "id": "143193",
+            "name": "Viveros",
+            "fullName": "Kevin Stiven Viveros Rodallega",
+            "position": "Atacante",
+            "side": null,
+            "team": "athletico-pr"
+          }
+        },
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 17
+          },
+          "shot": {
+            "x": 91.3243559,
+            "y": 27.293399999999995
+          },
+          "assistPlayer": {
+            "id": "125746",
+            "name": "Dudu",
+            "fullName": "Eduardo Kogitzki Anastacio",
+            "position": "Meia",
+            "side": null,
+            "team": "athletico-pr"
+          },
+          "shotPlayer": {
+            "id": "143193",
+            "name": "Viveros",
+            "fullName": "Kevin Stiven Viveros Rodallega",
+            "position": "Atacante",
+            "side": null,
+            "team": "athletico-pr"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 21,
+            "y": 62.333333333333336
+          },
+          "shot": {
+            "x": 9.327629599999995,
+            "y": 30.448520000000002
+          },
+          "assistPlayer": {
+            "id": "86292",
+            "name": "Bolasie",
+            "fullName": "Yannick Bolasie",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "shotPlayer": {
+            "id": "108131",
+            "name": "Garcez",
+            "fullName": "Maurício Garcez de Jesus",
+            "position": "Atacante",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
