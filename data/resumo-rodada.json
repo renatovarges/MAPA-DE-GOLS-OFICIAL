@@ -2,9 +2,9 @@
   "versao": 3,
   "tipoLeitura": "pre-jogo",
   "rodada": 31,
-  "rodadaDados": 29,
-  "janelaAte": "2026-10-11",
-  "geradoEm": "2026-10-12T18:37:45.740Z",
+  "rodadaDados": 30,
+  "janelaAte": "2026-10-12",
+  "geradoEm": "2026-10-13T16:44:54.332Z",
   "jogos": [
     {
       "id": 237611,
@@ -93,23 +93,23 @@
     },
     {
       "tipo": "convergencia",
-      "titulo": "Grêmio tem um encaixe favorável contra o Cruzeiro",
-      "chamada": "MARCA GOLS COM SEUS ZAGUEIROS",
-      "timeDestaque": "gremio",
-      "frase": "O Grêmio marca gols com seus zagueiros a uma média de 0,60 por jogo, aparecendo em 5 dos últimos 10 jogos. O Cruzeiro sofre gols de zagueiros a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,10 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "Cruzeiro tem um encaixe favorável contra o Grêmio",
+      "chamada": "MARCA GOLS COM SEUS VOLANTES",
+      "timeDestaque": "cruzeiro",
+      "frase": "O Cruzeiro marca gols com seus volantes a uma média de 0,40 por jogo, aparecendo em 3 dos últimos 10 jogos. O Grêmio sofre gols de volantes a uma média de 0,40 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,14 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "gremio",
-        "cruzeiro"
+        "cruzeiro",
+        "gremio"
       ],
       "scout": "gols",
-      "chave": "posicao:zagueiro"
+      "chave": "posicao:volante"
     },
     {
       "tipo": "convergencia",
       "titulo": "Atlético-MG tem um encaixe favorável contra o Coritiba",
       "chamada": "MARCA GOLS COM SEUS MEIAS",
       "timeDestaque": "atletico-mg",
-      "frase": "O Atlético-MG marca gols com seus meias a uma média de 0,60 por jogo, aparecendo em 5 dos últimos 10 jogos. O Coritiba sofre gols de meias a uma média de 0,70 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,24 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "frase": "O Atlético-MG marca gols com seus meias a uma média de 0,60 por jogo, aparecendo em 5 dos últimos 10 jogos. O Coritiba sofre gols de meias a uma média de 0,70 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,23 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "atletico-mg",
         "coritiba"
@@ -132,42 +132,29 @@
     },
     {
       "tipo": "forca-ofensiva-propria",
-      "titulo": "Internacional mantém um padrão ofensivo recorrente",
-      "chamada": "MARCA GOLS COM SEU PONTA DIREITA",
-      "timeDestaque": "internacional",
-      "frase": "O Internacional marca gols com seu ponta direita a uma média de 0,50 por jogo, aparecendo em 5 dos últimos 10 jogos, acima da referência de 0,11 do campeonato. O Mirassol não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Internacional mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "Grêmio mantém um padrão ofensivo recorrente",
+      "chamada": "MARCA GOLS COM SEUS ZAGUEIROS",
+      "timeDestaque": "gremio",
+      "frase": "O Grêmio marca gols com seus zagueiros a uma média de 0,60 por jogo, aparecendo em 5 dos últimos 10 jogos, acima da referência de 0,10 do campeonato. O Cruzeiro não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Grêmio mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "internacional",
-        "mirassol"
+        "gremio",
+        "cruzeiro"
       ],
       "scout": "gols",
-      "chave": "posicao:ponta-direita"
+      "chave": "posicao:zagueiro"
     },
     {
       "tipo": "fragilidade-defensiva-propria",
       "titulo": "Corinthians apresenta uma vulnerabilidade que merece atenção",
       "chamada": "CEDE PARTICIPAÇÕES EM GOLS PARA LATERAIS-DIREITOS ADVERSÁRIOS",
       "timeDestaque": "corinthians",
-      "frase": "O Corinthians cede participações em gols para laterais-direitos adversários a uma média de 0,50 por jogo, aparecendo em 3 dos últimos 10 jogos, acima da referência de 0,13 do campeonato. O Vitória não tem essa característica entre suas marcas ofensivas mais fortes, mas a vulnerabilidade do adversário é recorrente e merece atenção. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "frase": "O Corinthians cede participações em gols para laterais-direitos adversários a uma média de 0,50 por jogo, aparecendo em 3 dos últimos 10 jogos, acima da referência de 0,14 do campeonato. O Vitória não tem essa característica entre suas marcas ofensivas mais fortes, mas a vulnerabilidade do adversário é recorrente e merece atenção. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "vitoria",
         "corinthians"
       ],
       "scout": "participacoes",
       "chave": "posicao:lateral-direito"
-    },
-    {
-      "tipo": "fragilidade-defensiva-propria",
-      "titulo": "Grêmio apresenta uma vulnerabilidade que merece atenção",
-      "chamada": "CEDE FINALIZAÇÕES EM CRUZAMENTOS VINDOS DA ESQUERDA",
-      "timeDestaque": "gremio",
-      "frase": "O Grêmio cede finalizações em cruzamentos vindos da esquerda a uma média de 2,6 por jogo, aparecendo em 9 dos últimos 10 jogos, acima da referência de 0,8 do campeonato. O Cruzeiro não tem essa característica entre suas marcas ofensivas mais fortes, mas a vulnerabilidade do adversário é recorrente e merece atenção. Na prática, observe os jogadores mais envolvidos nas bolas aéreas e na conclusão de cruzamentos.",
-      "times": [
-        "cruzeiro",
-        "gremio"
-      ],
-      "scout": "finalizacoes",
-      "chave": "cruzamento:esquerda"
     },
     {
       "tipo": "forca-ofensiva-propria",
@@ -181,19 +168,30 @@
       ],
       "scout": "finalizacoes",
       "chave": "origem:lancamento"
+    },
+    {
+      "tipo": "destaque-defensivo",
+      "frase": "Vasco apresenta o melhor controle defensivo da amostra: permite cerca de 10,7 finalizações por jogo. Internacional (11,1 por jogo) e Palmeiras (11,3 por jogo) também estão entre as defesas que menos permitem chutes. Na prática, são as equipes que mais reduzem o volume ofensivo dos adversários.",
+      "times": [
+        "vasco",
+        "internacional",
+        "palmeiras"
+      ],
+      "chamada": "CONTROLE DEFENSIVO",
+      "timeDestaque": "vasco"
     }
   ],
   "statusAtualizacao": {
-    "estado": "parcial",
-    "rodada": 29,
-    "jogosProcessados": 7,
+    "estado": "pronto",
+    "rodada": 30,
+    "jogosProcessados": 10,
     "jogosEsperados": 10,
-    "timesAtualizados": 14,
+    "timesAtualizados": 20,
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-10-12T18:37:45.740Z",
-    "ultimaPartidaEm": "2026-10-11",
+    "atualizadoEm": "2026-10-13T16:44:54.332Z",
+    "ultimaPartidaEm": "2026-10-12",
     "rodadaLeitura": 31
   }
 }
