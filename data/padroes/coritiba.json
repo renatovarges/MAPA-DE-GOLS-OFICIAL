@@ -1,11 +1,11 @@
 {
   "teamKey": "coritiba",
-  "geradoEm": "2026-10-12T18:37:41.085Z",
+  "geradoEm": "2026-10-13T16:44:47.750Z",
   "ataca": [
-    "No Coritiba, o ponta-esquerda registra cerca de 4 finalizações por jogo. É uma posição a observar na escalação.",
-    "O Coritiba registra cerca de 3 finalizações por jogo após sobras de bola. O ponta-direita é quem mais finaliza nesse tipo de jogada.",
-    "No Coritiba, passes do ponta-esquerda originam cerca de 2 finalizações por jogo.",
-    "O Coritiba registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado esquerdo. O ponta-esquerda é quem mais finaliza nesse tipo de jogada."
+    "No Coritiba, o ponta-esquerda registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
+    "O Coritiba registra cerca de 3 finalizações por jogo após sobras de bola. O ponta-esquerda é quem mais finaliza nesse tipo de jogada.",
+    "O Coritiba registra cerca de 5 finalizações por jogo de fora da área. O meia é quem mais finaliza nesse tipo de jogada.",
+    "No Coritiba, passes do meia originam cerca de 2 finalizações por jogo."
   ],
   "evidenciasAtaca": [
     {
@@ -13,25 +13,35 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|REBATIDA|ponta-direita",
+      "chave": "origem|REBATIDA|ponta-esquerda",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "assistentePosicao|ponta-esquerda|",
+      "chave": "area|fora-da-area|meia",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "ladoDaJogada|esquerda|ponta-esquerda",
+      "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     }
   ],
   "evidenciasSofre": [
     {
-      "chave": "posicao|ponta-esquerda|",
+      "chave": "area|fora-da-area|meia",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "origem|REBATIDA|volante",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "posicao|meia|",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
-    "O Coritiba cede cerca de 3 finalizações por jogo ao ponta-esquerda adversário. É uma posição a observar contra essa defesa."
+    "O Coritiba cede cerca de 8 finalizações por jogo de fora da área. Atenção: o meia adversário é quem mais finaliza nesses lances.",
+    "O Coritiba cede cerca de 4 finalizações por jogo após sobras de bola. Atenção: o volante adversário é quem mais finaliza nesses lances.",
+    "O Coritiba cede cerca de 3 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa."
   ]
 }
