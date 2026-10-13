@@ -1744,6 +1744,134 @@
           }
         }
       ]
+    },
+    "30": {
+      "roundNumber": 30,
+      "date": "2026-10-12",
+      "opponent": "cruzeiro",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 5.666666666666666
+          },
+          "shot": {
+            "x": 91.1338959,
+            "y": 24.320379999999997
+          },
+          "assistPlayer": {
+            "id": "122573",
+            "name": "Wallace Yan",
+            "fullName": "Wallace Yan de Souza Barreto",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "shotPlayer": {
+            "id": "112886",
+            "name": "Lucas Barbosa",
+            "fullName": "Lucas Henrique Barbosa",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.18210590000001,
+            "y": 28.620379999999994
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "103295",
+            "name": "Eric Ramires",
+            "fullName": "Eric dos Santos Rodrigues",
+            "position": "Meia",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        },
+        {
+          "pass": {
+            "x": 58.333333333333336,
+            "y": 39.66666666666667
+          },
+          "shot": {
+            "x": 78.4683059,
+            "y": 32.490379999999995
+          },
+          "assistPlayer": {
+            "id": "108133",
+            "name": "Isidro Pitta",
+            "fullName": "Isidro Miguel Pitta Saldívar",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          },
+          "shotPlayer": {
+            "id": "123738",
+            "name": "Herrera",
+            "fullName": "José María Herrera Ares",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        },
+        {
+          "shot": null,
+          "pass": null,
+          "assistPlayer": null,
+          "shotPlayer": null,
+          "isOwnGoal": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 17
+          },
+          "shot": {
+            "x": 5.849829999999997,
+            "y": 27.740380000000002
+          },
+          "assistPlayer": {
+            "id": "103445",
+            "name": "Kaio Jorge",
+            "fullName": "Kaio Jorge Pinto Ramos",
+            "position": "Atacante",
+            "side": null,
+            "team": "cruzeiro"
+          },
+          "shotPlayer": {
+            "id": "141160",
+            "name": "Zé Lucas",
+            "fullName": "José Lucas Gomes da Silva",
+            "position": "Meia",
+            "side": null,
+            "team": "cruzeiro"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 9.182879999999997,
+            "y": 28.084380000000003
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "100742",
+            "name": "Matheus Henrique",
+            "fullName": "Matheus Henrique de Souza",
+            "position": "Meia",
+            "side": null,
+            "team": "cruzeiro"
+          }
+        }
+      ]
     }
   }
 }
