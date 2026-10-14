@@ -469,9 +469,31 @@ class Handler(SimpleHTTPRequestHandler):
     def _sem_sessao_get(self, path, head=False):
         """Sem sessão: páginas viram a tela de login; o resto leva 401."""
         if path in ('/', '/index.html') or path.endswith('/'):
-            self.path = '/login.html'
-            return SimpleHTTPRequestHandler.do_HEAD(self) if head else SimpleHTTPRequestHandler.do_GET(self)
+            return self._servir_login(head)
         self._responder_json(401, {'error': 'nao_autorizado'})
+
+    def _servir_login(self, head=False):
+        # Sem Last-Modified/ETag e com no-store: o navegador NUNCA pode guardar
+        # a tela de login como se fosse a página inicial (senão, depois de
+        # entrar, ele reexibiria a tela de login via 304 "nada mudou").
+        with open(os.path.join(ROOT, 'login.html'), 'rb') as f:
+            corpo = f.read()
+        self._cache_proprio = True
+        self.send_response(200)
+        self.send_header('Content-Type', 'text/html; charset=utf-8')
+        self.send_header('Content-Length', str(len(corpo)))
+        self.send_header('Cache-Control', 'no-store')
+        self.end_headers()
+        if not head:
+            self.wfile.write(corpo)
+
+    def _sem_validadores(self, path):
+        # Navegadores que já guardaram a tela de login (versão anterior) pedem
+        # '/' de forma condicional; aqui sempre respondemos 200 com a página.
+        if path in ('/', '/index.html'):
+            for h in ('If-Modified-Since', 'If-None-Match'):
+                if h in self.headers:
+                    del self.headers[h]
 
     def _login(self):
         if not ACCESS_PIN:
@@ -494,6 +516,7 @@ class Handler(SimpleHTTPRequestHandler):
     def do_HEAD(self):
         path = self.path.split('?', 1)[0]
         if path in PUBLIC_PATHS or self._autorizado():
+            self._sem_validadores(path)
             return super().do_HEAD()
         return self._sem_sessao_get(path, head=True)
 
@@ -501,6 +524,7 @@ class Handler(SimpleHTTPRequestHandler):
         path = self.path.split('?', 1)[0]
         if not (path in PUBLIC_PATHS or self._autorizado()):
             return self._sem_sessao_get(path)
+        self._sem_validadores(path)
         if self.path == '/api/jogadores':
             self.handle_jogadores()
         else:
@@ -527,7 +551,10 @@ class Handler(SimpleHTTPRequestHandler):
         # navegador. `no-cache, must-revalidate` obriga sempre revalidar
         # com o servidor antes de usar a cópia guardada (ele ainda responde
         # 304 quando nada mudou, então não pesa banda).
-        self.send_header('Cache-Control', 'no-cache, must-revalidate')
+        if not getattr(self, '_cache_proprio', False):
+            # Dados protegidos por login: nunca em cache compartilhado (CDN).
+            self.send_header('Cache-Control', 'private, no-cache, must-revalidate')
+        self.send_header('Vary', 'Cookie')
         super().end_headers()
 
     def handle_jogadores(self):
