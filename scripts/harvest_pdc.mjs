@@ -25,6 +25,7 @@
  *
  * Rodar: ENVIO_REAL=1 pra gravar de verdade, SITE_URL pra apontar servidor.
  */
+import "./lib/site-auth.mjs"; // envia a chave do robô ao site ao vivo (ver lib/site-auth.mjs)
 import { chromium } from "playwright";
 import { parsePdcHtml } from "./lib/pdc.mjs";
 import { fetchJsonWithRetry } from "./lib/http.mjs";

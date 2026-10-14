@@ -1,3 +1,4 @@
+import "./lib/site-auth.mjs"; // envia a chave do robô ao site ao vivo (ver lib/site-auth.mjs)
 import { fetchJsonWithRetry } from "./lib/http.mjs";
 import { finalizacoesPonderadas, detectarPadroesInternos, distintividade, distribuicoesDeShare, DIMENSOES } from "./lib/shot-patterns.mjs";
 import { gerarFrases } from "./lib/shot-phrases.mjs";

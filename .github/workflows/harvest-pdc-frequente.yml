@@ -33,9 +33,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Ativar chave do robô nas requisições ao site
-        run: echo "NODE_OPTIONS=--import $GITHUB_WORKSPACE/scripts/lib/site-auth.mjs" >> "$GITHUB_ENV"
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -59,9 +56,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Ativar chave do robô nas requisições ao site
-        run: echo "NODE_OPTIONS=--import $GITHUB_WORKSPACE/scripts/lib/site-auth.mjs" >> "$GITHUB_ENV"
 
       - uses: actions/setup-node@v4
         with:

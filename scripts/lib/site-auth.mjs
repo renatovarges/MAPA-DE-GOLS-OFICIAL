@@ -1,4 +1,4 @@
-// Pré-carregado via NODE_OPTIONS="--import <este arquivo>" nos workflows.
+// Importado no topo de cada script que fala com o site ao vivo.
 // Acrescenta o cabeçalho X-Robot-Key em toda requisição feita ao site ao vivo
 // (SITE_URL), que agora exige login. Não toca em requisições a outros sites.
 const chave = process.env.ROBOT_KEY;

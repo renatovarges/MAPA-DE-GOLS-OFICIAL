@@ -1,3 +1,4 @@
+import "./lib/site-auth.mjs"; // envia a chave do robô ao site ao vivo (ver lib/site-auth.mjs)
 import fs from "node:fs";
 import { getFootstatsToken } from "./lib/footstats-auth.mjs";
 import { fetchJsonWithRetry } from "./lib/http.mjs";
