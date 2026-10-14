@@ -530,58 +530,64 @@ class Handler(SimpleHTTPRequestHandler):
         else:
             super().do_GET()
 
+    def _restaurar_do_github(self, simular):
+        """Repõe data/*.json zerados ({"rounds": {}}) com a cópia do GitHub.
+        Só toca em arquivo ausente ou no estado zerado; nunca sobrescreve
+        arquivo que tenha conteúdo. Com simular=True só lista o que faria."""
+        cab = {'User-Agent': 'mapa-de-gols', 'Accept': 'application/vnd.github+json'}
+        if GITHUB_TOKEN:
+            cab['Authorization'] = f'token {GITHUB_TOKEN}'
+        restaurados, mantidos, erros = [], 0, []
+        try:
+            req = urllib.request.Request(
+                f'https://api.github.com/repos/{GITHUB_REPO}/git/trees/{GITHUB_BRANCH}?recursive=1', headers=cab)
+            with urllib.request.urlopen(req, timeout=30) as r:
+                arvore = json.loads(r.read().decode('utf-8'))
+            caminhos = [i['path'] for i in arvore.get('tree', [])
+                        if i.get('type') == 'blob' and i['path'].startswith('data/')
+                        and i['path'].count('/') == 1 and i['path'].endswith('.json')]
+        except Exception as e:
+            return self._responder_json(502, {'error': 'github_indisponivel', 'detail': str(e)})
+        os.makedirs(DATA_DIR, exist_ok=True)
+        for caminho in caminhos:
+            destino = os.path.join(ROOT, caminho)
+            try:
+                zerado = True
+                if os.path.exists(destino):
+                    with open(destino, 'r', encoding='utf-8') as f:
+                        zerado = json.load(f) == {'rounds': {}}
+                if not zerado:
+                    mantidos += 1
+                    continue
+                req = urllib.request.Request(
+                    f'https://raw.githubusercontent.com/{GITHUB_REPO}/{GITHUB_BRANCH}/{caminho}', headers=cab)
+                with urllib.request.urlopen(req, timeout=30) as r:
+                    conteudo = r.read()
+                json.loads(conteudo.decode('utf-8'))  # só grava JSON válido
+                if conteudo.strip() and json.loads(conteudo.decode('utf-8')) != {'rounds': {}}:
+                    if not simular:
+                        tmp = destino + '.tmp'
+                        with open(tmp, 'wb') as f:
+                            f.write(conteudo)
+                        os.replace(tmp, destino)
+                    restaurados.append(os.path.basename(caminho))
+                else:
+                    mantidos += 1
+            except Exception as e:
+                erros.append(f'{os.path.basename(caminho)}: {e}')
+        self._responder_json(200, {'simulacao': simular, 'restaurados': len(restaurados),
+                                   'mantidos_com_conteudo': mantidos, 'erros': erros,
+                                   'arquivos': restaurados})
+
     def do_POST(self):
         path = self.path.split('?', 1)[0]
         if path == '/api/login':
             return self._login()
         if not self._autorizado():
             return self._responder_json(401, {'error': 'nao_autorizado'})
+        if path == '/api/restore-from-github':
+            return self._restaurar_do_github('dry=1' in self.path)
         return self._post_autorizado()
-
-    def end_headers(self):
-        # Achado 2026-08: nenhum arquivo servido daqui tinha Cache-Control
-        # próprio — o index.html sozinho já causou um deploy inteiro ficar
-        # invisível pro Renato, mesmo testando em navegadores/redes
-        # diferentes (Chrome, Brave, outro perfil, aba anônima — logo não
-        # era cache do navegador dele, era alguma camada entre o servidor
-        # e ele, provavelmente o Cloudflare que fica na frente do Render).
-        # Primeira correção cobriu só HTML; essa cobre TUDO que passa por
-        # aqui — script.js, style.css, data/*.json, o que for — pra fechar
-        # de vez qualquer brecha de cache intermediário, não só a do
-        # navegador. `no-cache, must-revalidate` obriga sempre revalidar
-        # com o servidor antes de usar a cópia guardada (ele ainda responde
-        # 304 quando nada mudou, então não pesa banda).
-        if not getattr(self, '_cache_proprio', False):
-            # Dados protegidos por login: nunca em cache compartilhado (CDN).
-            self.send_header('Cache-Control', 'private, no-cache, must-revalidate')
-        self.send_header('Vary', 'Cookie')
-        super().end_headers()
-
-    def handle_jogadores(self):
-        """Endpoint que retorna jogadores: API em tempo real ou CSV como fallback."""
-        jogadores, api_ok = buscar_jogadores_api()
-
-        if not api_ok or len(jogadores) == 0:
-            print('[jogadores] API indisponível, usando CSV como fallback.')
-            jogadores = buscar_jogadores_csv()
-            fonte = 'csv'
-        else:
-            print(f'[jogadores] API retornou {len(jogadores)} jogadores.')
-            fonte = 'api'
-
-        resposta = {
-            'fonte': fonte,
-            'total': len(jogadores),
-            'jogadores': jogadores,
-        }
-
-        body = json.dumps(resposta, ensure_ascii=False).encode('utf-8')
-        self.send_response(200)
-        self.send_header('Content-Type', 'application/json; charset=utf-8')
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Content-Length', str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
 
     def _post_autorizado(self):
         if self.path == '/api/clear-all':
