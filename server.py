@@ -4,6 +4,9 @@ import csv
 import base64
 import time
 import threading
+import hmac
+import hashlib
+import secrets
 import urllib.request
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 
@@ -382,13 +385,134 @@ def sync_provaveis_to_github_async(file_paths):
     t.start()
 
 
+# --- AUTENTICAÇÃO (PIN no servidor) ---------------------------------------
+# O PIN NUNCA fica no código: vem da variável de ambiente ACCESS_PIN (Render).
+# Quem chega sem sessão só enxerga a tela de login. Coletas automáticas e o
+# robô entram com o cabeçalho X-Robot-Key (variável ROBOT_KEY).
+# Sem ACCESS_PIN configurado o site fica TRANCADO (falha segura), nunca aberto.
+ACCESS_PIN = os.environ.get('ACCESS_PIN', '').strip()
+ROBOT_KEY = os.environ.get('ROBOT_KEY', '').strip()
+if os.environ.get('SESSION_SECRET'):
+    _SESSION_KEY = os.environ['SESSION_SECRET'].encode('utf-8')
+elif ACCESS_PIN:
+    _SESSION_KEY = hashlib.sha256(f'mapa|{ACCESS_PIN}|{ROBOT_KEY}'.encode('utf-8')).digest()
+else:
+    _SESSION_KEY = secrets.token_bytes(32)
+SESSION_COOKIE = 'mapa_session'
+SESSION_TTL = 30 * 24 * 3600  # 30 dias
+# Únicos arquivos servidos sem sessão (a tela de login e o logo dela).
+PUBLIC_PATHS = {'/login.html', '/TCCBRANCOTRANSPARENTE.png'}
+# Freio contra tentativa em massa de PIN: no máximo 20 erros a cada 10 min,
+# somando todos os visitantes (não depende de IP, que dá pra falsificar).
+_LOGIN_FAILS = []
+_LOGIN_LOCK = threading.Lock()
+LOGIN_MAX_FAILS = 20
+LOGIN_WINDOW = 600
+
+
+def _assinar_sessao(expira):
+    return hmac.new(_SESSION_KEY, str(expira).encode('ascii'), hashlib.sha256).hexdigest()
+
+
+def _criar_sessao():
+    expira = int(time.time()) + SESSION_TTL
+    return f'{expira}.{_assinar_sessao(expira)}'
+
+
+def _sessao_valida(token):
+    try:
+        expira_txt, assinatura = token.split('.', 1)
+        expira = int(expira_txt)
+    except Exception:
+        return False
+    if expira < time.time():
+        return False
+    return hmac.compare_digest(assinatura, _assinar_sessao(expira))
+
+
+def _login_bloqueado():
+    agora = time.time()
+    with _LOGIN_LOCK:
+        _LOGIN_FAILS[:] = [t for t in _LOGIN_FAILS if agora - t < LOGIN_WINDOW]
+        return len(_LOGIN_FAILS) >= LOGIN_MAX_FAILS
+
+
+def _registrar_falha_login():
+    with _LOGIN_LOCK:
+        _LOGIN_FAILS.append(time.time())
+
+
 class Handler(SimpleHTTPRequestHandler):
 
+    # ---- autenticação ----
+    def _autorizado(self):
+        if ROBOT_KEY:
+            chave = self.headers.get('X-Robot-Key', '')
+            if chave and hmac.compare_digest(chave.encode('utf-8'), ROBOT_KEY.encode('utf-8')):
+                return True
+        for parte in self.headers.get('Cookie', '').split(';'):
+            nome, _, valor = parte.strip().partition('=')
+            if nome == SESSION_COOKIE and _sessao_valida(valor):
+                return True
+        return False
+
+    def _responder_json(self, status, obj, extra_headers=None):
+        body = json.dumps(obj, ensure_ascii=False).encode('utf-8')
+        self.send_response(status)
+        self.send_header('Content-Type', 'application/json; charset=utf-8')
+        self.send_header('Content-Length', str(len(body)))
+        for k, v in (extra_headers or []):
+            self.send_header(k, v)
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _sem_sessao_get(self, path, head=False):
+        """Sem sessão: páginas viram a tela de login; o resto leva 401."""
+        if path in ('/', '/index.html') or path.endswith('/'):
+            self.path = '/login.html'
+            return SimpleHTTPRequestHandler.do_HEAD(self) if head else SimpleHTTPRequestHandler.do_GET(self)
+        self._responder_json(401, {'error': 'nao_autorizado'})
+
+    def _login(self):
+        if not ACCESS_PIN:
+            return self._responder_json(503, {'error': 'acesso_nao_configurado'})
+        if _login_bloqueado():
+            return self._responder_json(429, {'error': 'muitas_tentativas'})
+        try:
+            tamanho = min(int(self.headers.get('Content-Length', '0')), 1024)
+            pin = str(json.loads(self.rfile.read(tamanho).decode('utf-8')).get('pin', '')).strip()
+        except Exception:
+            return self._responder_json(400, {'error': 'requisicao_invalida'})
+        if hmac.compare_digest(pin.encode('utf-8'), ACCESS_PIN.encode('utf-8')):
+            cookie = f'{SESSION_COOKIE}={_criar_sessao()}; Path=/; Max-Age={SESSION_TTL}; HttpOnly; SameSite=Lax'
+            if self.headers.get('X-Forwarded-Proto', '') == 'https':
+                cookie += '; Secure'
+            return self._responder_json(200, {'ok': True}, [('Set-Cookie', cookie)])
+        _registrar_falha_login()
+        return self._responder_json(401, {'error': 'pin_incorreto'})
+
+    def do_HEAD(self):
+        path = self.path.split('?', 1)[0]
+        if path in PUBLIC_PATHS or self._autorizado():
+            return super().do_HEAD()
+        return self._sem_sessao_get(path, head=True)
+
     def do_GET(self):
+        path = self.path.split('?', 1)[0]
+        if not (path in PUBLIC_PATHS or self._autorizado()):
+            return self._sem_sessao_get(path)
         if self.path == '/api/jogadores':
             self.handle_jogadores()
         else:
             super().do_GET()
+
+    def do_POST(self):
+        path = self.path.split('?', 1)[0]
+        if path == '/api/login':
+            return self._login()
+        if not self._autorizado():
+            return self._responder_json(401, {'error': 'nao_autorizado'})
+        return self._post_autorizado()
 
     def end_headers(self):
         # Achado 2026-08: nenhum arquivo servido daqui tinha Cache-Control
@@ -432,7 +556,7 @@ class Handler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-    def do_POST(self):
+    def _post_autorizado(self):
         if self.path == '/api/clear-all':
             # Endpoint para limpar todos os gols de todos os times
             try:

@@ -21,6 +21,11 @@ on:
     - cron: "0 */2 * * *"
   workflow_dispatch: {}
 
+# O site ao vivo agora exige login; as coletas entram com a chave do robô.
+env:
+  ROBOT_KEY: ${{ secrets.ROBOT_KEY }}
+  NODE_OPTIONS: "--import ${{ github.workspace }}/scripts/lib/site-auth.mjs"
+
 jobs:
   checar:
     runs-on: ubuntu-latest

@@ -1,46 +1,15 @@
 // Renderização com marcadores circulares (P/A/C) e linha// @ts-check
 
-// ===== PROTEÇÃO POR SENHA =====
+// ===== ACESSO =====
+// O PIN agora é conferido no servidor (server.py). Se esta página chegou aqui,
+// a sessão já é válida: só tiramos a tela de login antiga de cima do app.
 (function () {
-  const SENHA_CORRETA = '1979';
-  const SESSION_KEY = 'mapagols_auth';
-
   const overlay = document.getElementById('loginOverlay');
   const app = document.getElementById('app');
-  const input = document.getElementById('loginInput');
-  const btn = document.getElementById('loginBtn');
-  const erro = document.getElementById('loginError');
-
-  function liberar() {
-    overlay.style.display = 'none';
-    app.style.display = '';
-    sessionStorage.setItem(SESSION_KEY, '1');
-  }
-
-  // Se já autenticou nesta sessão, libera direto
-  if (sessionStorage.getItem(SESSION_KEY) === '1') {
-    liberar();
-  }
-
-  function tentarLogin() {
-    if (input.value === SENHA_CORRETA) {
-      liberar();
-    } else {
-      erro.style.display = 'block';
-      input.value = '';
-      input.focus();
-    }
-  }
-
-  btn.addEventListener('click', tentarLogin);
-  input.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') tentarLogin();
-  });
-
-  // Focar no campo automaticamente
-  setTimeout(function () { input.focus(); }, 100);
+  if (overlay) overlay.style.display = 'none';
+  if (app) app.style.display = '';
 })();
-// ===== FIM PROTEÇÃO POR SENHA =====
+// ===== FIM ACESSO =====
 
 const svg = document.getElementById('overlay');
 const defensiveLayer = document.getElementById('defensiveLayer');

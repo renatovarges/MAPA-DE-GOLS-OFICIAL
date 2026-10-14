@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mapa de Gols - Acesso</title>
+  <style>
+    body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:#0d3d2a;font-family:sans-serif;color:#f7fff9}
+    h2{margin:0;letter-spacing:1px;text-align:center}
+    p{margin:0;font-size:14px;color:#a7f3d0}
+    .linha{display:flex;gap:8px;align-items:center}
+    input{padding:10px 16px;font-size:18px;border-radius:6px;border:2px solid #22c55e;background:#1a5c3a;color:#f7fff9;outline:none;letter-spacing:4px;width:160px;text-align:center}
+    button{padding:10px 20px;font-size:16px;border-radius:6px;background:#22c55e;color:#0d3d2a;border:none;cursor:pointer;font-weight:bold}
+    #erro{color:#ef4444;font-size:13px;display:none}
+  </style>
+</head>
+<body>
+  <img src="/TCCBRANCOTRANSPARENTE.png" alt="Logo TCC" style="height:100px" />
+  <h2>MAPA DE GOLS E ASSISTÊNCIAS</h2>
+  <p>Digite o PIN para acessar</p>
+  <form class="linha" id="form">
+    <input id="pin" type="password" placeholder="PIN" autocomplete="current-password" inputmode="numeric" autofocus />
+    <button type="submit">Entrar</button>
+  </form>
+  <p id="erro"></p>
+  <script>
+    var erro = document.getElementById('erro');
+    document.getElementById('form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var campo = document.getElementById('pin');
+      fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin: campo.value })
+      }).then(function (r) {
+        if (r.ok) { location.href = '/'; return; }
+        erro.textContent = r.status === 429 ? 'Muitas tentativas. Aguarde alguns minutos.'
+          : r.status === 503 ? 'Acesso ainda não configurado no servidor.'
+          : 'PIN incorreto. Tente novamente.';
+        erro.style.display = 'block';
+        campo.value = ''; campo.focus();
+      }).catch(function () {
+        erro.textContent = 'Falha de conexão. Tente novamente.';
+        erro.style.display = 'block';
+      });
+    });
+  </script>
+</body>
+</html>
