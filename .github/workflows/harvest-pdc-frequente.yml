@@ -24,7 +24,6 @@ on:
 # O site ao vivo agora exige login; as coletas entram com a chave do robô.
 env:
   ROBOT_KEY: ${{ secrets.ROBOT_KEY }}
-  NODE_OPTIONS: "--import ${{ github.workspace }}/scripts/lib/site-auth.mjs"
 
 jobs:
   checar:
@@ -33,6 +32,9 @@ jobs:
       deve_coletar: ${{ steps.check.outputs.deve_coletar }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Ativar chave do robô nas requisições ao site
+        run: echo "NODE_OPTIONS=--import $GITHUB_WORKSPACE/scripts/lib/site-auth.mjs" >> "$GITHUB_ENV"
 
       - uses: actions/setup-node@v4
         with:
@@ -57,6 +59,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Ativar chave do robô nas requisições ao site
+        run: echo "NODE_OPTIONS=--import $GITHUB_WORKSPACE/scripts/lib/site-auth.mjs" >> "$GITHUB_ENV"
 
       - uses: actions/setup-node@v4
         with:
