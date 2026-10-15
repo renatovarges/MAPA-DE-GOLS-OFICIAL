@@ -308,7 +308,14 @@ async function main() {
     // idSkill 13 = "Gol contra do adversário" — ver achado no cabeçalho.
     // `idTeam` é sempre o time BENEFICIADO pelo gol contra.
     const eventosGolContra = (fieldPos.data || []).filter((e) => e.idSkill === 13);
-    if (!gols.length && !eventosGolContra.length) continue;
+    // Jogo SEM gols: só grava se o placar OFICIAL confirma 0 x 0 — assim o
+    // jogo entra na janela dos "últimos N jogos" do time (um 0 x 0 não pode
+    // ser pulado, senão o mapa mostra jogos mais antigos no lugar). Se o placar
+    // tem gols mas a API não devolveu nenhum, é dado incompleto: não grava.
+    if (!gols.length && !eventosGolContra.length) {
+      const zeroAZero = m.goalshome != null && m.goalsaway != null && Number(m.goalshome) === 0 && Number(m.goalsaway) === 0;
+      if (!zeroAZero) continue;
+    }
 
     const placarOficial = (Number(m.goalshome) || 0) + (Number(m.goalsaway) || 0);
     const totalContabilizado = gols.length + eventosGolContra.length;
