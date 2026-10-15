@@ -14,6 +14,8 @@
  *   - "Última coleta" = geradoEm de data/resumo-rodada.json, regravado a cada
  *     execução completa deste workflow.
  *   - Coleta se existe dia de jogo cujo último jogo já terminou depois da última coleta.
+ *   - Jogo com placar no Cartola e sem dados no site (e fora da lista de
+ *     ocorrências conhecidas) também libera, 1x a cada 24h no máximo.
  *   - Rede de segurança: se faz >= 5 dias que não coleta (jogo adiado,
  *     calendário velho, falha silenciosa), coleta também.
  *   - Se não conseguir ler o calendário ou a última coleta, coleta (na dúvida,
@@ -25,9 +27,20 @@
  * Imprime só "sim" ou "nao" em stdout; o motivo vai pro stderr (log).
  */
 import "./lib/site-auth.mjs";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { fetchJsonWithRetry } from "./lib/http.mjs";
 
 const SITE_URL = process.env.SITE_URL || "https://mapa-de-gols-oficial.onrender.com";
+const SIGLA_PARA_TIME = {
+  BAH: "bahia", BOT: "botafogo", CAM: "atletico-mg", CAP: "athletico-pr", CFC: "coritiba",
+  CHA: "chapecoense", COR: "corinthians", CRU: "cruzeiro", FLA: "flamengo", FLU: "fluminense",
+  GRE: "gremio", INT: "internacional", MIR: "mirassol", PAL: "palmeiras", RBB: "red-bull-bragantino",
+  REM: "remo", SAN: "santos", SAO: "sao-paulo", VAS: "vasco", VIT: "vitoria",
+};
+const HORAS_ENTRE_TENTATIVAS_POR_PLACAR = 24;
+const ARQUIVO_CONHECIDOS = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "data", "jogos-sem-dados-conhecidos.json");
 const CARTOLA_API = "https://api.cartola.globo.com";
 const HORAS_ATE_FIM_DO_JOGO = 3;
 const DIAS_REDE_DE_SEGURANCA = 5;
@@ -56,6 +69,7 @@ export async function deveColetarGols() {
   // na R31), que não está no calendário do site. Só conta jogo cuja data cai
   // depois da última coleta, então rodada antiga normal nunca dispara nada. Se uma das fontes falhar, usa a outra.
   const inicios = [];
+  const comPlacar = []; // jogos com placar no Cartola: { rodada, casa, fora }
   let leuAlgumaFonte = false;
   try {
     const calendario = await fetchJsonWithRetry(`${SITE_URL}/data/proximo-confronto.json?t=${Date.now()}`);
@@ -68,7 +82,14 @@ export async function deveColetarGols() {
     if (r > 0) {
       const rodadas = Array.from({ length: Math.min(38, r + 1) }, (_, i) => i + 1); // todas: pega adiado de qualquer rodada
       const listas = await Promise.all(rodadas.map((n) => n === r ? atual : fetchJsonWithRetry(`${CARTOLA_API}/partidas/${n}`).catch(() => null)));
-      for (const l of listas) for (const j of l?.partidas || []) if (j?.partida_data) inicios.push(String(j.partida_data).replace(" ", "T"));
+      for (const l of listas) for (const j of l?.partidas || []) {
+        if (j?.partida_data) inicios.push(String(j.partida_data).replace(" ", "T"));
+        if (j?.placar_oficial_mandante != null && j?.placar_oficial_visitante != null) {
+          const casa = SIGLA_PARA_TIME[l.clubes?.[j.clube_casa_id]?.abreviacao];
+          const fora = SIGLA_PARA_TIME[l.clubes?.[j.clube_visitante_id]?.abreviacao];
+          if (casa && fora && l.rodada) comPlacar.push({ rodada: Number(l.rodada), casa, fora });
+        }
+      }
       leuAlgumaFonte = true;
     }
   } catch { /* segue com o calendário do site */ }
@@ -85,6 +106,28 @@ export async function deveColetarGols() {
   }
   const fins = Object.values(porDia);
   if (!fins.length) return { sim: true, motivo: "calendário vazio" };
+
+  // Rede extra: jogo COM PLACAR no Cartola que o nosso site ainda não tem
+  // (cobre jogo remarcado sem data nova no Cartola, ex.: Chapecoense x Vasco R21).
+  // Só conta ocorrência NOVA (fora de data/jogos-sem-dados-conhecidos.json — jogos
+  // que a FootStats nunca registrou) e no máximo 1 tentativa a cada 24h.
+  try {
+    const times = [...new Set(comPlacar.flatMap((j) => [j.casa, j.fora]))];
+    const rodadasDoTime = {};
+    await Promise.all(times.map(async (t) => {
+      const d = await fetchJsonWithRetry(`${SITE_URL}/data/${t}.json?t=${Date.now()}`);
+      rodadasDoTime[t] = new Set(Object.keys(d?.rounds || {}));
+    }));
+    let conhecidos = new Set();
+    try { conhecidos = new Set(JSON.parse(fs.readFileSync(ARQUIVO_CONHECIDOS, "utf8"))); } catch { /* sem lista = tudo é novo */ }
+    const faltando = comPlacar
+      .filter((j) => !rodadasDoTime[j.casa]?.has(String(j.rodada)) || !rodadasDoTime[j.fora]?.has(String(j.rodada)))
+      .map((j) => `${j.rodada}|${j.casa}|${j.fora}`);
+    const novos = faltando.filter((k) => !conhecidos.has(k));
+    if (novos.length && diasParado * 24 >= HORAS_ENTRE_TENTATIVAS_POR_PLACAR) {
+      return { sim: true, motivo: `jogo(s) com placar no Cartola e sem dados no site: ${novos.slice(0, 3).join(", ")}${novos.length > 3 ? "…" : ""}` };
+    }
+  } catch { /* sem a checagem extra, vale o resto */ }
 
   const agora = Date.now();
   const pendentes = fins.filter((t) => t <= agora && t > ultima.getTime());
