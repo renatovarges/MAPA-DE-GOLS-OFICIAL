@@ -8,11 +8,11 @@
  * em que houve jogo, em vez de todo dia.
  *   - Lê o calendário já publicado (data/proximo-confronto.json; datas em
  *     horário de Brasília, sem fuso no arquivo).
- *   - Um jogo conta como "terminado" 3h depois do apito inicial (90 min +
- *     intervalo + acréscimos + folga pra FootStats publicar).
+ *   - Uma coleta por DIA de jogo: 3h depois do início do ÚLTIMO jogo do dia
+ *     (90 min + intervalo + acréscimos + folga pra FootStats publicar).
  *   - "Última coleta" = geradoEm de data/resumo-rodada.json, regravado a cada
  *     execução completa deste workflow.
- *   - Coleta se existe jogo terminado depois da última coleta.
+ *   - Coleta se existe dia de jogo cujo último jogo já terminou depois da última coleta.
  *   - Rede de segurança: se faz >= 5 dias que não coleta (jogo adiado,
  *     calendário velho, falha silenciosa), coleta também.
  *   - Se não conseguir ler o calendário ou a última coleta, coleta (na dúvida,
@@ -54,19 +54,27 @@ export async function deveColetarGols() {
   } catch {
     return { sim: true, motivo: "não consegui ler o calendário" };
   }
-  const fins = [...new Set(Object.values(calendario || {}).map((c) => c && c.data).filter(Boolean))]
-    .map((d) => emBrasilia(d).getTime() + HORAS_ATE_FIM_DO_JOGO * 3_600_000)
-    .filter((t) => !Number.isNaN(t));
+  // Agrupa os jogos por DIA (calendário de Brasília) e pega o fim do ÚLTIMO jogo
+  // de cada dia: uma coleta por dia de jogo, depois do último jogo do dia.
+  const porDia = {};
+  for (const c of Object.values(calendario || {})) {
+    if (!c || !c.data) continue;
+    const inicio = emBrasilia(c.data).getTime();
+    if (Number.isNaN(inicio)) continue;
+    const dia = String(c.data).slice(0, 10);
+    porDia[dia] = Math.max(porDia[dia] || 0, inicio + HORAS_ATE_FIM_DO_JOGO * 3_600_000);
+  }
+  const fins = Object.values(porDia);
   if (!fins.length) return { sim: true, motivo: "calendário vazio" };
 
   const agora = Date.now();
   const pendentes = fins.filter((t) => t <= agora && t > ultima.getTime());
   if (pendentes.length) {
-    return { sim: true, motivo: `${pendentes.length} horário(s) de jogo já terminaram depois da última coleta (${ultima.toISOString()})` };
+    return { sim: true, motivo: `${pendentes.length} dia(s) de jogo com o último jogo já terminado depois da última coleta (${ultima.toISOString()})` };
   }
   const proximo = fins.filter((t) => t > agora).sort((a, b) => a - b)[0];
-  const quando = proximo ? `próximo jogo termina em ${((proximo - agora) / 3_600_000).toFixed(1)}h` : "sem jogos futuros no calendário";
-  return { sim: false, motivo: `nenhum jogo novo terminado desde a última coleta; ${quando}` };
+  const quando = proximo ? `último jogo do próximo dia de jogo termina em ${((proximo - agora) / 3_600_000).toFixed(1)}h` : "sem jogos futuros no calendário";
+  return { sim: false, motivo: `nenhum dia de jogo concluído desde a última coleta; ${quando}` };
 }
 
 const { sim, motivo } = await deveColetarGols();
