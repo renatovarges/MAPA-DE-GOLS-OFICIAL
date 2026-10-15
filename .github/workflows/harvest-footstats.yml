@@ -12,7 +12,9 @@ name: Atualizar gols via FootStats
 # script com ENVIO_REAL=1.
 on:
   schedule:
-    - cron: "0 9 * * *"
+    # 03h e 09h UTC (00h e 06h de Brasília): o porteiro só deixa coletar se algum
+    # jogo terminou desde a última coleta (scripts/should_harvest_footstats.mjs).
+    - cron: "0 3,9 * * *"
   workflow_dispatch: {}
 
 # O site ao vivo agora exige login; as coletas entram com a chave do robô.
@@ -20,7 +22,32 @@ env:
   ROBOT_KEY: ${{ secrets.ROBOT_KEY }}
 
 jobs:
+  checar:
+    runs-on: ubuntu-latest
+    outputs:
+      deve_coletar: ${{ steps.check.outputs.deve_coletar }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Instalar dependências (sem baixar navegador)
+        working-directory: scripts
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+        run: npm install
+      - name: Decidir se algum jogo terminou desde a última coleta
+        id: check
+        env:
+          FORCE_RUN: ${{ github.event_name == 'workflow_dispatch' && '1' || '' }}
+        run: |
+          RESULT=$(node scripts/should_harvest_footstats.mjs)
+          echo "resultado: $RESULT"
+          echo "deve_coletar=$RESULT" >> "$GITHUB_OUTPUT"
+
   harvest:
+    needs: checar
+    if: needs.checar.outputs.deve_coletar == 'sim'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -54,6 +54,10 @@ const URL = "https://provaveisdocartola.com.br/";
  * isto dispara a cada 2h o ano inteiro; quem decide se a coleta de verdade
  * acontece é esta função, não o cron.
  */
+// Economia de minutos do GitHub Actions (2026-10): antes 48h/6h.
+const JANELA_DENSA_H = 24;
+const MANUTENCAO_H = 24;
+
 export async function deveColetarAgora() {
   if (FORCE_RUN) return { sim: true, motivo: "FORCE_RUN=1" };
 
@@ -62,11 +66,11 @@ export async function deveColetarAgora() {
     horasDesdeUltimaColetaBemSucedida(),
   ]);
 
-  if (horasAteProximoJogo !== null && horasAteProximoJogo <= 48) {
-    return { sim: true, motivo: `faltam ${horasAteProximoJogo.toFixed(1)}h pro próximo jogo (<=48h, janela densa)` };
+  if (horasAteProximoJogo !== null && horasAteProximoJogo <= JANELA_DENSA_H) {
+    return { sim: true, motivo: `faltam ${horasAteProximoJogo.toFixed(1)}h pro próximo jogo (<=${JANELA_DENSA_H}h, janela densa)` };
   }
-  if (horasDesdeUltimaColeta === null || horasDesdeUltimaColeta >= 6) {
-    return { sim: true, motivo: `${horasDesdeUltimaColeta === null ? "sem coleta anterior" : horasDesdeUltimaColeta.toFixed(1) + "h desde a última coleta"} (>=6h, janela de manutenção)` };
+  if (horasDesdeUltimaColeta === null || horasDesdeUltimaColeta >= MANUTENCAO_H) {
+    return { sim: true, motivo: `${horasDesdeUltimaColeta === null ? "sem coleta anterior" : horasDesdeUltimaColeta.toFixed(1) + "h desde a última coleta"} (>=${MANUTENCAO_H}h, janela de manutenção)` };
   }
   return {
     sim: false,
@@ -79,7 +83,7 @@ async function horasAteProximoJogoDaRodada() {
   const datas = Object.values(proximoConfronto || {})
     .map((c) => c && c.data)
     .filter(Boolean)
-    .map((d) => new Date(d))
+    .map((d) => new Date(/[zZ]|[+-]\d\d:\d\d$/.test(d) ? d : `${d}-03:00`)) // datas do calendário são de Brasília
     .filter((d) => !Number.isNaN(d.getTime()));
   if (!datas.length) return null;
   const proximo = new Date(Math.min(...datas.map((d) => d.getTime())));
