@@ -6,8 +6,9 @@
  *
  * Regra (pedido do Renato, 2026-10): coletar só DEPOIS dos jogos, nos dias
  * em que houve jogo, em vez de todo dia.
- *   - Lê o calendário já publicado (data/proximo-confronto.json; datas em
- *     horário de Brasília, sem fuso no arquivo).
+ *   - Lê os horários dos jogos do calendário do site (proximo-confronto.json)
+ *     E da API pública do Cartola (rodadas atual-2 a atual+1, pega jogo
+ *     adiado/remarcado). Datas em horário de Brasília, sem fuso.
  *   - Uma coleta por DIA de jogo: 3h depois do início do ÚLTIMO jogo do dia
  *     (90 min + intervalo + acréscimos + folga pra FootStats publicar).
  *   - "Última coleta" = geradoEm de data/resumo-rodada.json, regravado a cada
@@ -27,6 +28,7 @@ import "./lib/site-auth.mjs";
 import { fetchJsonWithRetry } from "./lib/http.mjs";
 
 const SITE_URL = process.env.SITE_URL || "https://mapa-de-gols-oficial.onrender.com";
+const CARTOLA_API = "https://api.cartola.globo.com";
 const HORAS_ATE_FIM_DO_JOGO = 3;
 const DIAS_REDE_DE_SEGURANCA = 5;
 
@@ -48,20 +50,36 @@ export async function deveColetarGols() {
     return { sim: true, motivo: `rede de segurança: ${diasParado.toFixed(1)} dias sem coletar` };
   }
 
-  let calendario;
+  // Datas de início dos jogos: (1) calendário do site (próxima rodada) e
+  // (2) API pública do Cartola (sem login) com as rodadas atual-2..atual+1 —
+  // é ela que pega jogo ADIADO/REMARCADO disputado entre duas rodadas, que
+  // não está no calendário do site. Se uma das fontes falhar, usa a outra.
+  const inicios = [];
+  let leuAlgumaFonte = false;
   try {
-    calendario = await fetchJsonWithRetry(`${SITE_URL}/data/proximo-confronto.json?t=${Date.now()}`);
-  } catch {
-    return { sim: true, motivo: "não consegui ler o calendário" };
-  }
+    const calendario = await fetchJsonWithRetry(`${SITE_URL}/data/proximo-confronto.json?t=${Date.now()}`);
+    for (const c of Object.values(calendario || {})) if (c?.data) inicios.push(String(c.data));
+    leuAlgumaFonte = true;
+  } catch { /* segue com o Cartola */ }
+  try {
+    const atual = await fetchJsonWithRetry(`${CARTOLA_API}/partidas`);
+    const r = Number(atual?.rodada);
+    if (r > 0) {
+      const rodadas = [r - 2, r - 1, r, r + 1].filter((n) => n >= 1);
+      const listas = await Promise.all(rodadas.map((n) => n === r ? atual : fetchJsonWithRetry(`${CARTOLA_API}/partidas/${n}`).catch(() => null)));
+      for (const l of listas) for (const j of l?.partidas || []) if (j?.partida_data) inicios.push(String(j.partida_data).replace(" ", "T"));
+      leuAlgumaFonte = true;
+    }
+  } catch { /* segue com o calendário do site */ }
+  if (!leuAlgumaFonte) return { sim: true, motivo: "não consegui ler nenhum calendário" };
+
   // Agrupa os jogos por DIA (calendário de Brasília) e pega o fim do ÚLTIMO jogo
   // de cada dia: uma coleta por dia de jogo, depois do último jogo do dia.
   const porDia = {};
-  for (const c of Object.values(calendario || {})) {
-    if (!c || !c.data) continue;
-    const inicio = emBrasilia(c.data).getTime();
+  for (const data of inicios) {
+    const inicio = emBrasilia(data).getTime();
     if (Number.isNaN(inicio)) continue;
-    const dia = String(c.data).slice(0, 10);
+    const dia = data.slice(0, 10);
     porDia[dia] = Math.max(porDia[dia] || 0, inicio + HORAS_ATE_FIM_DO_JOGO * 3_600_000);
   }
   const fins = Object.values(porDia);
