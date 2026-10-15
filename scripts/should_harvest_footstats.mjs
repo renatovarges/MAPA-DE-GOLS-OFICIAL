@@ -7,8 +7,8 @@
  * Regra (pedido do Renato, 2026-10): coletar só DEPOIS dos jogos, nos dias
  * em que houve jogo, em vez de todo dia.
  *   - Lê os horários dos jogos do calendário do site (proximo-confronto.json)
- *     E da API pública do Cartola (rodadas atual-2 a atual+1, pega jogo
- *     adiado/remarcado). Datas em horário de Brasília, sem fuso.
+ *     E da API pública do Cartola (todas as rodadas, pega jogo
+ *     adiado/remarcado de qualquer rodada). Datas em horário de Brasília, sem fuso.
  *   - Uma coleta por DIA de jogo: 3h depois do início do ÚLTIMO jogo do dia
  *     (90 min + intervalo + acréscimos + folga pra FootStats publicar).
  *   - "Última coleta" = geradoEm de data/resumo-rodada.json, regravado a cada
@@ -51,9 +51,10 @@ export async function deveColetarGols() {
   }
 
   // Datas de início dos jogos: (1) calendário do site (próxima rodada) e
-  // (2) API pública do Cartola (sem login) com as rodadas atual-2..atual+1 —
-  // é ela que pega jogo ADIADO/REMARCADO disputado entre duas rodadas, que
-  // não está no calendário do site. Se uma das fontes falhar, usa a outra.
+  // (2) API pública do Cartola (sem login) com TODAS as rodadas até atual+1 —
+  // é ela que pega jogo ADIADO/REMARCADO (de qualquer rodada, ex.: R4 jogada
+  // na R31), que não está no calendário do site. Só conta jogo cuja data cai
+  // depois da última coleta, então rodada antiga normal nunca dispara nada. Se uma das fontes falhar, usa a outra.
   const inicios = [];
   let leuAlgumaFonte = false;
   try {
@@ -65,7 +66,7 @@ export async function deveColetarGols() {
     const atual = await fetchJsonWithRetry(`${CARTOLA_API}/partidas`);
     const r = Number(atual?.rodada);
     if (r > 0) {
-      const rodadas = [r - 2, r - 1, r, r + 1].filter((n) => n >= 1);
+      const rodadas = Array.from({ length: Math.min(38, r + 1) }, (_, i) => i + 1); // todas: pega adiado de qualquer rodada
       const listas = await Promise.all(rodadas.map((n) => n === r ? atual : fetchJsonWithRetry(`${CARTOLA_API}/partidas/${n}`).catch(() => null)));
       for (const l of listas) for (const j of l?.partidas || []) if (j?.partida_data) inicios.push(String(j.partida_data).replace(" ", "T"));
       leuAlgumaFonte = true;
