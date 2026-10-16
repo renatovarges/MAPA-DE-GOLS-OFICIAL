@@ -416,6 +416,36 @@ function resolveDataFileKey(teamKey) {
   return teamKey;
 }
 
+// Lado do lateral (LD/LE) pra legenda por posição. O harvester automático
+// grava todo lateral com `side: null` (a API de eventos não informa o lado),
+// e a legenda só soma lateral quando sabe se é direito ou esquerdo — então
+// 100% dos 342 eventos de lateral coletados (ex.: assistência do Mateus
+// Silva no Vitória x Chapecoense) ficavam fora da soma LD/LE (achado real,
+// 2026-10). Resolve na hora de exibir pela mesma fonte que o Raio X já usa
+// pra posição de origem do jogador (scripts/posicoes-granulares.json).
+let __posicoesGranularesPromise = null;
+function getPosicoesGranulares() {
+  if (!__posicoesGranularesPromise) {
+    __posicoesGranularesPromise = fetch(`scripts/posicoes-granulares.json?t=${Date.now()}`, { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : {}))
+      .catch(() => { __posicoesGranularesPromise = null; return {}; });
+  }
+  return __posicoesGranularesPromise;
+}
+const LADO_DA_POSICAO_GRANULAR = { 'lateral-direito': 'LD', 'lateral-esquerdo': 'LE' };
+function resolverLadoDoLateral(ev, granulares) {
+  if (!ev || typeof ev !== 'object') return ev;
+  let out = ev;
+  for (const papel of ['assistPlayer', 'shotPlayer']) {
+    const p = ev[papel];
+    if (p && p.position === 'Lateral' && !p.side) {
+      const lado = LADO_DA_POSICAO_GRANULAR[granulares[String(p.id)]];
+      if (lado) out = { ...out, [papel]: { ...p, side: lado } };
+    }
+  }
+  return out;
+}
+
 async function getTeamAggregatedData(teamKey, { homeFilter = null } = {}) {
   const fileKey = resolveDataFileKey(teamKey);
   const url = `data/${fileKey}.json?t=${Date.now()}`;
@@ -536,8 +566,9 @@ async function getTeamAggregatedData(teamKey, { homeFilter = null } = {}) {
       conceded = teamData.conceded || [];
     }
     // Conversão adicional (se ainda houver eventos em formato antigo)
-    created = created.map(toStandard);
-    conceded = conceded.map(toStandard);
+    const granulares = await getPosicoesGranulares();
+    created = created.map(toStandard).map((ev) => resolverLadoDoLateral(ev, granulares));
+    conceded = conceded.map(toStandard).map((ev) => resolverLadoDoLateral(ev, granulares));
     return { name, created, conceded };
   } catch (err) {
     console.warn(`Não foi possível carregar JSON externo (${teamKey}). Usando exemplo embutido.`, err);

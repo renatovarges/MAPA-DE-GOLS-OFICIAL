@@ -530,6 +530,51 @@ class Handler(SimpleHTTPRequestHandler):
         else:
             super().do_GET()
 
+    def end_headers(self):
+        # Achado 2026-08: nenhum arquivo servido daqui tinha Cache-Control
+        # próprio — o index.html sozinho já causou um deploy inteiro ficar
+        # invisível pro Renato, mesmo testando em navegadores/redes
+        # diferentes (Chrome, Brave, outro perfil, aba anônima — logo não
+        # era cache do navegador dele, era alguma camada entre o servidor
+        # e ele, provavelmente o Cloudflare que fica na frente do Render).
+        # Primeira correção cobriu só HTML; essa cobre TUDO que passa por
+        # aqui — script.js, style.css, data/*.json, o que for — pra fechar
+        # de vez qualquer brecha de cache intermediário, não só a do
+        # navegador. `no-cache, must-revalidate` obriga sempre revalidar
+        # com o servidor antes de usar a cópia guardada (ele ainda responde
+        # 304 quando nada mudou, então não pesa banda).
+        if not getattr(self, '_cache_proprio', False):
+            # Dados protegidos por login: nunca em cache compartilhado (CDN).
+            self.send_header('Cache-Control', 'private, no-cache, must-revalidate')
+        self.send_header('Vary', 'Cookie')
+        super().end_headers()
+
+    def handle_jogadores(self):
+        """Endpoint que retorna jogadores: API em tempo real ou CSV como fallback."""
+        jogadores, api_ok = buscar_jogadores_api()
+
+        if not api_ok or len(jogadores) == 0:
+            print('[jogadores] API indisponível, usando CSV como fallback.')
+            jogadores = buscar_jogadores_csv()
+            fonte = 'csv'
+        else:
+            print(f'[jogadores] API retornou {len(jogadores)} jogadores.')
+            fonte = 'api'
+
+        resposta = {
+            'fonte': fonte,
+            'total': len(jogadores),
+            'jogadores': jogadores,
+        }
+
+        body = json.dumps(resposta, ensure_ascii=False).encode('utf-8')
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/json; charset=utf-8')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Content-Length', str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
     def _restaurar_do_github(self, simular):
         """Repõe data/*.json zerados ({"rounds": {}}) com a cópia do GitHub.
         Só toca em arquivo ausente ou no estado zerado; nunca sobrescreve
