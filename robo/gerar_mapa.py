@@ -34,6 +34,19 @@ def gerar(saida, jogos="3", modo="seguidas"):
         pg = ctx.new_page()
         pg.set_default_timeout(180000)
         pg.on("console", lambda m: print("[site]", m.text[:160]) if m.type == "error" else None)
+        # Diagnóstico dos erros do servidor (502 etc.): quais endereços, quando e com que resposta.
+        import time
+        t0 = time.time()
+        erros = []
+        total_pedidos = [0]
+
+        def _resp(r):
+            total_pedidos[0] += 1
+            if r.status >= 400:
+                erros.append((round(time.time() - t0), r.status, r.url.replace(SITE_URL, "")[:90],
+                              r.headers.get("x-render-routing", ""), r.headers.get("server", "")))
+
+        pg.on("response", _resp)
         print(f"Abrindo {SITE_URL} ...")
         resp = pg.goto(SITE_URL + "/", wait_until="networkidle", timeout=240000)  # acorda o Render, se estiver dormindo
         if resp is None or resp.status != 200 or pg.locator("#baixarTudoBtn").count() == 0:
@@ -48,6 +61,14 @@ def gerar(saida, jogos="3", modo="seguidas"):
         dl.value.save_as(zip_path)
         print("Pacote recebido:", nome, f"({os.path.getsize(zip_path) / 1e6:.1f} MB)")
         print("Mensagem final do site:", pg.inner_text("#baixarTudoProgressoTexto")[:250])
+        print(f"Pedidos ao site: {total_pedidos[0]} | com erro (>=400): {len(erros)}")
+        import collections
+        por_tipo = collections.Counter((e[1], "/".join(e[2].split("/")[:2]) or "/") for e in erros)
+        for (st, tipo), n in por_tipo.most_common(12):
+            print(f"  erro {st} em {tipo}: {n}x")
+        if erros:
+            print("  quando (segundos desde o início):", sorted({e[0] for e in erros})[:40])
+            print("  exemplos:", [(e[1], e[2], e[3], e[4]) for e in erros[:4]])
         nav.close()
 
     m = re.search(r"rodada-(\d+)-", nome)
