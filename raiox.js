@@ -1141,6 +1141,31 @@
     }
   }
 
+  // Versao "leve" da captura, usada so pelo "Baixar tudo (ZIP)": devolve um
+  // Blob (arquivo) em vez de um dataURL (texto base64 ~33% maior, guardado na
+  // memoria do JS) e ZERA o canvas logo depois de usar. Achado real
+  // (2026-10): ao baixar o pacote inteiro no navegador do Renato, o campinho
+  // geral (o ULTIMO, depois de ~40 imagens gigantes acumuladas na memoria)
+  // saia sem fotos nem marca d'agua e com retangulos de cor diferente no
+  // fundo -- sintoma de falta de memoria; o MESMO pacote gerado pelo robo
+  // contra o site de verdade sai completo, entao nao era o site nem a rede.
+  async function rxCapturarBlob(elId) {
+    const pitchEl = document.getElementById(elId);
+    if (!pitchEl || !window.html2canvas) throw new Error('elemento ou html2canvas indisponivel');
+    const escalaOriginal = pitchEl.style.transform;
+    if (escalaOriginal) pitchEl.style.transform = 'none';
+    let canvas = null;
+    try {
+      canvas = await window.html2canvas(pitchEl, { scale: 1, backgroundColor: null, useCORS: true });
+      return await new Promise((resolve, reject) => {
+        canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('o navegador nao conseguiu gerar a imagem (memoria?)'))), 'image/png');
+      });
+    } finally {
+      if (canvas) { canvas.width = 0; canvas.height = 0; } // devolve a memoria do canvas na hora
+      if (escalaOriginal) pitchEl.style.transform = escalaOriginal;
+    }
+  }
+
   async function rxBaixarImagemDe(elId, filename, btnId) {
     const btn = document.getElementById(btnId);
     if (!btn) return;
@@ -1415,13 +1440,22 @@
   // parecer curta. Mesma filosofia de "detectar e tentar de novo" já usada
   // no harvester de prováveis pra timeout de rede.
   async function rxCapturarComSeguranca(elId, minBytes = 150000) {
-    let url = await rxCapturarDataUrl(elId);
-    if (url.length < minBytes) {
-      console.warn(`[raiox] captura de ${elId} saiu pequena demais (${url.length} bytes) -- tentando de novo`);
+    // minBytes continua na unidade antiga (caracteres do dataURL base64); o
+    // Blob tem ~3/4 desse tamanho.
+    let blob = await rxCapturarBlob(elId);
+    if (blob.size < minBytes * 0.75) {
+      console.warn(`[raiox] captura de ${elId} saiu pequena demais (${blob.size} bytes) -- tentando de novo`);
       await rxEsperarAssentar(500);
-      url = await rxCapturarDataUrl(elId);
+      blob = await rxCapturarBlob(elId);
     }
-    return url;
+    return blob;
+  }
+
+  // Quantas <img> do container NAO carregaram (foto/escudo/marca d'agua que
+  // ficaria faltando na imagem). So diagnostico: vai pro aviso final do pacote.
+  function rxContarImagensFaltando(containerEl) {
+    if (!containerEl) return 0;
+    return Array.from(containerEl.querySelectorAll('img')).filter((img) => !img.complete || img.naturalWidth === 0).length;
   }
 
   function rxGetContainerFora() {
@@ -1450,7 +1484,7 @@
 
   /**
    * @param {{ultimosN:number, respeitarMando:boolean, incluirRodadaGeral:boolean, onProgress?:(info:{done:number,total:number,label:string})=>void}} opts
-   * @returns {Promise<{imagens:Array<{filename:string, dataUrl:string}>, semDados:string[]}>}
+   * @returns {Promise<{imagens:Array<{filename:string, blob:Blob}>, semDados:string[], imagensFaltando:number}>}
    */
   window.rxGerarPacoteDaRodada = async function (opts) {
     const { ultimosN, respeitarMando, incluirRodadaGeral = true, onProgress } = opts || {};
@@ -1464,6 +1498,7 @@
     let done = 0;
     const avisar = (label) => { done++; if (onProgress) onProgress({ done, total, label }); };
     const resultados = [];
+    let imagensFaltando = 0;
     // Time sem escalação provável carregada (provaveisdocartola.com.br não
     // tem todo mundo sempre -- achado real, 2026-09: Coritiba e Athletico-PR
     // faltavam nessa rodada) -- pular em vez de gerar uma imagem quase em
@@ -1492,10 +1527,26 @@
       rxRenderCampinho('rxBatchOffscreen', time, rival, resultado, fotosIds, mando);
       await rxEsperarImagensCarregarem(document.getElementById('rxBatchOffscreen'));
       await rxEsperarAssentar();
-      const dataUrl = await rxCapturarComSeguranca('rxBatchOffscreen');
+      imagensFaltando += rxContarImagensFaltando(document.getElementById('rxBatchOffscreen'));
+      const blob = await rxCapturarComSeguranca('rxBatchOffscreen');
       avisar(`Raio X: ${rxTeamName(time)} × ${rxTeamName(rival)}`);
-      return { filename: `raio-x/${time}-vs-${rival}.png`, dataUrl };
+      return { filename: `raio-x/${time}-vs-${rival}.png`, blob };
     };
+
+    // O campinho geral (a imagem mais pesada) e gerado PRIMEIRO, com a memoria
+    // do navegador ainda livre -- antes ficava por ultimo e saia com falhas.
+    if (incluirRodadaGeral) {
+      try {
+        container.innerHTML = await rxMontarHtmlRodadaGeral(ultimosN, respeitarMando);
+        await rxEsperarImagensCarregarem(container);
+        await rxEsperarAssentar();
+        imagensFaltando += rxContarImagensFaltando(container);
+        resultados.push({ filename: 'raio-x/campinho-geral-da-rodada.png', blob: await rxCapturarComSeguranca('rxBatchOffscreen', 1000000) });
+        avisar('Raio X: campinho geral da rodada');
+      } catch (err) {
+        console.warn('[raiox] falha ao gerar campinho geral da rodada no lote', err);
+      }
+    }
 
     for (const { mandante, visitante } of confrontos) {
       try {
@@ -1520,20 +1571,8 @@
       }
     }
 
-    if (incluirRodadaGeral) {
-      try {
-        container.innerHTML = await rxMontarHtmlRodadaGeral(ultimosN, respeitarMando);
-        await rxEsperarImagensCarregarem(container);
-        await rxEsperarAssentar();
-        resultados.push({ filename: 'raio-x/campinho-geral-da-rodada.png', dataUrl: await rxCapturarComSeguranca('rxBatchOffscreen', 1000000) });
-        avisar('Raio X: campinho geral da rodada');
-      } catch (err) {
-        console.warn('[raiox] falha ao gerar campinho geral da rodada no lote', err);
-      }
-    }
-
     container.innerHTML = '';
-    return { imagens: resultados, semDados: [...new Set(semDados)] };
+    return { imagens: resultados, semDados: [...new Set(semDados)], imagensFaltando };
   };
 
   window.rxBuildRaioXView = rxBuildRaioXView;

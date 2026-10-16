@@ -1479,7 +1479,9 @@ async function gerarImagensMapaDeGols({ count, mode, onProgress, proximoConfront
     try {
       await renderizarTimeOffscreen(pitch, overlay, teamKey, homeFilter);
       const dataUrl = await exportFieldAsPng(pitch, overlay, 3);
-      resultados.push({ filename: `mapa-de-gols/${teamKey}.png`, dataUrl });
+      // guarda como Blob (arquivo) e solta o texto base64 -- menos memoria no lote (ver rxCapturarBlob)
+      const blob = await (await fetch(dataUrl)).blob();
+      resultados.push({ filename: `mapa-de-gols/${teamKey}.png`, blob });
     } catch (err) {
       console.warn(`[baixar-tudo] falha ao gerar campinho de ${teamKey}`, err);
     }
@@ -1529,6 +1531,7 @@ function initBaixarTudoButton() {
 
       let imagensRx = [];
       let semDadosRx = [];
+      let imagensFaltandoRx = 0;
       if (typeof window.rxGerarPacoteDaRodada === 'function') {
         const pacoteRx = await window.rxGerarPacoteDaRodada({
           ultimosN: count,
@@ -1538,13 +1541,15 @@ function initBaixarTudoButton() {
         });
         imagensRx = pacoteRx.imagens;
         semDadosRx = pacoteRx.semDados;
+        imagensFaltandoRx = pacoteRx.imagensFaltando || 0;
       } else {
         console.warn('[baixar-tudo] raiox.js não carregado -- pacote sairá só com o Mapa de Gols');
       }
 
       if (progressoTexto) progressoTexto.textContent = 'Compactando .zip...';
       const zip = new JSZip();
-      [...imagensGols, ...imagensRx].forEach(({ filename, dataUrl }) => {
+      [...imagensGols, ...imagensRx].forEach(({ filename, blob, dataUrl }) => {
+        if (blob) { zip.file(filename, blob); return; }
         const base64 = String(dataUrl).split(',')[1];
         if (base64) zip.file(filename, base64, { base64: true });
       });
@@ -1562,8 +1567,11 @@ function initBaixarTudoButton() {
       const avisoSemDados = semDadosRx.length
         ? ` (sem prováveis ainda pra: ${semDadosRx.map((k) => formatTeamName(baixarTudoCrestKey(k))).join(', ')} -- pulado)`
         : '';
-      if (progressoTexto) progressoTexto.textContent = `Pronto! ${totalImagens} imagens baixadas.${avisoSemDados}`;
-      esconderProgressoDepoisDe = avisoSemDados ? 12000 : 4000;
+      const avisoFaltando = imagensFaltandoRx
+        ? ` ATENÇÃO: ${imagensFaltandoRx} foto(s)/escudo(s) não carregaram no Raio X -- baixe de novo (feche outras abas antes).`
+        : '';
+      if (progressoTexto) progressoTexto.textContent = `Pronto! ${totalImagens} imagens baixadas.${avisoSemDados}${avisoFaltando}`;
+      esconderProgressoDepoisDe = (avisoSemDados || avisoFaltando) ? 15000 : 4000;
     } catch (err) {
       alert('Falha ao gerar o pacote: ' + (err && err.message ? err.message : 'desconhecida'));
     } finally {
