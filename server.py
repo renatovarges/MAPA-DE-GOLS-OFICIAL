@@ -1336,6 +1336,14 @@ if __name__ == '__main__':
     threading.Thread(target=log_status, daemon=True).start()
     
     port = int(os.environ.get('PORT', '8000'))
-    httpd = ThreadingHTTPServer(('', port), Handler)
+    # Fila de conexões pendentes: o padrão do Python é 5. Com a página pedindo
+    # dezenas de arquivos de uma vez (fotos, escudos, scripts), o que passava disso
+    # era derrubado e o Render devolvia 502 (visto no robô, 2026-10:
+    # "dynamic-paid-error" nos primeiros segundos). Medido aqui: sem isso o servidor
+    # começa a falhar com ~60 conexões simultâneas.
+    class _Servidor(ThreadingHTTPServer):
+        request_queue_size = 512
+        daemon_threads = True
+    httpd = _Servidor(('', port), Handler)
     print(f'Serving at http://localhost:{port}/')
     httpd.serve_forever()
