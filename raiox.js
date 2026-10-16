@@ -1114,6 +1114,49 @@
   // Renato reportou ("ilegível mesmo com zoom máximo") era o preview do chat
   // reduzindo a imagem que eu mandava por SendUserFile, não o tamanho da
   // fonte; com o download direto ele pega o arquivo real, sem essa perda.
+  // CSS embutido na captura. Achado real (2026-10): o html2canvas fotografa uma
+  // CÓPIA da página dentro de um iframe, e esse iframe busca as folhas de
+  // estilo (styles.css, desarmes.css, raiox.css) DE NOVO na rede, sem nenhuma
+  // tentativa extra. Quando o servidor do Render devolve 502 (acontece sob
+  // carga) ou demora, a cópia fica SEM estilo e a imagem sai "quase em
+  // branco": escudo gigante no canto, sem cards nem fundo -- reproduzido
+  // injetando falha nas folhas de estilo. Por isso o texto do CSS é baixado
+  // UMA vez (até 10 tentativas) e injetado na cópia (onclone), no lugar dos
+  // <link>, e a captura deixa de depender da rede.
+  let __rxCssEmbutido = null;
+  async function rxObterCssEmbutido() {
+    if (__rxCssEmbutido) return __rxCssEmbutido;
+    const links = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).filter((l) => l.href);
+    const textos = await Promise.all(links.map(async (l) => {
+      for (let i = 0; i < 10; i++) {
+        try {
+          const res = await fetch(l.href, { cache: 'force-cache' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return await res.text();
+        } catch (e) {
+          await new Promise((r) => setTimeout(r, Math.min(300 * (i + 1), 2000) + Math.random() * 200));
+        }
+      }
+      return null;
+    }));
+    if (textos.some((t) => t === null)) return null; // não deu: cai no comportamento antigo (cópia busca sozinha)
+    __rxCssEmbutido = textos.join('\n');
+    return __rxCssEmbutido;
+  }
+
+  function rxOpcoesCaptura() {
+    const css = __rxCssEmbutido;
+    return {
+      scale: 1, backgroundColor: null, useCORS: true,
+      onclone: css ? (doc) => {
+        doc.querySelectorAll('link[rel="stylesheet"]').forEach((l) => l.remove());
+        const st = doc.createElement('style');
+        st.textContent = css;
+        doc.head.appendChild(st);
+      } : undefined,
+    };
+  }
+
   // Núcleo da captura (extraído em 2026-09 pro "Baixar tudo (ZIP)" poder
   // gerar as mesmas imagens em lote, fora da tela, sem duplicar a lógica de
   // scale/CORS/transform).
@@ -1134,7 +1177,7 @@
       // gerando um PNG de 0 bytes (achado real testando com scale:3).
       // scale:1 já produz um arquivo enorme e nítido porque a fonte já é
       // grande.
-      const canvas = await window.html2canvas(pitchEl, { scale: 1, backgroundColor: null, useCORS: true });
+      const canvas = await window.html2canvas(pitchEl, rxOpcoesCaptura());
       return canvas.toDataURL('image/png');
     } finally {
       if (escalaOriginal) pitchEl.style.transform = escalaOriginal;
@@ -1156,7 +1199,7 @@
     if (escalaOriginal) pitchEl.style.transform = 'none';
     let canvas = null;
     try {
-      canvas = await window.html2canvas(pitchEl, { scale: 1, backgroundColor: null, useCORS: true });
+      canvas = await window.html2canvas(pitchEl, rxOpcoesCaptura());
       return await new Promise((resolve, reject) => {
         canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('o navegador nao conseguiu gerar a imagem (memoria?)'))), 'image/png');
       });
@@ -1167,6 +1210,7 @@
   }
 
   async function rxBaixarImagemDe(elId, filename, btnId) {
+    await rxObterCssEmbutido();
     const btn = document.getElementById(btnId);
     if (!btn) return;
     const textoOriginal = btn.textContent;
@@ -1410,22 +1454,79 @@
     });
   }
 
+  // EMBUTE as imagens (fotos, escudos, marca d'água) como dataURL antes da
+  // captura. Achado real (2026-10): o robô registrou ~65 respostas "502" do
+  // Render durante o lote. O código já tentava de novo as <img> da TELA, mas o
+  // html2canvas (useCORS) busca CADA imagem DE NOVO por conta própria, em modo
+  // CORS (cache diferente do da tela) e SEM nenhuma tentativa extra -- se essa
+  // segunda busca cai num 502, aquela foto sai como círculo cinza no PNG, mesmo
+  // com a <img> da tela carregada. Com o src já em dataURL o html2canvas não
+  // usa a rede. Cada endereço é baixado UMA vez no lote inteiro (escudos e
+  // marca d'água se repetem em todas as imagens), com até 10 tentativas e pausa
+  // crescente, no máximo 6 downloads em paralelo (não sobrecarrega o servidor).
+  const __rxImgCache = new Map(); // endereço -> Promise<dataURL | null>
+
+  function rxBaixarImagemComoDataUrl(url, tentativas = 10) {
+    if (__rxImgCache.has(url)) return __rxImgCache.get(url);
+    const p = (async () => {
+      for (let i = 0; i < tentativas; i++) {
+        try {
+          const res = await fetch(url, { cache: 'force-cache' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const blob = await res.blob();
+          return await new Promise((ok, erro) => {
+            const fr = new FileReader();
+            fr.onload = () => ok(fr.result);
+            fr.onerror = erro;
+            fr.readAsDataURL(blob);
+          });
+        } catch (e) {
+          await new Promise((r) => setTimeout(r, Math.min(300 * (i + 1), 2000) + Math.random() * 200));
+        }
+      }
+      return null;
+    })();
+    __rxImgCache.set(url, p);
+    p.then((v) => { if (!v) __rxImgCache.delete(url); }); // falhou de vez: deixa tentar de novo na próxima imagem
+    return p;
+  }
+
+  async function rxEmbutirImagens(containerEl, concorrencia = 6) {
+    if (!containerEl) return;
+    const imgs = Array.from(containerEl.querySelectorAll('img')).filter((img) => img.src && !img.src.startsWith('data:'));
+    const urls = [...new Set(imgs.map((img) => img.src))];
+    let proximo = 0;
+    const trabalhador = async () => {
+      while (proximo < urls.length) {
+        const url = urls[proximo++];
+        await rxBaixarImagemComoDataUrl(url);
+      }
+    };
+    await Promise.all(Array.from({ length: Math.min(concorrencia, urls.length) }, trabalhador));
+    await Promise.all(imgs.map(async (img) => {
+      const dataUrl = await __rxImgCache.get(img.src);
+      if (!dataUrl) return; // não conseguiu: fica com o src original (e entra na contagem de "faltando")
+      img.src = dataUrl;
+      try { await img.decode(); } catch (e) { /* decodifica na captura mesmo */ }
+    }));
+  }
+
   // Espera de verdade as <img> (fotos dos jogadores, escudos, marca d'água)
-  // terminarem de carregar antes do html2canvas rodar -- achado real
-  // (2026-09): o delay fixo resolveu no teste local (fotos servidas do
-  // disco, praticamente instantâneas), mas em produção (rede de verdade)
-  // um confronto ainda saiu quase em branco mesmo com dado suficiente --
-  // sinal de que era a foto ainda não ter chegado. Inclui também imagens já
-  // "complete" mas com naturalWidth 0 (erro ocorrido ANTES da gente
-  // escutar) -- essas também entram no retry acima. Teto geral pra nunca
-  // travar o lote se algo nunca responder de verdade.
-  function rxEsperarImagensCarregarem(containerEl, timeoutMs = 12000) {
-    if (!containerEl) return Promise.resolve();
-    const pendentes = Array.from(containerEl.querySelectorAll('img')).filter((img) => !img.complete || img.naturalWidth === 0);
-    if (!pendentes.length) return Promise.resolve();
-    return Promise.race([
-      Promise.all(pendentes.map((img) => rxEsperarUmaImagem(img))),
+  // terminarem de carregar antes do html2canvas rodar (e as embute, ver acima).
+  // Teto geral pra nunca travar o lote se algo nunca responder de verdade.
+  async function rxEsperarImagensCarregarem(containerEl, timeoutMs = 90000) {
+    if (!containerEl) return;
+    await rxObterCssEmbutido();
+    await Promise.race([
+      rxEmbutirImagens(containerEl),
       new Promise((resolve) => setTimeout(resolve, timeoutMs)),
+    ]);
+    // o que sobrou sem carregar (falhou de vez) ainda ganha a tentativa antiga, na própria <img>
+    const pendentes = Array.from(containerEl.querySelectorAll('img')).filter((img) => !img.complete || img.naturalWidth === 0);
+    if (!pendentes.length) return;
+    await Promise.race([
+      Promise.all(pendentes.map((img) => rxEsperarUmaImagem(img))),
+      new Promise((resolve) => setTimeout(resolve, 12000)),
     ]);
   }
 
