@@ -1,10 +1,10 @@
 {
   "teamKey": "internacional",
-  "geradoEm": "2026-10-18T08:27:27.898Z",
+  "geradoEm": "2026-10-19T02:30:37.490Z",
   "ataca": [
     "No Internacional, o ponta-direita registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
-    "O Internacional registra cerca de 6 finalizações por jogo de fora da área. O meia é quem mais finaliza nesse tipo de jogada.",
     "O Internacional registra cerca de 3 finalizações por jogo após sobras de bola. O meia é quem mais finaliza nesse tipo de jogada.",
+    "O Internacional registra cerca de 6 finalizações por jogo de fora da área. O meia é quem mais finaliza nesse tipo de jogada.",
     "No Internacional, passes do meia originam cerca de 3 finalizações por jogo."
   ],
   "evidenciasAtaca": [
@@ -13,11 +13,11 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|fora-da-area|meia",
+      "chave": "origem|REBATIDA|meia",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|REBATIDA|meia",
+      "chave": "area|fora-da-area|meia",
       "confianca": "padrao-consolidado"
     },
     {
@@ -31,7 +31,7 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|dentro-da-area|atacante-area",
+      "chave": "parteDoCorpo|cabeca|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
@@ -41,7 +41,7 @@
   ],
   "sofre": [
     "O Internacional cede cerca de 4 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
-    "O Internacional cede cerca de 7 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Internacional cede cerca de 2 finalizações por jogo de cabeça. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
     "O Internacional cede cerca de 2 finalizações por jogo após sobras de bola. Atenção: o volante adversário é quem mais finaliza nesses lances."
   ]
 }
