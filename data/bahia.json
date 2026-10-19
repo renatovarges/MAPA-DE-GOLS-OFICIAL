@@ -2049,6 +2049,85 @@
       "home": true,
       "created_goals": [],
       "conceded_goals": []
+    },
+    "31": {
+      "roundNumber": 31,
+      "date": "2026-10-18",
+      "opponent": "flamengo",
+      "home": true,
+      "created_goals": [],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.65885999999999,
+            "y": 33.646
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "84735",
+            "name": "Jorginho",
+            "fullName": "Jorge Luiz Frello Filho",
+            "position": "Meia",
+            "side": null,
+            "team": "flamengo"
+          },
+          "is_penalty": true
+        },
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 51
+          },
+          "shot": {
+            "x": 9.803779599999999,
+            "y": 26.062520000000006
+          },
+          "assistPlayer": {
+            "id": "98873",
+            "name": "Samuel Lino",
+            "fullName": "Samuel Dias Lino",
+            "position": "Atacante",
+            "side": null,
+            "team": "flamengo"
+          },
+          "shotPlayer": {
+            "id": "109096",
+            "name": "Plata",
+            "fullName": "Gonzalo Jordy Plata Jiménez",
+            "position": "Atacante",
+            "side": null,
+            "team": "flamengo"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": {
+            "x": 21,
+            "y": 17
+          },
+          "shot": {
+            "x": 9.518089599999996,
+            "y": 23.05252000000001
+          },
+          "assistPlayer": {
+            "id": "84816",
+            "name": "Varela",
+            "fullName": "Guillermo Varela Olivera",
+            "position": "Lateral",
+            "side": null,
+            "team": "flamengo"
+          },
+          "shotPlayer": {
+            "id": "94930",
+            "name": "Lucas Paquetá",
+            "fullName": "Lucas Tolentino Coelho de Lima",
+            "position": "Meia",
+            "side": null,
+            "team": "flamengo"
+          }
+        }
+      ]
     }
   }
 }
