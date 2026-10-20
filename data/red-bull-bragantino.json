@@ -1880,6 +1880,58 @@
       "home": true,
       "created_goals": [],
       "conceded_goals": []
+    },
+    "31": {
+      "roundNumber": 31,
+      "date": "2026-10-18",
+      "opponent": "remo",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 87.9103604,
+            "y": 27.40348
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "112886",
+            "name": "Lucas Barbosa",
+            "fullName": "Lucas Henrique Barbosa",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 21,
+            "y": 62.333333333333336
+          },
+          "shot": {
+            "x": 20.183849600000002,
+            "y": 38.27452
+          },
+          "assistPlayer": {
+            "id": "95131",
+            "name": "Gabriel Taliari",
+            "fullName": "Gabriel Pereira Taliari",
+            "position": "Atacante",
+            "side": null,
+            "team": "remo"
+          },
+          "shotPlayer": {
+            "id": "105048",
+            "name": "Jajá",
+            "fullName": "Jandir Breno Souza Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "remo"
+          }
+        }
+      ]
     }
   }
 }
