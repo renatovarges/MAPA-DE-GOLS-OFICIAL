@@ -1,10 +1,10 @@
 {
   "teamKey": "palmeiras",
-  "geradoEm": "2026-10-20T02:43:27.658Z",
+  "geradoEm": "2026-10-21T09:00:49.237Z",
   "ataca": [
     "No Palmeiras, o meia registra cerca de 6 finalizações por jogo. É uma posição a observar na escalação.",
     "No Palmeiras, passes do meia originam cerca de 4 finalizações por jogo.",
-    "O Palmeiras registra cerca de 4 finalizações por jogo em jogadas construídas pelo lado direito. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+    "O Palmeiras registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado esquerdo. O atacante de área é quem mais finaliza nesse tipo de jogada.",
     "O Palmeiras registra cerca de 3 finalizações por jogo de cabeça. O atacante de área é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
@@ -17,7 +17,7 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "ladoDaJogada|direita|atacante-area",
+      "chave": "ladoDaJogada|esquerda|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
@@ -31,17 +31,17 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "posicao|atacante-area|",
+      "chave": "origem|CRUZAMENTO|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|CRUZAMENTO|atacante-area",
+      "chave": "posicao|atacante-area|",
       "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
     "O Palmeiras cede cerca de 6 finalizações por jogo de fora da área. Atenção: o meia adversário é quem mais finaliza nesses lances.",
-    "O Palmeiras cede cerca de 3 finalizações por jogo ao atacante de área adversário. É uma posição a observar contra essa defesa.",
-    "O Palmeiras cede cerca de 2 finalizações por jogo após cruzamentos. Atenção: o atacante de área adversário é quem mais finaliza nesses lances."
+    "O Palmeiras cede cerca de 2 finalizações por jogo após cruzamentos. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Palmeiras cede cerca de 3 finalizações por jogo ao atacante de área adversário. É uma posição a observar contra essa defesa."
   ]
 }
