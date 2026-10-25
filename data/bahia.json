@@ -2128,6 +2128,59 @@
           }
         }
       ]
+    },
+    "32": {
+      "roundNumber": 32,
+      "date": "2026-10-24",
+      "opponent": "santos",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 75.8161504,
+            "y": 26.75848
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "107093",
+            "name": "Luciano Juba",
+            "fullName": "Luciano Batista da Silva Júnior",
+            "position": "Lateral",
+            "side": null,
+            "team": "bahia"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 62.333333333333336
+          },
+          "shot": {
+            "x": 9.175261599999999,
+            "y": 37.41194
+          },
+          "assistPlayer": {
+            "id": "102256",
+            "name": "Rollheiser",
+            "fullName": "Benjamín Rollheiser",
+            "position": "Meia",
+            "side": null,
+            "team": "santos"
+          },
+          "shotPlayer": {
+            "id": "84847",
+            "name": "Luan Peres",
+            "fullName": "Luan Peres Petroni",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "santos"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
