@@ -1899,6 +1899,127 @@
           }
         }
       ]
+    },
+    "32": {
+      "roundNumber": 32,
+      "date": "2026-10-24",
+      "opponent": "vasco",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 75,
+            "y": 51
+          },
+          "shot": {
+            "x": 86.37049130000001,
+            "y": 32.766439999999996
+          },
+          "assistPlayer": {
+            "id": "117910",
+            "name": "Breno Bidon",
+            "fullName": "Breno de Souza Bidon",
+            "position": "Meia",
+            "side": null,
+            "team": "corinthians"
+          },
+          "shotPlayer": {
+            "id": "78248",
+            "name": "Gustavo Henrique",
+            "fullName": "Gustavo Henrique Vernes",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "corinthians"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": {
+            "x": 75,
+            "y": 17
+          },
+          "shot": {
+            "x": 83.30122840000001,
+            "y": 27.262439999999998
+          },
+          "assistPlayer": {
+            "id": "98720",
+            "name": "Angileri",
+            "fullName": "Fabrizio Germán Angileri - Fabricio",
+            "position": "Lateral",
+            "side": null,
+            "team": "corinthians"
+          },
+          "shotPlayer": {
+            "id": "105531",
+            "name": "Matheus Bidu",
+            "fullName": "Matheus Lima Beltrão Oliveira Valin",
+            "position": "Lateral",
+            "side": null,
+            "team": "corinthians"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 10.420869999999994,
+            "y": 31.686060000000005
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "99213",
+            "name": "Puma Rodríguez",
+            "fullName": "José Luis Rodríguez Bebanz",
+            "position": "Lateral",
+            "side": null,
+            "team": "vasco"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.4369741,
+            "y": 16.98006000000001
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "110598",
+            "name": "Marino Hinestroza",
+            "fullName": "Marino Hinestroza Angulo",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          }
+        },
+        {
+          "pass": {
+            "x": 21,
+            "y": 28.33333333333333
+          },
+          "shot": {
+            "x": 9.94471999999999,
+            "y": 24.806060000000002
+          },
+          "assistPlayer": {
+            "id": "90309",
+            "name": "David",
+            "fullName": "David Corrêa da Fonseca",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          },
+          "shotPlayer": {
+            "id": "110598",
+            "name": "Marino Hinestroza",
+            "fullName": "Marino Hinestroza Angulo",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          }
+        }
+      ]
     }
   }
 }
