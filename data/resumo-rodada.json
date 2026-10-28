@@ -2,9 +2,9 @@
   "versao": 3,
   "tipoLeitura": "pre-jogo",
   "rodada": 33,
-  "rodadaDados": 31,
-  "janelaAte": "2026-10-24",
-  "geradoEm": "2026-10-27T03:00:12.362Z",
+  "rodadaDados": 32,
+  "janelaAte": "2026-10-26",
+  "geradoEm": "2026-10-28T03:11:07.218Z",
   "jogos": [
     {
       "id": 237668,
@@ -145,16 +145,16 @@
     },
     {
       "tipo": "forca-ofensiva-propria",
-      "titulo": "Flamengo mantém um padrão ofensivo recorrente",
-      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS MEIAS",
-      "timeDestaque": "flamengo",
-      "frase": "O Flamengo soma participações em gols com seus meias a uma média de 1,80 por jogo, aparecendo em 10 dos últimos 10 jogos, acima da referência de 0,44 do campeonato. O Vasco não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Flamengo mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "Corinthians mantém um padrão ofensivo recorrente",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS ZAGUEIROS",
+      "timeDestaque": "corinthians",
+      "frase": "O Corinthians soma participações em gols com seus zagueiros a uma média de 0,50 por jogo, aparecendo em 5 dos últimos 10 jogos, acima da referência de 0,15 do campeonato. O Mirassol não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Corinthians mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "flamengo",
-        "vasco"
+        "corinthians",
+        "mirassol"
       ],
       "scout": "participacoes",
-      "chave": "posicao:meia"
+      "chave": "posicao:zagueiro"
     },
     {
       "tipo": "forca-ofensiva-propria",
@@ -171,27 +171,27 @@
     },
     {
       "tipo": "destaque-defensivo",
-      "frase": "Vasco apresenta o melhor controle defensivo da amostra: permite cerca de 10,5 finalizações por jogo. Internacional (11,6 por jogo) e Flamengo (11,8 por jogo) também estão entre as defesas que menos permitem chutes. Na prática, são as equipes que mais reduzem o volume ofensivo dos adversários.",
+      "frase": "Vasco apresenta o melhor controle defensivo da amostra: permite cerca de 10,5 finalizações por jogo. Flamengo (11,3 por jogo) e Internacional (11,6 por jogo) também estão entre as defesas que menos permitem chutes. Na prática, são as equipes que mais reduzem o volume ofensivo dos adversários.",
       "times": [
         "vasco",
-        "internacional",
-        "flamengo"
+        "flamengo",
+        "internacional"
       ],
       "chamada": "CONTROLE DEFENSIVO",
       "timeDestaque": "vasco"
     }
   ],
   "statusAtualizacao": {
-    "estado": "parcial",
-    "rodada": 31,
-    "jogosProcessados": 8,
+    "estado": "pronto",
+    "rodada": 32,
+    "jogosProcessados": 10,
     "jogosEsperados": 10,
-    "timesAtualizados": 16,
+    "timesAtualizados": 20,
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-10-27T03:00:12.362Z",
-    "ultimaPartidaEm": "2026-10-24",
+    "atualizadoEm": "2026-10-28T03:11:07.218Z",
+    "ultimaPartidaEm": "2026-10-26",
     "rodadaLeitura": 33
   }
 }
