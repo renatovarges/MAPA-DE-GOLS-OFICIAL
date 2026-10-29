@@ -2358,6 +2358,75 @@
           }
         }
       ]
+    },
+    "33": {
+      "roundNumber": 33,
+      "date": "2026-10-28",
+      "opponent": "remo",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 28.333333333333336
+          },
+          "shot": {
+            "x": 87.60086290000001,
+            "y": 31.085999999999995
+          },
+          "assistPlayer": {
+            "id": "97468",
+            "name": "Marçal",
+            "fullName": "Fernando Marçal de Oliveira",
+            "position": "Lateral",
+            "side": null,
+            "team": "botafogo"
+          },
+          "shotPlayer": {
+            "id": "63289",
+            "name": "Edenílson",
+            "fullName": "Edenílson Andrade dos Santos",
+            "position": "Meia",
+            "side": null,
+            "team": "botafogo"
+          },
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 8.3753296,
+            "y": 40.252520000000004
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "105048",
+            "name": "Jajá",
+            "fullName": "Jandir Breno Souza Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "remo"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 13.3272896,
+            "y": 27.438520000000004
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "113125",
+            "name": "Picco",
+            "fullName": "Leonel Marcelo Picco",
+            "position": "Meia",
+            "side": null,
+            "team": "remo"
+          }
+        }
+      ]
     }
   }
 }
