@@ -1,19 +1,19 @@
 {
   "teamKey": "mirassol",
-  "geradoEm": "2026-10-28T03:11:03.347Z",
+  "geradoEm": "2026-10-29T03:37:01.127Z",
   "ataca": [
-    "No Mirassol, passes do lateral-esquerdo originam cerca de 2 finalizações por jogo.",
     "O Mirassol registra cerca de 3 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+    "No Mirassol, passes do lateral-esquerdo originam cerca de 2 finalizações por jogo.",
     "O Mirassol registra cerca de 3 finalizações por jogo de cabeça. O atacante de área é quem mais finaliza nesse tipo de jogada.",
     "O Mirassol registra cerca de 5 finalizações por jogo de fora da área. O lateral-esquerdo é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
-      "chave": "assistentePosicao|lateral-esquerdo|",
+      "chave": "origem|CRUZAMENTO|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "origem|CRUZAMENTO|atacante-area",
+      "chave": "assistentePosicao|lateral-esquerdo|",
       "confianca": "padrao-consolidado"
     },
     {
