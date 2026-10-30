@@ -2141,6 +2141,117 @@
           }
         }
       ]
+    },
+    "33": {
+      "roundNumber": 33,
+      "date": "2026-10-29",
+      "opponent": "flamengo",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 17
+          },
+          "shot": {
+            "x": 83.3393204,
+            "y": 32.82062
+          },
+          "assistPlayer": {
+            "id": "99789",
+            "name": "Brenner",
+            "fullName": "Brenner Souza da Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          },
+          "shotPlayer": {
+            "id": "124552",
+            "name": "Lescano",
+            "fullName": "Alan Hernán Lescano",
+            "position": "Meia",
+            "side": null,
+            "team": "vasco"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 17.912614099999985,
+            "y": 35.202600000000004
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "98873",
+            "name": "Samuel Lino",
+            "fullName": "Samuel Dias Lino",
+            "position": "Atacante",
+            "side": null,
+            "team": "flamengo"
+          }
+        },
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 17
+          },
+          "shot": {
+            "x": 9.246684099999996,
+            "y": 31.418600000000005
+          },
+          "assistPlayer": {
+            "id": "84816",
+            "name": "Varela",
+            "fullName": "Guillermo Varela Olivera",
+            "position": "Lateral",
+            "side": null,
+            "team": "flamengo"
+          },
+          "shotPlayer": {
+            "id": "94583",
+            "name": "Pedro",
+            "fullName": "Pedro Guilherme Abreu dos Santos",
+            "position": "Atacante",
+            "side": null,
+            "team": "flamengo"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 13.0558841,
+            "y": 42.082600000000006
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "98873",
+            "name": "Samuel Lino",
+            "fullName": "Samuel Dias Lino",
+            "position": "Atacante",
+            "side": null,
+            "team": "flamengo"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 5.6279440999999935,
+            "y": 33.826600000000006
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "94583",
+            "name": "Pedro",
+            "fullName": "Pedro Guilherme Abreu dos Santos",
+            "position": "Atacante",
+            "side": null,
+            "team": "flamengo"
+          }
+        }
+      ]
     }
   }
 }
