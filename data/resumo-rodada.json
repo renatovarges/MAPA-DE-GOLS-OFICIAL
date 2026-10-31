@@ -3,8 +3,8 @@
   "tipoLeitura": "pre-jogo",
   "rodada": 34,
   "rodadaDados": 32,
-  "janelaAte": "2026-10-29",
-  "geradoEm": "2026-10-30T03:39:41.255Z",
+  "janelaAte": "2026-10-30",
+  "geradoEm": "2026-10-31T03:24:20.471Z",
   "jogos": [
     {
       "id": 237726,
@@ -106,19 +106,6 @@
     },
     {
       "tipo": "convergencia",
-      "titulo": "Mirassol tem um encaixe favorável contra o Chapecoense",
-      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS LATERAIS-DIREITOS",
-      "timeDestaque": "mirassol",
-      "frase": "O Mirassol soma participações em gols com seus laterais-direitos a uma média de 0,40 por jogo, aparecendo em 3 dos últimos 10 jogos. O Chapecoense cede participações em gols para laterais-direitos adversários a uma média de 0,40 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,14 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
-      "times": [
-        "mirassol",
-        "chapecoense"
-      ],
-      "scout": "participacoes",
-      "chave": "posicao:lateral-direito"
-    },
-    {
-      "tipo": "convergencia",
       "titulo": "Red Bull Bragantino tem um encaixe favorável contra o Santos",
       "chamada": "FINALIZAÇÕES COM SEUS LATERAIS-DIREITOS",
       "timeDestaque": "red-bull-bragantino",
@@ -142,6 +129,19 @@
       ],
       "scout": "gols",
       "chave": "origem:falta"
+    },
+    {
+      "tipo": "convergencia",
+      "titulo": "Flamengo tem um encaixe favorável contra o Grêmio",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS LATERAIS-DIREITOS",
+      "timeDestaque": "flamengo",
+      "frase": "O Flamengo soma participações em gols com seus laterais-direitos a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos. O Grêmio cede participações em gols para laterais-direitos adversários a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,14 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "times": [
+        "flamengo",
+        "gremio"
+      ],
+      "scout": "participacoes",
+      "chave": "posicao:lateral-direito"
     },
     {
       "tipo": "fragilidade-defensiva-propria",
@@ -186,14 +186,14 @@
   "statusAtualizacao": {
     "estado": "parcial",
     "rodada": 32,
-    "jogosProcessados": 8,
+    "jogosProcessados": 9,
     "jogosEsperados": 10,
-    "timesAtualizados": 16,
+    "timesAtualizados": 18,
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-10-30T03:39:41.255Z",
-    "ultimaPartidaEm": "2026-10-29",
+    "atualizadoEm": "2026-10-31T03:24:20.471Z",
+    "ultimaPartidaEm": "2026-10-30",
     "rodadaLeitura": 34
   }
 }
