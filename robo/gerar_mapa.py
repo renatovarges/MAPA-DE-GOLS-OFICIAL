@@ -72,7 +72,8 @@ def _remendar_raiox(route):
     if achados < len(REMENDOS_RAIOX):
         print(f"AVISO: o raiox.js do site mudou ({achados} de {len(REMENDOS_RAIOX)} trechos achados); "
               "o arquivo de dados terá só parte do Raio X.", flush=True)
-    route.fulfill(response=resp, body=corpo)
+    cabecalhos = {k: v for k, v in resp.headers.items() if k.lower() not in ("content-encoding", "content-length", "transfer-encoding")}
+    route.fulfill(status=resp.status, headers=cabecalhos, body=corpo)
 
 
 
