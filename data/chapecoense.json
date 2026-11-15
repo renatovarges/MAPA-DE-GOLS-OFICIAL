@@ -2560,6 +2560,79 @@
           }
         }
       ]
+    },
+    "34": {
+      "roundNumber": 34,
+      "date": "2026-11-03",
+      "opponent": "mirassol",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 5.666666666666666
+          },
+          "shot": {
+            "x": 88.3722259,
+            "y": 31.125559999999993
+          },
+          "assistPlayer": {
+            "id": "68938",
+            "name": "Giovanni Augusto",
+            "fullName": "Giovanni Augusto Oliveira Cardoso",
+            "position": "Meia",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "shotPlayer": null,
+          "isHeader": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 21,
+            "y": 39.666666666666664
+          },
+          "shot": {
+            "x": 20.793321599999985,
+            "y": 44.03824
+          },
+          "assistPlayer": {
+            "id": "105903",
+            "name": "Aldo Filho",
+            "fullName": "José Aldo Soares de Oliveira Filho",
+            "position": "Meia",
+            "side": null,
+            "team": "mirassol"
+          },
+          "shotPlayer": {
+            "id": "97520",
+            "name": "Shaylon",
+            "fullName": "Shaylon Kallyson Cardozo - Cardoso",
+            "position": "Meia",
+            "side": null,
+            "team": "mirassol"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 11.65885999999999,
+            "y": 33.646
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "78850",
+            "name": "Reinaldo",
+            "fullName": "Reinaldo Manoel da Silva",
+            "position": "Lateral",
+            "side": null,
+            "team": "mirassol"
+          },
+          "is_penalty": true
+        }
+      ]
     }
   }
 }
