@@ -2273,6 +2273,102 @@
           }
         }
       ]
+    },
+    "34": {
+      "roundNumber": 34,
+      "date": "2026-11-04",
+      "opponent": "vasco",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 75.86567000000001,
+            "y": 28.449239999999996
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "90031",
+            "name": "Mendoza",
+            "fullName": "John Stiven Mendoza Valencia",
+            "position": "Atacante",
+            "side": null,
+            "team": "athletico-pr"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 3.8499999999999943,
+            "y": 67.53
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "114323",
+            "name": "Colidio",
+            "fullName": "Facundo Colidio",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          }
+        },
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
+          },
+          "shot": {
+            "x": 8.42103999999999,
+            "y": 27.884000000000007
+          },
+          "assistPlayer": {
+            "id": "99213",
+            "name": "Puma Rodríguez",
+            "fullName": "José Luis Rodríguez Bebanz",
+            "position": "Lateral",
+            "side": null,
+            "team": "vasco"
+          },
+          "shotPlayer": null,
+          "isHeader": true
+        },
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 62.333333333333336
+          },
+          "shot": {
+            "x": 8.611499999999992,
+            "y": 30.636000000000003
+          },
+          "assistPlayer": {
+            "id": "114323",
+            "name": "Colidio",
+            "fullName": "Facundo Colidio",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          },
+          "shotPlayer": {
+            "id": "104387",
+            "name": "Gabriel Pereira",
+            "fullName": "Gabriel Pereira Magalhães dos Santos",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "vasco"
+          },
+          "isHeader": true
+        },
+        {
+          "shot": null,
+          "pass": null,
+          "assistPlayer": null,
+          "shotPlayer": null,
+          "isOwnGoal": true
+        }
+      ]
     }
   }
 }
