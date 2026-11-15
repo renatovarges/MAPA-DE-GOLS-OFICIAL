@@ -2252,6 +2252,102 @@
           }
         }
       ]
+    },
+    "34": {
+      "roundNumber": 34,
+      "date": "2026-11-04",
+      "opponent": "athletico-pr",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 92.15,
+            "y": 0.47
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "114323",
+            "name": "Colidio",
+            "fullName": "Facundo Colidio",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          }
+        },
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 62.33333333333333
+          },
+          "shot": {
+            "x": 87.57896000000001,
+            "y": 40.11599999999999
+          },
+          "assistPlayer": {
+            "id": "99213",
+            "name": "Puma Rodríguez",
+            "fullName": "José Luis Rodríguez Bebanz",
+            "position": "Lateral",
+            "side": null,
+            "team": "vasco"
+          },
+          "shotPlayer": null,
+          "isHeader": true
+        },
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 5.666666666666666
+          },
+          "shot": {
+            "x": 87.38850000000001,
+            "y": 37.364
+          },
+          "assistPlayer": {
+            "id": "114323",
+            "name": "Colidio",
+            "fullName": "Facundo Colidio",
+            "position": "Atacante",
+            "side": null,
+            "team": "vasco"
+          },
+          "shotPlayer": {
+            "id": "104387",
+            "name": "Gabriel Pereira",
+            "fullName": "Gabriel Pereira Magalhães dos Santos",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "vasco"
+          },
+          "isHeader": true
+        },
+        {
+          "shot": null,
+          "pass": null,
+          "assistPlayer": null,
+          "shotPlayer": null,
+          "isOwnGoal": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 20.13432999999999,
+            "y": 39.550760000000004
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "90031",
+            "name": "Mendoza",
+            "fullName": "John Stiven Mendoza Valencia",
+            "position": "Atacante",
+            "side": null,
+            "team": "athletico-pr"
+          }
+        }
+      ]
     }
   }
 }
