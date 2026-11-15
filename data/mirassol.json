@@ -2203,6 +2203,79 @@
           }
         }
       ]
+    },
+    "34": {
+      "roundNumber": 34,
+      "date": "2026-11-03",
+      "opponent": "chapecoense",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 75,
+            "y": 28.333333333333336
+          },
+          "shot": {
+            "x": 75.20667840000002,
+            "y": 23.961759999999998
+          },
+          "assistPlayer": {
+            "id": "105903",
+            "name": "Aldo Filho",
+            "fullName": "José Aldo Soares de Oliveira Filho",
+            "position": "Meia",
+            "side": null,
+            "team": "mirassol"
+          },
+          "shotPlayer": {
+            "id": "97520",
+            "name": "Shaylon",
+            "fullName": "Shaylon Kallyson Cardozo - Cardoso",
+            "position": "Meia",
+            "side": null,
+            "team": "mirassol"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.34114000000001,
+            "y": 34.354
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "78850",
+            "name": "Reinaldo",
+            "fullName": "Reinaldo Manoel da Silva",
+            "position": "Lateral",
+            "side": null,
+            "team": "mirassol"
+          },
+          "is_penalty": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 62.333333333333336
+          },
+          "shot": {
+            "x": 7.627774099999996,
+            "y": 36.87444000000001
+          },
+          "assistPlayer": {
+            "id": "68938",
+            "name": "Giovanni Augusto",
+            "fullName": "Giovanni Augusto Oliveira Cardoso",
+            "position": "Meia",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "shotPlayer": null,
+          "isHeader": true
+        }
+      ]
     }
   }
 }
