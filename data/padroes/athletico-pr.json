@@ -1,9 +1,9 @@
 {
   "teamKey": "athletico-pr",
-  "geradoEm": "2026-11-15T03:56:34.373Z",
+  "geradoEm": "2026-11-19T05:09:31.701Z",
   "ataca": [
     "O Athletico-PR registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado esquerdo. O atacante de área é quem mais finaliza nesse tipo de jogada.",
-    "O Athletico-PR registra cerca de 8 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada."
+    "O Athletico-PR registra cerca de 7 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
@@ -21,17 +21,22 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "posicao|atacante-area|",
+      "chave": "posicao|meia|",
       "confianca": "padrao-consolidado"
     },
     {
       "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "ladoDaJogada|direita|atacante-area",
+      "confianca": "padrao-consolidado"
     }
   ],
   "sofre": [
     "O Athletico-PR cede cerca de 8 finalizações por jogo de dentro da área. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
-    "O Athletico-PR cede cerca de 3 finalizações por jogo ao atacante de área adversário. É uma posição a observar contra essa defesa.",
-    "O Athletico-PR cede cerca de 2 finalizações por jogo após passes do meia adversário."
+    "O Athletico-PR cede cerca de 2 finalizações por jogo ao meia adversário. É uma posição a observar contra essa defesa.",
+    "O Athletico-PR cede cerca de 2 finalizações por jogo após passes do meia adversário.",
+    "O Athletico-PR cede cerca de 3 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances."
   ]
 }
