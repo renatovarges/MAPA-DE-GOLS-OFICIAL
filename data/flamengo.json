@@ -2674,6 +2674,101 @@
           }
         }
       ]
+    },
+    "35": {
+      "roundNumber": 35,
+      "date": "2026-11-18",
+      "opponent": "athletico-pr",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 39.66666666666667
+          },
+          "shot": {
+            "x": 84.19639040000001,
+            "y": 42.1112
+          },
+          "assistPlayer": {
+            "id": "84816",
+            "name": "Varela",
+            "fullName": "Guillermo Varela Olivera",
+            "position": "Lateral",
+            "side": null,
+            "team": "flamengo"
+          },
+          "shotPlayer": {
+            "id": "105436",
+            "name": "Carrascal",
+            "fullName": "Jorge Andrés Carrascal Guardo",
+            "position": "Meia",
+            "side": null,
+            "team": "flamengo"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.34114000000001,
+            "y": 34.354
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "84735",
+            "name": "Jorginho",
+            "fullName": "Jorge Luiz Frello Filho",
+            "position": "Meia",
+            "side": null,
+            "team": "flamengo"
+          },
+          "is_penalty": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 71,
+            "y": 28.33333333333333
+          },
+          "shot": {
+            "x": 40.863044099999996,
+            "y": 27.988060000000004
+          },
+          "assistPlayer": {
+            "id": "125926",
+            "name": "Zapelli",
+            "fullName": "Bruno Zapelli",
+            "position": "Meia",
+            "side": null,
+            "team": "athletico-pr"
+          },
+          "shotPlayer": {
+            "id": "127871",
+            "name": "Vargas",
+            "fullName": "Kerwin Andrés Calderón Vargas",
+            "position": "Atacante",
+            "side": null,
+            "team": "athletico-pr"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 3.8499999999999943,
+            "y": 67.53
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "127871",
+            "name": "Vargas",
+            "fullName": "Kerwin Andrés Calderón Vargas",
+            "position": "Atacante",
+            "side": null,
+            "team": "athletico-pr"
+          }
+        }
+      ]
     }
   }
 }
