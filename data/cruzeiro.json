@@ -2697,6 +2697,65 @@
           "isHeader": true
         }
       ]
+    },
+    "35": {
+      "roundNumber": 35,
+      "date": "2026-11-18",
+      "opponent": "palmeiras",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 72.75450590000001,
+            "y": 36.313939999999995
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "96610",
+            "name": "Matheus Pereira",
+            "fullName": "Matheus Fellipe Costa Pereira",
+            "position": "Meia",
+            "side": null,
+            "team": "cruzeiro"
+          }
+        },
+        {
+          "shot": null,
+          "pass": null,
+          "assistPlayer": null,
+          "shotPlayer": null,
+          "isOwnGoal": true
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 54.33333333333333,
+            "y": 39.666666666666664
+          },
+          "shot": {
+            "x": 12.470219599999993,
+            "y": 26.062520000000006
+          },
+          "assistPlayer": {
+            "id": "84674",
+            "name": "Lucas Evangelista",
+            "fullName": "Lucas Evangelista Santana de Oliveira",
+            "position": "Meia",
+            "side": null,
+            "team": "palmeiras"
+          },
+          "shotPlayer": {
+            "id": "112863",
+            "name": "Ramón Sosa",
+            "fullName": "Ramón Sosa Acosta",
+            "position": "Atacante",
+            "side": null,
+            "team": "palmeiras"
+          }
+        }
+      ]
     }
   }
 }
