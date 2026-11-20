@@ -2298,6 +2298,101 @@
           }
         }
       ]
+    },
+    "35": {
+      "roundNumber": 35,
+      "date": "2026-11-19",
+      "opponent": "red-bull-bragantino",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 75,
+            "y": 51
+          },
+          "shot": {
+            "x": 85.70578590000001,
+            "y": 29.51994
+          },
+          "assistPlayer": {
+            "id": "97810",
+            "name": "Erick",
+            "fullName": "Erick de Arruda Serafim",
+            "position": "Atacante",
+            "side": null,
+            "team": "vitoria"
+          },
+          "shotPlayer": {
+            "id": "101995",
+            "name": "Brítez",
+            "fullName": "Emanuel Fermín Brítez",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "vitoria"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": {
+            "x": 91.66666666666666,
+            "y": 62.33333333333333
+          },
+          "shot": {
+            "x": 89.8006759,
+            "y": 38.033939999999994
+          },
+          "assistPlayer": {
+            "id": "111879",
+            "name": "Mateus Silva",
+            "fullName": "Mateus da Silva Duarte",
+            "position": "Lateral",
+            "side": null,
+            "team": "vitoria"
+          },
+          "shotPlayer": {
+            "id": "130209",
+            "name": "Renê",
+            "fullName": "Carlos Renê de Sousa Ferreira - Souza",
+            "position": "Atacante",
+            "side": null,
+            "team": "vitoria"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 3.8499999999999943,
+            "y": 67.53
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "124239",
+            "name": "Henry Mosquera",
+            "fullName": "Henry David Mosquera Sánchez",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 5.827927099999997,
+            "y": 39.666000000000004
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "124239",
+            "name": "Henry Mosquera",
+            "fullName": "Henry David Mosquera Sánchez",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        }
+      ]
     }
   }
 }
