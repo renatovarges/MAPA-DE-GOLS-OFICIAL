@@ -2,9 +2,9 @@
   "versao": 3,
   "tipoLeitura": "pre-jogo",
   "rodada": 36,
-  "rodadaDados": 34,
-  "janelaAte": "2026-11-18",
-  "geradoEm": "2026-11-19T05:09:35.060Z",
+  "rodadaDados": 35,
+  "janelaAte": "2026-11-19",
+  "geradoEm": "2026-11-20T04:57:50.066Z",
   "jogos": [
     {
       "id": 237538,
@@ -93,6 +93,19 @@
     },
     {
       "tipo": "convergencia",
+      "titulo": "Botafogo tem um encaixe favorável contra o São Paulo",
+      "chamada": "MARCA GOLS COM SEUS VOLANTES",
+      "timeDestaque": "botafogo",
+      "frase": "O Botafogo marca gols com seus volantes a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos. O São Paulo sofre gols de volantes a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,13 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "times": [
+        "botafogo",
+        "sao-paulo"
+      ],
+      "scout": "gols",
+      "chave": "posicao:volante"
+    },
+    {
+      "tipo": "convergencia",
       "titulo": "Cruzeiro tem um encaixe favorável contra o Chapecoense",
       "chamada": "MARCA GOLS EM JOGADAS INICIADAS PELA DIREITA",
       "timeDestaque": "cruzeiro",
@@ -106,29 +119,16 @@
     },
     {
       "tipo": "convergencia",
-      "titulo": "Palmeiras tem um encaixe favorável contra o Flamengo",
-      "chamada": "MARCA GOLS COM SEUS MEIAS",
-      "timeDestaque": "palmeiras",
-      "frase": "O Palmeiras marca gols com seus meias a uma média de 0,60 por jogo, aparecendo em 3 dos últimos 10 jogos. O Flamengo sofre gols de meias a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,24 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "Internacional tem um encaixe favorável contra o Vitória",
+      "chamada": "FINALIZAÇÕES COM SEUS LATERAIS-DIREITOS",
+      "timeDestaque": "internacional",
+      "frase": "O Internacional produz finalizações com seus laterais-direitos a uma média de 1,9 por jogo, aparecendo em 8 dos últimos 10 jogos. O Vitória cede finalizações para laterais-direitos adversários a uma média de 1,5 por jogo, aparecendo em 5 dos últimos 10 jogos, enquanto a referência do campeonato é 0,7 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "palmeiras",
-        "flamengo"
+        "internacional",
+        "vitoria"
       ],
-      "scout": "gols",
-      "chave": "posicao:meia"
-    },
-    {
-      "tipo": "convergencia",
-      "titulo": "Grêmio tem um encaixe favorável contra o Santos",
-      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS ZAGUEIROS",
-      "timeDestaque": "gremio",
-      "frase": "O Grêmio soma participações em gols com seus zagueiros a uma média de 0,50 por jogo, aparecendo em 4 dos últimos 10 jogos. O Santos cede participações em gols para zagueiros adversários a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,14 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
-      "times": [
-        "gremio",
-        "santos"
-      ],
-      "scout": "participacoes",
-      "chave": "posicao:zagueiro"
+      "scout": "finalizacoes",
+      "chave": "posicao:lateral-direito"
     },
     {
       "tipo": "forca-ofensiva-propria",
@@ -158,20 +158,20 @@
     },
     {
       "tipo": "forca-ofensiva-propria",
-      "titulo": "Red Bull Bragantino mantém um padrão ofensivo recorrente",
-      "chamada": "FINALIZAÇÕES COM SEUS LATERAIS-DIREITOS",
-      "timeDestaque": "red-bull-bragantino",
-      "frase": "O Red Bull Bragantino produz finalizações com seus laterais-direitos a uma média de 2,0 por jogo, aparecendo em 9 dos últimos 10 jogos, acima da referência de 0,7 do campeonato. O Vasco não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Red Bull Bragantino mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "titulo": "Palmeiras mantém um padrão ofensivo recorrente",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS LATERAIS-DIREITOS",
+      "timeDestaque": "palmeiras",
+      "frase": "O Palmeiras soma participações em gols com seus laterais-direitos a uma média de 0,60 por jogo, aparecendo em 4 dos últimos 10 jogos, acima da referência de 0,14 do campeonato. O Flamengo não apresenta uma fragilidade igualmente forte nesse recorte, mas a repetição desse padrão pelo Palmeiras mantém o alerta. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
-        "red-bull-bragantino",
-        "vasco"
+        "palmeiras",
+        "flamengo"
       ],
-      "scout": "finalizacoes",
+      "scout": "participacoes",
       "chave": "posicao:lateral-direito"
     },
     {
       "tipo": "destaque-defensivo",
-      "frase": "Flamengo apresenta o melhor controle defensivo da amostra: permite cerca de 10,8 finalizações por jogo. Vasco (10,9 por jogo) e Internacional (11,5 por jogo) também estão entre as defesas que menos permitem chutes. Na prática, são as equipes que mais reduzem o volume ofensivo dos adversários.",
+      "frase": "Flamengo apresenta o melhor controle defensivo da amostra: permite cerca de 10,8 finalizações por jogo. Vasco (11,1 por jogo) e Internacional (11,3 por jogo) também estão entre as defesas que menos permitem chutes. Na prática, são as equipes que mais reduzem o volume ofensivo dos adversários.",
       "times": [
         "flamengo",
         "vasco",
@@ -182,16 +182,16 @@
     }
   ],
   "statusAtualizacao": {
-    "estado": "parcial",
-    "rodada": 34,
-    "jogosProcessados": 7,
+    "estado": "pronto",
+    "rodada": 35,
+    "jogosProcessados": 10,
     "jogosEsperados": 10,
-    "timesAtualizados": 14,
+    "timesAtualizados": 20,
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-11-19T05:09:35.060Z",
-    "ultimaPartidaEm": "2026-11-18",
+    "atualizadoEm": "2026-11-20T04:57:50.066Z",
+    "ultimaPartidaEm": "2026-11-19",
     "rodadaLeitura": 36
   }
 }
