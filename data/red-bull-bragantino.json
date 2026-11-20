@@ -2131,6 +2131,101 @@
           }
         }
       ]
+    },
+    "35": {
+      "roundNumber": 35,
+      "date": "2026-11-19",
+      "opponent": "vitoria",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 92.15,
+            "y": 0.47
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "124239",
+            "name": "Henry Mosquera",
+            "fullName": "Henry David Mosquera Sánchez",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 90.1720729,
+            "y": 28.333999999999996
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "124239",
+            "name": "Henry Mosquera",
+            "fullName": "Henry David Mosquera Sánchez",
+            "position": "Atacante",
+            "side": null,
+            "team": "red-bull-bragantino"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 21,
+            "y": 17
+          },
+          "shot": {
+            "x": 10.29421409999999,
+            "y": 38.48006
+          },
+          "assistPlayer": {
+            "id": "97810",
+            "name": "Erick",
+            "fullName": "Erick de Arruda Serafim",
+            "position": "Atacante",
+            "side": null,
+            "team": "vitoria"
+          },
+          "shotPlayer": {
+            "id": "101995",
+            "name": "Brítez",
+            "fullName": "Emanuel Fermín Brítez",
+            "position": "Zagueiro",
+            "side": null,
+            "team": "vitoria"
+          },
+          "isHeader": true
+        },
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
+          },
+          "shot": {
+            "x": 6.199324099999998,
+            "y": 29.966060000000006
+          },
+          "assistPlayer": {
+            "id": "111879",
+            "name": "Mateus Silva",
+            "fullName": "Mateus da Silva Duarte",
+            "position": "Lateral",
+            "side": null,
+            "team": "vitoria"
+          },
+          "shotPlayer": {
+            "id": "130209",
+            "name": "Renê",
+            "fullName": "Carlos Renê de Sousa Ferreira - Souza",
+            "position": "Atacante",
+            "side": null,
+            "team": "vitoria"
+          }
+        }
+      ]
     }
   }
 }
