@@ -1,19 +1,19 @@
 {
   "teamKey": "santos",
-  "geradoEm": "2026-11-20T04:57:46.739Z",
+  "geradoEm": "2026-11-22T04:11:00.272Z",
   "ataca": [
-    "No Santos, passes do meia originam cerca de 4 finalizações por jogo.",
     "No Santos, o meia registra cerca de 5 finalizações por jogo. É uma posição a observar na escalação.",
+    "No Santos, passes do meia originam cerca de 4 finalizações por jogo.",
     "O Santos registra cerca de 8 finalizações por jogo de dentro da área. O atacante de área é quem mais finaliza nesse tipo de jogada.",
     "O Santos registra cerca de 4 finalizações por jogo em jogadas construídas pelo lado esquerdo. O atacante de área é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
-      "chave": "assistentePosicao|meia|",
+      "chave": "posicao|meia|",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "posicao|meia|",
+      "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     },
     {
@@ -27,11 +27,11 @@
   ],
   "evidenciasSofre": [
     {
-      "chave": "ladoDaJogada|esquerda|atacante-area",
+      "chave": "parteDoCorpo|cabeca|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "parteDoCorpo|cabeca|atacante-area",
+      "chave": "ladoDaJogada|esquerda|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
@@ -44,8 +44,8 @@
     }
   ],
   "sofre": [
-    "O Santos cede cerca de 4 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
     "O Santos cede cerca de 3 finalizações por jogo de cabeça. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Santos cede cerca de 4 finalizações por jogo em ataques pelo lado esquerdo de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
     "O Santos cede cerca de 2 finalizações por jogo após passes do meia adversário.",
     "O Santos cede cerca de 2 finalizações por jogo após sobras de bola. Atenção: o meia adversário é quem mais finaliza nesses lances."
   ]
