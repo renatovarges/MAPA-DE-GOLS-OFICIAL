@@ -1,9 +1,9 @@
 {
   "teamKey": "bahia",
-  "geradoEm": "2026-11-20T04:57:46.739Z",
+  "geradoEm": "2026-11-22T04:11:00.272Z",
   "ataca": [
     "O Bahia registra cerca de 3 finalizações por jogo de cabeça. O atacante de área é quem mais finaliza nesse tipo de jogada.",
-    "O Bahia registra cerca de 2 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada.",
+    "O Bahia registra cerca de 3 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada.",
     "No Bahia, o volante registra cerca de 2 finalizações por jogo. É uma posição a observar na escalação.",
     "No Bahia, passes do meia originam cerca de 2 finalizações por jogo."
   ],
@@ -35,6 +35,10 @@
       "confianca": "padrao-consolidado"
     },
     {
+      "chave": "area|fora-da-area|meia",
+      "confianca": "padrao-consolidado"
+    },
+    {
       "chave": "assistentePosicao|meia|",
       "confianca": "padrao-consolidado"
     }
@@ -42,6 +46,7 @@
   "sofre": [
     "O Bahia cede cerca de 4 finalizações por jogo ao atacante de área adversário. É uma posição a observar contra essa defesa.",
     "O Bahia cede cerca de 4 finalizações por jogo em ataques pelo lado direito de sua defesa. Atenção: o atacante de área adversário é quem mais finaliza nesses lances.",
+    "O Bahia cede cerca de 6 finalizações por jogo de fora da área. Atenção: o meia adversário é quem mais finaliza nesses lances.",
     "O Bahia cede cerca de 3 finalizações por jogo após passes do meia adversário."
   ]
 }
