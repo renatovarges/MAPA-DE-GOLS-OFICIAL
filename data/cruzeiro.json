@@ -2756,6 +2756,78 @@
           }
         }
       ]
+    },
+    "36": {
+      "roundNumber": 36,
+      "date": "2026-11-21",
+      "opponent": "chapecoense",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 81.91087040000001,
+            "y": 30.930339999999998
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "96610",
+            "name": "Matheus Pereira",
+            "fullName": "Matheus Fellipe Costa Pereira",
+            "position": "Meia",
+            "side": null,
+            "team": "cruzeiro"
+          }
+        },
+        {
+          "pass": {
+            "x": 58.333333333333336,
+            "y": 28.333333333333336
+          },
+          "shot": {
+            "x": 83.91070040000001,
+            "y": 21.298339999999996
+          },
+          "assistPlayer": {
+            "id": "79701",
+            "name": "Lucas Silva",
+            "fullName": "Lucas Silva Borges",
+            "position": "Meia",
+            "side": null,
+            "team": "cruzeiro"
+          },
+          "shotPlayer": {
+            "id": "117909",
+            "name": "Wesley",
+            "fullName": "Wesley Gassova Ribeiro Teixeira",
+            "position": "Atacante",
+            "side": null,
+            "team": "cruzeiro"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
+          },
+          "shot": {
+            "x": 5.342254099999991,
+            "y": 33.101620000000004
+          },
+          "assistPlayer": {
+            "id": "107203",
+            "name": "Max",
+            "fullName": "Max Alves da Silva",
+            "position": "Meia",
+            "side": null,
+            "team": "chapecoense"
+          },
+          "shotPlayer": null,
+          "isHeader": true
+        }
+      ]
     }
   }
 }
