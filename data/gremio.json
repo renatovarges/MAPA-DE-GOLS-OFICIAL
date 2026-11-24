@@ -2233,6 +2233,58 @@
       "home": true,
       "created_goals": [],
       "conceded_goals": []
+    },
+    "36": {
+      "roundNumber": 36,
+      "date": "2026-11-23",
+      "opponent": "santos",
+      "home": false,
+      "created_goals": [
+        {
+          "pass": {
+            "x": 41.66666666666667,
+            "y": 39.66666666666667
+          },
+          "shot": {
+            "x": 81.5299504,
+            "y": 31.318199999999994
+          },
+          "assistPlayer": {
+            "id": "105563",
+            "name": "Carlos Vinícius",
+            "fullName": "Carlos Vinícius Alves Morais",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          },
+          "shotPlayer": {
+            "id": "142004",
+            "name": "Amuzu",
+            "fullName": "Francis Amuzu",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 84.34114000000001,
+            "y": 34.354
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "89368",
+            "name": "Braithwaite",
+            "fullName": "Martin Christensen Braithwaite",
+            "position": "Atacante",
+            "side": null,
+            "team": "gremio"
+          },
+          "is_penalty": true
+        }
+      ],
+      "conceded_goals": []
     }
   }
 }
