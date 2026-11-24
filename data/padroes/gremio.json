@@ -1,13 +1,17 @@
 {
   "teamKey": "gremio",
-  "geradoEm": "2026-11-23T04:52:00.862Z",
+  "geradoEm": "2026-11-24T07:41:37.671Z",
   "ataca": [
+    "No Grêmio, passes do atacante de área originam cerca de 2 finalizações por jogo.",
     "O Grêmio registra cerca de 2 finalizações por jogo de cabeça. O atacante de área é quem mais finaliza nesse tipo de jogada.",
     "O Grêmio registra cerca de 2 finalizações por jogo após cruzamentos. O atacante de área é quem mais finaliza nesse tipo de jogada.",
-    "No Grêmio, o ponta-esquerda registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
-    "O Grêmio registra cerca de 6 finalizações por jogo de fora da área. O ponta-esquerda é quem mais finaliza nesse tipo de jogada."
+    "No Grêmio, o ponta-esquerda registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação."
   ],
   "evidenciasAtaca": [
+    {
+      "chave": "assistentePosicao|atacante-area|",
+      "confianca": "padrao-consolidado"
+    },
     {
       "chave": "parteDoCorpo|cabeca|atacante-area",
       "confianca": "padrao-consolidado"
@@ -18,10 +22,6 @@
     },
     {
       "chave": "posicao|ponta-esquerda|",
-      "confianca": "padrao-consolidado"
-    },
-    {
-      "chave": "area|fora-da-area|ponta-esquerda",
       "confianca": "padrao-consolidado"
     }
   ],
