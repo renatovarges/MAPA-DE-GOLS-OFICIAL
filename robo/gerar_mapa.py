@@ -18,6 +18,7 @@ import os
 import re
 import sys
 import unicodedata
+import urllib.request
 import zipfile
 
 SITE_URL = os.environ.get("SITE_URL", "https://mapa-de-gols-oficial.onrender.com").rstrip("/")
@@ -198,7 +199,36 @@ def montar_dados(rodada, jogos, modo, dados):
     }
 
 
-def gerar(saida, jogos="3", modo="seguidas"):
+SIGLAS_CARTOLA = {
+    "FLA": "flamengo", "BOT": "botafogo", "COR": "corinthians", "BAH": "bahia", "FLU": "fluminense", "VAS": "vasco",
+    "PAL": "palmeiras", "SAO": "sao-paulo", "SAN": "santos", "RBB": "red-bull-bragantino", "CAM": "atletico-mg",
+    "CRU": "cruzeiro", "GRE": "gremio", "INT": "internacional", "VIT": "vitoria", "CAP": "athletico-pr",
+    "CFC": "coritiba", "CHA": "chapecoense", "REM": "remo", "MIR": "mirassol",
+}
+
+
+def confrontos_da_rodada(rodada):
+    """Confrontos da rodada pela API do Cartola, no formato do data/proximo-confronto.json do site.
+
+    O site escolhe sozinho a "próxima rodada com os 10 jogos ainda por fazer": se um jogo foi antecipado,
+    ele pula a rodada inteira. Aqui vale a rodada que o robô pediu.
+    """
+    pedido = urllib.request.Request(f"https://api.cartola.globo.com/partidas/{rodada}", headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(pedido, timeout=60) as r:
+        d = json.load(r)
+    saida = {}
+    for p in d.get("partidas", []):
+        casa = SIGLAS_CARTOLA[d["clubes"][str(p["clube_casa_id"])]["abreviacao"]]
+        fora = SIGLAS_CARTOLA[d["clubes"][str(p["clube_visitante_id"])]["abreviacao"]]
+        data = str(p.get("partida_data") or "").replace(" ", "T")
+        saida[casa] = {"mando": "casa", "adversario": fora, "data": data, "rodada": rodada}
+        saida[fora] = {"mando": "fora", "adversario": casa, "data": data, "rodada": rodada}
+    if len(saida) != 20:
+        raise SystemExit(f"O Cartola não trouxe os 10 jogos da rodada {rodada} ({len(saida)} times).")
+    return saida
+
+
+def gerar(saida, jogos="3", modo="seguidas", rodada_alvo=None):
     from playwright.sync_api import sync_playwright
     chave = os.environ.get("ROBOT_KEY", "")
     if not chave:
@@ -212,6 +242,11 @@ def gerar(saida, jogos="3", modo="seguidas"):
             ctx.route("**/raiox.js*", _remendar_raiox)
         except Exception as e:  # noqa: BLE001
             print(f"AVISO: não consegui preparar a leitura do Raio X ({e})", flush=True)
+        if rodada_alvo:
+            corpo_confrontos = json.dumps(confrontos_da_rodada(rodada_alvo))
+            ctx.route("**/data/proximo-confronto.json*",
+                      lambda route: route.fulfill(status=200, content_type="application/json", body=corpo_confrontos))
+            print(f"Confrontos da rodada {rodada_alvo} (Cartola) entregues ao site.")
         pg = ctx.new_page()
         pg.set_default_timeout(180000)
         pg.on("console", lambda m: print("[site]", m.text[:160]) if m.type == "error" else None)
@@ -288,8 +323,9 @@ def main():
     ap.add_argument("--saida", required=True)
     ap.add_argument("--jogos", default="3", help="últimos N jogos (padrão do site: 3)")
     ap.add_argument("--modo", default="seguidas", choices=["seguidas", "mando"])
+    ap.add_argument("--rodada", type=int, default=None, help="rodada ALVO (padrão: a que o site escolher)")
     a = ap.parse_args()
-    rodada, _ = gerar(a.saida, a.jogos, a.modo)
+    rodada, _ = gerar(a.saida, a.jogos, a.modo, a.rodada)
     with open(os.path.join(a.saida, "_info.json"), "w", encoding="utf-8") as f:
         json.dump({"rodada": rodada}, f)
 
