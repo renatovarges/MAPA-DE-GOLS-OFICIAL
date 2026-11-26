@@ -1,15 +1,19 @@
 {
   "teamKey": "chapecoense",
-  "geradoEm": "2026-11-25T06:12:03.708Z",
+  "geradoEm": "2026-11-26T06:02:35.016Z",
   "ataca": [
     "O Chapecoense registra cerca de 5 finalizações por jogo de fora da área. O meia é quem mais finaliza nesse tipo de jogada.",
+    "O Chapecoense registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado esquerdo. O atacante de área é quem mais finaliza nesse tipo de jogada.",
     "No Chapecoense, passes do meia originam cerca de 3 finalizações por jogo.",
-    "O Chapecoense registra cerca de 2 finalizações por jogo de cabeça. O atacante de área é quem mais finaliza nesse tipo de jogada.",
-    "O Chapecoense registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado esquerdo. O atacante de área é quem mais finaliza nesse tipo de jogada."
+    "O Chapecoense registra cerca de 2 finalizações por jogo de cabeça. O atacante de área é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
       "chave": "area|fora-da-area|meia",
+      "confianca": "padrao-consolidado"
+    },
+    {
+      "chave": "ladoDaJogada|esquerda|atacante-area",
       "confianca": "padrao-consolidado"
     },
     {
@@ -18,10 +22,6 @@
     },
     {
       "chave": "parteDoCorpo|cabeca|atacante-area",
-      "confianca": "padrao-consolidado"
-    },
-    {
-      "chave": "ladoDaJogada|esquerda|atacante-area",
       "confianca": "padrao-consolidado"
     }
   ],
