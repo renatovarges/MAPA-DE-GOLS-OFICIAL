@@ -29,6 +29,7 @@ import "./lib/site-auth.mjs"; // envia a chave do robô ao site ao vivo (ver lib
 import { chromium } from "playwright";
 import { parsePdcHtml } from "./lib/pdc.mjs";
 import { fetchJsonWithRetry } from "./lib/http.mjs";
+import { rodadaAbertaDoCartola } from "./lib/rodada-cartola.mjs";
 
 const SITE_URL = process.env.SITE_URL || "https://mapa-de-gols-oficial.onrender.com";
 const ENVIO_REAL = process.env.ENVIO_REAL === "1";
@@ -84,7 +85,8 @@ async function horasAteProximoJogoDaRodada() {
     .map((c) => c && c.data)
     .filter(Boolean)
     .map((d) => new Date(/[zZ]|[+-]\d\d:\d\d$/.test(d) ? d : `${d}-03:00`)) // datas do calendário são de Brasília
-    .filter((d) => !Number.isNaN(d.getTime()));
+    // a rodada aberta inclui jogos já disputados: só interessa o próximo
+    .filter((d) => d.getTime() > Date.now());
   if (!datas.length) return null;
   const proximo = new Date(Math.min(...datas.map((d) => d.getTime())));
   return (proximo.getTime() - Date.now()) / 3_600_000;
@@ -102,49 +104,55 @@ async function horasDesdeUltimaColetaBemSucedida() {
   }
 }
 
-const MIN_CLUBES = 15;
-const MIN_FIGURAS_HIDRATADO = 200;
+// Quantos clubes esperar NÃO é fixo: jogo adiado/antecipado sai da rodada do
+// Cartola (`valida: false`) e o site só lista quem joga. Achado real
+// (2026-11): rodada 37 com 7 jogos válidos = 14 clubes, e o mínimo fixo
+// antigo (15 clubes / 200 figuras) fazia toda coleta estourar o tempo.
+const MIN_CLUBES_SEM_API = 15;
+const FIGURAS_POR_CLUBE = 12; // 11 de linha + técnico
 
-async function esperarHidratacao(page, { minimo = MIN_FIGURAS_HIDRATADO, timeout = 240000, folga = 1500 } = {}) {
-  await page.waitForFunction(
-    (min) => document.querySelectorAll("figure.player").length >= min,
-    minimo,
-    { timeout },
-  );
-  const antes = await page.evaluate(() => document.querySelectorAll("figure.player").length);
-  await page.waitForTimeout(folga);
-  const depois = await page.evaluate(() => document.querySelectorAll("figure.player").length);
-  if (depois < antes) {
-    throw new Error(`contagem de jogadores caiu entre duas leituras (${antes} → ${depois}) — página instável`);
+async function clubesEsperadosNaRodada() {
+  try {
+    const { jogos } = await rodadaAbertaDoCartola();
+    if (jogos.length) return jogos.length * 2;
+  } catch (e) {
+    console.log(`  ! API do Cartola indisponível (${e.message}) — usando mínimo padrão`);
   }
-  return depois;
+  return MIN_CLUBES_SEM_API;
 }
 
 const agora = () => new Date().toISOString().slice(11, 23);
 
-export async function harvestPdc() {
+export async function harvestPdc(clubesEsperados) {
   const browser = await chromium.launch();
   try {
     const page = await browser.newPage();
     console.log(`  [${agora()}] goto ...`);
     await page.goto(URL, { waitUntil: "load", timeout: 30000 });
     console.log(`  [${agora()}] load disparou, esperando hidratar (até 4min) ...`);
-    let totalFiguras;
-    try {
-      totalFiguras = await esperarHidratacao(page);
-    } catch (e) {
-      if (!/Execution context was destroyed/.test(e.message)) throw e;
-      console.log(`  [${agora()}] contexto destruído por navegação, tentando de novo ...`);
-      await page.waitForLoadState("load", { timeout: 30000 });
-      totalFiguras = await esperarHidratacao(page);
-    }
-    console.log(`  [${agora()}] hidratado (${totalFiguras} figuras)`);
-
-    const html = await page.content();
+    // Contagem e cópia do HTML na MESMA avaliação: a página deles pode travar
+    // segundos depois de carregar (achado real, 2026-11), e aí qualquer
+    // leitura posterior fica sem resposta.
+    const handle = await page.waitForFunction(
+      ({ clubes, porClube }) =>
+        document.querySelectorAll("figure.player").length >= clubes * porClube
+          ? document.documentElement.outerHTML
+          : false,
+      { clubes: clubesEsperados, porClube: FIGURAS_POR_CLUBE },
+      { timeout: 240000, polling: 100 },
+    );
+    const html = await handle.jsonValue();
     const { rodadaInfo, teams } = parsePdcHtml(html);
-    if (Object.keys(teams).length < MIN_CLUBES) {
-      throw new Error(`só ${Object.keys(teams).length} clubes encontrados (esperado >= ${MIN_CLUBES}) — layout pode ter mudado`);
+    const totalClubes = Object.keys(teams).length;
+    if (totalClubes < clubesEsperados) {
+      throw new Error(`só ${totalClubes} clubes encontrados (esperado >= ${clubesEsperados}) — layout pode ter mudado`);
     }
+    const incompletos = Object.entries(teams).filter(([, t]) => t.players.length < FIGURAS_POR_CLUBE);
+    if (incompletos.length) {
+      throw new Error(`escalação incompleta: ${incompletos.map(([k, t]) => `${k}=${t.players.length}`).join(", ")}`);
+    }
+    const totalFiguras = Object.values(teams).reduce((n, t) => n + t.players.length, 0);
+    console.log(`  [${agora()}] hidratado (${totalFiguras} figuras, ${totalClubes} clubes)`);
     return { rodadaInfo, teams, totalFiguras };
   } finally {
     await browser.close();
@@ -169,9 +177,11 @@ async function main() {
   const TENTATIVAS = 2;
   let ultimoErro;
   let resultado;
+  const clubesEsperados = await clubesEsperadosNaRodada();
+  console.log(`  clubes esperados nesta rodada: ${clubesEsperados}`);
   for (let tentativa = 1; tentativa <= TENTATIVAS; tentativa++) {
     try {
-      resultado = await harvestPdc();
+      resultado = await harvestPdc(clubesEsperados);
       ultimoErro = null;
       break;
     } catch (e) {

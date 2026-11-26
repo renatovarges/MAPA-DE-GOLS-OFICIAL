@@ -1,87 +1,58 @@
 import "./lib/site-auth.mjs"; // envia a chave do robô ao site ao vivo (ver lib/site-auth.mjs)
-import { getFootstatsToken } from "./lib/footstats-auth.mjs";
 import { fetchJsonWithRetry } from "./lib/http.mjs";
-import { proximaRodadaCompleta } from "./lib/next-round.mjs";
+import { rodadaAbertaDoCartola, confrontosPorTime } from "./lib/rodada-cartola.mjs";
 import { dispatchAlert } from "./lib/alerts.mjs";
 
 /**
- * Mando do PRÓXIMO confronto de cada time — insumo do filtro "rodada
- * atual" na aba Líderes (pedido do Renato em 2026-08-13: "rodada atual é
- * a próxima que o time do jogador vai disputar"). Reaproveita
- * proximaRodadaCompleta() (já usada pela leitura estratégica) em vez de
- * duplicar a lógica de achar a próxima rodada completa (10 jogos, 20
- * times distintos).
+ * Confrontos da rodada ABERTA no Cartola (mando por time) — usado pelo filtro
+ * "rodada atual" dos Líderes, pelo Raio X, pelo "Baixar tudo" e pela
+ * frequência da coleta de prováveis.
  *
- * Arquivo único, sempre sobrescrito por completo — não é por partida.
+ * Achado real (2026-11): antes vinha da FootStats e exigia uma rodada com os
+ * 10 jogos ainda por jogar. Bastou um jogo da R37 ser disputado antes para o
+ * site pular para a R38 com o mercado da R37 ainda aberto. Agora vale a rodada
+ * do Cartola, só com os jogos válidos: time sem jogo válido fica de fora.
+ *
+ * Arquivo único, sobrescrito por completo — e só quando o conteúdo muda,
+ * porque roda a cada 2h e cada gravação vira um commit.
  */
 
-const CAMPEONATO_ID = 1395;
-const API_BASE = "https://gather-api-app.footstats.com.br";
 const SITE_URL = process.env.SITE_URL || "https://mapa-de-gols-oficial.onrender.com";
 const ENVIO_REAL = process.env.ENVIO_REAL === "1";
-const TIMES = ["flamengo", "botafogo", "corinthians", "bahia", "fluminense", "vasco", "palmeiras", "sao-paulo", "santos", "red-bull-bragantino", "atletico-mg", "cruzeiro", "gremio", "internacional", "vitoria", "athletico-pr", "coritiba", "chapecoense", "remo", "mirassol"];
 
-function contagemRodada(dadosPorTime) {
-  const contagem = new Map();
-  for (const dados of dadosPorTime.values()) {
-    for (const partida of Object.values(dados.matches || {})) {
-      const rodada = Number(partida.roundNumber ?? partida.round);
-      if (rodada > 0) contagem.set(rodada, (contagem.get(rodada) || new Set()).add(String(partida.matchId)));
-    }
-  }
-  return [...contagem].filter(([, ids]) => ids.size >= 10).sort((a, b) => b[0] - a[0])[0]?.[0] || 0;
-}
-
-async function salvar(payload) {
-  if (!ENVIO_REAL) {
-    console.log(`  [SIMULAÇÃO] enviaria próximo confronto de ${Object.keys(payload).length} times`);
-    return { ok: true, simulado: true };
-  }
-  const res = await fetch(`${SITE_URL}/api/save-proximo-confronto`, {
-    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload),
-  });
-  const body = await res.json().catch(() => ({}));
-  if (!res.ok || !body.ok) throw new Error(`save-proximo-confronto falhou (HTTP ${res.status}): ${JSON.stringify(body)}`);
-  return body;
-}
+const assinatura = (porTime) =>
+  Object.keys(porTime || {}).sort()
+    .map((t) => [t, porTime[t].mando, porTime[t].adversario, porTime[t].data, porTime[t].rodada].join("|"))
+    .join(";");
 
 async function main() {
   console.log(`→ modo: ${ENVIO_REAL ? "ENVIO REAL (grava no site ao vivo)" : "SIMULAÇÃO (nada é enviado — rode com ENVIO_REAL=1 pra gravar de verdade)"}`);
   console.log(`→ site alvo: ${SITE_URL}`);
 
-  // rodadaDados: usa o dataset de finalizações (mesmo critério da leitura
-  // estratégica) — já é coletado todo dia antes deste passo no workflow.
-  const dadosPorTime = new Map();
-  await Promise.all(TIMES.map(async (time) => {
-    try {
-      dadosPorTime.set(time, await fetchJsonWithRetry(`${SITE_URL}/data/finalizacoes/${time}.json?t=${Date.now()}`));
-    } catch {
-      dadosPorTime.set(time, { matches: {} });
-    }
-  }));
-  const rodadaDados = contagemRodada(dadosPorTime);
-  console.log(`→ rodada de dados já processada: ${rodadaDados}`);
-
-  const token = await getFootstatsToken();
-  const partidas = await fetchJsonWithRetry(`${API_BASE}/api/1.0/campeonatos/${CAMPEONATO_ID}/partidas`, { headers: { Authorization: `Bearer ${token}` } });
-  const proxima = proximaRodadaCompleta(partidas, rodadaDados);
-  if (!proxima) {
-    console.log("→ nenhuma rodada futura completa encontrada — nada a salvar (temporada pode ter terminado ou calendário incompleto).");
+  const { rodada, jogos } = await rodadaAbertaDoCartola();
+  if (!jogos.length) {
+    console.log(`→ rodada ${rodada} sem jogos válidos no Cartola — mantém o arquivo atual.`);
     return;
   }
-  console.log(`→ próxima rodada completa: ${proxima.rodada} (${proxima.jogos.length} jogos)`);
+  const porTime = confrontosPorTime(rodada, jogos);
+  console.log(`→ rodada ${rodada} do Cartola: ${jogos.length} jogos válidos, ${Object.keys(porTime).length} times`);
+  for (const j of jogos) console.log(`  ${j.data}  ${j.mandante} x ${j.visitante}`);
 
-  const porTime = {};
-  for (const jogo of proxima.jogos) {
-    porTime[jogo.mandante] = { mando: "casa", adversario: jogo.visitante, data: jogo.data, rodada: proxima.rodada };
-    porTime[jogo.visitante] = { mando: "fora", adversario: jogo.mandante, data: jogo.data, rodada: proxima.rodada };
+  const atual = await fetchJsonWithRetry(`${SITE_URL}/data/proximo-confronto.json?t=${Date.now()}`).catch(() => null);
+  if (atual && assinatura(atual) === assinatura(porTime)) {
+    console.log("✓ sem mudança — nada a gravar");
+    return;
   }
-
-  await salvar(porTime);
-  console.log(`✓ próximo confronto ${ENVIO_REAL ? "salvo" : "que seria salvo"} para ${Object.keys(porTime).length} times`);
   if (!ENVIO_REAL) {
-    console.log("\nEssa foi uma SIMULAÇÃO — rode com ENVIO_REAL=1 pra gravar de verdade no site ao vivo.");
+    console.log(`  [SIMULAÇÃO] enviaria próximo confronto de ${Object.keys(porTime).length} times`);
+    return;
   }
+  const res = await fetch(`${SITE_URL}/api/save-proximo-confronto`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(porTime),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.ok) throw new Error(`save-proximo-confronto falhou (HTTP ${res.status}): ${JSON.stringify(body)}`);
+  console.log(`✓ próximo confronto salvo para ${Object.keys(porTime).length} times`);
 }
 
 main().catch(async (e) => {
