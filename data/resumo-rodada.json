@@ -2,9 +2,9 @@
   "versao": 3,
   "tipoLeitura": "pre-jogo",
   "rodada": 38,
-  "rodadaDados": 35,
-  "janelaAte": "2026-11-24",
-  "geradoEm": "2026-11-25T06:12:07.200Z",
+  "rodadaDados": 36,
+  "janelaAte": "2026-11-25",
+  "geradoEm": "2026-11-26T06:02:39.659Z",
   "jogos": [
     {
       "id": 237549,
@@ -81,15 +81,15 @@
     {
       "tipo": "convergencia",
       "titulo": "Corinthians tem um encaixe favorável contra o Remo",
-      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS ZAGUEIROS",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEU PONTA DIREITA",
       "timeDestaque": "corinthians",
-      "frase": "O Corinthians soma participações em gols com seus zagueiros a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos. O Remo cede participações em gols para zagueiros adversários a uma média de 0,40 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,14 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "frase": "O Corinthians soma participações em gols com seu ponta direita a uma média de 0,70 por jogo, aparecendo em 4 dos últimos 10 jogos. O Remo cede participações em gols para pontas-direitas adversários a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,19 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
       "times": [
         "corinthians",
         "remo"
       ],
       "scout": "participacoes",
-      "chave": "posicao:zagueiro"
+      "chave": "posicao:ponta-direita"
     },
     {
       "tipo": "convergencia",
@@ -106,19 +106,6 @@
     },
     {
       "tipo": "convergencia",
-      "titulo": "Corinthians tem um encaixe favorável contra o Remo",
-      "chamada": "PARTICIPAÇÕES EM GOLS COM SEU PONTA DIREITA",
-      "timeDestaque": "corinthians",
-      "frase": "O Corinthians soma participações em gols com seu ponta direita a uma média de 0,60 por jogo, aparecendo em 3 dos últimos 10 jogos. O Remo cede participações em gols para pontas-direitas adversários a uma média de 0,30 por jogo, aparecendo em 3 dos últimos 10 jogos, enquanto a referência do campeonato é 0,19 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
-      "times": [
-        "corinthians",
-        "remo"
-      ],
-      "scout": "participacoes",
-      "chave": "posicao:ponta-direita"
-    },
-    {
-      "tipo": "convergencia",
       "titulo": "Flamengo tem um encaixe favorável contra o Chapecoense",
       "chamada": "MARCA GOLS COM SEUS MEIAS",
       "timeDestaque": "flamengo",
@@ -129,6 +116,19 @@
       ],
       "scout": "gols",
       "chave": "posicao:meia"
+    },
+    {
+      "tipo": "convergencia",
+      "titulo": "Cruzeiro tem um encaixe favorável contra o Internacional",
+      "chamada": "PARTICIPAÇÕES EM GOLS COM SEUS VOLANTES",
+      "timeDestaque": "cruzeiro",
+      "frase": "O Cruzeiro soma participações em gols com seus volantes a uma média de 0,60 por jogo, aparecendo em 5 dos últimos 10 jogos. O Internacional cede participações em gols para volantes adversários a uma média de 0,40 por jogo, aparecendo em 4 dos últimos 10 jogos, enquanto a referência do campeonato é 0,24 por jogo. Na prática, priorize os jogadores dessa posição que tenham participação ofensiva recorrente.",
+      "times": [
+        "cruzeiro",
+        "internacional"
+      ],
+      "scout": "participacoes",
+      "chave": "posicao:volante"
     },
     {
       "tipo": "forca-ofensiva-propria",
@@ -185,15 +185,15 @@
   ],
   "statusAtualizacao": {
     "estado": "parcial",
-    "rodada": 35,
+    "rodada": 36,
     "jogosProcessados": 1,
     "jogosEsperados": 10,
     "timesAtualizados": 2,
     "timesEsperados": 20,
     "frasesAtualizadas": true,
     "leituraEstrategicaAtualizada": true,
-    "atualizadoEm": "2026-11-25T06:12:07.200Z",
-    "ultimaPartidaEm": "2026-11-24",
+    "atualizadoEm": "2026-11-26T06:02:39.659Z",
+    "ultimaPartidaEm": "2026-11-25",
     "rodadaLeitura": 38
   }
 }
