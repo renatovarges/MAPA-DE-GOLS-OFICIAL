@@ -1,11 +1,11 @@
 {
   "teamKey": "vitoria",
-  "geradoEm": "2026-11-25T06:12:03.708Z",
+  "geradoEm": "2026-11-26T06:02:35.016Z",
   "ataca": [
     "No Vitória, passes do ponta-direita originam cerca de 2 finalizações por jogo.",
     "No Vitória, o ponta-esquerda registra cerca de 3 finalizações por jogo. É uma posição a observar na escalação.",
-    "O Vitória registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado direito. O ponta-esquerda é quem mais finaliza nesse tipo de jogada.",
-    "O Vitória registra cerca de 5 finalizações por jogo de fora da área. O meia é quem mais finaliza nesse tipo de jogada."
+    "O Vitória registra cerca de 5 finalizações por jogo de fora da área. O meia é quem mais finaliza nesse tipo de jogada.",
+    "O Vitória registra cerca de 3 finalizações por jogo em jogadas construídas pelo lado direito. O ponta-esquerda é quem mais finaliza nesse tipo de jogada."
   ],
   "evidenciasAtaca": [
     {
@@ -17,11 +17,11 @@
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "ladoDaJogada|direita|ponta-esquerda",
+      "chave": "area|fora-da-area|meia",
       "confianca": "padrao-consolidado"
     },
     {
-      "chave": "area|fora-da-area|meia",
+      "chave": "ladoDaJogada|direita|ponta-esquerda",
       "confianca": "padrao-consolidado"
     }
   ],
