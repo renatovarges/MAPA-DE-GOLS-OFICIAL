@@ -2167,6 +2167,101 @@
           }
         }
       ]
+    },
+    "37": {
+      "roundNumber": 37,
+      "date": "2026-11-26",
+      "opponent": "remo",
+      "home": true,
+      "created_goals": [
+        {
+          "pass": null,
+          "shot": {
+            "x": 86.6342784,
+            "y": 41.541019999999996
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "89840",
+            "name": "Calleri",
+            "fullName": "Jonathan Calleri",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          }
+        },
+        {
+          "pass": null,
+          "shot": {
+            "x": 89.8720984,
+            "y": 23.567019999999996
+          },
+          "assistPlayer": null,
+          "shotPlayer": {
+            "id": "140542",
+            "name": "Ryan Francisco",
+            "fullName": "Ryan Francisco Rodrigues dos Santos Silva",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          }
+        },
+        {
+          "pass": {
+            "x": 75,
+            "y": 17
+          },
+          "shot": {
+            "x": 88.9197984,
+            "y": 34.145019999999995
+          },
+          "assistPlayer": {
+            "id": "107873",
+            "name": "Bobadilla",
+            "fullName": "Damián Josué Bobadilla Benítez",
+            "position": "Meia",
+            "side": null,
+            "team": "sao-paulo"
+          },
+          "shotPlayer": {
+            "id": "89840",
+            "name": "Calleri",
+            "fullName": "Jonathan Calleri",
+            "position": "Atacante",
+            "side": null,
+            "team": "sao-paulo"
+          }
+        }
+      ],
+      "conceded_goals": [
+        {
+          "pass": {
+            "x": 4.333333333333343,
+            "y": 5.666666666666671
+          },
+          "shot": {
+            "x": 6.018387099999998,
+            "y": 32.111760000000004
+          },
+          "assistPlayer": {
+            "id": "80196",
+            "name": "Yago Pikachu",
+            "fullName": "Glaybson Yago Souza Lisboa",
+            "position": "Meia",
+            "side": null,
+            "team": "remo"
+          },
+          "shotPlayer": {
+            "id": "102877",
+            "name": "Gabriel Poveda",
+            "fullName": "Gabriel Buscariol Poveda",
+            "position": "Atacante",
+            "side": null,
+            "team": "remo"
+          },
+          "isHeader": true
+        }
+      ]
     }
   }
 }
